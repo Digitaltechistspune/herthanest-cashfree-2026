@@ -1,0 +1,363 @@
+{%- comment -%}
+  Hertha Nest - Mobile Sticky ATC (product page only)
+
+  Fixes:
+  - No JS/CSS leaking outside <script>/<style> (prevents desktop "error text")
+  - Mobile-only logic
+  - Sticky shows only when main ATC goes out of view (IntersectionObserver)
+  - Clean animation + valid CSS
+  - Add to cart via /cart/add.js with properties/selling_plan if present
+  - Updates cart count + dispatches common cart events
+{%- endcomment -%}
+
+{%- if product -%}
+  {%- assign v = product.selected_or_first_available_variant -%}
+
+  <div id="hn-sticky-atc" class="hn-sticky-atc" aria-label="Sticky Add to Cart">
+    <div class="hn-sticky-atc__left">
+      <div class="hn-sticky-atc__price" data-sticky-price>{{ v.price | money }}</div>
+      <div class="hn-sticky-atc__compare" data-sticky-compare>
+        {%- if v.compare_at_price > v.price -%}{{ v.compare_at_price | money }}{%- endif -%}
+      </div>
+    </div>
+
+    <button type="button" class="hn-sticky-atc__btn" data-sticky-btn>
+      {%- if v.available -%}ADD TO CART{%- else -%}SOLD OUT{%- endif -%}
+    </button>
+  </div>
+
+  <script id="hn-sticky-variants" type="application/json">
+    {{ product.variants | json }}
+  </script>
+
+  <style>
+    /* Hidden by default (also hides on desktop automatically) */
+    .hn-sticky-atc { display: none; }
+
+    @media (max-width: 768px){
+      /* push existing mobile sticky menu UP so both can exist */
+      #shopify-section-mobile-sticky-menu{
+        bottom: 88px !important;
+      }
+
+      .hn-sticky-atc{
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        z-index: 2147483647;
+        display: none; /* JS will switch to flex when needed */
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+        background: #fff;
+        border-top: 1px solid rgba(0,0,0,.08);
+        box-shadow: 0 -10px 30px rgba(0,0,0,.12);
+        pointer-events: auto;
+
+        transform: translateY(100%);
+        animation: hnSlideUp .25s ease forwards;
+      }
+
+      @keyframes hnSlideUp { to { transform: translateY(0); } }
+
+      /* prevent bar covering page content (mobile only) */
+      body { padding-bottom: 88px; }
+
+      .hn-sticky-atc__left { display:flex; flex-direction:column; min-width:130px; }
+      .hn-sticky-atc__price{
+        white-space:nowrap;
+        font-size:18px;
+        font-weight:800;
+        line-height:1.1;
+        color:#111;
+      }
+      .hn-sticky-atc__compare{
+        font-size:13px;
+        color:rgba(0,0,0,.45);
+        text-decoration:line-through;
+        margin-top:2px;
+        min-height:16px;
+      }
+
+      .hn-sticky-atc__btn{
+        flex:1;
+        height:48px;
+        border:0;
+        border-radius:10px;
+        background:#de7e64;
+        color:#fff;
+        font-weight:800;
+        letter-spacing:.3px;
+        text-transform:uppercase;
+        cursor:pointer;
+        transition:transform .15s ease, box-shadow .15s ease;
+      }
+      .hn-sticky-atc__btn:hover{ box-shadow:0 10px 20px rgba(222,126,100,.35); }
+      .hn-sticky-atc__btn:active{ transform:scale(0.98); }
+      .hn-sticky-atc__btn:disabled{ opacity:.6; cursor:not-allowed; box-shadow:none; }
+    }
+  </style>
+
+  <script>
+    (function () {
+      // ✅ Product page only + prevent double init
+      if (window.__HN_STICKY_ATC__) return;
+      window.__HN_STICKY_ATC__ = true;
+
+      // ✅ Mobile only
+      if (!window.matchMedia || !window.matchMedia('(max-width: 768px)').matches) return;
+
+      const ROOT = {{ routes.root_url | json }};
+      const moneyFormat = {{ shop.money_format | json }};
+
+      const bar = document.getElementById('hn-sticky-atc');
+      if (!bar) return;
+
+      const btn = bar.querySelector('[data-sticky-btn]');
+      const priceEl = bar.querySelector('[data-sticky-price]');
+      const compareEl = bar.querySelector('[data-sticky-compare]');
+
+      const variantsEl = document.getElementById('hn-sticky-variants');
+      const variants = variantsEl ? JSON.parse(variantsEl.textContent || '[]') : [];
+      const variantSet = new Set(variants.map(v => String(v.id)));
+      const variantMap = new Map(variants.map(v => [String(v.id), v]));
+
+      function formatMoney(cents) {
+        if (cents == null) return '';
+        const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+        const match = moneyFormat.match(placeholderRegex);
+        const format = match ? match[1] : 'amount';
+        const number = cents / 100;
+
+        const fmt = (num, decimals, decSep, thouSep) => {
+          const fixed = num.toFixed(decimals);
+          let [i, d] = fixed.split('.');
+          i = i.replace(/\B(?=(\d{3})+(?!\d))/g, thouSep);
+          return d ? i + decSep + d : i;
+        };
+
+        let value = '';
+        switch (format) {
+          case 'amount': value = fmt(number, 2, '.', ','); break;
+          case 'amount_no_decimals': value = fmt(number, 0, '.', ','); break;
+          case 'amount_with_comma_separator': value = fmt(number, 2, ',', '.'); break;
+          case 'amount_no_decimals_with_comma_separator': value = fmt(number, 0, ',', '.'); break;
+          default: value = fmt(number, 2, '.', ',');
+        }
+        return moneyFormat.replace(placeholderRegex, value);
+      }
+
+      function pickForm() {
+        const forms = Array.from(document.querySelectorAll(
+          'form[action^="/cart/add"], form[action^="' + ROOT + '/cart/add"]'
+        ));
+        const visible = forms.filter(f => f.offsetParent !== null);
+        const list = visible.length ? visible : forms;
+        return list.find(f => f.querySelector('[name="id"]')) || list[0] || null;
+      }
+
+      function currentVariantId(form) {
+        const urlVar = new URLSearchParams(location.search).get('variant');
+        if (urlVar && variantSet.has(String(urlVar))) return String(urlVar);
+
+        if (form) {
+          const checked = form.querySelector('input[name="id"]:checked');
+          if (checked?.value && variantSet.has(String(checked.value))) return String(checked.value);
+
+          const idEl = form.querySelector('[name="id"]');
+          if (idEl?.value && variantSet.has(String(idEl.value))) return String(idEl.value);
+        }
+
+        const any = document.querySelector('[name="id"]');
+        if (any?.value && variantSet.has(String(any.value))) return String(any.value);
+
+        return variants[0] ? String(variants[0].id) : null;
+      }
+
+      function getQty(form) {
+        if (!form) return 1;
+        const q = form.querySelector('[name="quantity"]');
+        const n = q ? parseInt(q.value || '1', 10) : 1;
+        return Number.isFinite(n) && n > 0 ? n : 1;
+      }
+
+      function getPropertiesAndSellingPlan(form) {
+        const out = { properties: null, selling_plan: null };
+        if (!form) return out;
+
+        const fd = new FormData(form);
+        const props = {};
+
+        for (const [k, v] of fd.entries()) {
+          const m = /^properties\[(.+)\]$/.exec(k);
+          if (m) props[m[1]] = v;
+          if (k === 'selling_plan' && v) out.selling_plan = v;
+        }
+
+        if (Object.keys(props).length) out.properties = props;
+        return out;
+      }
+
+      async function refreshCartCount() {
+        try {
+          const res = await fetch((ROOT === '/' ? '' : ROOT) + '/cart.js', {
+            credentials: 'same-origin',
+            headers: { 'Accept': 'application/json' }
+          });
+          const cart = await res.json();
+
+          const count = cart.item_count;
+          const selectors = [
+            '[data-cart-count]',
+            '.cart-count',
+            '.cart-count-bubble span',
+            '.header__cart-count',
+            '#CartCount'
+          ];
+
+          selectors.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => {
+              el.textContent = count;
+              if (count > 0) el.style.display = '';
+            });
+          });
+
+          document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+          document.dispatchEvent(new CustomEvent('cart:refresh', { detail: cart }));
+          return cart;
+        } catch (e) {
+          document.dispatchEvent(new CustomEvent('cart:updated'));
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+          return null;
+        }
+      }
+
+      function openCartUI() {
+        const dawnDrawer = document.querySelector('cart-drawer');
+        if (dawnDrawer && typeof dawnDrawer.open === 'function') {
+          dawnDrawer.open();
+          return true;
+        }
+
+        const triggers = [
+          '[data-cart-toggle]',
+          '[data-cart-drawer-open]',
+          '[aria-controls="cart-drawer"]',
+          '.js-drawer-open-cart',
+          '.header__icon--cart',
+          'a[href="/cart"]'
+        ];
+
+        for (const sel of triggers) {
+          const el = document.querySelector(sel);
+          if (el) { el.click(); return true; }
+        }
+        return false;
+      }
+
+      function updateBarUI() {
+        const form = pickForm();
+        const id = currentVariantId(form);
+        const v = id ? variantMap.get(String(id)) : null;
+        if (!v) return;
+
+        priceEl.textContent = formatMoney(v.price);
+
+        if (v.compare_at_price && v.compare_at_price > v.price) {
+          compareEl.textContent = formatMoney(v.compare_at_price);
+          compareEl.style.display = 'block';
+        } else {
+          compareEl.textContent = '';
+          compareEl.style.display = 'none';
+        }
+
+        btn.disabled = !v.available;
+        btn.textContent = !v.available ? 'SOLD OUT' : 'ADD TO CART';
+      }
+
+      async function addToCart() {
+        const form = pickForm();
+        const variantId = currentVariantId(form);
+        if (!variantId) return;
+
+        const qty = getQty(form);
+        const { properties, selling_plan } = getPropertiesAndSellingPlan(form);
+
+        const oldText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'ADDING...';
+
+        const payload = { id: Number(variantId), quantity: qty };
+        if (properties) payload.properties = properties;
+        if (selling_plan) payload.selling_plan = selling_plan;
+
+        try {
+          const res = await fetch((ROOT === '/' ? '' : ROOT) + '/cart/add.js', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!res.ok) {
+            const txt = await res.text();
+            console.error('Sticky ATC add failed:', txt);
+            btn.textContent = 'ERROR';
+            setTimeout(() => { btn.textContent = oldText; updateBarUI(); }, 1200);
+            return;
+          }
+
+          await res.json();
+          await refreshCartCount();
+
+          btn.textContent = 'ADDED!';
+          setTimeout(() => { btn.textContent = oldText; updateBarUI(); }, 900);
+
+          openCartUI();
+        } catch (e) {
+          console.error('Sticky ATC error:', e);
+          btn.textContent = 'ERROR';
+          setTimeout(() => { btn.textContent = oldText; updateBarUI(); }, 1200);
+        }
+      }
+
+      // ✅ Click capture (survives rerenders)
+      document.addEventListener('click', function (e) {
+        const hit = e.target && e.target.closest ? e.target.closest('[data-sticky-btn]') : null;
+        if (!hit) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (btn.disabled) return;
+        addToCart();
+      }, true);
+
+      // ✅ Keep UI in sync
+      document.addEventListener('change', updateBarUI, true);
+      window.addEventListener('popstate', updateBarUI);
+
+      // ✅ Show sticky only when main ATC is out of view
+      function initObserver() {
+        const mainATC = document.querySelector(
+          'form[action^="/cart/add"] button[type="submit"], form[action^="/cart/add"] input[type="submit"]'
+        );
+        if (!mainATC || !('IntersectionObserver' in window)) return;
+
+        const io = new IntersectionObserver((entries) => {
+          const visible = entries[0].isIntersecting;
+          // If main button is visible -> hide sticky; otherwise show
+          bar.style.display = visible ? 'none' : 'flex';
+        }, { threshold: 0.1 });
+
+        io.observe(mainATC);
+      }
+
+      updateBarUI();
+      initObserver();
+    })();
+  </script>
+{%- endif -%}

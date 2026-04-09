@@ -1,0 +1,419 @@
+<section class="top-bar">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+  <div class="row">
+  <div class="col">
+    <div class="offer-text-wrap">
+      <ul class="grid-wrap">
+        {% if section.settings.topbar_notification_text1 != '' %}
+        <li class="grid-wrapper left-block-box">
+          <div class="richtext">
+            {{ section.settings.topbar_notification_text1 }}
+          </div>
+        </li>
+        {% endif %}
+        {% if section.settings.topbar_notification_text2 != '' %}
+        <li class="grid-wrapper center-block-box">
+          <div class="richtext">
+            {{ section.settings.topbar_notification_text2 }}
+          </div>
+        </li>
+        {% endif %}
+        <li class="grid-wrapper right-block-box">
+          <div class="right-block-wrap">
+            <ul class="right-block-ul">
+              {% if section.settings.custom_link_text != '' %}
+              <li class="right-block-li custom-wrap">
+                <a href="{{ section.settings.custom_link_url }}" class="url-block">
+                  <span class="title">{{ section.settings.custom_link_text }}</span>
+                </a>
+              </li>
+              {% endif %}
+              <li class="right-block-li user-wrap">
+                {% if shop.customer_accounts_enabled %}
+                {% if customer %}
+                <a href="{{ routes.account_url }}" class="url-block">
+                  <span class="title">{{ section.settings.top_account_title }}</span>
+                </a>
+                <span class="end">&</span>
+                <a href="{{ routes.account_logout_url }}" class="url-block">
+                  <span class="title">{{ section.settings.top_logout_title }}</span>
+                </a>
+                {% else %}  
+                <a href="{{ routes.account_login_url }}" class="url-block">
+                  <span class="title">{{ section.settings.top_login_title }}</span>
+                </a>
+                <span class="end">&</span>
+                <a href="{{ routes.account_register_url }}" class="url-block">
+                  <span class="title">{{ section.settings.top_register_title }}</span>
+                </a>
+                {% endif %}
+                {% endif %}
+              </li>
+              {%- if settings.wishlist_enable -%}
+              <li class="right-block-li wishlist-wrap">
+                <a href="{{ settings.wishlist_page_url }}" class="url-block" title="Wishlist">
+                  <span class="title">{{ section.settings.top_wishlist_title }}</span>
+                  {% comment %} <span class="wishlist-counter">{{ wishlist.count }}</span> {% endcomment %}
+                </a>
+              </li>
+              {%- endif -%}
+            </ul>
+          </div>
+          <div class="locali-block">
+            {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+            <div class="locali-box">
+              <noscript>
+                {%- form 'localization', id: 'HeaderCountryMobileFormNoScript', class: 'localization-form' -%}
+                <select name="country_code" aria-labelledby="HeaderCountryMobileLabelNoScript">
+                  {%- for country in localization.available_countries -%}
+                    <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                      {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                    </option>
+                  {%- endfor -%}
+                </select>
+                {%- endform -%}
+              </noscript>
+              <localization-form>
+                {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
+                  {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
+                {%- endform -%}
+              </localization-form>
+            </div>
+            {% endif %}
+            {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+            <div class="locali-box">
+              <noscript>
+                {%- form 'localization', id: 'HeaderLanguageMobileFormNoScript', class: 'localization-form' -%}
+                    <select name="locale_code" aria-labelledby="HeaderLanguageMobileLabelNoScript">
+                      {%- for language in localization.available_languages -%}
+                        <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}" {%- if language.iso_code == localization.language.iso_code %} selected{% endif %}>
+                          {{ language.endonym_name | capitalize }}
+                        </option>
+                      {%- endfor -%}
+                    </select>
+                {%- endform -%}
+              </noscript>
+              <localization-form>
+                {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+                    {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
+                {%- endform -%}
+              </localization-form>
+            </div>
+            {%- endif -%}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Top bar (Localization)",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "fluid"
+    },
+    {
+      "type": "header",
+      "content": "Section Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "section_bg_color",
+      "label": "Background color"
+    },
+    {
+      "type": "header",
+      "content": "Section text color"
+    },
+    {
+      "type": "color",
+      "id": "notification_txt_color",
+      "label": "Section Text Color",
+      "default": "#999"
+    },
+    {
+      "type": "header",
+      "content": "text url"
+    },
+    {
+      "type": "richtext",
+      "id": "topbar_notification_text1",
+      "label": "Notification text"
+    },
+    {
+      "type": "richtext",
+      "id": "topbar_notification_text2",
+      "label": "Notification text"
+    },
+    {
+      "type": "header",
+      "content": "Right Block Text"
+    },
+    {
+      "type": "text",
+      "id": "custom_link_text",
+      "label": "Text 1",
+      "default": "Order tracking"
+    },
+    {
+      "type": "url",
+      "id": "custom_link_url",
+      "label": "Text 1 url"
+    },
+    {
+      "type": "text",
+      "id": "top_account_title",
+      "label": "Account Title",
+      "default": "Account"
+    },
+    {
+      "type": "text",
+      "id": "top_logout_title",
+      "label": "Logout Title",
+      "default": "Logout"
+    },
+    {
+      "type": "text",
+      "id": "top_login_title",
+      "label": "Login Title",
+      "default": "Login"
+    },
+    {
+      "type": "text",
+      "id": "top_register_title",
+      "label": "Register Title",
+      "default": "Register"
+    },
+    {
+      "type": "text",
+      "id": "top_wishlist_title",
+      "label": "Wishlist Title",
+      "default": "Wishlist"
+    },
+    {
+      "type": "header",
+      "content": "Country/region selector",
+      "info": "To add a country/region, go to your [market settings.](/admin/settings/markets)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": false,
+      "label": "Enable country/region selecto"
+    },
+    {
+      "type": "header",
+      "content": "Language selector",
+      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": false,
+      "label": "Enable language selector"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Top bar"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.top-bar{
+  border-bottom: 1px solid rgba(0,0,0,10%);
+  background: {{ section.settings.section_bg_color }};
+}
+.top-bar .offer-text-wrap {
+  padding: 11px 0;
+  position: relative;
+}
+.top-bar ul.grid-wrap {
+  display: flex;
+  align-items: center;
+  margin: -30px 0 0 -30px;
+}
+.top-bar ul.grid-wrap li.grid-wrapper{
+  width: calc(33.33% - 30px);
+  margin: 30px 0 0 30px;
+}
+.top-bar ul.grid-wrap li.grid-wrapper.center-block-box{
+  text-align: center;
+}
+.top-bar ul li.grid-wrapper .richtext span{
+  {%- if settings.enable_rtl -%}
+  padding-left: 5px;
+  {%- else -%}
+  padding-right: 5px;
+  {%- endif -%}
+}
+.top-bar ul li.grid-wrapper .richtext a,
+.top-bar ul li.grid-wrapper .richtext p{
+  color: {{ section.settings.notification_txt_color }};
+  line-height: 1;
+}
+.top-bar ul li.grid-wrapper .richtext a:hover{
+  opacity: 0.7;
+}
+.top-bar ul li.grid-wrapper .richtext.highlight a{
+  color: var(--font-color-primary);
+  border-bottom: 2px solid;
+}
+.top-bar ul li.grid-wrapper .richtext.highlight a:hover{
+  color: var(--font-color-third);
+}
+@media (max-width : 1199px){
+  .top-bar ul.grid-wrap li.grid-wrapper{
+    width: calc(50% - 30px);
+  }
+  .top-bar ul.grid-wrap li.grid-wrapper.left-block-box {
+    display: none;
+  }
+  .top-bar ul.grid-wrap li.grid-wrapper.center-block-box {  
+    text-align: left;
+  }
+}
+@media (max-width: 767px) {
+  .top-bar ul.grid-wrap {
+    margin: -30px 0 0 -12px;
+  }
+  .top-bar ul.grid-wrap li.grid-wrapper{
+    width: calc(50% - 12px);
+    margin: 30px 0 0 12px;
+  }
+}
+@media (max-width: 600px) {
+  .top-bar ul.grid-wrap li.grid-wrapper {
+    width: calc(100% - 12px);
+  }
+  .top-bar ul.grid-wrap li.grid-wrapper.right-block-box {
+    display: none;
+  }
+  .top-bar ul.grid-wrap li.grid-wrapper.center-block-box {  
+    text-align: center;
+  }
+}
+
+
+.top-bar .right-block-box {
+
+}
+.top-bar .right-block-box .right-block-wrap {
+
+}
+.top-bar .right-block-box .right-block-wrap ul.right-block-ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+}
+.top-bar .right-block-box .right-block-wrap ul.right-block-ul li.right-block-li {
+  margin-inline-start: 30px;
+}
+.top-bar .right-block-box .right-block-wrap ul.right-block-ul li.right-block-li:first-child {
+  margin-inline-start: 0px;
+} 
+.top-bar .right-block-box .right-block-wrap ul.right-block-ul li.right-block-li a.url-block {
+  color: {{ section.settings.notification_txt_color }};
+}
+.top-bar .right-block-box .right-block-wrap ul.right-block-ul li.right-block-li a.url-block:hover {
+  opacity: 0.7;
+}
+.top-bar .right-block-box .right-block-wrap ul.right-block-ul li.right-block-li span.end {
+  color: {{ section.settings.notification_txt_color }};
+}
+@media (max-width: 1199px) {
+  .top-bar .right-block-box .right-block-wrap ul.right-block-ul li.right-block-li {
+    margin-inline-start: 20px;
+  }
+}
+
+.top-bar .locali-block {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+.top-bar .locali-block .locali-box {
+  margin-inline-start: 15px;
+}
+.top-bar .locali-block .locali-box:first-child {
+  margin-inline-start: 0;
+}
+.top-bar .locali-block .locali-box form button {
+  display: flex;
+  align-items: center;
+  color: {{ section.settings.notification_txt_color }};
+  font-size: 14px;
+  line-height: 1;
+}
+.top-bar .locali-block .locali-box form button .icon {
+  padding-inline-start: 5px;
+}
+.top-bar .locali-block .locali-box .locali-dd ul {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  padding: 20px;
+  background-color: #fff;
+  z-index: 9;
+  -webkit-animation-name: DropDownSlide;
+  animation-name: DropDownSlide;
+  -webkit-animation-duration: .3s;
+  animation-duration: .3s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  box-shadow: 0 0 15px #00000026;
+  max-height: 350px;
+  max-width: 200px;
+  overflow-y: auto;
+}
+.top-bar .locali-block .locali-box .locali-dd ul li {
+  margin-top: 10px;
+}
+.top-bar .locali-block .locali-box .locali-dd ul li:first-child {
+  margin-top: 0;
+}
+.mini-cart .product-cart-items,
+.filter-sidebar,
+.shop-sidebar ul.scrollbar,
+.productmodal .modal-dialog .modal-body .quick-view-content,
+.search-results {
+  scrollbar-width: thin;
+  -webkit-scrollbar-width: thin;
+}
+.top-bar .locali-block .locali-box .locali-dd ul::-webkit-scrollbar {
+  width: 4px;
+}
+.top-bar .locali-block .locali-box .locali-dd ul::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.top-bar .locali-block .locali-box .locali-dd ul::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 10%);
+}
+.top-bar .locali-block .locali-box .locali-dd ul::-webkit-scrollbar-thumb:hover {
+  background-color: var(--font-color-header);
+}
+.top-bar .locali-block .locali-box .locali-dd ul li a.active {
+  color: var(--font-color-primary);
+}
+</style>

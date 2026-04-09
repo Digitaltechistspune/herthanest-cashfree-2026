@@ -1,0 +1,203 @@
+
+<section class="contact-section5">
+  {% if section.settings.full_map %}
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+  {% endif %}
+        <div class="contact-map">
+          <div class="google-map-area">
+            <div id="map" class="map">{{ section.settings.contact-section5 }}</div>
+          </div>
+        </div>
+  {% if section.settings.full_map %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% schema %}
+{
+  "name": "Contact section5",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "google_map_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "google_map_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "google_map_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "google_map_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "google_map_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "google_map_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "google_map_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "google_map_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Map Setting"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_map",
+      "label": "Full width map",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "contact-section5",
+      "label": "Map",
+      "info": "Google map iframe here"
+    },
+    {
+      "type": "range",
+      "id": "google_map_height",
+      "label": "Map Height",
+      "min": 0,
+      "max": 1000,
+      "step": 100,
+      "unit": "px",
+      "default": 500
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact section5"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .contact-section5 {
+    padding-top: {{ section.settings.google_map_padding_top }}px;
+    padding-bottom: {{ section.settings.google_map_padding_bottom }}px;
+    {% if section.settings.google_map_bgcolor_enable %}
+    background-color: {{ section.settings.google_map_bgcolor }};
+    {% endif %}
+  }
+  @media (max-width: 1199px) {
+    .contact-section5 {
+      padding-top: {{ section.settings.google_map_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.google_map_padding_bottom_ip }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .contact-section5 {
+      padding-top: {{ section.settings.google_map_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.google_map_padding_bottom_xs }}px;
+    }
+  }
+
+  /* google map css */
+  .contact-section5 .contact-map .map {
+    line-height: 0;
+  }
+  .contact-section5 .contact-map .map iframe {
+    height: {{ section.settings.google_map_height }}px;
+    width: 100%;
+  }
+  @media (max-width: 767px) {
+    .contact-section5 .contact-map .map iframe {
+      height: 320px;
+    }
+  }
+</style>

@@ -1,0 +1,410 @@
+<section class="home-about-area">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="home-about-wrap">
+          <div class="home-about-main">
+            <div class="home-about-img">
+              <span class="image">
+                {% comment %}
+                <img src="https://dummyimage.com/750x715/e2e2e2/999999" class="img-fluid" alt="image">
+                {% endcomment %}
+                {%- if section.settings.home_about_image -%}
+                {{
+                  section.settings.home_about_image
+                | image_url: width: 1024
+                | image_tag:
+                  loading: 'lazy',
+                  width: section.settings.home_about_image.width,
+                  height: section.settings.home_about_image.height,
+                  class: 'img-fluid lazyload',
+                  alt: section.settings.home_about_image.alt
+                | escape
+                }}
+                {%- else -%}
+                {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                {%- endif -%}
+              </span>
+              {% if section.settings.about_image_title != '' %}
+              <h2 class="image-title" style="color: {{ section.settings.about_image_title_color }};">{{ section.settings.about_image_title }}</h2>
+              {% endif %}
+            </div>
+            <div class="home-about-info">
+              <div class="info-wrap">
+                <div class="section-capture">
+                  <div class="section-title">
+                    {% if section.settings.home_about_subtitle != '' %}
+                    <span class="sub-title">{{ section.settings.home_about_subtitle }}</span>
+                    {% endif %}
+                    {% if section.settings.home_about_title != '' %}
+                    <h2>{{ section.settings.home_about_title }}</h2>
+                    {% endif %}
+                  </div>
+                </div>
+                {% if section.settings.home_about_desc != '' %}
+                <p class="desc">{{ section.settings.home_about_desc }}</p>
+                {% endif %}
+                {% if section.settings.home_about_btn_text != '' %}
+                <a href="{{ section.settings.home_about_btn_url }}" class="about-btn btn-style">{{ section.settings.home_about_btn_text }}</a>
+                {% endif %}
+              </div>
+              {% if section.settings.about_info_text != '' %}
+              <div class="info-text">
+                <span class="text" style="color: {{ section.settings.about_info_text_color }};">{{ section.settings.about_info_text }}</span>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Home About",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop / tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ipad",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Section Background color"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Background Color",
+      "default": "#F9F7F5"
+    },
+    {
+      "type": "header",
+      "content": "Home about Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "home_about_image",
+      "label": "Image",
+      "info": "Recommended Size: 750x715px"
+    },
+    {
+      "type": "text",
+      "id": "about_image_title",
+      "label": "Title",
+      "default": "Armchair"
+    },
+    {
+      "type": "color",
+      "id": "about_image_title_color",
+      "label": "Title Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Home about content"
+    },
+    {
+      "type": "color",
+      "id": "home_about_content_bg_color",
+      "label": "Background Color",
+      "default": "#F9F7F5"
+    },
+    {
+      "type": "text",
+      "id": "home_about_subtitle",
+      "label": "Subtitle",
+      "default": "Since between for 1999 to 2023"
+    },
+    {
+      "type": "text",
+      "id": "home_about_title",
+      "label": "Title",
+      "default": "Furniture that and style to your home"
+    },
+    {
+      "type": "text",
+      "id": "home_about_desc",
+      "label": "Description",
+      "default": "There are many variations of passages of Lorem Ipsum available the majority have suffered alteration in some form, by injected or randomised words which don't look !"
+    },
+    {
+      "type": "text",
+      "id": "home_about_btn_text",
+      "label": "Button Text",
+      "default": "Read story"
+    },
+    {
+      "type": "url",
+      "id": "home_about_btn_url",
+      "label": "Button url"
+    },
+    {
+      "type": "header",
+      "content": "Info Text"
+    },
+    {
+      "type": "text",
+      "id": "about_info_text",
+      "label": "Text",
+      "default": "1300+ furniture collection"
+    },
+    {
+      "type": "color",
+      "id": "about_info_text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home About"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .home-about-area {
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    background-color: {{ section.settings.section_bg_color }};
+    text-align: center;
+  }
+  @media (max-width: 1199px) {
+    .home-about-area {
+      padding-top: {{ section.settings.section_padding_top_ipad }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_ipad }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .home-about-area {
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+
+  .home-about-area .home-about-wrap .home-about-main {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .home-about-area .home-about-wrap .home-about-main .home-about-img,
+  .home-about-area .home-about-wrap .home-about-main .home-about-info {
+    position: relative;
+    width: 50%;
+  }
+  .home-about-area .home-about-wrap .home-about-main .home-about-info {
+    background-color: {{ section.settings.home_about_content_bg_color }};
+    padding: 50px 100px 50px 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    {%- if settings.enable_rtl -%}
+    text-align: right;
+    {%- else -%}
+    text-align: left;
+    {%- endif -%}
+  }
+  @media (max-width: 991px) {
+    .home-about-area .home-about-wrap .home-about-main .home-about-img,
+    .home-about-area .home-about-wrap .home-about-main .home-about-info {
+      width: 100%;
+    }
+  }
+
+  /* image css */
+  .home-about-area .home-about-wrap .home-about-main .home-about-img h2.image-title {
+    font-size: 100px;
+    font-weight: var(--font-weight-subtitle);
+    position: absolute;
+    bottom: 60px;
+    left: 30px;
+    right: 30px;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  @media (max-width: 1399px) {
+    .home-about-area .home-about-wrap .home-about-main .home-about-img h2.image-title {
+      font-size: 80px;
+    }
+  }
+  @media (max-width: 1199px) {
+    .home-about-area .home-about-wrap .home-about-main .home-about-img h2.image-title {
+      font-size: 60px;
+      bottom: 30px;
+    }
+  }
+  @media (max-width: 767px) {
+    .home-about-area .home-about-wrap .home-about-main .home-about-img h2.image-title {
+      left: 12px;
+      right: 12px;
+    }
+  }
+  @media (max-width: 479px) {
+    .home-about-area .home-about-wrap .home-about-main .home-about-img h2.image-title {
+      font-size: 40px;
+    }
+  }
+  /* content css */
+  .home-about-area .home-about-wrap .home-about-main .home-about-info .info-wrap .section-capture {
+    margin-bottom: 26px;
+    {%- if settings.enable_rtl -%}
+    text-align: right;
+    {%- else -%}
+    text-align: left;
+    {%- endif -%}
+  }
+  .home-about-area .home-about-wrap .home-about-main .home-about-info .info-wrap a.about-btn {
+    margin-top: 40px;
+  }
+  .home-about-area .home-about-wrap .home-about-main .home-about-info .info-text {
+    background-color: var(--font-color-primary);
+    padding: 30px 10px;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    {%- if settings.enable_rtl -%}
+    right: 0px;
+    {%- else -%}
+    left: 0px;
+    {%- endif -%}
+    text-align: center;
+    writing-mode: vertical-rl;
+    -ms-writing-mode: vertical-rl;
+  }
+  .home-about-area .home-about-wrap .home-about-main .home-about-info .info-text span.text {
+    font-weight: var(--font-custom-weight-header);
+    text-transform: uppercase;
+    -webkit-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+  } 
+  @media (max-width: 1499px) {
+    .home-about-area .home-about-wrap .home-about-main .home-about-info {
+      padding: 50px 80px 50px 110px;
+    }
+  }
+  @media (max-width: 1199px) {
+    .home-about-area .home-about-wrap .home-about-main .home-about-info {
+      padding: 40px 30px 40px 80px;
+    }
+    .home-about-area .home-about-wrap .home-about-main .home-about-info .info-wrap .section-capture {
+      margin-bottom: 21px;
+    }
+    .home-about-area .home-about-wrap .home-about-main .home-about-info .info-wrap a.about-btn {
+      margin-top: 30px;
+    }
+  }
+  @media (max-width: 767px) {
+    .home-about-area .home-about-wrap .home-about-main .home-about-info {
+      padding: 40px 12px 40px 60px;
+    }
+    .home-about-area .home-about-wrap .home-about-main .home-about-info .info-wrap .section-capture {
+      margin-bottom: 13px;
+    }
+    .home-about-area .home-about-wrap .home-about-main .home-about-info .info-wrap a.about-btn {
+      margin-top: 20px;
+    }
+    .home-about-area .home-about-wrap .home-about-main .home-about-info .info-text {
+      padding: 12px 10px;
+    }
+  }
+  @media (max-width: 479px) {
+    .home-about-area .home-about-wrap .home-about-main .home-about-info {
+      padding: 30px 12px 30px 60px;
+    }
+  }
+</style>

@@ -1,0 +1,405 @@
+<section class="contact-section6">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="contact-content">
+          <div class="contact-detail image-warp">
+            <a href="{{ block.settings.contact_img_url }}" class="contact-img-wrap banner-hover">
+              {%- if section.settings.contact_img -%}
+              {{ section.settings.contact_img | image_url: width: 1024 | image_tag:
+                loading: 'lazy',
+                width: section.settings.contact_img.width,
+                height: section.settings.contact_img.height,
+                class: "img-fluid lazyload",
+                alt: section.settings.contact_img.alt | escape }}
+              {%- else -%}
+              {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+              {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+              {%- endif -%}
+            </a>
+          </div>
+          <div class="contact-detail get-info">
+            <div class="store-info">
+                <div class="section-title">
+                  {% if section.settings.section_sub_title != '' %}
+                  <span class="sub-title" data-fade-in>{{ section.settings.section_sub_title }}</span>
+                  {% endif %}
+                  <h2 data-fade-in>{{ section.settings.section_title }}</h2>
+                </div>
+                <ul class="info_wrap">
+                  <li data-fade-in class="info_wrapper">
+                    <div class="info-block">
+                      <div class="icon">
+                        {{ section.settings.info_icon1 }}
+                      </div>
+                      <div class="text-block">
+                        <span>{{ section.settings.info_title1 }}</span>
+                        <a href="tel:{{ section.settings.info_link1 }}">{{ section.settings.info_link1 }}</a>
+                      </div>
+                    </div>
+                  </li>
+                  <li data-fade-in class="info_wrapper">
+                    <div class="info-block">
+                      <div class="icon">
+                        {{ section.settings.info_icon2 }}
+                      </div>
+                      <div class="text-block">
+                        <span>{{ section.settings.info_title2 }}</span>
+                        <a href="mailto:{{ section.settings.info_link2 }}">{{ section.settings.info_link2 }}</a>
+                      </div>
+                    </div>
+                  </li>
+                  <li data-fade-in class="info_wrapper">
+                    <div class="info-block">
+                      <div class="icon">
+                        {{ section.settings.info_icon3 }}
+                      </div>
+                      <div class="text-block">
+                        <span>{{ section.settings.info_title3 }}</span>
+                        <p>{{ section.settings.info_link3 }}</p>
+                        <div class="social-wrap">
+                          {% render 'social-media' %}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Contact section6",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ipad",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "image_picker",
+      "id": "contact_img",
+      "label": "Contact Image",
+      "info": "Recommended Size: 1400px x 641px"
+    },
+    {
+      "type": "url",
+      "id": "contact_img_url",
+      "label": "Image url"
+    },
+    {
+      "type": "header",
+      "content": "Information Content"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section sub title",
+      "default": "We'd love to hear from you"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Contact us"
+    },
+    {
+      "type": "textarea",
+      "id": "info_icon1",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "info_title1",
+      "label": "Title1",
+      "default": "Address"
+    },
+    {
+      "type": "text",
+      "id": "info_link1",
+      "label": "Link Title",
+      "default": "70 Washington Square South <br>New York, NY 10012, United States"
+    },
+    {
+      "type": "textarea",
+      "id": "info_icon2",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "info_title2",
+      "label": "Title2",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "info_link2",
+      "label": "Link Title2",
+      "default": "+1 234 567 8910 <br>+1 234 567 8910"
+    },
+    {
+      "type": "textarea",
+      "id": "info_icon3",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "info_title3",
+      "label": "Title3",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "info_link3",
+      "label": "Link Title3",
+      "default": "info@yourdomain.com"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact section6"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.contact-section6{
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+}
+{% if section.settings.contact_us_map_enable %}
+.contact-section6 .contact-map-wrap {
+  -ms-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+.contact-section6 .contact-map-wrap .map {
+  height: {{ section.settings.contact_us_map_height }}px;
+  width: 100%;
+  box-shadow: 0px 0px 0px 1px #e2e2e2;
+  border: 10px solid #fff;
+}
+{% endif %}
+@media (max-width: 1199px){
+  .contact-section6{
+    padding-top: {{ section.settings.section_padding_top_ipad }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_ipad }}px;
+  }
+}
+@media (max-width: 767px){
+  .contact-section6{
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+  }
+  .contact-section6 .contact-map-wrap .map {
+    height: 320px;
+  }
+  .contact-section6 .contact-map-wrap{
+    padding-top: 30px;
+  }
+}
+
+.contact-section6 .store-info .section-title {
+  align-items: flex-start;
+}
+.contact-section6 .contact-content {
+  display : flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: -30px 0 0 -30px;
+}
+.contact-section6 .contact-content .contact-detail {
+  margin: 30px 0 0 30px;
+}
+.contact-section6 .contact-content .contact-detail.image-warp {
+  width: calc(58.33% - 30px);
+}
+.contact-section6 .contact-content .contact-detail.get-info {
+  width: calc(41.67% - 30px);
+}
+.contact-section6 .store-info {
+  width: 66.67%;
+  margin: 0 auto;
+}
+.contact-section6 .store-info ul.info_wrap {
+  margin-top: 60px;
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper{
+  margin-top: 40px;
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper:first-child{
+  margin-top: 0px;
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block{
+  display: flex;
+  align-items: center;
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .text-block {
+  {% if settings.enable_rtl %}
+  margin-right: 30px;
+  {% else %}
+  margin-left: 30px;
+  {% endif %}
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .icon {
+  color: var(--font-color-header);
+  font-size: 28px;
+  line-height: 1;
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .text-block span {
+  font-size: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper ul.social-icon li a span {
+  color: var(--font-color-header);
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper ul.social-icon li a:hover span {
+  color: var(--font-color-primary);
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .text-block a,
+.contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .text-block p{
+  color: var(--font-color-header);
+  font-size: 18px;
+  padding-top: 5px;
+  font-weight: 600;
+  display: block;
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .text-block a:hover {
+  color: var(--font-color-primary);
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .text-block .social-wrap {
+  margin-top: 30px;
+}
+.contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .text-block .social-wrap a {
+  display: flex;
+  line-height: 1;
+  padding: 0;
+}
+
+@media(max-width: 1199px){
+  .contact-section6 .store-info {
+    width: 100%;
+  }
+  .contact-section6 .store-info ul.info_wrap {
+    margin-top: 30px;
+  }
+  .contact-section6 .store-info ul.info_wrap li.info_wrapper {
+    margin-top: 20px;
+  }
+  .contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .text-block a,
+  .contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .text-block p {
+    font-size: 16px;
+  }
+  .contact-section6 .store-info ul.info_wrap li.info_wrapper .info-block .text-block .social-wrap {
+    margin-top: 15px;
+  }
+}
+@media(max-width: 991px){
+  .contact-section6 .contact-content .contact-detail.image-warp,
+  .contact-section6 .contact-content .contact-detail.get-info {
+    width: calc(100% - 30px);
+  }
+}
+@media(max-width: 767px){
+  .contact-section6 .contact-content {
+    margin: -30px 0 0 -12px;
+  }
+  .contact-section6 .contact-content .contact-detail.image-warp,
+  .contact-section6 .contact-content .contact-detail.get-info {
+    width: calc(100% - 12px);
+    margin: 30px 0 0 12px;
+  }
+}
+</style>

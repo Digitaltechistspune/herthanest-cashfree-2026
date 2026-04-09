@@ -1,0 +1,332 @@
+{%- if predictive_search.performed -%}
+{% assign first_column_results_size = predictive_search.resources.queries.size
+  | plus: predictive_search.resources.collections.size
+  | plus: predictive_search.resources.pages.size
+  | plus: predictive_search.resources.articles.size
+%}
+<div class="container">
+  <div id="search-ajax-results" role="listbox">
+    {%- if first_column_results_size > 0 or predictive_search.resources.products.size > 0 -%}
+      <div id="search-ajax-block" class="search-ajax-block{% unless predictive_search.resources.products.size > 0 %} search-ajax-block-no-products{% endunless %}{% unless predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 %} search-ajax-block-no-suggestions{% endunless %}">
+        {%- endif -%}
+        {%- if first_column_results_size > 0 -%}
+          <div class="ajax-result-group">
+        {%- endif -%}
+        {%- if predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 -%}
+          <div class="suggestions-list list-block">
+            <h6 class="list-title">
+              {{- 'templates.search.suggestions' | t -}}:
+            </h6>
+            <ul class="results-list">
+              {%- for query in predictive_search.resources.queries -%}
+                <li id="search-ajax-option-query-{{ forloop.index }}" class="list-item">
+                  <a href="{{ query.url }}" class="list-item">
+                    {{ query.styled_text }}
+                  </a>
+                </li>
+              {%- endfor -%}
+              {%- for collection in predictive_search.resources.collections -%}
+                <li id="search-ajax-option-collection-{{ forloop.index }}" class="list-item" role="option" aria-selected="false">
+                  <a href="{{ collection.url }}" class="list-item">{{ collection.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        {%- if predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}
+          <div class="pages-list list-block">
+            <h6 class="list-title">
+              {{- 'templates.search.pages' | t -}}:
+            </h6>
+            <ul class="results-list">
+              {%- for page in predictive_search.resources.pages -%}
+                <li id="search-ajax-option-page-desktop-{{ forloop.index }}" class="list-item">
+                  <a href="{{ page.url }}" class="list-item">
+                    {{ page.title }}
+                  </a>
+                </li>
+              {%- endfor -%}
+              {%- for article in predictive_search.resources.articles -%}
+                <li id="search-ajax-option-article-desktop-{{ forloop.index }}" class="list-item" role="option" aria-selected="false">
+                  <a href="{{ article.url }}" class="list-item">
+                    {{ article.title }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        {%- if first_column_results_size > 0 -%}
+      </div>
+    {%- endif -%}
+    {%- if predictive_search.resources.products.size > 0
+      or predictive_search.resources.articles.size > 0
+      or predictive_search.resources.pages.size > 0
+    -%}
+      <div class="ajax-result-group">
+        {%- if predictive_search.resources.products.size > 0 -%}
+          <div class="product-list">
+            <ul class="grid-wrap">
+              {%- for product in predictive_search.resources.products -%}
+                <li id="search-ajax-option-product-{{ forloop.index }}" class="grid-wrapper">
+                  {%- assign color_label = 'Color,color,colour,couleur,cor,colore,farbe,색,色,カラー,färg,farve,szín,barva' | split: ',' -%}
+                  <div class="single-product-wrap">
+                    <div class="product-image" id="pro-img-{{ section.id }}-{{ product.id }}">
+                      {%- liquid
+                        assign ratio = 1
+                        if product.featured_media and settings.image_ratio == 'portrait'
+                          assign ratio = 0.93
+                        elsif product.featured_media and settings.image_ratio == 'adapt'
+                          assign ratio = product.featured_media.aspect_ratio
+                        endif
+                        if ratio == 0 or ratio == null
+                          assign ratio = 1
+                        endif
+                      -%}
+                      <a class="pro-img ratio" href="{{ product.url | within: collection }}" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+                        <div class="img1">
+                          <img srcset="
+                          {%- if product.featured_image.src.width >= 165 -%}{{ product.featured_image.src | image_url: width: 165 }} 165w,{%- endif -%}
+                          {%- if product.featured_image.src.width >= 360 -%}{{ product.featured_image.src | image_url: width: 360 }} 360w,{%- endif -%}
+                          {%- if product.featured_image.src.width >= 533 -%}{{ product.featured_image.src | image_url: width: 533 }} 533w,{%- endif -%}
+                          {%- if product.featured_image.src.width >= 720 -%}{{ product.featured_image.src | image_url: width: 720 }} 720w,{%- endif -%}
+                          {{ product.featured_image.src | image_url }} {{ product.featured_image.src.width }}w
+                          "
+                          src="{{ product.featured_image.src | image_url: width: 720 }}"
+                          data-src="{{ product.featured_image.src | image_url: width: 720 }}"
+                          alt="{{ product.featured_image.src.alt | escape }}"
+                          class="img-fluid lazyload"
+                          width="{{ product.featured_image.src.width }}"
+                          height="{{ product.featured_image.src.width | divided_by: product.featured_image.src.aspect_ratio }}"
+                          decoding="async"
+                          loading="lazy"
+                          sizes="(min-width: 1920px) {{ '1920' | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)">
+                        </div>
+                        {%- if settings.pro_hover_enable -%}
+                        <div class="img2">
+                          <img srcset="
+                          {%- if product.images[1].width >= 165 -%}{{ product.images[1] | image_url: width: 165 }} 165w,{%- endif -%}
+                          {%- if product.images[1].width >= 360 -%}{{ product.images[1] | image_url: width: 360 }} 360w,{%- endif -%}
+                          {%- if product.images[1].width >= 533 -%}{{ product.images[1] | image_url: width: 533 }} 533w,{%- endif -%}
+                          {%- if product.images[1].width >= 720 -%}{{ product.images[1] | image_url: width: 720 }} 720w,{%- endif -%}
+                          {{ product.images[1] | image_url }} {{ product.images[1].width }}w
+                          "
+                          src="{{ product.images[1] | image_url: width: 720 }}"
+                          data-src="{{ product.images[1] | image_url: width: 720 }}"
+                          alt="{{ product.images[1].alt | escape }}"
+                          class="img-fluid lazyload"
+                          width="{{ product.images[1].width }}"
+                          height="{{ product.images[1].width | divided_by: product.images[1].aspect_ratio }}"
+                          decoding="async"
+                          loading="lazy"
+                          sizes="(min-width: 1920px) {{ '1920' | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)">
+                        </div>
+                        {%- endif -%}
+                      </a>
+                      <div class="product-label">
+                      {%- render 'product-label', product: product -%}
+                      </div>
+                    </div>
+                    <div class="product-content">
+                      <div class="content-block">
+                        {% if settings.pro_gr_option_enable %}
+                        {% render 'product-grid-option', product: product, color_label: color_label, section: section %}
+                        {% endif %}
+                        {% if settings.show_product_type or settings.product_vendor_enable %}
+                        <div class="type-vendor">
+                          {% if settings.show_product_type and product.vendor != '' %}
+                          {{ product.type | link_to_type: class: 'product-type' }}
+                          {% endif %}
+                          {% if settings.product_vendor_enable and product.vendor != '' %}
+                          {{ product.vendor | link_to_vendor: class: 'product-vendor' }}
+                          {% endif %}
+                        </div>
+                        {% endif %}
+                        <h6>
+                          <a href="{{ product.url | within: collection }}" title="{{ product.title }}">{{ product.title }}</a>
+                        </h6>
+                        <div class="price-box" id="price-{{ product.id }}">
+                          <span class="new-price" id="ProductPrice">{{ product.selected_or_first_available_variant.price | money }}</span>
+                          {%- if product.compare_at_price_max > product.price -%}
+                          <span span class="old-price" id="ComparePrice">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+                          {%- endif -%}
+                        </div>
+                        {%- if settings.show_rating -%}
+                        <div class="product-grid-rating">
+                          {% if product.metafields.judgeme.badge %}
+                          <div class='jdgm-widget jdgm-preview-badge'>
+                            {{ product.metafields.judgeme.badge }}
+                          </div>
+                          {% else %}
+                          <div class="jdgm-prev-badge jdgm--js" data-average-rating="0.00" data-number-of-reviews="0">
+                            <span class="jdgm-prev-badge__stars" data-score="0.00"><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span></span>
+                            <span class="jdgm-prev-badge__text">No reviews</span>
+                          </div>
+                          {% endif %}
+                        </div>
+                        {%- endif -%}
+                        {%- if product.metafields.custom.custom_content -%}
+                        <p class="product-description">{{ product.metafields.custom.custom_content | strip_html | truncatewords: 17 }}</p>
+                        {%- else -%}
+                        {%- if product.description != '' -%}
+                        <p class="product-description">{{ product.description | strip_html | truncatewords: 17 }}</p>
+                        {%- endif -%}
+                        {%- endif -%}
+                      </div>
+                      <div class="product-action">
+                        {%- liquid
+                          if settings.wishlist_enable
+                          render 'wishlist-button', product: product
+                          endif
+                          if settings.cart_enable 
+                          render 'cart-button', product: product, section_id: section.id
+                          endif
+                          if settings.quickview_enable
+                          render 'quickview-button', product: product, section_id: section.id
+                          endif
+                        -%}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    {%- if first_column_results_size > 0 or predictive_search.resources.products.size > 0 -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+<span class="results-found" data-search-ajax-live-region-count-value>
+  {% liquid
+    assign total_results = predictive_search.resources.products.size | plus: first_column_results_size
+    if total_results == 0
+      echo 'templates.search.no_results' | t: terms: predictive_search.terms
+    else
+      echo 'templates.search.results_with_count' | t: count: total_results | append: ': '
+      if predictive_search.resources.queries.size > 0
+        assign count = predictive_search.resources.queries.size | plus: predictive_search.resources.collections.size
+        echo 'templates.search.results_suggestions_with_count' | t: count: count | append: ', '
+      endif
+      if predictive_search.resources.pages.size > 0
+        assign count = predictive_search.resources.pages.size | plus: predictive_search.resources.articles.size
+        echo 'templates.search.results_pages_with_count' | t: count: count | append: ', '
+      endif
+      if predictive_search.resources.products.size > 0
+        echo 'templates.search.results_products_with_count' | t: count: predictive_search.resources.products.size
+      endif
+    endif
+  %}
+</span>
+{%- endif -%}
+<style type="text/css">
+.search-ajax {
+  outline: 0;
+}
+.ajax-result-group {
+  margin-top: 30px;
+}
+.ajax-result-group .list-block {
+  display: flex;
+}
+.ajax-result-group .list-block.pages-list {
+  margin-top: 10px;
+}
+.ajax-result-group .list-block h6.list-title {
+  font-size: var(--font-size-body);
+  padding-inline-end: 15px;
+  font-weight: var(--font-weight-subtitle);
+}
+.ajax-result-group .list-block ul.results-list li.list-item a {
+  color: var(--font-color-body);
+  font-size: var(--font-size-body);
+  font-weight: 400;
+}
+.ajax-result-group .list-block ul.results-list {
+  margin: -5px 0 0 -10px;
+}
+.ajax-result-group .list-block ul.results-list li.list-item {
+  display: inline-block;
+  margin: 5px 0 0 10px;
+}
+.ajax-result-group .list-block ul.results-list li.list-item a:hover {
+  color: var(--font-color-primary);
+}
+.ajax-result-group .list-block ul.results-list li.list-item a mark {
+  color: var(--font-color-header);
+  padding: 0;
+  background-color: transparent;
+  font-weight: 800;
+}
+.ajax-result-group .product-list {
+  padding-top: 30px;
+}
+.ajax-result-group .product-list ul.grid-wrap {
+  display: flex;
+  overflow: hidden;
+  margin: -30px -30px 0 -30px;
+  padding: 0 30px 30px 0;
+}
+.ajax-result-group .product-list ul.grid-wrap li.grid-wrapper {
+  width: calc(25% - 30px);
+  min-width: calc(25% - 30px);
+  margin: 30px 0 0 30px;
+}
+.search-ajax .results-found {
+  display: none;
+}
+.search-ajax:has(#search-ajax-results:empty) .results-found {
+  color: var(--font-color-header);
+  display: block;
+  font-size: 16px;
+  margin-top: 30px;
+  text-align: center;
+  font-weight: 600;
+}
+.search-form:has(.field input[aria-expanded=false]) .search-ajax .results-found {
+  display: none!important;
+}
+@media(max-width: 1199px){
+  .ajax-result-group .product-list ul.grid-wrap li.grid-wrapper {
+    width: calc(25% - 30px);
+    min-width: calc(25% - 30px);
+  }
+}
+@media(max-width: 991px){
+  .ajax-result-group .product-list ul.grid-wrap li.grid-wrapper {
+    width: calc(33.33% - 30px);
+    min-width: calc(33.33% - 30px);
+  }
+}
+@media(max-width: 767px){
+  .ajax-result-group .product-list ul.grid-wrap {
+    margin: -30px -12px 0 -12px;
+    padding: 0 12px 12px 0;
+    overflow: visible;
+    flex-wrap: wrap;
+  }
+  .ajax-result-group .product-list ul.grid-wrap li.grid-wrapper {
+    width: calc(33.33% - 12px);
+    min-width: calc(33.33% - 12px);
+    margin: 30px 0 0 12px;
+  }
+}
+@media(max-width: 479px){
+  .ajax-result-group .product-list {
+    padding: 0;
+  }
+  .ajax-result-group .product-list ul.grid-wrap li.grid-wrapper {
+    width: calc(50% - 12px);
+    min-width: calc(50% - 12px);
+  }
+}
+@media(max-width: 320px){
+  .ajax-result-group .product-list ul.grid-wrap li.grid-wrapper {
+    width: calc(100% - 12px);
+    min-width: calc(100% - 12px);
+  }
+}
+</style>

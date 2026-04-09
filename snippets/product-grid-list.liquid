@@ -1,0 +1,87 @@
+{%- liquid
+    assign ratio = 1
+    if product.featured_media and settings.image_ratio == 'portrait'
+      assign ratio = 0.8
+    elsif product.featured_media and settings.image_ratio == 'adapt'
+      assign ratio = product.featured_media.aspect_ratio
+    endif
+    if ratio == 0 or ratio == null
+      assign ratio = 1
+    endif
+-%}
+<div class="product-grid-list">
+  <div class="single-product-wrap">
+    <div class="product-image">
+      <a class="pro-img ratio" href="{{ product.url | within: collection }}" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+        <div class="img1">
+          <img srcset="
+          {%- if product.featured_image.src.width >= 165 -%}{{ product.featured_image.src | image_url: width: 165 }} 165w,{%- endif -%}
+          {%- if product.featured_image.src.width >= 360 -%}{{ product.featured_image.src | image_url: width: 360 }} 360w,{%- endif -%}
+          {%- if product.featured_image.src.width >= 533 -%}{{ product.featured_image.src | image_url: width: 533 }} 533w,{%- endif -%}
+          {%- if product.featured_image.src.width >= 720 -%}{{ product.featured_image.src | image_url: width: 720 }} 720w,{%- endif -%}
+          {{ product.featured_image.src | image_url }} {{ product.featured_image.src.width }}w
+          "
+          src="{{ product.featured_image.src | image_url: width: 720 }}"
+          data-src="{{ product.featured_image.src | image_url: width: 720 }}"
+          alt="{{ product.featured_image.src.alt | escape }}"
+          class="img-fluid lazyload"
+          width="{{ product.featured_image.src.width }}"
+          height="{{ product.featured_image.src.width | divided_by: product.featured_image.src.aspect_ratio }}"
+          decoding="async"
+          loading="lazy"
+          sizes="(min-width: 1920px) {{ '1920' | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)">
+        </div>
+        {%- if settings.pro_hover_enable -%}
+        <div class="img2">
+          <img srcset="
+          {%- if product.images[1].width >= 165 -%}{{ product.images[1] | image_url: width: 165 }} 165w,{%- endif -%}
+          {%- if product.images[1].width >= 360 -%}{{ product.images[1] | image_url: width: 360 }} 360w,{%- endif -%}
+          {%- if product.images[1].width >= 533 -%}{{ product.images[1] | image_url: width: 533 }} 533w,{%- endif -%}
+          {%- if product.images[1].width >= 720 -%}{{ product.images[1] | image_url: width: 720 }} 720w,{%- endif -%}
+          {{ product.images[1] | image_url }} {{ product.images[1].width }}w
+          "
+          src="{{ product.images[1] | image_url: width: 720 }}"
+          data-src="{{ product.images[1] | image_url: width: 720 }}"
+          alt="{{ product.images[1].alt | escape }}"
+          class="img-fluid lazyload"
+          width="{{ product.images[1].width }}"
+          height="{{ product.images[1].width | divided_by: product.images[1].aspect_ratio }}"
+          decoding="async"
+          loading="lazy"
+          sizes="(min-width: 1920px) {{ '1920' | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)">
+        </div>
+        {%- endif -%}
+      </a>
+      {% if product.selected_or_first_available_variant.compare_at_price %}
+      <div class="product-label">
+          {%- render 'product-label', product: product -%}
+      </div>
+      {% endif %}
+    </div>
+    <div class="product-content">
+      {%- if settings.show_rating -%}
+      <div class="product-grid-rating">
+        {% if product.metafields.judgeme.badge %}
+        <div class='jdgm-widget jdgm-preview-badge'>
+          {{ product.metafields.judgeme.badge }}
+        </div>
+        {% else %}
+        <div class="jdgm-prev-badge jdgm--js" data-average-rating="0.00" data-number-of-reviews="0">
+          <span class="jdgm-prev-badge__stars" data-score="0.00"><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span></span>
+          <span class="jdgm-prev-badge__text">No reviews</span>
+        </div>
+        {% endif %}
+      </div>
+      {%- endif -%}
+      <h6>
+        <a href="{{ product.url | within: collection }}" title="{{ product.title }}">{{ product.title }}</a>
+      </h6>
+      <div class="price-box">
+        <span class="new-price">{{ product.price | money }}</span>
+        {% if product.compare_at_price_max > product.price %}
+        <span class="old-price">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

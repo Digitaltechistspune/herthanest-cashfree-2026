@@ -1,0 +1,383 @@
+<section class="contact-map-wrap2">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="contact-content">
+          <div class="contact-detail image-warp">
+            <div class="contact-img-wrap">
+              {%- if section.settings.contact_img -%}
+                {{ section.settings.contact_img | image_url: width: 1024 | image_tag:
+                  loading: 'lazy',
+                  width: section.settings.contact_img.width,
+                  height: section.settings.contact_img.height,
+                  class: "img-fluid lazyload",
+                  alt: section.settings.contact_img.alt | escape }}
+              {%- else -%}
+              {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3 %}{%- endcapture -%}
+              {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+              {%- endif -%}
+            </div>
+          </div>
+          <div class="contact-detail get-info">
+            <div class="store-info">
+              <div class="section-capture">
+                <div class="main-title">
+                  {% if section.settings.section_sub_title != '' %}
+                  <span class="sub-title" data-fade-in>{{ section.settings.section_sub_title }}</span>
+                  {% endif %}
+                  <h2 data-fade-in>{{ section.settings.section_title }}</h2>
+                </div>
+              </div>
+                <ul class="info_wrap">
+                  <li class="info_wrapper">
+                    <div class="info-block">
+                      <div class="icon">
+                        {{ section.settings.info_icon1 }}
+                      </div>
+                      <div class="text-block">
+                        <h6 data-fade-in>{{ section.settings.info_title1 }}</h6>
+                        <p data-fade-in>{{ section.settings.info_link1 }}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="info_wrapper">
+                    <div class="info-block">
+                      <div class="icon">
+                        {{ section.settings.info_icon2 }}
+                      </div>
+                      <div class="text-block">
+                        <h6 data-fade-in>{{ section.settings.info_title2 }}</h6>
+                        <p data-fade-in>{{ section.settings.info_link2 }}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="info_wrapper">
+                    <div class="info-block">
+                      <div class="icon">
+                        {{ section.settings.info_icon3 }}
+                      </div>
+                      <div class="text-block">
+                        <h6 data-fade-in>{{ section.settings.info_title3 }}</h6>
+                        <p data-fade-in>{{ section.settings.info_link3 }}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Contact Information",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ipad",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Information Content"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Our store Information"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section Sub Title",
+      "default": "Get in touch"
+    },
+    {
+      "type": "textarea",
+      "id": "info_icon1",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "info_title1",
+      "label": "Title1",
+      "default": "Address"
+    },
+    {
+      "type": "text",
+      "id": "info_link1",
+      "label": "Link Title",
+      "default": "70 Washington Square South <br>New York, NY 10012, United States"
+    },
+    {
+      "type": "textarea",
+      "id": "info_icon2",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "info_title2",
+      "label": "Title2",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "info_link2",
+      "label": "Link Title2",
+      "default": "+1 234 567 8910 <br>+1 234 567 8910"
+    },
+    {
+      "type": "textarea",
+      "id": "info_icon3",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "info_title3",
+      "label": "Title3",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "info_link3",
+      "label": "Link Title3",
+      "default": "info@yourdomain.com"
+    },
+    {
+      "type": "image_picker",
+      "id": "contact_img",
+      "label": "Contact Image",
+      "info": "Recommended Size: 1400px x 641px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Information"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .contact-map-wrap2{
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  }
+  {% if section.settings.contact_us_map_enable %}
+  .contact-map-wrap2 .contact-map-wrap {
+    -ms-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+  .contact-map-wrap2 .contact-map-wrap .map {
+    height: {{ section.settings.contact_us_map_height }}px;
+    width: 100%;
+    box-shadow: 0px 0px 0px 1px #e2e2e2;
+    border: 10px solid #fff;
+  }
+  {% endif %}
+  @media (max-width: 1199px){
+    .contact-map-wrap2{
+      padding-top: {{ section.settings.section_padding_top_ipad }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_ipad }}px;
+    }
+  }
+  @media (max-width: 767px){
+    .contact-map-wrap2{
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+    .contact-map-wrap2 .contact-map-wrap .map {
+      height: 320px;
+    }
+    .contact-map-wrap2 .contact-map-wrap{
+      padding-top: 30px;
+    }
+  }
+
+  /* contact-content */
+  .contact-map-wrap2 .contact-content {
+    display : flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: -30px
+    {% if settings.enable_rtl %}
+    margin-right: -30px;
+    {% else %}
+    margin-left: -30px;
+    {% endif %}
+  }
+  .contact-map-wrap2 .contact-content .contact-detail {
+    margin-top: 30px
+    {% if settings.enable_rtl %}
+    margin-right: 30px;
+    {% else %}
+    margin-left: 30px;
+    {% endif %}
+  }
+  .contact-map-wrap2 .contact-content .contact-detail.image-warp {
+    width: 58.33%;
+  }
+  .contact-map-wrap2 .contact-content .contact-detail.get-info {
+    width: 41.67%;
+  }
+
+  /*section title*/
+  .store-info .main-title h2{
+    font-size: 40px;
+    font-weight: 600;
+  }
+  @media(max-width: 1199px){
+    .store-info .main-title h2{
+      font-size: 26px;
+    }
+  }
+  @media(max-width: 767px){
+    .store-info .main-title h2{
+      font-size: 20px;
+      text-align: center;
+    }
+  }
+
+  /* information block */
+  .store-info .info_wrap {
+    width: 58.33%;
+    margin: 0 auto;
+  }
+  .store-info ul li{
+    margin-top: 30px;
+  }
+  .store-info ul li:first-child{
+    margin-top: 0px;
+  }
+  .store-info ul li .info-block{
+    display: flex;
+  }
+  .store-info ul li .info-block .text-block {
+    {% if settings.enable_rtl %}
+    margin-right: 30px;
+    {% else %}
+    margin-left: 30px;
+    {% endif %}   
+  }
+  .store-info ul li .info-block .icon svg{
+    width: 38px;
+    height: 38px;
+    stroke: var(--font-color-primary);
+  }
+  .store-info ul li .info-block .text-block h6{
+    font-size: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .store-info ul li .info-block .text-block p{
+    color: var(--font-color-secondary);
+    font-size: 18px;
+    padding-top: 8px;
+  }
+  @media(max-width: 1199px){
+    .store-info ul li .info-block .text-block h6{
+      font-size: 18px;
+    }
+  }
+  @media(max-width: 767px){
+    .store-info ul li {
+      margin-top: 15px;
+    }
+    .store-info ul li .info-block .text-block h6{
+      font-size: 16px;
+    }
+    .store-info ul li .info-block .text-block p{
+      font-size: var(--font-size-body);
+    }
+  }
+</style>

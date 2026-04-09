@@ -1,0 +1,224 @@
+<footer class="footer-bottom-area">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <ul class="ft-bottom">
+            <li class="copy-right">
+              <p>{{ section.settings.copy_right_text }}</p>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "Copyright",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "fluid"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "footer_bt_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "footer_bt_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "footer_bt_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "footer_bt_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color_background",
+      "id": "footer_bg_color",
+      "label": "Background Color",
+      "default": "linear-gradient(72deg, rgba(237, 243, 253, 1), rgba(248, 244, 245, 1) 100%)"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_bg_color_enable",
+      "label": "Show Backgorund Color",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Border"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_enable",
+      "label": "Show Section Border",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "border",
+      "label": "Border",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#808080"
+    },
+    {
+      "type": "range",
+      "id": "border_color_opacity",
+      "label": "Theme Border Color Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.2
+    },
+    {
+      "type": "header",
+      "content": "Copyright text"
+    },
+    {
+      "type": "liquid",
+      "id": "copy_right_text",
+      "label": "Copyright text",
+      "default": "Copyright © 2023 by spacingtech"
+    },
+    {
+      "type": "range",
+      "id": "text_font_size",
+      "label": "Text font size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_lg",
+      "label": "text font size laptop",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_font_weight",
+      "label": "Text font weight",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 500
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#808080"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Copyright"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.footer-bottom-area {
+  padding-top: {{ section.settings.footer_bt_padding_top }}px;
+  padding-bottom: {{ section.settings.footer_bt_padding_bottom }}px;
+  {% if section.settings.footer_bg_color_enable %}
+  background: {{ section.settings.footer_bg_color }};
+  {% endif %}
+  {% if section.settings.border_enable %}
+  border-top: {{ section.settings.border }}px solid {{ section.settings.border_color | color_modify: 'alpha', section.settings.border_color_opacity }};
+  {% endif %}
+}
+@media (max-width: 767px) {
+  .footer-bottom-area {
+    padding-top: {{ section.settings.footer_bt_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.footer_bt_padding_bottom_xs }}px;
+  }
+}
+
+.footer-bottom-area ul.ft-bottom {
+  text-align: center;
+}
+.footer-bottom-area ul.ft-bottom li.copy-right p {
+  color: {{ section.settings.text_color }};
+  font-size: {{ section.settings.text_font_size }}px;
+  font-weight: {{ section.settings.text_font_weight }};
+  line-height: normal;
+}
+@media(max-width: 1499px){
+  .footer-bottom-area ul.ft-bottom li.copy-right p {
+    font-size: {{ section.settings.text_font_size_lg }}px;
+  }
+}
+</style>

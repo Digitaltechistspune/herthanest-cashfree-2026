@@ -1,0 +1,390 @@
+{% if template == 'index' %}
+<div class="newspopup5 modal fade" id="news-modal5">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close-btn" aria-label="Close btn" data-bs-dismiss="modal"><i class="feather-x"></i></button>
+        <div class="newsletter-info">
+          <div class="subscribe_area">
+            <div class="subscribe-content">
+              {% if section.settings.news_sub_title != '' %}
+              <span class="sub-title" data-fade-in style="color: {{ section.settings.news_sub_title_color }};">{{ section.settings.news_sub_title }}</span>
+              {% endif %}
+              {% if section.settings.news_title != '' %}
+              <h2 data-fade-in style="color: {{ section.settings.news_title_color }};">{{ section.settings.news_title }}</h2>
+              {% endif %}
+            </div>
+            {% if section.settings.button_enable %}
+            <div class="collection-button" data-fade-in>
+              <a href="{{ section.settings.button_text_url }}" class="btn-style" style="--btn-txt-color: {{ section.settings.btn_txt_color }}; --btn-txt-hvr-color: {{ section.settings.btn_txt_hvr_color }}; --btn-bg-color: {{ section.settings.btn_bg_color }}; --btn-bg-hvr-color: {{ section.settings.btn_bg_hvr_color }};">{{- section.settings.button_text }}</a>
+            </div>
+            {% endif %}
+            <div class="dont-show" data-fade-in>
+              <label>
+                <input type="checkbox" id="1" class="box5">
+                <span class="cust-check"></span>
+                <span style="color: {{ section.settings.dont_show_text_color }};">{{ section.settings.dont_show_text }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  let boxes5 = document.getElementsByClassName('box5').length;
+  function save5() {
+    for(let i = 1; i <= boxes5; i++){
+      var checkbox5 = document.getElementById(String(i));
+      localStorage.setItem("news_popup5", checkbox5.checked); 
+    }
+  }
+  for(let i = 1; i <= boxes5; i++){
+    if(localStorage.length > 0){
+      var checked = JSON.parse(localStorage.getItem("news_popup5"));
+      document.getElementById(String(i)).checked = checked;
+    }
+  }
+  window.addEventListener('change', save5);
+  addEventListener('DOMContentLoaded', (event) => {
+    $(window).on('load',function(){
+      setTimeout(function () {
+        var popup = localStorage.getItem('news_popup5');
+        if(popup == null | popup == "false"){
+          $('#news-modal5').modal('show');
+        }
+      },{{ section.settings.timeout }});
+    });
+  });
+</script>
+<style>
+   .newspopup5 .modal-dialog {
+    max-width: 880px;
+  }
+   .newspopup5 .modal-content {
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    padding: 10px;
+    background-color: {{ section.settings.modal_bg_color }};
+  }
+  .newspopup5 .modal-body {
+    padding: 0px;
+    {% if section.settings.news_banner_enable %}
+    background-image: url('{% if section.settings.news_banner %}{{ section.settings.news_banner | image_url }}{% else %}https://dummyimage.com/1300x765/f7f7f7/999999{% endif %}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    {% endif %}
+    height: 530px;
+  }
+  @media (max-width: 600px) {
+     .newspopup5 .modal-dialog {
+      max-width: 100%;
+      margin: 0px;
+      padding: 12px;
+    }
+    .newspopup5 .modal-body {
+      {% if section.settings.news_banner_enable %}
+      background-image: url('{% if section.settings.news_banner_mobile %}{{ section.settings.news_banner_mobile | image_url }}{% else %}https://dummyimage.com/600x800/f7f7f7/999999{% endif %}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      {% endif %}
+    }
+  }
+
+  /* newsletter close button css */
+  .newspopup5 .modal-body button.close-btn {
+    font-size: 20px;
+    position: absolute;
+    top: 20px;
+    {% if settings.enable_rtl %}
+    left: 20px;
+    {% else %}
+    right: 20px;
+    {% endif %}
+    line-height: 1;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 50px;
+  }
+  .newspopup5 .modal-body button.close-btn:hover {
+    opacity: 1;
+    color: var(--font-color-primary);
+  }
+  /* Subscribe content css */
+  .newspopup5 .newsletter-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    height: 100%;
+  }
+  .newspopup5 .newsletter-info .subscribe_area {
+    padding: 30px 45px;
+    width: 41.33%;
+  }
+  .newspopup5 .newsletter-info .subscribe_area .subscribe-content span.sub-title {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    {% if settings.other_custom_font_handle_enable %}
+    font-family: var(--font-custom-stack-other);
+    {% else %}
+    font-family: var(--font-stack-other);
+    {% endif %}
+   }
+   .newspopup5 .newsletter-info .subscribe_area .subscribe-content h2 {
+    font-size: 58px;
+    text-transform: uppercase;
+    font-style: italic;
+    line-height: 1;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+   }
+  .newspopup5 .newsletter-info .subscribe_area .collection-button {
+    margin-top: 30px;
+  }
+  .newspopup5 .newsletter-info .subscribe_area .collection-button  a {
+    color: var(--btn-txt-color);
+    border: 2px solid var(--btn-bg-color);
+    background-color: var(--btn-bg-color);
+  }
+  .newspopup5 .newsletter-info .subscribe_area .collection-button a:hover {
+    color: var(--btn-txt-hvr-color);
+    border-color: var(--btn-bg-hvr-color);
+    background-color: var(--btn-bg-hvr-color);
+  }
+  .newspopup5 .newsletter-info .subscribe_area .dont-show {
+    margin-top: 30px;
+  }
+  .newspopup5 .newsletter-info .subscribe_area .dont-show label {
+    position: relative;
+    margin-bottom: 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+  }
+  .newspopup5 .newsletter-info .subscribe_area .dont-show label span {
+    font-size: var(--font-size-body);
+  }
+  .newspopup5 .newsletter-info .subscribe_area .dont-show label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .newspopup5 .newsletter-info .subscribe_area .dont-show label .cust-check {
+    width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    border: var(--sti-border);
+    overflow: hidden;
+    background-color: #fff;
+    margin-inline-end: 10px;
+  }
+  .newspopup5 .newsletter-info .subscribe_area .dont-show label .cust-check:after {
+    display: none;
+    content: "\e92b";
+    font-family: feather!important;
+    color: #666;
+    font-size: 16px;
+  }
+  .newspopup5 .newsletter-info .subscribe_area .dont-show label input:checked~span.cust-check:after {
+    display: block;
+  }
+  @media (max-width: 1499px) {
+    .newspopup5 .newsletter-info .subscribe_area .subscribe-content h2 {
+      font-size: 48px;
+    }
+  }
+  @media (max-width: 1199px) {
+    .newspopup5 .modal-dialog {
+      max-width: 700px;
+    }
+    .newspopup5 .modal-body {
+      height: 450px;
+    }
+    .newspopup5 .newsletter-info .subscribe_area .subscribe-content span.sub-title {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    .newspopup5 .newsletter-info .subscribe_area .subscribe-content h2 {
+      font-size: 40px;
+    }
+    .newspopup5 .newsletter-info .subscribe_area .collection-button {
+      margin-top: 20px;
+    }
+    .newspopup5 .newsletter-info .subscribe_area .dont-show {
+      margin-top: 20px;
+    }
+  }
+  @media (max-width: 600px) {
+    .newspopup5 .newsletter-info {
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .newspopup5 .newsletter-info .subscribe_area {
+      padding: 30px 12px;
+      width: 100%;
+      text-align: center;
+    }
+    .newspopup5 .modal-body button.close-btn {
+      font-size: 18px;
+      top: 10px;
+      {% if settings.enable_rtl %}
+      left: 10px;
+      {% else %}
+      right: 10px;
+      {% endif %}
+      height: 35px;
+      width: 35px;
+    }
+    .newspopup5 .newsletter-info .subscribe_area .subscribe-content h2 {
+      font-size: 30px;
+    }
+    .newspopup5 .newsletter-info .subscribe_area .dont-show label {
+      justify-content: center;
+    }
+  }
+  @media(max-width: 479px){
+    .newspopup5 .newsletter-info .subscribe_area .subscribe-content span.sub-title{
+      font-size: 16px;
+    }
+    .newspopup5 .newsletter-info .subscribe_area .subscribe-content h2 {
+      font-size: 24px;
+    }
+  }
+</style>
+{% endif %}
+{% schema %}
+{
+  "name": "Newsletter popup5",
+  "settings": [
+    {
+      "type": "number",
+      "id": "timeout",
+      "label": "How many seconds to show when the website is opened",
+      "default": 3000,
+      "info": "NOTE: 1000 count euqal to (1 second)"
+    },
+    {
+      "type": "checkbox",
+      "id": "news_banner_enable",
+      "label": "Newsletter banner enable",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "news_banner",
+      "label": "Newsletter banner",
+      "info": "Recommended Size: 1300x765px"
+    },
+    {
+      "type": "image_picker",
+      "id": "news_banner_mobile",
+      "label": "Newsletter banner mobile",
+      "info": "Recommended Size: 600x800px"
+    },
+    {
+      "type": "color",
+      "id": "modal_bg_color",
+      "label": "Modal background color",
+      "default": "#f4f4f6"
+    },
+    {
+      "type": "text",
+      "id": "news_sub_title",
+      "label": "Newsletter sub title",
+      "default": "Gift bundles for every type of person"
+    },
+    {
+      "type": "color",
+      "id": "news_sub_title_color",
+      "label": "Sub title color",
+      "default": "#676767"
+    },
+    {
+      "type": "text",
+      "id": "news_title",
+      "label": "Newsletter title",
+      "default": "40% OFF"
+    },
+    {
+      "type": "color",
+      "id": "news_title_color",
+      "label": "Title color",
+      "default": "#2c2c32"
+    },
+    {
+      "type": "text",
+      "id": "dont_show_text",
+      "label": "Dont show text",
+      "default": "Don’t show this popup again"
+    },
+    {
+      "type": "color",
+      "id": "dont_show_text_color",
+      "label": "Dont show text color",
+      "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": "Button Style"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop collection"
+    },
+    {
+      "type": "color",
+      "id": "btn_txt_color",
+      "label": "Button text color",
+      "default": "#222"
+    },
+    {
+      "type": "color",
+      "id": "btn_txt_hvr_color",
+      "label": "Button text hover color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Button background color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_hvr_color",
+      "label": "Button hover background color",
+      "default": "#D3401E"
+    },
+    {
+      "type": "url",
+      "id": "button_text_url",
+      "label": "Button url"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_enable",
+      "label": "Show Collection Button",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

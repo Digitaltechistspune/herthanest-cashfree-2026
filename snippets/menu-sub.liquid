@@ -1,0 +1,92 @@
+<li class="menu-link">
+  <a href="{{ block.settings.menu_sub_url }}" class="link-title" style="--font-size: {{ section.settings.menu_font_size }}px; --font-size-lg: {{ section.settings.menu_font_size_lg }}px; --padding: {{ section.settings.menu_padding_y }}px {{ section.settings.menu_padding_x }}px; --padding-lg: {{ section.settings.menu_padding_y_lg }}px {{ section.settings.menu_padding_x_lg }}px; --text-transform: {{ section.settings.menu_text_transform }};  --font-weight: {{ section.settings.menu_font_weight }};">
+    <span class="sp-link-title">{{ block.settings.menu_sub_title }}{% if block.settings.menu_sub_label != '' %}<span class="{{ section.id }}-{{ block.id }}-label">{{ block.settings.menu_sub_label }}</span>{% endif %}</span>
+    <span class="menu-arrow"><i class="fa fa-angle-down"></i></span>
+  </a>
+  <div class="link-title-lg">
+    <a href="{{ block.settings.menu_sub_url }}" class="sp-link-title">{{ block.settings.menu_sub_title }}</a>
+    <a href="#sub-collapse-{{ block.settings.menu_sub_title | handleize }}" data-bs-toggle="collapse" class="menu-arrow"><i class="feather-plus"></i></a>
+  </div>
+  <ul class="menu-dropdown sub-menu collapse" id="sub-collapse-{{ block.settings.menu_sub_title | handleize }}">
+    {% assign menu_sub_select = block.settings.menu_sub_select %}
+    {% for link in linklists[menu_sub_select].links %}
+    {% assign sublink = link.title | handle %}
+    {% if linklists[sublink].links != '' %}
+    <li class="submenu-li">
+      <a href="{{ link.url }}" class="sublink-title">
+        <span class="sp-link-title">{{ link.title }}</span>
+        <span class="menu-arrow"><i class="fa fa-angle-right"></i></span>
+      </a>
+      <div class="sublink-title sublink-title-lg">
+        <a href="{{ link.url }}" class="sp-link-title">{{ link.title }}</a>
+        <a href="#sup-collapse-{{ link.title | handleize }}" data-bs-toggle="collapse" class="menu-arrow"><i class="feather-plus"></i></a>
+      </div>
+      <ul class="supmenu-dropdown collapse" id="sup-collapse-{{ link.title | handleize }}">
+        {% for sublink in linklists[sublink].links %}
+        <li class="supmenu-li">
+          <a href="{{ sublink.url }}" class="suplink-title">
+            <span class="sp-link-title">{{ sublink.title }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </li>
+    {% else %}
+    <li class="submenu-li">
+      <a href="{{ link.url }}" class="sublink-title">
+        <span class="sp-link-title">{{ link.title }}</span>
+      </a>
+      <a href="{{ link.url }}" class="sublink-title sublink-title-lg">
+        <span class="sp-link-title">{{ link.title }}</span>
+      </a>
+    </li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</li>
+<style>
+  /*=====================================
+    header label css
+  ======================================*/
+  a.link-title span.sp-link-title span.{{ section.id }}-{{ block.id }}-label {
+    color: {{ block.settings.menu_sub_label_color }};
+    font-size: {{ block.settings.menu_sub_label_font_size }}px;
+    padding: 2px 5px;
+    position: absolute;
+    top: -{{ block.settings.menu_sub_label_top_position }}px;
+    {% if settings.enable_rtl %}
+    left: 0;
+    transform: translateX(-100%);
+    {% else %}
+    right: 0;
+    transform: translateX(100%);
+    {% endif %}
+    background-color: {{ block.settings.menu_sub_label_bgcolor }};
+    text-transform: {{ block.settings.menu_sub_label_text_transform }};
+    font-weight: {{ block.settings.menu_sub_label_font-weight }};
+    border-radius: {{ block.settings.menu_sub_label_border_radius }}px;
+    line-height: {{ block.settings.menu_sub_label_line_height }};
+  }
+  a.link-title span.sp-link-title span.{{ section.id }}-{{ block.id }}-label::before {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    {% if settings.enable_rtl %}
+    right: 0;
+    {% else %}
+    left: 0;
+    {% endif %}
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    {% if settings.enable_rtl %}
+    border-right: 4px solid {{ block.settings.menu_sub_label_bgcolor }};
+    {% else %}
+    border-left: 4px solid {{ block.settings.menu_sub_label_bgcolor }};
+    {% endif %}
+  }
+  @media (max-width: 1199px) {
+    a.link-title span.sp-link-title span.{{ section.id }}-{{ block.id }}-label {
+      top: -8px;
+    }
+  }
+</style>

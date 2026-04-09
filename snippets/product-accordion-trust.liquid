@@ -1,0 +1,87 @@
+{%- assign title = block.settings.title | default: 'Description' -%}
+{%- assign open_default = block.settings.open_default -%}
+{%- assign use_product_desc = block.settings.use_product_desc -%}
+{%- assign words_limit = block.settings.words_limit | default: 40 -%}
+{%- assign outside_badges = block.settings.show_badges_outside -%}
+{%- assign outside_img = block.settings.badge_image_outside -%}
+
+
+<details class="hn-acc" {% if open_default %}open{% endif %}>
+  <summary class="hn-acc__summary">
+    <span class="hn-acc__title">{{ title }}</span>
+    <span class="hn-acc__chev" aria-hidden="true"></span>
+  </summary>
+
+  <div class="hn-acc__content">
+    <div class="hn-acc__desc">
+      {% if use_product_desc %}
+        {{ product.description | strip_html | truncatewords: words_limit }}
+      {% else %}
+        {{ block.settings.custom_text }}
+      {% endif %}
+    </div>
+
+    {% if block.settings.show_cta %}
+      <div class="hn-acc__cta">
+        {% if block.settings.cta_label != blank %}
+          <span class="hn-acc__cta-label">{{ block.settings.cta_label }}</span>
+        {% endif %}
+
+        {% if block.settings.cta_link != blank and block.settings.cta_text != blank %}
+          <a class="hn-acc__btn" href="{{ block.settings.cta_link }}">
+            {{ block.settings.cta_text }}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if block.settings.badge_image_1 != blank %}
+      <div class="hn-acc__img">
+        <img
+          src="{{ block.settings.badge_image_1 | image_url: width: 1400 }}"
+          alt="{{ block.settings.badge_image_1.alt | escape }}"
+          loading="lazy">
+      </div>
+    {% endif %}
+
+    {% if block.settings.badge_image_2 != blank %}
+      <div class="hn-acc__img">
+        <img
+          src="{{ block.settings.badge_image_2 | image_url: width: 1400 }}"
+          alt="{{ block.settings.badge_image_2.alt | escape }}"
+          loading="lazy">
+      </div>
+    {% endif %}
+  </div>
+</details>
+
+{% if outside_badges and outside_img != blank %}
+  <div class="hn-acc__outside">
+    <img
+      src="{{ outside_img | image_url: width: 1400 }}"
+      alt="{{ outside_img.alt | escape }}"
+      loading="lazy">
+  </div>
+
+  <style>
+    .hn-acc__outside{margin:14px 0 0;}
+    .hn-acc__outside img{width:100%;height:auto;display:block;border-radius:10px;}
+  </style>
+{% endif %}
+
+
+
+<style>
+  .hn-acc{border:1px solid rgba(0,0,0,.12); border-radius:10px; background:#fff; overflow:hidden; margin:14px 0;}
+  .hn-acc__summary{list-style:none; display:flex; align-items:center; justify-content:space-between; padding:14px 16px; cursor:pointer;}
+  .hn-acc__summary::-webkit-details-marker{display:none;}
+  .hn-acc__title{letter-spacing:.14em; font-weight:700; font-size:13px; text-transform:uppercase;}
+  .hn-acc__chev{width:10px; height:10px; border-right:2px solid rgba(0,0,0,.55); border-bottom:2px solid rgba(0,0,0,.55); transform:rotate(45deg); transition:transform .2s ease;}
+  details[open] .hn-acc__chev{transform:rotate(-135deg);}
+  .hn-acc__content{padding:0 16px 16px;}
+  .hn-acc__desc{font-size:14px; line-height:1.6; opacity:.88; margin:10px 0 12px;}
+  .hn-acc__cta{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:6px 0 14px;}
+  .hn-acc__cta-label{font-size:14px; font-weight:600;}
+  .hn-acc__btn{display:inline-flex; align-items:center; justify-content:center; padding:10px 16px; border-radius:10px; background:#22c55e; color:#fff; text-decoration:none; font-weight:700;}
+  .hn-acc__img img{width:100%; height:auto; display:block; border-radius:10px;}
+</style>

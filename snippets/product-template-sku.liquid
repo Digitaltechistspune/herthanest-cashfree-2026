@@ -1,0 +1,16 @@
+<div class="product-info product-sku">
+  <div class="sku-content">
+    <h6>{{ block.settings.delivery_title }}</h6>
+    <span class="variant-sku">{{ block.settings.delivery_text }}</span>
+  </div>
+  <div class="sku-content">
+    <h6>{{ block.settings.return_title }}</h6>
+    <span class="variant-sku">{{ block.settings.return_text }}</span>
+  </div>
+  {%- if current_variant.sku.size > 0 -%}
+  <div class="sku-content">
+    <h6>{{ 'products.product.product_sku_title' | t }}</h6>
+    <span class="variant-sku" id="Sku-{{ section.id }}">{{ current_variant.sku }}</span>
+  </div>
+  {%- endif -%}
+</div>

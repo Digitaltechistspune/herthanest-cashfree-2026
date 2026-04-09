@@ -1,0 +1,516 @@
+<section class="about-section6">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        {% if section.settings.section_sub_title != '' or section.settings.section_desc != '' %}
+        <div class="section-capture">
+          <div class="section-title">
+            {% if section.settings.section_sub_title != '' %}
+            <span class="sub-title" data-fade-in>{{ section.settings.section_sub_title }}</span>
+            {% endif %}
+            {% if section.settings.section_desc != '' %}
+            <p data-fade-in>{{ section.settings.section_desc }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+      {% if section.settings.circle_enable %}
+        <div class="rotate-image">
+          <a class="play-button popup-youtube" href="{{ section.settings.video_url }}">
+            <i class="fa fa-play"></i>
+            <svg viewBox="0 0 100 100" width="150" height="150">
+              <defs>
+                <path id="circle"
+                  d="
+                    M 50, 50
+                    m -37, 0
+                    a 37,37 0 1,1 74,0
+                    a 37,37 0 1,1 -74,0"/>
+              </defs>
+              <text>
+                <textPath xlink:href="#circle">
+                  {{ section.settings.circle_text }}
+                </textPath>
+              </text>
+            </svg>
+          </a>
+        </div>
+      {%- endif -%}
+        <div class="about-content">
+          {% for block in section.blocks %}
+            <div class="about-banner-area">
+              <div class="single-banner">
+                <a href="{{ block.settings.abt_banner_button_url }}" class="banner-img banner-hover">
+                  {%- if block.settings.about_banner_img -%}
+                    {{ block.settings.about_banner_img | image_url: width: 1024 | image_tag:
+                      loading: 'lazy',
+                      width: block.settings.about_banner_img.width,
+                      height: block.settings.about_banner_img.height,
+                      class: "img-fluid lazyload",
+                      alt: block.settings.about_banner_img.alt | escape }}
+                  {%- else -%}
+                  {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+                  {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                  {%- endif -%}
+                </a>
+              </div>
+              <div class="abt-banner-desc">
+                <div class="banner-desk">
+                  {% if block.settings.title != '' %}
+                  <h6 data-fade-in>{{ block.settings.title }}</h6>
+                  {% endif %}
+                  {% if block.settings.text != '' %}
+                  <p data-fade-in>{{ block.settings.text }}</p>
+                  {% endif %}
+                  {% if block.settings.name_title != '' %}
+                  <h2 class="name-title" data-fade-in>{{ block.settings.name_title }}</h2>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% if block.settings.abt_banner_video_button_enable %}
+              <script type="text/javascript">
+                addEventListener('DOMContentLoaded', (event) => {
+                $('.play-button, .popup-vimeo, .popup-gmaps').magnificPopup({
+                    tClose: 'Close (Esc)',
+                    type: 'iframe',
+                    mainClass: 'mfp-fade',
+                    removalDelay: 160,
+                    preloader: false,
+                    fixedContentPos: false
+                  });
+                });
+              </script>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "About section6",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop / tablet"
+    },
+    {
+      "type": "range",
+      "id": "about2_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "about2_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "about2_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "about2_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "about2_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "about2_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "about2_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "about2_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section Sub Title",
+      "default": "About us"
+    },
+    {
+      "type": "text",
+      "id": "section_desc",
+      "label": "Description",
+      "default": "In early 1982, founder and creative director had the idea to design a bag collection where comfort, fashion, and distinction are key. was born a bag brand that believes fashion should go hand in hand with comfort."
+    },
+    {
+      "type": "checkbox",
+      "id": "circle_enable",
+      "label": "Rotate text enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "circle_text",
+      "label": "Circle text",
+      "default": "ESTD 1982 • our collections • "
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "Video url"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "about-description",
+      "name": "About Description",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "about_banner_img",
+          "label": "Banner Image",
+          "info": "Recommended Size: 675px x 550px"
+        },
+        {
+          "type": "url",
+          "id": "abt_banner_button_url",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Section Content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Our company"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+        },
+        {
+          "type": "textarea",
+          "id": "name_title",
+          "label": "Title",
+          "default": "Harlie puth"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About section6"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .about-section6 {
+    padding-top: {{ section.settings.about2_padding_top }}px;
+    padding-bottom: {{ section.settings.about2_padding_bottom }}px;
+    {% if section.settings.about2_bgcolor_enable %}
+    background-color: {{ section.settings.about2_bgcolor }};
+    {% endif %}
+  }
+  @media(max-width: 1199px) {
+    .about-section6 {
+      padding-top: {{ section.settings.about2_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.about2_padding_bottom_ip }}px;
+    }
+  }
+  @media(max-width: 767px) {
+    .about-section6 {
+      padding-top: {{ section.settings.about2_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.about2_padding_bottom_xs }}px;
+    }
+  }
+  .about-section6 .section-title span.sub-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+  }
+  .about-section6 .section-title p {
+    font-size: 18px;
+    margin-top: 0;
+    max-width: 58.33%;
+  }
+  @media(max-width: 1199px){
+    .about-section6 .section-title p { 
+      font-size: 16px;
+      max-width: 100%;
+    }
+  }
+
+  /* rotate-image */
+  .about-section6 .rotate-image {
+    padding-bottom: {{ section.settings.about2_padding_bottom }}px;
+  }
+  @media(max-width: 1199px) {
+    .about-section6 .rotate-image {
+      padding-bottom: {{ section.settings.about2_padding_bottom_ip }}px;
+    }
+  }
+  @media(max-width: 767px) {
+    .about-section6 .rotate-image {
+      padding-bottom: {{ section.settings.about2_padding_bottom_xs }}px;
+    }
+  }
+
+  .about-section6 .rotate-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .about-section6 .rotate-image::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #e2e2e2;
+  }
+  .about-section6 .rotate-image .play-button {
+    position: relative;
+    padding: 0px 30px;
+    z-index: 1;
+    direction: ltr;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    {% if section.settings.about2_bgcolor_enable %}
+    background-color: {{ section.settings.about2_bgcolor }};
+    {% endif %}
+  }
+  .about-section6 .rotate-image .play-button i {
+    position: absolute;
+  }
+  .about-section6 .rotate-image .play-button svg {
+    -webkit-animation: spin 8s linear infinite;
+    animation: spin 8s linear infinite;
+    fill: var(--font-color-header);
+    transform-origin: center;
+  }
+  
+  .about-section6 .rotate-image .play-button svg textPath {
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 9px;
+  }
+
+  /* about css */
+  .about-section6 .about-content .about-banner-area {
+    display: flex;
+    
+    flex-wrap: wrap;
+  }
+  .about-section6 .about-content .about-banner-area:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+  .about-section6 .about-content .about-banner-area .single-banner {
+    width: 50%;
+  }
+  .about-section6 .about-content .about-banner-area .abt-banner-desc {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .about-section6 .about-content .about-banner-area:nth-of-type(odd) .abt-banner-desc {
+    {%- if settings.enable_rtl -%}
+    padding-right: 60px;
+    {%- else -%}
+    padding-left: 60px;
+    {%- endif -%}
+  }
+  .about-section6 .about-content .about-banner-area:nth-of-type(even) .abt-banner-desc {
+    {%- if settings.enable_rtl -%}
+      padding-left: 60px;
+    {%- else -%}
+      padding-right: 60px;
+    {%- endif -%}
+  }
+  @media(max-width: 1199px) {
+    .about-section6 .about-content .about-banner-area:nth-of-type(odd) .abt-banner-desc {
+      {%- if settings.enable_rtl -%}
+        padding-right: 30px;
+      {%- else -%}
+        padding-left: 30px;
+      {%- endif -%}
+    }
+    .about-section6 .about-content .about-banner-area:nth-of-type(even) .abt-banner-desc {
+      {%- if settings.enable_rtl -%}
+        padding-left: 30px;
+      {%- else -%}
+        padding-right: 30px;
+      {%- endif -%}
+    }
+  }
+  @media(max-width: 767px) {
+    .about-section6 .about-content .about-banner-area {
+      margin-top: {{ section.settings.about2_padding_top_xs }}px;
+    }
+    .about-section6 .about-content .about-banner-area:first-of-type {
+      margin-top: 0;
+    }
+    .about-section6 .about-content .about-banner-area,
+    .about-section6 .about-content .about-banner-area:nth-of-type(even) {
+      flex-direction: column;
+    }
+    .about-section6 .about-content .about-banner-area .single-banner,
+    .about-section6 .about-content .about-banner-area .abt-banner-desc {
+      width: 100%;
+    }
+    .about-section6 .about-content .about-banner-area:nth-of-type(odd) .abt-banner-desc,
+    .about-section6 .about-content .about-banner-area:nth-of-type(even) .abt-banner-desc {
+      padding: 24px 0 0;
+    }
+  }
+
+  /* play button css */
+  .about-section6 .about-content .about-banner-area .single-banner a.banner-img span {
+    color: var(--font-color-header);
+    font-size: 32px;
+    position: absolute;
+    bottom: 50%;
+    {%- if settings.enable_rtl -%}
+      right: 50%;
+      transform: translate(50%, 50%);
+    {%- else -%}
+      left: 50%;
+      transform: translate(-50%, 50%);
+    {%- endif -%}
+    height: 60px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-radius: 100%;
+    line-height: 0;
+    z-index: 1;
+  }
+
+  /* about content css */
+  .about-section6 .about-content .about-banner-area .abt-banner-desc .banner-desk {
+    max-width: 66.67%;
+    margin: 0 auto;
+  }
+  .about-section6 .about-content .about-banner-area .abt-banner-desc .banner-desk h6 {
+    font-size: 34px;
+  }
+  .about-section6 .about-content .about-banner-area .abt-banner-desc .banner-desk p {
+    margin-top: 30px;
+    font-size: 18px;
+  }
+  .about-section6 .about-content .about-banner-area .abt-banner-desc .banner-desk h2.name-title {
+    color: var(--font-color-primary);
+    font-size: 52px;
+    margin-top: 32px;
+    font-family: 'Autography';
+    font-weight: 300;
+  }
+  @media (max-width: 1199px) {
+    .about-section6 .about-content .about-banner-area .abt-banner-desc .banner-desk {
+      max-width: 100%;
+    }
+    .about-section6 .about-content .about-banner-area .abt-banner-desc .banner-desk h6 {
+      font-size: 24px;
+    }
+    .about-section6 .about-content .about-banner-area .abt-banner-desc .banner-desk p {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    .about-section6 .about-content .about-banner-area .abt-banner-desc .banner-desk h2.name-title {
+      font-size: 34px;
+      margin-top: 20px;
+    }
+  }
+</style>

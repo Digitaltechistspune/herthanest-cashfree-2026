@@ -1,0 +1,364 @@
+<section class="home-blog">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        {% if section.settings.section_title != '' %}
+          <div class="section-capture">
+            <div class="section-title">
+              {% if section.settings.section_sub_title != '' %}
+              <span class="sub-title">{{ section.settings.section_sub_title }}</span>
+              {% endif %}
+              <h2 data-fade-in>{{ section.settings.section_title }}</h2>
+            </div>
+          </div>
+        {% endif %}
+
+        {%- assign blog_handle = blogs[section.settings.blog] -%}
+        <div class="blog-slider owl-carousel owl-theme" id="blog-slider">
+          {% assign blog_limit = section.settings.blog_limit %}
+          {% for article in blog_handle.articles limit: blog_limit %}
+            <div class="item">
+              {% render 'blog-grid-item', article: article %}
+            </div>
+            {% else %}
+          {% for i in (1..blog_limit) %}
+            <div class="item">
+              <div class="blog-block">
+                  <a href="javascript:void(0);" class="blog-img">
+                    {%- capture placeholder -%}hero-apparel-{% cycle 1, 2, 3 %}{%- endcapture -%}
+                    {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                  </a>
+                  <div class="blog-post-content">
+                    <a href="javascript:void(0);" class="blog-title">Latest fashion is what you’re offered four times a year by designers.</a>
+                  </div>
+                </div>
+            </div>
+          {% endfor %}
+          {% endfor %}
+        </div>
+
+        {% if section.settings.view_button_enable %}
+        <div data-fade-in class="section-button">
+          <a href="{{ section.settings.view_button_url }}" class="{% if section.settings.view_button_style == 'btn-style1' %}btn-style{% elsif section.settings.view_button_style == 'btn-style2' %}btn-style2{% else %}btn-style3{% endif %}">
+            {{- section.settings.view_button -}}
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+  addEventListener('DOMContentLoaded', (event) => {
+    $('#blog-slider').owlCarousel({
+      {%- if settings.enable_rtl -%}
+      rtl: true,
+      {%- endif -%}
+      loop: false,
+      rewind: true,
+      margin: 30,
+      nav: false,
+      navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+      dots: false,
+      responsive:{
+        0:{
+          items: 1,
+          margin: 12
+        },
+        320:{
+          items: 1,
+          margin: 12
+        },
+        540:{
+          items: 1,
+          margin: 12
+        },
+        640:{
+          items: 2,
+          margin: 12
+        },
+        768:{
+          items: 2
+        },
+        1024:{
+          items: 2
+        },
+        1199:{
+          items: {{ section.settings.slide_view }}
+        },
+        1599:{
+          items: {{ section.settings.slide_view }}
+        }
+      }
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Home Blog",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop / tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ipad",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "blog_bgcolor",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "header",
+      "content": "Section title"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section sub title",
+      "default": "Recenlty for new’s"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Latest for blog"
+    },
+    {
+      "type": "header",
+      "content": "Choose blog settings"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Choose blog"
+    },
+    {
+      "type": "number",
+      "id": "blog_limit",
+      "label": "Product imit",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "slide_view",
+      "label": "Slides per view",
+      "options": [
+        {
+          "label": "3",
+          "value": "3"
+        },
+        {
+          "label": "4",
+          "value": "4"
+        },
+        {
+          "label": "5",
+          "value": "5"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "header",
+      "content": "View all button"
+    },
+    {
+      "type": "select",
+      "id": "view_button_alignment",
+      "label": "Button alignment",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        },
+        {
+          "label": "Right",
+          "value": "right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "view_button",
+      "label": "Button Text",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "view_button_url",
+      "label": "url"
+    },
+    {
+      "type": "select",
+      "id": "view_button_style",
+      "label": "Button Style",
+      "options": [
+        {
+          "label": "Button Style1",
+          "value": "btn-style1"
+        },
+        {
+          "label": "Button Style2",
+          "value": "btn-style2"
+        },
+        {
+          "label": "Button Style3",
+          "value": "btn-style3"
+        }
+      ],
+      "default": "btn-style2"
+    },
+    {
+      "type": "checkbox",
+      "id": "view_button_enable",
+      "label": "Show Collection Button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Blog"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .home-blog {
+    position: relative;
+    overflow: hidden;
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    background-color: {{ section.settings.blog_bgcolor }};
+  }
+  @media (max-width: 1199px) {
+    .home-blog {
+      padding-top: {{ section.settings.section_padding_top_ipad }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_ipad }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .home-blog {
+      padding-top:{{ section.settings.section_padding_top_xs }}px;
+      padding-bottom:{{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+
+  /* section button css */
+  {% if section.settings.view_button_enable %}
+  .home-blog .section-button {
+    margin-top: {{ settings.title_padding_bottom }}px;
+    text-align: {{ section.settings.view_button_alignment }};
+  }
+  @media (max-width: 1199px) {
+    .home-blog .section-button {
+      margin-top: {{ settings.title_padding_bottom }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .home-blog .section-button {
+      margin-top: {{ settings.title_padding_bottom_xs }}px;
+    }
+  }
+  {% endif %}
+</style>

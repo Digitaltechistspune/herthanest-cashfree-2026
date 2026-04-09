@@ -1,0 +1,370 @@
+{
+  "sections": {
+    "about-section1": {
+      "type": "about-section1",
+      "settings": {
+        "container": "normal",
+        "about_template_padding_top": 100,
+        "about_template_padding_bottom": 0,
+        "about_template_padding_top_ip": 80,
+        "about_template_padding_bottom_ip": 0,
+        "about_template_padding_top_xs": 60,
+        "about_template_padding_bottom_xs": 0,
+        "about_template_bgcolor": "#ffffff",
+        "about_template_bgcolor_enable": true,
+        "section_sub_title": "",
+        "about_template_title": "Our about story",
+        "about_company_img": "shopify://shop_images/1.png",
+        "banner_url": ""
+      }
+    },
+    "about_section6_NNheJb": {
+      "type": "about-section6",
+      "blocks": {
+        "about_description_Kr93hz": {
+          "type": "about-description",
+          "settings": {
+            "about_banner_img": "shopify://shop_images/DTC_794_x_930_px.png",
+            "abt_banner_button_url": "",
+            "title": "Swati Hatangadi",
+            "text": "Swati Hatangadi, the visionary behind Hertha Nest, is a seasoned Sales and Marketing professional with over 30 years of experience working with globally renowned MNCs such as Amway, Hindustan Unilever, Modicare, Wonderchef, and more. Her journey has been shaped by her expertise in communication, public speaking, and her ability to inspire and connect with diverse audiences.\n\nSwati's entrepreneurial journey began in 2023 with the launch of Hertha Nest, a brand that reflects her passion for creating meaningful, handcrafted products. Her unwavering dedication, rooted in decades of professional excellence, has laid the foundation for Hertha Nest to thrive as a unique and customer-focused brand. Swati strongly believes in turning challenges into opportunities, and her vision drives the brand to craft products that blend tradition, sustainability, and modern utility.",
+            "name_title": "Swati Hatangadi"
+          }
+        }
+      },
+      "block_order": [
+        "about_description_Kr93hz"
+      ],
+      "settings": {
+        "container": "normal",
+        "about2_padding_top": 100,
+        "about2_padding_bottom": 0,
+        "about2_padding_top_ip": 80,
+        "about2_padding_bottom_ip": 80,
+        "about2_padding_top_xs": 60,
+        "about2_padding_bottom_xs": 60,
+        "about2_bgcolor": "#ffffff",
+        "about2_bgcolor_enable": true,
+        "section_sub_title": "About us",
+        "section_desc": "Founded in April 2023, Hertha Nest creates handcrafted wooden home décor and functional products that blend elegance, sustainability, and utility. With over 30 years of experience in Sales and Marketing, we focus on crafting high-quality designs that inspire and enhance living spaces. At Hertha Nest, every product tells a story, combining tradition, artistry, and modern needs to bring warmth and purpose to your home.",
+        "circle_enable": false,
+        "circle_text": "ESTD 1982 • our collections •",
+        "video_url": ""
+      }
+    },
+    "about_section2_E3d4Gi": {
+      "type": "about-section2",
+      "blocks": {
+        "about_service_Mnrm4c": {
+          "type": "about_service",
+          "settings": {
+            "service_title": "Our Vision",
+            "service_desc": "To create a legacy of handcrafted, eco-friendly products that inspire homes and lives across the globe. We envision becoming a go-to brand for unique, sustainable, and elegant home décor, blending tradition with innovation."
+          }
+        },
+        "about_service_mBxBbq": {
+          "type": "about_service",
+          "settings": {
+            "service_title": "Our Mission",
+            "service_desc": "Empowering customers with artistic, high-quality products crafted with passion and purpose. We aim to combine sustainability with functionality, offering designs that resonate with your personal style and values."
+          }
+        },
+        "about_service_H7tjEr": {
+          "type": "about_service",
+          "settings": {
+            "service_title": "Our Values",
+            "service_desc": "Integrity, creativity, and customer satisfaction are at the heart of what we do. Every product we craft reflects our commitment to excellence, ensuring each piece is not just beautiful but meaningful. Let me know if you'd like more refinement!"
+          }
+        }
+      },
+      "block_order": [
+        "about_service_Mnrm4c",
+        "about_service_mBxBbq",
+        "about_service_H7tjEr"
+      ],
+      "settings": {
+        "container": "normal",
+        "section_padding_top": 100,
+        "section_padding_bottom": 60,
+        "section_padding_top_lg": 60,
+        "section_padding_bottom_lg": 60,
+        "section_padding_top_xs": 0,
+        "section_padding_bottom_xs": 40
+      }
+    },
+    "834b32f9-bc10-4524-8a44-777e04ac5561": {
+      "type": "about-section3",
+      "blocks": {
+        "1cb291b7-c3c4-467f-aa17-f446881c5631": {
+          "type": "testi_slide",
+          "settings": {
+            "testi_img_enable": true,
+            "testi_img": "shopify://shop_images/IMG-20231228-WA0136.jpg",
+            "testi_infotitle": "Dipthi Sharma",
+            "testi_review_content": "\"As the founder of Hempstor, I've encountered many products that claimed to be eco-friendly but missed the mark. My experience with Hertha Nest's 4-in-1 wooden trays, however, has been revolutionary! Not only are they made from sustainable materials, but their versatile sizes have inspired me to use them creatively in various ways. The natural colors, free from artificial dyes, add a refreshing touch. Huge kudos to the Hertha Nest team for crafting such beautiful and functional products!\"",
+            "testi_authrtitle": "Miranda joy"
+          }
+        },
+        "450e4d0c-36d5-48b8-8be3-24c8f4418c49": {
+          "type": "testi_slide",
+          "settings": {
+            "testi_img_enable": true,
+            "testi_img": "shopify://shop_images/Testimony_1.jpg",
+            "testi_infotitle": "Urja Gala",
+            "testi_review_content": "\"We purchased 10 sets of Elephant Diyas for gifting, and they were absolutely stunning. The quality was exceptional, and our clients loved them just as much as we did. The delivery service was also top-notch—quick and efficient. Thank you, Swati and Hertha Nest, for these wonderful creations!\"",
+            "testi_authrtitle": "Miranda joy"
+          }
+        },
+        "ce058f3b-8da1-4724-8205-a5408faeed95": {
+          "type": "testi_slide",
+          "settings": {
+            "testi_img_enable": true,
+            "testi_img": "shopify://shop_images/Testimony_3.jpg",
+            "testi_infotitle": "Harini Nischal",
+            "testi_review_content": "\"Special occasions deserve unique items, like dedicated trays for Pooja. I found a stunning set of trays from Hertha Nest that are not only functional but also beautifully designed. These trays are now reserved for exclusive celebrations, as their intricate details add an unmatched charm. All the products from Hertha Nest are exquisite and unique. Thank you for making my celebrations even more special!\"",
+            "testi_authrtitle": "Miranda joy"
+          }
+        },
+        "testi_slide_4wmXGx": {
+          "type": "testi_slide",
+          "settings": {
+            "testi_img_enable": true,
+            "testi_img": "shopify://shop_images/Testimony_2.jpg",
+            "testi_infotitle": "Minakshi Chakraborty",
+            "testi_review_content": "\"I recently bought decorative items from Hertha Nest to brighten up my new home, and I'm thoroughly impressed. The intricate designs, vibrant colors, and flawless finishing are extraordinary. These wooden products have created my favorite cozy corners and uplifted the ambiance of my house. I'm excited to showcase more of Hertha Nest's creations in every corner of my home. Stay tuned for the pictures!\"",
+            "testi_authrtitle": "Miranda joy"
+          }
+        }
+      },
+      "block_order": [
+        "1cb291b7-c3c4-467f-aa17-f446881c5631",
+        "450e4d0c-36d5-48b8-8be3-24c8f4418c49",
+        "ce058f3b-8da1-4724-8205-a5408faeed95",
+        "testi_slide_4wmXGx"
+      ],
+      "disabled": true,
+      "settings": {
+        "container": "normal",
+        "testi_padding_top": 0,
+        "testi_padding_bottom": 100,
+        "testi_padding_top_ip": 0,
+        "testi_padding_bottom_ip": 80,
+        "testi_padding_top_xs": 0,
+        "testi_padding_bottom_xs": 60,
+        "testi_bgimg_enable": false,
+        "testimonial_banner_overlay_bgcolor": "rgba(0,0,0,0)",
+        "testimonial_banner_overlay_bgcolor_opacity": 0.1,
+        "testi_bgcolor": "#f9f7f5",
+        "testi_bgcolor_enable": true,
+        "testi_title": "",
+        "testi_desc": ""
+      }
+    },
+    "c5529999-ce8a-470b-a2f1-52029c29f1a8": {
+      "type": "about-section2",
+      "blocks": {
+        "ccda1c3b-44d9-4d5f-87cb-ff7bb6a4f9d5": {
+          "type": "about_service",
+          "settings": {
+            "service_title": "5,000+ Happy customer",
+            "service_desc": "The customer's perception is your reality. Your most unhappy customers are your greatest source of learning"
+          }
+        },
+        "6c5fd58b-26cf-4b06-aa92-5c231fba9ded": {
+          "type": "about_service",
+          "settings": {
+            "service_title": "29+ Awards won",
+            "service_desc": "Awards can give you a tremendous amount of encouragement to keep getting better, no matter how young or old you are."
+          }
+        },
+        "fcfaff9e-dc9d-47f9-9eff-fd99df8ba02a": {
+          "type": "about_service",
+          "settings": {
+            "service_title": "20 years of experiences",
+            "service_desc": "The major problem is that we tend to live our life in our head, in our thoughts, cut off from our actual experience."
+          }
+        }
+      },
+      "block_order": [
+        "ccda1c3b-44d9-4d5f-87cb-ff7bb6a4f9d5",
+        "6c5fd58b-26cf-4b06-aa92-5c231fba9ded",
+        "fcfaff9e-dc9d-47f9-9eff-fd99df8ba02a"
+      ],
+      "disabled": true,
+      "settings": {
+        "container": "normal",
+        "section_padding_top": 100,
+        "section_padding_bottom": 100,
+        "section_padding_top_lg": 80,
+        "section_padding_bottom_lg": 80,
+        "section_padding_top_xs": 60,
+        "section_padding_bottom_xs": 60
+      }
+    },
+    "bc976798-fb58-43eb-83a8-f6a45080cc2b": {
+      "type": "about-section4",
+      "blocks": {
+        "5b83c5e9-9cee-49e8-9950-9f5fe60ac961": {
+          "type": "about_text",
+          "settings": {
+            "service_title": "Where Functionality Meets Style",
+            "service_desc": "\"At Hertha Nest, we believe that every product tells a story. Just like our handcrafted wooden trays, each piece combines elegance, functionality, and a touch of artistic craftsmanship. Whether it’s a festive celebration or daily décor, our products are designed to add value to your life.\""
+          }
+        },
+        "c66b06b9-ef5c-45a8-809b-be00903ff2a8": {
+          "type": "about_text",
+          "settings": {
+            "service_title": "More Than Just a Product—A Statement",
+            "service_desc": "\"Our creations aren’t just about utility; they are about creating memories. From the vibrant colors to the intricate designs, each item is crafted to inspire and transform your spaces. With Hertha Nest, beauty isn’t fleeting—it’s eternal.\""
+          }
+        }
+      },
+      "block_order": [
+        "5b83c5e9-9cee-49e8-9950-9f5fe60ac961",
+        "c66b06b9-ef5c-45a8-809b-be00903ff2a8"
+      ],
+      "settings": {
+        "container": "normal",
+        "about_template_padding_top": 100,
+        "about_template_padding_bottom": 0,
+        "about_template_padding_top_ip": 80,
+        "about_template_padding_bottom_ip": 0,
+        "about_template_padding_top_xs": 60,
+        "about_template_padding_bottom_xs": 0,
+        "about_template_bgcolor": "#f9f7f5",
+        "about_template_bgcolor_enable": true,
+        "about_company_img": "shopify://shop_images/candless-1600-x-900-px-1.png",
+        "banner_url": ""
+      }
+    },
+    "our-team": {
+      "type": "our-team",
+      "blocks": {
+        "8307dbbb-9c08-4371-9a88-f8dd5c75aa04": {
+          "type": "our-team",
+          "settings": {
+            "member_url": "",
+            "member_name": "Harvey jones",
+            "member_position": "Ceo & founder"
+          }
+        },
+        "71d0e94d-393e-4e59-874d-3e459d3057bf": {
+          "type": "our-team",
+          "settings": {
+            "member_url": "",
+            "member_name": "mory Orlando",
+            "member_position": "Marketing"
+          }
+        },
+        "0e19e369-a460-4ef2-a54c-02028ab4dbb5": {
+          "type": "our-team",
+          "settings": {
+            "member_url": "",
+            "member_name": "Harlie puth",
+            "member_position": "Designer & model"
+          }
+        },
+        "e10c8943-8691-49af-8fe5-ef462b6a3e9a": {
+          "type": "our-team",
+          "settings": {
+            "member_url": "",
+            "member_name": "Tristin Chineze",
+            "member_position": "Distribution"
+          }
+        }
+      },
+      "block_order": [
+        "8307dbbb-9c08-4371-9a88-f8dd5c75aa04",
+        "71d0e94d-393e-4e59-874d-3e459d3057bf",
+        "0e19e369-a460-4ef2-a54c-02028ab4dbb5",
+        "e10c8943-8691-49af-8fe5-ef462b6a3e9a"
+      ],
+      "disabled": true,
+      "settings": {
+        "container": "normal",
+        "abt_team_padding_top": 100,
+        "abt_team_padding_bottom": 100,
+        "abt_team_padding_top_ip": 80,
+        "abt_team_padding_bottom_ip": 80,
+        "abt_team_padding_top_xs": 60,
+        "abt_team_padding_bottom_xs": 60,
+        "abt_team_bgcolor": "#ffffff",
+        "abt_team_bgcolor_enable": true,
+        "section_sub_title": "Highliy skilled",
+        "section_title": "Meet our teams"
+      }
+    },
+    "02f036a8-c716-41b0-a865-0084e5c4fb09": {
+      "type": "section-border",
+      "settings": {
+        "border_width": "full",
+        "border_bg_color": "rgba(0,0,0,0)",
+        "border": 1,
+        "border_color": "#222222",
+        "border_color_opacity": 0.1
+      }
+    },
+    "about-section5": {
+      "type": "about-section5",
+      "blocks": {
+        "26acc4b1-23b6-4a4b-b6cc-21f4aa03b504": {
+          "type": "our_services",
+          "settings": {
+            "text_icon1": "<i class=\"feather-truck\"></i>",
+            "icon_url": "",
+            "service_title": "FAST SHIPPING",
+            "service_desc": "Your order, delivered swiftly to your doorstep! Enjoy seamless and reliable shipping with no minimum purchase or extra hassle.",
+            "service_bg_color": "#f5f2ee"
+          }
+        },
+        "d386ccd4-36e4-4bff-b6aa-e924a7e86001": {
+          "type": "our_services",
+          "settings": {
+            "text_icon1": "<i class=\"feather-refresh-ccw\"></i>",
+            "icon_url": "",
+            "service_title": "EASY RETURNS",
+            "service_desc": "We understand that sometimes plans change. That’s why we’ve made returns hassle-free, ensuring your shopping experience is always smooth and worry-free.",
+            "service_bg_color": "#f5f2ee"
+          }
+        },
+        "4d88e6fa-eb72-41fc-8079-bd1a19b0ac87": {
+          "type": "our_services",
+          "settings": {
+            "text_icon1": "<i class=\"feather-dollar-sign\"></i>",
+            "icon_url": "",
+            "service_title": "100% MONEY SECURE",
+            "service_desc": "Your trust matters to us. All transactions are protected with the highest security standards, giving you complete peace of mind with every purchase.",
+            "service_bg_color": "#f5f2ee"
+          }
+        }
+      },
+      "block_order": [
+        "26acc4b1-23b6-4a4b-b6cc-21f4aa03b504",
+        "d386ccd4-36e4-4bff-b6aa-e924a7e86001",
+        "4d88e6fa-eb72-41fc-8079-bd1a19b0ac87"
+      ],
+      "settings": {
+        "container": "normal",
+        "our_ser_padding_top": 100,
+        "our_ser_padding_bottom": 100,
+        "our_ser_padding_top_ipad": 80,
+        "our_ser_padding_bottom_ipad": 80,
+        "our_ser_padding_top_xs": 60,
+        "our_ser_padding_bottom_xs": 60,
+        "about_vision_bgcolor": "#ffffff",
+        "about_vision_bgcolor_enable": false
+      }
+    }
+  },
+  "order": [
+    "about-section1",
+    "about_section6_NNheJb",
+    "about_section2_E3d4Gi",
+    "834b32f9-bc10-4524-8a44-777e04ac5561",
+    "c5529999-ce8a-470b-a2f1-52029c29f1a8",
+    "bc976798-fb58-43eb-83a8-f6a45080cc2b",
+    "our-team",
+    "02f036a8-c716-41b0-a865-0084e5c4fb09",
+    "about-section5"
+  ]
+}

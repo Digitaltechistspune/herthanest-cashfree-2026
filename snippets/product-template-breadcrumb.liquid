@@ -1,0 +1,51 @@
+<section class="product-breadcrumb">
+  <ul class="breadcrumb-list">
+    <li class="breadcrumb-item">
+      <a href="/" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+    </li>
+    <li class="breadcrumb-item">
+      <span>{{ product.title }}</span>
+    </li>
+  </ul>
+</section>
+<style type="text/css">
+.product-breadcrumb {
+  padding: 50px 0;
+}
+.product-breadcrumb ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.product-breadcrumb ul li {
+  display: flex;
+  align-items: center;
+}
+.product-breadcrumb .breadcrumb-item+.breadcrumb-item {
+  padding: 0;
+}
+.product-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
+  color: var(--font-color-header);
+  font-size: 20px;
+  line-height: 1;
+  float: none;
+  padding: 0 10px;
+}
+.product-breadcrumb ul li span,
+.product-breadcrumb ul li a {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--font-color-header);
+}
+@media(max-width: 991px){
+  .product-breadcrumb {
+    padding: 30px 0;
+  }
+  .product-breadcrumb ul li span,
+  .product-breadcrumb ul li a {
+    font-size: var(--font-size-body);
+  }
+}
+</style>

@@ -1,0 +1,303 @@
+{% if section.settings.section_enable %}
+<section class="instagram-warp">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        {% if section.settings.section_title != '' or section.settings.section_sub_title != '' %}
+        <div class="section-capture">
+          <div class="section-title">
+            {% if section.settings.section_sub_title != '' %}
+            <span class="sub-title">{{ section.settings.section_sub_title }}</span>
+            {% endif %}
+            {% if section.settings.section_title != '' %}
+            <h2>{{ section.settings.section_title }}</h2>
+            {% endif %}
+            {% if section.settings.section_desc != '' %}
+            <p>{{ section.settings.section_desc }}</p>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+        <div class="insta-slider owl-carousel" id="insta-slider-{{ section.id }}">
+          {% for block in section.blocks %}
+          <div class="item">
+            <a class="banner-hover" href="{{ block.settings.insta_url }}">
+              {%- if block.settings.insta_img -%}
+                {{ block.settings.insta_img | image_url: width: 1024 | image_tag:
+                  loading: 'lazy',
+                  width: block.settings.insta_img.width,
+                  height: block.settings.insta_img.height,
+                  class: "img-fluid lazyload",
+                  alt: block.settings.insta_img.alt | escape }}
+              {%- else -%}
+              {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3 %}{%- endcapture -%}
+              {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+              {%- endif -%}
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+<script type="text/javascript">
+addEventListener('DOMContentLoaded', (event) => {
+var owl = $('#insta-slider-{{ section.id }}');
+    owl.owlCarousel({
+      {%- if settings.enable_rtl -%}
+      rtl: true,
+      {%- endif -%}
+      loop: false,
+      items: 5,
+      rewind: true,
+      margin: 30,
+      nav: false,
+      navText: ['<i class="bi bi-arrow-left-short"></i>','<i class="bi bi-arrow-right-short"></i>'],
+      dots: false,
+      responsive:{
+        0:{
+          items: 2,
+          margin: 12
+        },
+        479:{
+          items: 2,
+          margin: 12
+        },
+        768:{
+          items: 3,
+          margin: 12
+        },
+        979:{
+          items: 4
+        },
+        1199: {
+          items: 5
+        }
+      }
+    });
+});
+</script>
+{% schema %}
+{
+  "name": "Instagram",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section enable"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_enable",
+      "label": "Section enable",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Background Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_bg_check",
+      "label": "Section Backgorund",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bgcolor",
+      "label": "Section Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": "Section Title"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section sub title",
+      "default": "OUR BEGGEST STORY"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Latest news & blog"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Slider Image"
+        },
+        {
+          "type": "url",
+          "id": "insta_url",
+          "label": "Insta url"
+        },
+        {
+          "type": "image_picker",
+          "id": "insta_img",
+          "label": "Insta Image",
+          "info": "Recommended Size: 500px x 500px"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .instagram-warp {
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    {% if section.settings.section_bg_check %}
+    background-color: {{ section.settings.section_bgcolor }};
+    {% endif %}
+  }
+  @media (max-width: 1199px) {
+    .instagram-warp {
+      padding-top: {{ section.settings.section_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_ip }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .instagram-warp {
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+  .instagram-warp .item a{
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .instagram-warp .item a svg {
+    width: 100%;
+  }
+  .instagram-warp .item a:after{
+    content: "\e97d";
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    font-size: 22px;
+    font-family: feather!important;
+    opacity: 0;
+    visibility: hidden;
+    webkit-transition: all .3s ease-in-out 0s;
+    -o-transition: all .3s ease-in-out 0s;
+    transition: all .3s ease-in-out 0s;
+  }
+    .instagram-warp .item a:before{
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    background-color: rgba(0,0,0,20%);
+    webkit-transition: all .3s ease-in-out 0s;
+    -o-transition: all .3s ease-in-out 0s;
+    transition: all .3s ease-in-out 0s;
+  }
+  .instagram-warp .item a:hover:before,
+  .instagram-warp .item a:hover:after{
+    opacity: 1;
+    visibility: visible;
+  }
+  .instagram-warp .item a img{
+    -webkit-transition: all .3s ease-in-out 0s;
+    -o-transition: all .3s ease-in-out 0s;
+    transition: all .3s ease-in-out 0s;
+  }
+  .instagram-warp .item a:hover img{
+    transform: scale(1.1);
+  }
+</style>

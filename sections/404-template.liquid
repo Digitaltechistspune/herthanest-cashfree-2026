@@ -1,0 +1,175 @@
+<section class="page-not-found section-ptb">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="search-error-wrapper">
+          <div class="section-img">
+            {%- if section.settings.section_img -%}
+              {{ section.settings.section_img | image_url: width: 1920 | image_tag:
+                loading: 'lazy',
+                width: section.settings.section_img.width,
+                height: section.settings.section_img.height,
+                class: "img-fluid lazyload desk-img",
+                alt: section.settings.section_img.alt | escape
+              }}
+            {%- else -%}
+              {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg desk-img' }}
+            {%- endif -%}
+          </div>
+          <div class="home-btn">
+            <div class="home-content">
+              <h2 data-fade-in>{{ section.settings.section_title_bold }}</h2>
+              <span data-fade-in>{{ section.settings.section_title }}</span>
+              {% if settings.button_title != '' %}
+              <a data-fade-in href="{{ section.settings.home_button_url }}" class="btn btn-style">
+                {{ section.settings.home_button }}
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "text",
+      "id": "section_title_bold",
+      "label": "Title bold",
+      "default": "Oops!"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Title",
+      "default": "Page not found!"
+    },
+    {
+      "type": "image_picker",
+      "id": "section_img",
+      "label": "404 Image",
+      "info": "Recommended Size: 660 X 350px"
+    },
+    {
+      "type": "text",
+      "id": "home_button",
+      "label": "Continue shopping",
+      "default": "Continue shopping"
+    },
+    {
+      "type": "url",
+      "id": "home_button_url",
+      "label": "Continue shopping url"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.page-not-found .search-error-wrapper{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  {% if settings.enable_rtl %}
+    margin: -30px -30px 0px 0px;
+  {% else %}
+    margin: -30px 0px 0px -30px;
+  {% endif %}
+}
+.page-not-found .search-error-wrapper .section-img,
+.page-not-found .search-error-wrapper .home-btn {
+  width: calc(50% - 30px);
+  {% if settings.enable_rtl %}
+    margin: 30px 30px 0px 0px;
+  {% else %}
+    margin: 30px 0px 0px 30px;
+  {% endif %}
+}
+.page-not-found .search-error-wrapper .home-btn .home-content {
+  width: 66.67%;
+  margin: 0 auto;
+}
+.page-not-found .search-error-wrapper .home-btn .home-content h2 {
+  font-size: 100px;
+  font-weight: 600;
+}
+.page-not-found .search-error-wrapper .home-btn .home-content span {
+  display: block;
+  font-size: 45px;
+  font-weight: 400;
+}
+.page-not-found .search-error-wrapper .home-btn .home-content a{
+  margin: 65px 0px 0px;
+}
+
+@media (max-width: 1199px) {
+  .page-not-found .search-error-wrapper .home-btn .home-content {
+    width: 75%;
+    margin: 0 auto;
+  }
+  .page-not-found .search-error-wrapper .home-btn .home-content h2{
+    font-size: 60px;
+  }
+  .page-not-found .search-error-wrapper .home-btn .home-content a{
+    margin-top: 50px;
+  }
+  .page-not-found .search-error-wrapper .home-btn .home-content span {
+    font-size: 30px;
+  }
+}
+@media (max-width: 767px) {
+  .page-not-found .search-error-wrapper{
+    {% if settings.enable_rtl %}
+      margin: -30px -12px 0px 0px;
+    {% else %}
+      margin: -30px 0px 0px -12px;
+    {% endif %}
+  }
+  .page-not-found .search-error-wrapper .section-img,
+  .page-not-found .search-error-wrapper .home-btn {
+    width: calc(50% - 12px);
+    {% if settings.enable_rtl %}
+      margin: 30px 12px 0px 0px;
+    {% else %}
+      margin: 30px 0px 0px 12px;
+    {% endif %}
+  }
+}
+@media (max-width: 600px) {
+  .page-not-found .search-error-wrapper .section-img,
+  .page-not-found .search-error-wrapper .home-btn {
+    width: calc(100% - 12px);
+    {% if settings.enable_rtl %}
+      margin: 30px 12px 0px 0px;
+    {% else %}
+      margin: 30px 0px 0px 12px;
+    {% endif %}
+  }
+  .page-not-found .search-error-wrapper .home-btn .home-content {
+    width: 100%;
+  }
+}
+</style>

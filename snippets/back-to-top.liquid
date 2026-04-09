@@ -1,0 +1,76 @@
+<a  id="top" class="scroll">
+    <span><i class="feather-arrow-up"></i></span>
+</a>
+<script type="text/javascript">
+addEventListener('DOMContentLoaded', (event) => {
+    $(window).scroll(function() { 
+        if ($(this).scrollTop() > 600) { 
+            $('#top').addClass('show'); 
+        } else { 
+            $('#top').removeClass('show'); 
+        } 
+    }); 
+    $('#top').click(function(){ 
+        $("html, body").animate({ scrollTop: 0 }, 0); 
+        return false; 
+    });
+});
+</script>
+<style>
+    a#top {
+        position: fixed;
+        bottom: 60px;
+        {% if settings.enable_rtl %}
+        left: 30px;
+        {% else %}
+        right: 30px;
+        {% endif %}
+        z-index: 2;
+        opacity: 0;
+        visibility: hidden;
+        -webkit-transition: all 0s ease-in-out 0s;
+        -o-transition: all 0s ease-in-out 0s;
+        transition: all 0s ease-in-out 0s;
+    }
+    a#top.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-30px);
+        -webkit-transition: all 0.3s ease-in-out 0s;
+        -o-transition: all 0.3s ease-in-out 0s;
+        transition: all 0.3s ease-in-out 0s;
+    }
+    a.scroll span {
+        color: #fff;
+        font-size: 16px;
+        line-height: 1;
+        height: 35px;
+        width: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--font-color-primary);
+        border-radius: 0;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+        border-radius: var(--sti-border-radius);
+    }
+    a.scroll:hover span {
+        color: var(--font-color-primary);
+        background-color: #FFFFFF;
+    }
+    a.scroll span,
+    a.scroll:hover span {
+        -webkit-transition: all 0.3s ease-in-out 0s;
+        -o-transition: all 0.3s ease-in-out 0s;
+        transition: all 0.3s ease-in-out 0s;
+    }
+    @media (max-width : 767px) {
+        a#top {
+            {% if settings.enable_rtl %}
+            left: 12px;
+            {% else %}
+            right: 12px;
+            {% endif %};
+        }
+    }
+</style>

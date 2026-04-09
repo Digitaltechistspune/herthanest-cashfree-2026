@@ -1,0 +1,21 @@
+<div class="product-info review">
+  {%- if block.settings.review_enable -%}
+  <div class="product-ratting">
+    <div class='jdgm-widget jdgm-preview-badge'>
+      {% if product.metafields.judgeme.badge %}
+      {{ product.metafields.judgeme.badge }}
+      {% else %}
+      <div class="jdgm-prev-badge jdgm--js" data-average-rating="0.00" data-number-of-reviews="0">
+        <span class="jdgm-prev-badge__stars" data-score="0.00"><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span></span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <span class="slash">/</span>
+  {%- endif -%}
+  {%- if block.settings.fakesold_enable -%}
+  <div class="product-count-sale" data-min="{{ block.settings.mins }}" data-max="{{ block.settings.maxs }}" data-time_min="{{ block.settings.mint }}" data-time_max="{{ block.settings.mint }}" data-id_product="{{ product.id }}">
+    <span class="count"></span> {{ block.settings.sold_in_last }} <span class="time"></span> {{ block.settings.hours }}
+  </div>
+  {%- endif -%}
+</div>

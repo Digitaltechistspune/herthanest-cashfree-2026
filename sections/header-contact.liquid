@@ -1,0 +1,409 @@
+{% if settings.header_contact_number_enable %}
+<div class="menu-headphone">
+  <div class="menu-contact-wrap">
+    {% if section.settings.header_contact_select == 'contact_number' %}
+      <a href="tel:{{ section.settings.header_contact_number }}" class="header-contact">
+        <span class="contact-icon">{{ section.settings.header_contact_icon }}</span>
+        <span class="contact-text">{{ section.settings.header_contact_number }}</span>
+      </a>
+    {% else %}
+      <a href="{{ section.settings.header_button_url }}" class="header-button">
+        <span>{{ section.settings.header_button_text }}</span>
+      </a>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+{% schema %}
+{
+  "name": "Header Contact",
+  "settings": [
+    {
+      "type": "select",
+      "id": "header_contact_select",
+      "label": "Content Select",
+      "options": [
+        {
+          "label": "Contact Number",
+          "value": "contact_number"
+        },
+        {
+          "label": "Shop Button",
+          "value": "shop_button"
+        }
+      ],
+      "default": "shop_button"
+    },
+    {
+      "type": "header",
+      "content": "Company Contact"
+    },
+    {
+      "type": "textarea",
+      "id": "header_contact_icon",
+      "label": "Icon Code",
+      "default": "<i class='bi bi-telephone-forward'></i>",
+      "info": "Use '<svg></svg>' or '<i></i>' for icon prefere [click here](https://icons.getbootstrap.com)"
+    },
+    {
+      "type": "range",
+      "id": "header_contact_font_size",
+      "label": "Icon Font Size",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "info": "Use for '<i></i>'"
+    },
+    {
+      "type": "range",
+      "id": "header_contact_svg_width",
+      "label": "SVG Icon Width",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "info": "Use for '<svg></svg>'"
+    },
+    {
+      "type": "range",
+      "id": "header_contact_svg_height",
+      "label": "SVG Icon Height",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "info": "Use for '<svg></svg>'"
+    },
+    {
+      "type": "color",
+      "id": "header_contact_icon_color",
+      "label": "Icon Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "header_contact_icon_hvr_color",
+      "label": "Icon Hover Color",
+      "default": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "header_contact_number",
+      "label": "Contact Number",
+      "default": "(+00) 123 456 789"
+    },
+    {
+      "type": "color",
+      "id": "header_contact_text_color",
+      "label": "Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "header_contact_text_hvr_color",
+      "label": "Text Hover Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Shop Button"
+    },
+    {
+      "type": "text",
+      "id": "header_button_text",
+      "label": "Button Text",
+      "default": "Online shop"
+    },
+    {
+      "type": "color",
+      "id": "header_button_text_color",
+      "label": "Button Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "header_button_text_hvr_color",
+      "label": "Button Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_button_unserline_enable",
+      "label": "Show Button Underline",
+      "default": true,
+      "info": "Use this option only for when 'BUTTON' shows like link & other option like 'PADDING', 'BACKGROUND' & 'BORDER' not in use"
+    },
+    {
+      "type": "range",
+      "id": "header_button_padding_top_bottom",
+      "label": "Button Padding Top-Bottom",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "header_button_padding_left_right",
+      "label": "Button Padding Left-Right",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "header_button_text_bgcolor",
+      "label": "Button Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "header_button_text_hvr_bgcolor",
+      "label": "Button Hover Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "select",
+      "id": "header_button_text_transform",
+      "label": "Button Text Property",
+      "options": [
+        {
+          "label": "Capitalize",
+          "value": "capitalize"
+        },
+        {
+          "label": "Lowercase",
+          "value": "lowercase"
+        },
+        {
+          "label": "None",
+          "value": "none"
+        },
+        {
+          "label": "Uppercase",
+          "value": "uppercase"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "header_button_font_weight",
+      "label": "Button Font Weight",
+      "min": 400,
+      "max": 600,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "header_button_border",
+      "label": "Button Border",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "header_button_border_property",
+      "label": "Button Border Property",
+      "options": [
+        {
+          "label": "Dotted",
+          "value": "dotted"
+        },
+        {
+          "label": "Dashed",
+          "value": "dashed"
+        },
+        {
+          "label": "Solid",
+          "value": "solid"
+        },
+        {
+          "label": "Double",
+          "value": "double"
+        },
+        {
+          "label": "Groove",
+          "value": "groove"
+        },
+        {
+          "label": "Ridge",
+          "value": "ridge"
+        },
+        {
+          "label": "Inset",
+          "value": "inset"
+        },
+        {
+          "label": "Outset",
+          "value": "outset"
+        },
+        {
+          "label": "None",
+          "value": "none"
+        },
+        {
+          "label": "Hidden",
+          "value": "hidden"
+        }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "color",
+      "id": "header_button_border_color",
+      "label": "Button Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "header_button_border_hvr_color",
+      "label": "Button Border Hover Color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "header_button_border_radius",
+      "label": "Button Border Radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "header_button_letter_spacing",
+      "label": "Button Letter Spacing",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "unit": "px",
+      "default": 0.5
+    },
+    {
+      "type": "url",
+      "id": "header_button_url",
+      "label": "Button URL"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  /* header contact css */
+  .menu-headphone .menu-contact-wrap a.header-contact {
+    font-size: var(--font-size-body);
+    display: flex;
+    align-items: center;
+    -webkit-transition: all 0s ease-in-out 0s;
+    -o-transition: all 0s ease-in-out 0s;
+    transition: all 0s ease-in-out 0s;
+  }
+  .menu-headphone .menu-contact-wrap a.header-contact span {
+    display: block;
+    {%- if settings.enable_rtl -%}
+      margin-right: 5px;
+    {%- else -%}
+      margin-left: 5px;
+    {%- endif -%}
+    line-height: 1;
+  }
+  .menu-headphone .menu-contact-wrap a.header-contact span:first-child {
+    {%- if settings.enable_rtl -%}
+      margin-right: 0;
+    {%- else -%}
+      margin-left: 0;
+    {%- endif -%}
+  }
+  .menu-headphone .menu-contact-wrap a.header-contact span.contact-icon {
+    color: {{ section.settings.header_contact_icon_color }}
+    ;
+    font-size: {{ section.settings.header_contact_font_size }}
+    px;
+  }
+  .menu-headphone .menu-contact-wrap a.header-contact:hover span.contact-icon {
+    color: {{ section.settings.header_contact_icon_hvr_color }}
+    ;
+  }
+  .menu-headphone .menu-contact-wrap a.header-contact span.contact-icon svg {
+    width: {{ section.settings.header_contact_svg_width }}
+    px;
+    width: {{ section.settings.header_contact_svg_height }}
+    px;
+  }
+  .menu-headphone .menu-contact-wrap a.header-contact span.contact-icon i {
+    display: block;
+    {%- if settings.enable_rtl -%}
+      -webkit-transform: scaleX(-1);
+      -o-transform: scaleX(-1);
+      transform: scaleX(-1);
+    {%- endif -%}
+    line-height: 0;
+  }
+  .menu-headphone .menu-contact-wrap a.header-contact span.contact-text {
+    color: {{ section.settings.header_contact_text_color }}
+    ;
+    white-space: nowrap;
+  }
+  .menu-headphone .menu-contact-wrap a.header-contact:hover span.contact-text {
+    color: {{ section.settings.header_contact_text_hvr_color }}
+    ;
+  }
+  @media(max-width: 1199px) {
+    .menu-headphone .menu-contact-wrap a.header-contact {
+      padding: 10px 15px;
+    }
+  }
+
+  /* header button css */
+  .menu-headphone .menu-contact-wrap a.header-button {
+    display: block;
+    -webkit-transition: all 0s ease-in-out 0s;
+    -o-transition: all 0s ease-in-out 0s;
+    transition: all 0s ease-in-out 0s;
+  }
+  .menu-headphone .menu-contact-wrap a.header-button span {
+    display: block;
+    color: {{ section.settings.header_button_text_color }}
+    ;
+    font-size: var(--font-size-body);
+    padding: {{ section.settings.header_button_padding_top_bottom }} px{{ section.settings.header_button_padding_left_right }}px;
+    background-color: {{ section.settings.header_button_text_bgcolor }};
+    text-transform: {{ section.settings.header_button_text_transform }};
+    {% if section.settings.header_button_unserline_enable %}
+    text-decoration: underline;
+    {% endif %}
+    font-weight: {{ section.settings.header_button_font_weight }};
+    border: {{ section.settings.header_button_border }}
+    px{{ section.settings.header_button_border_property }} {{ section.settings.header_button_border_color }};
+    border-radius: {{ section.settings.header_button_border_radius }}px;
+    letter-spacing: {{ section.settings.header_button_letter_spacing }}px;
+  }
+  .menu-headphone .menu-contact-wrap a.header-button:hover span {
+    color: {{ section.settings.header_button_text_hvr_color }};
+    background-color: {{ section.settings.header_button_text_hvr_bgcolor }};
+    border-color: {{ section.settings.header_button_border_hvr_color }};
+  }
+  .menu-headphone .menu-contact-wrap a.header-button span,
+  .menu-headphone .menu-contact-wrap a.header-button:hover span {
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -o-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+  }
+  @media(max-width: 1199px) {
+    .menu-headphone .menu-contact-wrap a.header-button {
+      margin: 15px;
+    }
+  }
+</style>

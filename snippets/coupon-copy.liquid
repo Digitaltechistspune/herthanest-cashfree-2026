@@ -1,0 +1,48 @@
+{% assign coupon_code = '' %}
+{% assign coupon_text = '' %}
+
+{% for c in product.collections %}
+  {% if c.metafields.custom.offer_code.value != blank %}
+    {% assign coupon_code = c.metafields.custom.offer_code.value %}
+    {% assign coupon_text = c.metafields.custom.offer_text.value %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if coupon_code != blank %}
+  <div class="hn-coupon-box">
+    <div class="hn-coupon-left">
+      {% if coupon_text != blank %}
+        <div class="hn-coupon-text">{{ coupon_text }}</div>
+      {% endif %}
+      <div class="hn-coupon-note">Use code at checkout</div>
+    </div>
+
+    <button type="button" class="hn-coupon-copy" data-code="{{ coupon_code }}">
+      <span class="hn-coupon-code">{{ coupon_code }}</span>
+      <span class="hn-coupon-action">Copy</span>
+    </button>
+  </div>
+
+  <script>
+    document.addEventListener('click', function(e){
+      const btn = e.target.closest('.hn-coupon-copy');
+      if(!btn) return;
+      const code = btn.dataset.code;
+      navigator.clipboard.writeText(code).then(()=>{
+        btn.querySelector('.hn-coupon-action').textContent = 'Copied!';
+        setTimeout(()=>btn.querySelector('.hn-coupon-action').textContent='Copy', 1500);
+      });
+    });
+  </script>
+
+  <style>
+    .hn-coupon-box{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:14px 0;}
+    .hn-coupon-left{display:flex;flex-direction:column;gap:4px}
+    .hn-coupon-text{font-weight:600}
+    .hn-coupon-note{font-size:13px;opacity:.75}
+    .hn-coupon-copy{display:flex;gap:10px;align-items:center;border:1px dashed #12a594;background:#fff;padding:10px 14px;border-radius:10px;cursor:pointer}
+    .hn-coupon-code{font-weight:700}
+    .hn-coupon-action{font-size:13px;opacity:.8}
+  </style>
+{% endif %}

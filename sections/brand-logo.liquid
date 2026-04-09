@@ -1,0 +1,309 @@
+<section class="our-brand-logo">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="brand-wrap">
+          <div class="brand-logo owl-carousel owl-theme" id="brand-logo">
+            {% for block in section.blocks %}
+              <div class="item item-{{ block.id }}">
+                <a href="{{ block.settings.brand_url }}">
+                  {% comment %}
+                  <img src="https://dummyimage.com/180x100/e2e2e2/999999" class="img-fluid" alt="image">
+                  {% endcomment %}
+                  {%- if block.settings.brand_image -%}
+                    {{
+                      block.settings.brand_image
+                      | image_url: width: 500
+                      | image_tag:
+                        loading: 'lazy',
+                        width: block.settings.brand_image.width,
+                        height: block.settings.brand_image.height,
+                        class: 'img-fluid lazyload',
+                        alt: block.settings.brand_image.alt
+                      | escape
+                    }}
+                  {%- else -%}
+                    {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+                    {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                  {%- endif -%}
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+  addEventListener('DOMContentLoaded', (event) => {
+    $('#brand-logo').owlCarousel({
+      loop: false,
+      rewind: true,
+      margin: 30,
+      nav: true,
+      navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+      dots: false,
+      {%- if settings.enable_rtl -%}
+      rtl: true,
+      {%- endif -%}
+      autoplay: true,
+      autoplayTimeout: 5000,
+      autoplayHoverPause: true,
+      responsive: {
+        0: {
+          items: 1,
+          margin: 12
+        },
+        479: {
+          items: 1,
+          margin: 12
+        },
+        540: {
+          items: 2,
+          margin: 12
+        },
+        750: {
+          items: 3,
+          margin: 12
+        },
+        768: {
+          items: 3
+        },
+        979: {
+          items: {{ section.settings.slide_view }}
+        },
+        1199: {
+          items: {{ section.settings.slide_view }}
+        },
+        1599: {
+          items: {{ section.settings.slide_view }}
+        }
+      }
+    });
+    });
+</script>
+{% schema %}
+{
+  "name": "Brand Logo",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "fluid"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "brand_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "brand_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "brand_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "brand_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "brand_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "brand_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Border"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_enable",
+      "label": "Show Section Border",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "border",
+      "label": "Border",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#808080"
+    },
+    {
+      "type": "range",
+      "id": "border_color_opacity",
+      "label": "Theme Border Color Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.2
+    },
+    {
+      "type": "select",
+      "id": "slide_view",
+      "label": "Slides per view",
+      "options": [
+        {
+          "label": "4",
+          "value": "4"
+        },
+        {
+          "label": "5",
+          "value": "5"
+        },
+        {
+          "label": "6",
+          "value": "6"
+        }
+      ],
+      "default": "4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "single_brand",
+      "name": "Brand Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "brand_image",
+          "label": "Brand Image",
+          "info": "Recommended Size: 180px x 100px"
+        },
+        {
+          "type": "url",
+          "id": "brand_url",
+          "label": "Logo URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand logo"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .our-brand-logo {
+    padding-top: {{ section.settings.brand_padding_top }}px;
+    padding-bottom: {{ section.settings.brand_padding_bottom }}px;
+    {% if section.settings.border_enable %}
+    border-top: {{ section.settings.border }}px solid {{ section.settings.border_color | color_modify: 'alpha', section.settings.border_color_opacity }};
+    {% endif %}
+  }
+  @media (max-width: 1199px) {
+    .our-brand-logo {
+      padding-top: {{ section.settings.brand_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.brand_padding_bottom_ip }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .our-brand-logo {
+      padding-top: {{ section.settings.brand_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.brand_padding_bottom_xs }}px;
+    }
+  }
+
+  /* brand logo css */
+  .our-brand-logo .brand-logo .owl-stage {
+    display: flex;
+    align-items: center;
+  }
+  .our-brand-logo .brand-logo a {
+    display: block;
+  }
+  .our-brand-logo .brand-logo a img {
+    margin: 0px auto;
+    width: revert-layer;
+    opacity: 0.5;
+    -webkit-transition: opacity .3s ease-in-out;
+    -o-transition: opacity .3s ease-in-out;
+    transition: opacity .3s ease-in-out;
+  }
+  .our-brand-logo .brand-logo a:hover img {
+    opacity: 1;
+  }
+</style>

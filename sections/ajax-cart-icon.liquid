@@ -1,0 +1,12 @@
+<span class="cart-icon-wrap">
+  <span class="cart-icon">
+    <i class="feather-shopping-bag"></i>
+  </span>
+  <span class="cart-title">{{ settings.header_cart_title }}</span>
+  <div class="ajax-cart-count bigcounter">
+    {%- if cart.item_count < 100 -%}
+    <span aria-hidden="true">{{ cart.item_count }}</span>
+    {%- endif -%}
+    <span class="visually-hidden">{{ 'sections.cart_count' | t: count: cart.item_count }}</span>
+  </div>
+</span>

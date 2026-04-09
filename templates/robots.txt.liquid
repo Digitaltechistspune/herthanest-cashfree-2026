@@ -1,0 +1,26 @@
+{% comment %}
+# Caution! Please read https://help.shopify.com/en/manual/promoting-marketing/seo/editing-robots-txt before proceeding to make changes to this file.
+{% endcomment %}
+
+{% for group in robots.default_groups %}
+  {{- group.user_agent -}}
+
+  {% for rule in group.rules %}
+    {{- rule -}}
+  {% endfor %}
+
+  {%- if group.sitemap != blank -%}
+    {{ group.sitemap }}
+  {%- endif -%}
+{% endfor %}
+
+# Custom Allow Rules
+User-agent: *
+Allow: /collections/vendors?page=2&q=Hertha+Nest
+Allow: /collections/vendors?page=2&q=My+Store
+Allow: /collections/vendors?page=3&q=My+Store
+Allow: /collections/vendors?page=9&q=My+Store
+Allow: /collections/vendors?q=Hertha+Nest
+Allow: /collections/vendors?q=My+Store
+Allow: /collections/vendors?q=hertha+nest
+Allow: /collections/vendors?q=my+store

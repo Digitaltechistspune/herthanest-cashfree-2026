@@ -1,0 +1,1075 @@
+<section class="slider-content">
+  <div class="home-slider swiper" id="home-slider-{{ section.id }}">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+      <div class="swiper-slide">
+        <div class="slide-image image-{{ block.id }}">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="slider-info-content">
+                  <div class="slider-text-info {% if block.settings.mobile_text_enable %} sm-dnone{% endif %}">
+                    {% if block.settings.slider_subtitle != '' %}
+                    <span class="sub-title" style="color:{{ block.settings.slider_subtitle_color }};">{{ block.settings.slider_subtitle }}</span>
+                    {% endif %}
+                    {% if block.settings.slider_title != '' %}
+                    <h2 class="title" style="color:{{ block.settings.slider_title_color }};">
+                      {{ block.settings.slider_title }}
+                    </h2>
+                    {% endif %}
+                    {% if block.settings.slider_desc != '' %}
+                    <p class="desc" style="color:{{ block.settings.slider_desc_color }};">{{ block.settings.slider_desc }}</p>
+                    {% endif %}
+                    {% if block.settings.slider_button != '' %}
+                    <div class="text-btn">
+                      <a href="{{ block.settings.slider_button_url }}" class="{% if block.settings.slider_button_style == 'btn-style1' %}btn-style{% elsif block.settings.slider_button_style == 'btn-style2' %}btn-style2{% else %}btn-style3{% endif %}">{{ block.settings.slider_button }}</a>
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="slider-img-info">
+                    <div class="img-info">
+                      {%- if block.settings.slider_image -%}
+                      {{
+                        block.settings.slider_image
+                        | image_url: width: 1920
+                        | image_tag:
+                          loading: 'lazy',
+                          width: block.settings.slider_image.width,
+                          height: block.settings.slider_image.height,
+                          class: 'img-fluid lazyload',
+                          alt: block.settings.slider_image.alt
+                        | escape
+                      }}
+                      {%- else -%}
+                      {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+                      {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                      {%- endif -%}
+
+                      {% if block.settings.hotspot1_enable %}
+                      <div class="st-hotspot s-pro-1" style="top: {{ block.settings.hotspot1_top }}%;left: {{ block.settings.hotspot1_left }}%;">
+                        <div class="st-btn"><span class="tag-under"></span></div>
+                        <div class="st-content-parent">
+                          <div class="tt-hotspot-content">
+                            {% assign product = all_products[block.settings.select_pro_1] %}
+                            {% if block.settings.select_pro_1 %}
+                            {%- liquid
+                              if block.settings.select_pro_1_product_view == 'grid'
+                                render 'product-grid-item', product: product
+                              elsif block.settings.select_pro_1_product_view == 'list'
+                                render 'product-grid-list', product: product
+                              endif
+                            -%}
+                            {% else %}
+                            {% if block.settings.select_pro_1_product_view == 'list' %}
+                            <div class="product-grid-list">
+                            {% endif %}
+                            <div class="single-product-wrap">
+                              <div class="product-image">
+                                {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3 %}{%- endcapture -%}
+                                {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                              </div>
+                              <div class="product-content">
+                                <div class="product-title">
+                                  <h6>
+                                    <a>{{ 'homepage.sections.product_title' | t }}</a>
+                                  </h6>
+                                </div>
+                                <div class="price-box">
+                                  <span class="new-price">{{ 'homepage.sections.product_price' | t }}</span>
+                                </div>
+                              </div>
+                            </div>
+                            {% if block.settings.select_pro_1_product_view == 'list' %}
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if block.settings.hotspot2_enable %}
+                      <div class="st-hotspot s-pro-2" style="top: {{ block.settings.hotspot2_top }}%;left: {{ block.settings.hotspot2_left }}%;">
+                        <div class="st-btn"><span class="tag-under"></span></div>
+                        <div class="st-content-parent">
+                          <div class="tt-hotspot-content">
+                            {% assign product = all_products[block.settings.select_pro_2] %}
+                            {% if block.settings.select_pro_2 %}
+                            {%- liquid
+                              if block.settings.select_pro_2_product_view == 'grid'
+                                render 'product-grid-item', product: product
+                              elsif block.settings.select_pro_2_product_view == 'list'
+                                render 'product-grid-list', product: product
+                              endif
+                            -%}
+                            {% else %}
+                            {% if block.settings.select_pro_2_product_view == 'list' %}
+                            <div class="product-grid-list">
+                            {% endif %}
+                            <div class="single-product-wrap">
+                              <div class="product-image">
+                                {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3 %}{%- endcapture -%}
+                                {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                              </div>
+                              <div class="product-content">
+                                <div class="product-title">
+                                  <h6>
+                                    <a>{{ 'homepage.sections.product_title' | t }}</a>
+                                  </h6>
+                                </div>
+                                <div class="price-box">
+                                  <span class="new-price">{{ 'homepage.sections.product_price' | t }}</span>
+                                </div>
+                              </div>
+                            </div>
+                            {% if block.settings.select_pro_2_product_view == 'list' %}
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if section.settings.arrow_enable %}
+    <div class="slider-arrow"> 
+      <button class="arrow-prev" aria-label="Slider arrow"><i class="feather-arrow-left"></i></button>
+      <button class="arrow-next" aria-label="Slider arrow"><i class="feather-arrow-right"></i></button>
+    </div>
+    {% endif %}
+    {% if section.settings.counter_enable %}
+    <div class="container slider-info-count"></div>
+    {% endif %}
+  </div>
+</section>
+
+<script type="text/javascript">
+  addEventListener('DOMContentLoaded', (event) => {
+    var swiper = new Swiper('#home-slider-{{ section.id }}', {
+      slidesPerView: 1,
+      loop: false,
+      grid: {
+        rows: 1,
+        fill: 'row' | 'column',
+      },
+      spaceBetween: 0,
+      observer: true,
+      observeParents: true,
+      watchSlidesProgress: true,
+      {% if section.settings.slider_autoplay_enable %}
+      autoplay: {
+        delay: {{ section.settings.slider_autoplay_timeout }},
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      speed: {{ section.settings.slider_autoplay_speed }},
+      {% endif %}
+      {% if section.settings.arrow_enable %}
+      navigation: {
+        nextEl: ".arrow-next",
+        prevEl: ".arrow-prev",
+      },
+      {% endif %}
+      {% if section.settings.counter_enable %}
+      pagination: {
+        el: ".slider-info-count",
+        type: "fraction",
+      },
+      {% endif %}
+    });
+
+    $('.st-btn').on('click', function(){
+      $(this).parent('.st-hotspot').toggleClass("open").siblings().removeClass("open");
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Slider Background Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "slider_bgimg_enable",
+      "label": "Show Background Image",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "slider_bgimg",
+      "label": "Background Image",
+      "info": "Recommended Size: 1920 x 900px"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_slider_bgimg",
+      "label": "Background Image",
+      "info": "Recommended Size: 600 x 970px"
+    },
+    {
+      "type": "header",
+      "content": "Slider Background Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "slider_bg_color_enable",
+      "label": "Show Background Color",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "slider_bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Slider Autoplay"
+    },
+    {
+      "type": "checkbox",
+      "id": "slider_autoplay_enable",
+      "label": "Show Slider Autoplay",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "slider_autoplay_timeout",
+      "label": "Slider Autoplay Timeout",
+      "default": 5000,
+      "info": "Put timeout by multiply 'X1000' this field"
+    },
+    {
+      "type": "number",
+      "id": "slider_autoplay_speed",
+      "label": "Slider Autoplay Speed",
+      "default": 1000,
+      "info": "Put speed by multiply 'X100' this field"
+    },
+    {
+      "type": "checkbox",
+      "id": "arrow_enable",
+      "label": "Slider arrow",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "counter_enable",
+      "label": "Show slider counter",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "counter_color",
+      "label": "Counter color",
+      "default": "#363131"
+    },
+    {
+      "type": "image_picker",
+      "id": "demo_slider_img",
+      "label": "Image",
+      "info": "Recommended Size: 1920x1080px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Slider Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "slider_image",
+          "label": "Slider Image",
+          "info": "Recommended Size: 610px x 640px"
+        },
+        {
+          "type": "header",
+          "content": "Product 1"
+        },
+        {
+          "type": "checkbox",
+          "id": "hotspot1_enable",
+          "label": "Hotspot enable",
+          "default": true
+        },
+        {
+          "type": "product",
+          "id": "select_pro_1",
+          "label": "Select Product"
+        },
+        {
+          "type": "radio",
+          "id": "select_pro_1_product_view",
+          "label": "Product View Option",
+          "options": [
+            {
+              "label": "Grid View",
+              "value": "grid"
+            },
+            {
+              "label": "List View",
+              "value": "list"
+            }
+          ],
+          "default": "list"
+        },
+        {
+          "type": "range",
+          "id": "hotspot1_top",
+          "label": "Hotspot top",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 60
+        },
+        {
+          "type": "range",
+          "id": "hotspot1_left",
+          "label": "Hotspot left",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 60
+        },
+        {
+          "type": "header",
+          "content": "Product 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "hotspot2_enable",
+          "label": "Hotspot enable",
+          "default": true
+        },
+        {
+          "type": "product",
+          "id": "select_pro_2",
+          "label": "Select Product"
+        },
+        {
+          "type": "radio",
+          "id": "select_pro_2_product_view",
+          "label": "Product View Option",
+          "options": [
+            {
+              "label": "Grid View",
+              "value": "grid"
+            },
+            {
+              "label": "List View",
+              "value": "list"
+            }
+          ],
+          "default": "list"
+        },
+        {
+          "type": "range",
+          "id": "hotspot2_top",
+          "label": "Hotspot top",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 60
+        },
+        {
+          "type": "range",
+          "id": "hotspot2_left",
+          "label": "Hotspot left",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 60
+        },
+        {
+          "type": "header",
+          "content": "Slider text"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_text_enable",
+          "label": "Text disable on mobile",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "slider_subtitle",
+          "label": "Subtitle",
+          "default": "Perfect for furniture design"
+        },
+        {
+          "type": "color",
+          "id": "slider_subtitle_color",
+          "label": "Subtitle color",
+          "default": "#333333"
+        },
+        {
+          "type": "header",
+          "content": "Slide title"
+        },
+        {
+          "type": "text",
+          "id": "slider_title",
+          "label": "Title",
+          "default": "A Modern armchair"
+        },
+        {
+          "type": "color",
+          "id": "slider_title_color",
+          "label": "Title color",
+          "default": "#333333"
+        },
+        {
+          "type": "header",
+          "content": "Slide Description"
+        },
+        {
+          "type": "textarea",
+          "id": "slider_desc",
+          "label": "Description",
+          "default": "Make the most of compact spaces with space saving furniture that are ingenuous and innovative transform your living spaces with interior designs."
+        },
+        {
+          "type": "color",
+          "id": "slider_desc_color",
+          "label": "Description color",
+          "default": "#808080"
+        },
+        {
+          "type": "header",
+          "content": "Slide button"
+        },
+        {
+          "type": "text",
+          "id": "slider_button",
+          "label": "Button Text",
+          "default": "Shop collection"
+        },
+        {
+          "type": "url",
+          "id": "slider_button_url",
+          "label": "Button URL"
+        },
+        {
+          "type": "select",
+          "id": "slider_button_style",
+          "label": "Button Style",
+          "options": [
+            {
+              "label": "Button Style1",
+              "value": "btn-style1"
+            },
+            {
+              "label": "Button Style2",
+              "value": "btn-style2"
+            },
+            {
+              "label": "Button Style3",
+              "value": "btn-style3"
+            }
+          ],
+          "default": "btn-style3"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slider"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.slider-content {
+  position: relative;
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  {% if section.settings.slider_bgimg_enable %}
+  background-image: url('{% if section.settings.slider_bgimg %}{{ section.settings.slider_bgimg | image_url }}{% else %}https://dummyimage.com/1920x1080/f7f7f7/999999{% endif %}');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  {% endif %}
+  {% if section.settings.slider_bg_color_enable %}
+  background-color: {{ section.settings.slider_bg_color }};
+  {% endif %}
+}
+@media (max-width: 1199px) {
+  .slider-content {
+    padding-top: {{ section.settings.section_padding_top_ip }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_ip }}px;
+  }
+}
+@media (max-width: 767px) {
+  .slider-content {
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+  }
+}
+@media (max-width: 600px) {
+  .slider-content {
+    {% if section.settings.slider_bgimg_enable %}
+    background-image: url('{% if section.settings.mobile_slider_bgimg %}{{ section.settings.mobile_slider_bgimg | image_url }}{% else %}https://dummyimage.com/600x970/f7f7f7/999999{% endif %}');
+    {% endif %}
+  }
+}
+
+/* slider text-info css */
+.slider-content .home-slider .slide-image .slider-info-content {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: -50px;
+  margin-inline-start: -30px;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-text-info {
+  width: calc(41.67% - 30px);
+  margin-top: 50px;
+  margin-inline-start: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-img-info {
+  width: calc(58.33% - 30px);
+  margin-top: 50px;
+  margin-inline-start: 30px;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info {
+  position: relative;
+  {%- if settings.enable_rtl -%}
+  margin-right: auto;
+  {%- else -%}
+  margin-left: auto;
+  {%- endif -%}
+  width: fit-content;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot{
+  position: absolute;
+  color: #FFFFFF;
+  line-height: 1;
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-btn {
+  width: 60px;
+  height: 60px;
+  font-size: 18px;
+  position: absolute;
+  top: 0;
+  {%- if settings.enable_rtl -%}
+  right: 0px;
+  {%- else -%}
+  left: 0px;
+  {%- endif -%}
+  z-index: 2;
+  background-color: rgb(255 255 255 / 40%);
+  display: flex;
+  -moz-transition: padding 0.2s linear;
+  -o-transition: padding 0.2s linear;
+  -webkit-transition: padding 0.2s linear;
+  transition: padding 0.2s linear;
+  border-radius: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-btn span.tag-under {
+  background-color: #FFFFFF;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-content-parent{
+  background-color: #FFFFFF;
+  position: absolute;
+  top: calc(100% + 30px);
+  {%- if settings.enable_rtl -%}
+  left: -120px;
+  {%- else -%}
+  right: -120px;
+  {%- endif -%}
+  z-index: 3;
+  width: 300px;
+  border-radius: var(--sti-border-radius);
+  box-shadow: 0 0 10px rgb(0 0 0 / 8%);
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: opacity .3s ease-in-out, visibility .3s ease-in-out;
+  -o-transition: opacity .3s ease-in-out, visibility .3s ease-in-out;
+  transition: opacity .3s ease-in-out, visibility .3s ease-in-out;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.open .st-content-parent {
+  opacity: 1;
+  visibility: visible;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-content-parent .tt-hotspot-content {
+  position: relative;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-content-parent .tt-hotspot-content::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  width: 40px;
+  margin: 0 auto;
+  border-top: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 20px solid #FFFFFF;
+  border-left: 20px solid transparent;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-content-parent .tt-hotspot-content .single-product-wrap .product-content .price-box span {
+  font-size: 16px;
+}
+@media(max-width: 1399px) {
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-1 .st-content-parent {
+    top: -33px;
+    left: -340px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-1 .st-content-parent .tt-hotspot-content::before {
+    top: unset;
+    bottom: 50%;
+    transform: translateY(50%);
+    inset-inline-start: auto;
+    inset-inline-end: -40px;
+    border-top: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid #FFFFFF;
+    height: 40px;
+  }
+}
+@media(max-width: 1199px) {
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-1 {
+    top: 15%;
+    {%- if settings.enable_rtl -%}
+    right: 75%;
+    {%- else -%}
+    left: 75%;
+    {%- endif -%}
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-2 {
+    top: 48%;
+    {%- if settings.enable_rtl -%}
+    right: -2%;
+    {%- else -%}
+    left: -2%;
+    {%- endif -%}
+  }
+}
+@media(max-width: 767px) {
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot,
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-btn span.tag-under {
+    width: 15px;
+    height: 15px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-1 .st-content-parent {
+    top: -40px;
+    {%- if settings.enable_rtl -%}
+    right: -330px;
+    {%- else -%}
+    left: -330px;
+    {%- endif -%}
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-2 .st-content-parent {
+    {%- if settings.enable_rtl -%}
+    left: -130px;
+    {%- else -%}
+    right: -130px;
+    {%- endif -%}
+  }
+}
+@media(max-width: 600px) {
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info.sm-dnone {
+    display: none;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-2 .st-content-parent {
+    {%- if settings.enable_rtl -%}
+    left: -330px;
+    {%- else -%}
+    right: -330px;
+    {%- endif -%}
+    top: -40px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-2 .st-content-parent .tt-hotspot-content::before {
+    top: unset;
+    bottom: 50%;
+    transform: translateY(50%);
+    inset-inline-end: auto;
+    inset-inline-start: -40px;
+    border-top: 20px solid transparent;
+    border-right: 20px solid #FFFFFF;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid transparent;
+    height: 40px;
+  }
+}
+@media(max-width: 479px) {
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-content-parent {
+    width: 270px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-1 .st-content-parent {
+    top: calc(100% + 30px);
+    {%- if settings.enable_rtl -%}
+    right: -230px;
+    {%- else -%}
+    left: -230px;
+    {%- endif -%}
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-2 .st-content-parent {
+    top: calc(100% + 30px);
+    {%- if settings.enable_rtl -%}
+    left: -230px;
+    {%- else -%}
+    right: -230px;
+    {%- endif -%}
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-1 .st-content-parent .tt-hotspot-content::before {
+    top: -40px;
+    bottom: unset;
+    transform: unset;
+    inset-inline-end: 0px;
+    border-top: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid #FFFFFF;
+    border-left: 20px solid transparent;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot.s-pro-2 .st-content-parent .tt-hotspot-content::before {
+    top: -40px;
+    bottom: unset;
+    transform: unset;
+    inset-inline-start: 0px;
+    border-top: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid #FFFFFF;
+    border-left: 20px solid transparent;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-content-parent .tt-hotspot-content .product-grid-list .single-product-wrap .product-image {
+    width: 80px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info .img-info .st-hotspot .st-content-parent .tt-hotspot-content .product-grid-list .single-product-wrap .product-content {
+    width: calc(100% - 80px);
+  }
+}
+@media(max-width: 1199px) {
+  .slider-content .home-slider .slide-image .slider-info-content {
+    margin-top: -40px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info {
+    width: calc(50% - 30px);
+    margin-top: 40px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info {
+    width: calc(50% - 30px);
+    margin-top: 40px;
+  }
+}
+@media(max-width: 767px) {
+  .slider-content .home-slider .slide-image .slider-info-content {
+    margin-top: -30px;
+    margin-inline-start: -12px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info {
+    width: calc(50% - 12px);
+    margin-top: 30px;
+    margin-inline-start: 12px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info {
+    width: calc(50% - 12px);
+    margin-top: 30px;
+    margin-inline-start: 12px;
+  }
+}
+@media(max-width: 600px) {
+  .slider-content .home-slider .slide-image .slider-info-content {
+    flex-direction: column-reverse;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info,
+  .slider-content .home-slider .slide-image .slider-info-content .slider-img-info {
+    width: calc(100% - 12px);
+  }
+}
+
+/* text effect css */
+.slider-content .home-slider .slide-image .slider-info-content .slider-text-info span.sub-title,
+.slider-content .home-slider .slide-image .slider-info-content .slider-text-info h2.title,
+.slider-content .home-slider .slide-image .slider-info-content .slider-text-info p.desc,
+.slider-content .home-slider .slide-image .slider-info-content .slider-text-info .text-btn{
+  opacity: 0;
+}
+.slider-content .home-slider .swiper-slide-active .slide-image .slider-info-content .slider-text-info span.sub-title,
+.slider-content .home-slider .swiper-slide-active .slide-image .slider-info-content .slider-text-info h2.title,
+.slider-content .home-slider .swiper-slide-active .slide-image .slider-info-content .slider-text-info p.desc,
+.slider-content .home-slider .swiper-slide-active .slide-image .slider-info-content .slider-text-info .text-btn {
+  animation-name: fadeInLeft;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+.slider-content .home-slider .swiper-slide-active .slide-image .slider-info-content .slider-text-info span.sub-title {
+  animation-delay: .5s;
+}
+.slider-content .home-slider .swiper-slide-active .slide-image .slider-info-content .slider-text-info h2.title {
+  animation-delay: .8s;
+}
+.slider-content .home-slider .swiper-slide-active .slide-image .slider-info-content .slider-text-info p.desc{
+  animation-delay: 1.1s;
+}
+.slider-content .home-slider .swiper-slide-active .slide-image .slider-info-content .slider-text-info .text-btn{
+  animation-delay: 1.4s;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-text-info span.sub-title {
+  {% if settings.other_custom_font_handle_enable %}
+  font-family: '{{ settings.other_custom_font_handle }}', sans-serif;
+  {% endif %}
+  font-size: 30px;
+  font-weight: var(--font-custom-weight-header);
+  margin-bottom: 28px;
+  font-style: italic;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-text-info h2.title {
+  font-size: 90px;
+  font-weight: var(--font-custom-weight-section-header);
+  line-height: 1;
+  text-transform: uppercase;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-text-info p.desc {
+  font-size: 18px;
+  margin-top: 28px;
+}
+.slider-content .home-slider .slide-image .slider-info-content .slider-text-info .text-btn {
+  margin-top: 42px;
+}
+@media(max-width: 1399px) {
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info h2.title {
+    font-size: 70px;
+  }
+}
+@media(max-width: 1199px) {
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info span.sub-title {
+    font-size: 24px;
+    margin-bottom: 26px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info h2.title {
+    font-size: 50px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info p.desc {
+    margin-top: 24px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info .text-btn {
+    margin-top: 31px;
+  }
+}
+@media(max-width: 767px) {
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info span.sub-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info h2.title {
+    font-size: 30px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info p.desc {
+    font-size: var(--font-size-body);
+    margin-top: 16px;
+  }
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info .text-btn {
+    margin-top: 20px;
+  }
+}
+@media(max-width: 479px) {
+  .slider-content .home-slider .slide-image .slider-info-content .slider-text-info h2.title {
+    font-size: 24px;
+  }
+}
+
+/* slider arrow css */
+.slider-content .home-slider .slider-arrow button {
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  height: 50px;
+  width: 50px;
+  margin: 0;
+  bottom: 50%;
+  position: absolute;
+  z-index: 1;
+  transform: translateY(50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,50%);
+}
+.slider-content .home-slider .slider-arrow button.arrow-prev {
+  left: 30px;
+}
+.slider-content .home-slider .slider-arrow button.arrow-next {
+  right: 30px;
+}
+.slider-content .home-slider .slider-arrow button:hover {
+  color: #fff;
+  background-color: var(--font-color-primary);
+  border-color: var(--font-color-primary);
+}
+.slider-content .home-slider .slider-arrow button i {
+  display: block;
+}
+@media(max-width: 991px) {
+  .slider-content .home-slider .slider-arrow button {
+    height: 40px;
+    width: 40px;
+  }
+  .slider-content .home-slider .slider-arrow button.arrow-prev {
+    left: 15px;
+  }
+  .slider-content .home-slider .slider-arrow button.arrow-next {
+    right: 15px;
+  }
+}
+@media(max-width: 479px) {
+  .slider-content .home-slider .slider-arrow button.arrow-prev {
+    left: 0px;
+  }
+  .slider-content .home-slider .slider-arrow button.arrow-next {
+    right: 0px;
+  } 
+}
+.slider-content .slider-info-count {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+  color: {{ section.settings.counter_color }};
+  font-size: 24px;
+  font-weight: 500;
+}
+.slider-content .slider-info-count span {
+  padding: 0 10px;
+}
+@media(max-width: 1499px){
+  .slider-content .slider-info-count {
+    bottom: 30px;
+  }
+  .slider-content .slider-info-count {
+    font-size: 18px;
+  }
+}
+@media(max-width: 1199px){
+  .slider-content .slider-info-count {
+    font-size: 16px;
+  }
+}
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(-45px,0,0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0,0,0);
+  }
+}
+</style>

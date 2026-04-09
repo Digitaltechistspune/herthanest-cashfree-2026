@@ -1,0 +1,183 @@
+{%- liquid assign sort_by = results.sort_by | default: results.default_sort_by
+  assign total_active_values = 0
+  if results.url
+    assign results_url = results.url
+  else 
+    assign terms = results.terms | escape
+    assign results_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
+  endif
+-%}
+{%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+<div class="shop-sidebar-inner{% if section.settings.sidebar_handle == 'without_sidebar' %} shop-sidebar-without{% endif %}">
+  <div class="shop-sidebar-wrap filter-sidebar{% if section.settings.sidebar_handle == 'without_sidebar' %} filter-sidebar-without{% endif %}">
+    <button class="close-filter-sidebar{% if section.settings.sidebar_handle == 'without_sidebar' %} close-filter-without{% endif %}" type="button"><i class="feather-x"></i></button>
+    {%- if section.settings.collection_categories_enable -%}
+    <div class="shop-sidebar shop-collection">
+      {%- if section.settings.collection_categories_title != '' -%}
+      <h6 class="title">{{ section.settings.collection_categories_title }}</h6>
+      <a class="title" data-toggle="collapse" href="#collapse-{{ settings.categories_title }}">{{ section.settings.collection_categories_title }}</a>
+      {%- endif -%}
+      <div class="collapse flt-ele" id="collapse-{{ section.settings.collection_categories_title }}">
+        <ul class="scrollbar">
+          {% for c in collections %}
+          {%- if c.products_count >= 1 -%}
+          <li {% if collection and collection.handle == c.handle %}class="active"{% endif %}>
+            <a href="{{ c.url }}" class="cust-checkbox-label" title="{{ c.title }}">
+              {%- if collection and collection.handle == c.handle -%}
+              <input type="checkbox" checked="checked" name="{{ c.title }}" class="cust-checkbox">
+              {%- else -%}
+              <input type="checkbox" class="cust-checkbox" name="{{ c.title }}">
+              {%- endif -%}
+              <span class="filter-name">{{ c.title }}</span>            
+              <span class="count-check">({{ c.products_count }})</span>
+              <span class="cust-check"></span>
+            </a>
+          </li>
+          {%- endif -%}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {%- endif -%}
+    <stfilter-ele class="facets">
+      <form id="stFacetFiltersForm">
+        {%- if results.terms -%}
+        <input type="hidden" name="q" value="{{ results.terms | escape }}">
+        <input name="options[prefix]" type="hidden" value="last">
+        {%- endif -%}
+        <div id="st-wrapper">
+          {%- unless results.filters == empty -%}
+          <div class="shop-sidebar sidebar-filter">
+            <h6 class="title">{{ 'collections.facets.filter_by_label' | t }}</h6>
+            {% if results.current_vendor or results.current_type %}
+            <input type="hidden" name="q" value="{{ results.current_vendor }}{{ results.current_type }}">
+            {% endif %}
+            <div class="sidebar-header">
+              <span id="pro-count" class="product-count-text">
+                {%- if results.results_count -%}
+                {{ 'collections.facets.results_with_count' | t: terms: results.terms, count: results.results_count }}
+                {%- elsif results.products_count == results.all_products_count -%}
+                {{ 'collections.facets.product_count_simple' | t: count: results.products_count }}
+                {%- else -%}
+                {{ 'collections.facets.product_count' | t: product_count: results.products_count, count: results.all_products_count }}
+                {%- endif -%}
+              </span>
+              <span class="ajax-loading">
+                <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                </svg>
+              </span>
+            </div>
+            <div class="active-flt">
+              <ul>
+                <li>
+                  {%- for filter in results.filters -%}
+                  {%- for value in filter.active_values -%}
+                  <flt-clear>
+                    <a href="{{ value.url_to_remove }}">
+                      <span>
+                        {{ value.label | escape }}
+                        <i class="feather-x"></i>
+                      </span>
+                    </a>
+                  </flt-clear>
+                  {%- endfor -%}
+                  {% if filter.type == "price_range" %}
+                  {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                  <flt-clear>
+                    <a href="{{ filter.url_to_remove }}">
+                      <span>
+                        {%- if filter.min_value.value -%}{{ filter.min_value.value | money }}{%- else -%}{{ 0 | money }}{%- endif -%}-{%- if filter.max_value.value -%}{{ filter.max_value.value | money }} {%- else -%}{{ filter.range_max | money }}{%- endif -%}
+                        <i class="feather-x"></i>
+                      </span>
+                    </a>
+                  </flt-clear>
+                  {%- endif -%}
+                  {% endif %}
+                  {%- endfor -%}
+                  <flt-clear>
+                    <a href="{{ results_url }}" class="clear-all">{{ 'collections.facets.clear_all' | t }}</a>
+                  </flt-clear>
+                </li>
+              </ul>
+            </div>
+          </div>
+          {%- endunless -%}
+          {%- liquid assign i = 0 -%}
+          {%- for filter in results.filters -%}
+          {% assign i = i | plus: 1 %}
+          {%- assign total_active_values = total_active_values | plus: filter.active_values.size -%}
+          {% case filter.type %}
+          {% when 'list' %}
+          <div class="shop-sidebar st-filter {{ filter.label | escape | downcase }}" data-index="{{ forloop.index }}">
+            <h6 class="title">{{ filter.label | escape }}</h6>
+            <a class="title" data-toggle="collapse" href="#collapse-{{ i }}">{{ filter.label | escape }}</a>
+            <div class="sidebar-header">
+              <span class="flt-selected">{{ 'collections.facets.filters_selected' | t: count: filter.active_values.size }}</span>
+              <flt-clear>
+                <a href="{{ filter.url_to_remove }}">{{ 'collections.facets.filter_reset' | t }}</a>
+              </flt-clear>
+            </div>
+            <div class="collapse flt-ele" id="collapse-{{ i }}">
+              <ul class="scrollbar">
+                {%- for value in filter.values -%}
+                {%- liquid assign downcased_value = value.label | downcase -%}
+                <li class="{{ filter.label | escape | downcase }}">
+                  <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="cust-checkbox-label {{ filter.label | escape | downcase }} {{ value.label | downcase | replace: " ", "-" }}">
+                    <input type="checkbox" id="Filter-{{ filter.label | escape }}-{{ forloop.index }}" name="{{ value.param_name }}" value="{{ value.value }}" class="cust-checkbox" {% if value.active %}checked{% endif %}{% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                    <span class="filter-name">{{ value.label | escape }}</span>
+                    <span class="count-check">({{ value.count }})</span>
+                    <span class="cust-check" style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: downcased_value %}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value.label }}"></span>
+                  </label>
+                </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          </div>
+          {% when 'price_range' %}
+          <div class="shop-sidebar st-filter" data-index="{{ forloop.index }}">
+            <h6 class="title">{{ filter.label | escape }}</h6>
+            <a class="title" data-toggle="collapse" href="#collapse-{{ i }}">{{ filter.label | escape }}</a>
+            <div class="sidebar-header">
+              {%- assign max_price_amount = filter.range_max | money | strip_html | escape -%}
+              <span class="flt-selected">{{ 'collections.facets.max_price' | t: price: max_price_amount }}</span>
+              <flt-clear>
+                <a href="{{ filter.url_to_remove }}">{{ 'collections.facets.filter_reset' | t }}</a>
+              </flt-clear>
+            </div>
+            <div class="collapse flt-ele" id="collapse-{{ i }}">
+              <range-slider class="range-slider">
+                {%- liquid
+                  assign min_value = filter.min_value.value | default: 0.0 | divided_by: 100.0
+                  assign max_value = filter.max_value.value | default: filter.range_max | divided_by: 100.0
+                  assign range_max = filter.range_max | divided_by: 100.0 | ceil
+                  assign lower_bound_progress = min_value | divided_by: range_max | times: 100.0
+                  assign higher_bound_progress = max_value | divided_by: range_max | times: 100.0
+               -%}
+                <div class="range-slider-group group-range" style="--range-min: {{ lower_bound_progress }}%; --range-max: {{ higher_bound_progress }}%">
+                  <input type="range" aria-label="{{ 'collections.facets.price_filter_from' | t }}" class="range" min="0" max="{{ range_max | ceil }}" value="{{ min_value | ceil }}">
+                  <input type="range" aria-label="{{ 'collections.facets.price_filter_to' | t }}" class="range" min="0" max="{{ range_max | ceil }}" value="{{ max_value | ceil }}">
+                </div>
+                <div class="price-input-group group-input">
+                  <div class="range-slider-input input-prefix">
+                    <label class="input-prefix-label">{{ 'collections.facets.price_filter_from' | t }}</label>
+                    <span class="input-prefix-value">{{ cart.currency.symbol }}</span>
+                    <input aria-label="{{ 'collections.facets.price_filter_from' | t }}" class="input-prefix-field" type="number" inputmode="numeric" {% if filter.min_value.value %}value="{{ min_value | ceil }}"{% endif %} name="{{ filter.min_value.param_name }}" min="0" max="{{ max_value | ceil }}" placeholder="0">
+                  </div>
+                  <span class="range-slider-delimeter">-</span>
+                  <div class="range-slider-input input-prefix">
+                    <label class="input-prefix-label">{{ 'collections.facets.price_filter_to' | t }}</label>
+                    <span class="input-prefix-value">{{ cart.currency.symbol }}</span>
+                    <input aria-label="{{ 'collections.facets.price_filter_to' | t }}" class="input-prefix-field" type="number" inputmode="numeric" {% if filter.max_value.value %}value="{{ max_value | ceil }}"{% endif %} name="{{ filter.max_value.param_name }}" min="{{ min_value | ceil }}" max="{{ range_max | ceil }}" placeholder="{{ range_max | ceil }}">
+                  </div>
+                </div>
+              </range-slider>
+            </div>
+            {% endcase %}
+            {%- endfor -%}
+          </div>
+        </div>
+      </form>
+    </stfilter-ele>
+  </div>
+</div>

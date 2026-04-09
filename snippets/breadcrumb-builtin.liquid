@@ -1,0 +1,106 @@
+<ul class="breadcrumb-list">
+  <li class="breadcrumb-item">
+    <a href="/" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+  </li>
+  {% if template contains 'product' %}
+  <li class="breadcrumb-item">
+    <span>{{ product.title }}</span>
+  </li>
+  {% elsif template contains 'collection' and collection.handle %}
+  {% if current_tags %}
+  {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+  <li class="breadcrumb-item">
+    {{ collection.title | link_to: url }}
+  </li>
+  <li class="breadcrumb-item">
+    {% for tag in collection.all_tags %}
+    {% if current_tags contains tag %}
+    <span>{{ tag | replace: "_", ", " | split: ", " | last | capitalize }}</span>
+    {% endif %}
+    {% endfor %}
+  </li>
+  {% else %}
+  <li class="breadcrumb-item">
+    <span>{{ collection.title }}</span>
+  </li>
+  {% endif %}
+  {% elsif template == 'blog' %}
+  <li class="breadcrumb-item">
+    <span>{{ blog.title }}</span>
+  </li>
+  {% elsif template == 'article' %}
+  <li class="breadcrumb-item">
+    {{ blog.title | link_to: blog.url }}
+  </li>
+  {% elsif template contains 'page' %}
+  <li class="breadcrumb-item">
+    <span>{{ page.title }}</span>
+  </li>
+  {% else %}
+  <li class="breadcrumb-item">
+    <span>{{ page_title }}</span>
+  </li>
+  {% endif %}
+</ul>
+<style>
+  ul.breadcrumb-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  ul.breadcrumb-list li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+    justify-content: center;
+  }
+  ul.breadcrumb-list li::after {
+    content: "-";
+    color: {{ settings.breadcrumb_title_color | color_modify: 'alpha', 0.6 }};
+    margin: 0px 5px;
+  }
+  ul.breadcrumb-list li:last-child::after {
+    display: none;
+  }
+  ul.breadcrumb-list li.breadcrumb-item + li.breadcrumb-item {
+    padding-left: 0;
+  }
+  ul.breadcrumb-list li.breadcrumb-item + li.breadcrumb-item::before {
+    content: "";
+    display: block;
+    padding-right: 0;
+  }
+  ul.breadcrumb-list li a,
+  ul.breadcrumb-list li span {
+    font-size: var(--font-size-body);
+    color: {{ settings.breadcrumb_title_color }};
+    text-transform: uppercase;
+  }
+  ul.breadcrumb-list li a {
+    -webkit-transition: all 0s ease-in-out 0s;
+    -o-transition: all 0s ease-in-out 0s;
+    transition: all 0s ease-in-out 0s;
+  }
+  ul.breadcrumb-list li span {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  ul.breadcrumb-list li span::after {
+    content: "+";
+    color: {{ settings.breadcrumb_title_color | color_modify: 'alpha', 0.6 }};
+    margin: 0px 5px;
+  }
+  ul.breadcrumb-list li span:last-child::after {
+    display: none;
+  }
+  @media(max-width: 1199px){
+    ul.breadcrumb-list li a,
+    ul.breadcrumb-list li span {
+      font-size: var(--font-size-body);
+    }
+  }
+</style>

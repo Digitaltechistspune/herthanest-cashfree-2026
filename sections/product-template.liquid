@@ -1,0 +1,920 @@
+{%- if section.settings.breadcrumb_enable -%}
+{% render 'product-template-breadcrumb', product: product %}
+{%- endif -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+<section class="product-details-page" id="MainProduct-{{ section.id }}" data-section="{{ section.id }}" style="--padding-top: {{ section.settings.pro_detail_padding_top }}px;--padding-bottom: {{ section.settings.pro_detail_padding_bottom }}px; --padding-top-lg: {{ section.settings.pro_detail_padding_top_ip }}px;--padding-bottom-lg: {{ section.settings.pro_detail_padding_bottom_ip }}px; --padding-top-xs: {{ section.settings.pro_detail_padding_top_xs }}px;--padding-bottom-xs: {{ section.settings.pro_detail_padding_bottom_xs }}px;">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="pro_details_pos template-1 {% if section.settings.product_pos == 'left' %}pro_details_left_pos{% elsif section.settings.product_pos == 'right' %}pro_details_right_pos{% endif %}">
+          <div class="product_detail_slider {% if section.settings.product_img_pos == 'top' or section.settings.product_img_pos == 'bottom' %}product_details_tb{% elsif section.settings.product_img_pos == 'left' or section.settings.product_img_pos == 'right' %}product_details_lr{% endif %} product_details{% if section.settings.product_pos_sticky_enable %} product_details_sticky{% endif %}">
+            <div class="product_detail_img{% if section.settings.product_img_pos == 'top' %} product_detail_img_top{% elsif section.settings.product_img_pos == 'bottom' %} product_detail_img_bottom{% elsif section.settings.product_img_pos == 'left' %} product_detail_img_left{% elsif section.settings.product_img_pos == 'right' %} product_detail_img_right{% endif %}">
+              <div class="pro-slider">
+                <div class="slider-small swiper slider-small-{{ product.id }}" id="slider-small-{{ product.id }}" {% if settings.enable_rtl %}dir="rtl"{% endif %} data-slides-per-view="5">
+                  <div class="swiper-wrapper">
+                    {% for media in product.media %}
+                    {% assign i = forloop.index %}
+                    {%- liquid
+                      assign img_url = media | image_url
+                      assign ratio = 1
+                      if media.preview_image and section.settings.image_ratio == 'portrait'
+                        assign ratio = 0.8
+                      elsif media.preview_image and section.settings.image_ratio == 'adapt'
+                        assign ratio = img_url.aspect_ratio
+                      endif
+                      if ratio == 0 or ratio == null
+                        assign ratio = 1
+                      endif
+                    -%}
+                    <div class="swiper-slide" data-layout="thumb-slider" data-image="{{ media.src | image_url }}" data-image-id="{{ media.id }}" data-index="{{ i }}" {% if section.settings.product_img_pos == 'left' or section.settings.product_img_pos == 'right' %} data-slide="vertical" {% else %} data-slide="horizontal"{% endif %}>
+  <span class="product-thumb" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+    <img
+      src="{{ media.preview_image | image_url: width: 360 }}"
+      srcset="
+        {% if media.preview_image.width >= 165 %}
+          {{ media.preview_image | image_url: width: 165 }} 165w,
+        {% endif %}
+        {% if media.preview_image.width >= 360 %}
+          {{ media.preview_image | image_url: width: 360 }} 360w
+        {% endif %}
+      "
+      sizes="(max-width: 768px) 50vw, 33vw"
+      alt="{{ media.alt | escape }}"
+      loading="lazy"
+      class="product-image"
+    />
+    {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+      <span class="icon-play"><i class="bi bi-play"></i></span>
+    {%- endif -%}
+    {%- if media.media_type == 'model' -%}
+      <span class="icon-modal"><i class="bi bi-box"></i></span>
+    {%- endif -%}
+  </span>
+</div>
+
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="product_img_top">
+                <div class="slider-big swiper slider-big-{{ product.id }}" id="slider-big-{{ product.id }}" {% if settings.enable_rtl %}dir="rtl"{% endif %} data-slides-per-view="1">
+                  <div class="swiper-wrapper">
+                    {%- for media in product.media -%}
+                    {% assign i = forloop.index %}
+                    <div class="swiper-slide" data-layout="thumb-slider" data-image="{{ media.src | image_url }}" data-image-id="{{ media.id }}" data-index="{{ i }}">
+                      {% render 'media', media: media, section: section %}
+                    </div>
+                    {%- endfor -%}
+                  </div>
+                  <div class="big-button button-next"><i class="feather-arrow-right"></i></div>
+                  <div class="big-button button-prev"><i class="feather-arrow-left"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="product_details_wrap {% if section.settings.product_img_pos == 'top' or section.settings.product_img_pos == 'bottom' %}product_details_tb{% elsif section.settings.product_img_pos == 'left' or section.settings.product_img_pos == 'right' %}product_details_lr{% endif %} product_details">
+            <div class="product_details_info">
+              <div class="pro-nprist">
+                <div id="ProductInfo-{{ section.id }}" data-section="{{ section.id }}" data-url="{{ product.url }}" class="product__info-container">
+                  {%- assign product_form_id = 'product-form-' | append: section.id -%}
+                  {%- liquid
+                    for block in section.blocks
+                    case block.type
+                    when 'accordion_trust'
+  render 'product-accordion-trust', product: product, block: block
+
+                    when 'coupon_copy'
+  render 'coupon-copy', product: product
+
+                    when '@app'
+                    render 'product-template-app', product: product, block: block
+                    when 'custom_html'
+                    render 'product-template-custom-html', product: product, block: block
+                    when 'product_review'
+                    render 'product-template-review', product: product, block: block
+                    when 'product_title'
+                    render 'product-template-title', product: product, block: block
+                    when 'product_price'
+                    render 'product-template-price', product: product, block: block, current_variant: current_variant
+                    when 'short_description'
+                    render 'product-template-short-description', product: product, block: block
+                    when 'product_countdown'
+                    render 'product-template-countdown', product: product, block: block
+                    when 'product_stock_inventory'
+                    render 'product-template-stock', product: product, block: block, section: section, current_variant: current_variant
+                    when 'product_variant_picker'
+                    render 'product-template-variant', product: product, block: block, product_form_id: product_form_id
+                    when 'product_buy_buttons'
+                    render 'product-template-button', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true
+                    when 'product_sku'
+                    render 'product-template-sku', product: product, block: block, current_variant: current_variant
+                    when 'product_payment'
+                    render 'product-template-payment', product: product, block: block
+                    when 'product_modal'
+                    render 'product-template-modal', product: product, block: block
+                    when 'product_delivery_date'
+                    render 'product-template-delivery-date', product: product, block: block
+                    endcase
+                    endfor
+                  -%}
+
+                
+
+<!-- Start of Judge.me code -->
+<div style='clear:both'></div>
+<div id='judgeme_product_reviews'></div>
+<!-- End of Judge.me code -->
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+(function () {
+  function initProductSwiper() {
+    // ✅ wait only for Swiper (NOT jQuery)
+    if (typeof Swiper === 'undefined') {
+      return setTimeout(initProductSwiper, 80);
+    }
+
+    const thumbsEl = document.getElementById('slider-small-{{ product.id }}');
+    const mainEl   = document.getElementById('slider-big-{{ product.id }}');
+    if (!thumbsEl || !mainEl) return;
+
+    // ✅ prevent double init
+    if (thumbsEl.swiper) thumbsEl.swiper.destroy(true, true);
+    if (mainEl.swiper)   mainEl.swiper.destroy(true, true);
+
+    const isVertical = {% if section.settings.product_img_pos == 'left' or section.settings.product_img_pos == 'right' %}true{% else %}false{% endif %};
+
+
+    // ✅ Thumbs slider
+    const thumbsSwiper = new Swiper(thumbsEl, {
+      spaceBetween: 15,
+      direction: isVertical ? 'vertical' : 'horizontal',
+      slidesPerView: isVertical ? 'auto' : 5,
+
+      // ✅ THIS is required for thumb click → main image
+      watchSlidesProgress: true,
+      slideToClickedSlide: true,
+      freeMode: true,
+
+      mousewheel: isVertical,
+
+      breakpoints: {
+        0:   { slidesPerView: 3, direction: 'horizontal' },
+        480: isVertical
+          ? { slidesPerView: 'auto', direction: 'vertical' }
+          : { slidesPerView: 5, direction: 'horizontal' }
+      }
+    });
+
+    // ✅ Main slider
+    new Swiper(mainEl, {
+      slidesPerView: 1,
+      spaceBetween: 0,
+      autoHeight: true,
+      navigation: {
+        nextEl: mainEl.querySelector('.button-next'),
+        prevEl: mainEl.querySelector('.button-prev')
+      },
+      thumbs: { swiper: thumbsSwiper },
+
+      // helps when layout loads late / theme editor
+      observer: true,
+      observeParents: true
+    });
+
+    // ✅ run your jQuery code ONLY if jQuery exists
+    if (window.jQuery) {
+      window.jQuery(function ($) {
+        $(".option-block .op-lb")
+          .off("click.product")
+          .on("click.product", function () {
+            var op_select = $(this).text();
+            $(this).parents('.variant-option-block').find('.current-option').html(op_select);
+          });
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProductSwiper);
+  } else {
+    initProductSwiper();
+  }
+
+  // ✅ important for Shopify theme editor / dynamic reloads
+  document.addEventListener('shopify:section:load', function (e) {
+    if (e.detail && e.detail.sectionId === '{{ section.id }}') initProductSwiper();
+  });
+})();
+</script>
+
+</section>
+
+
+
+
+
+{% render 'product-template-ask-modal', product: product, block: block %}
+
+{% render 'mobile-sticky-atc' %}
+
+
+
+{% schema %}
+
+{
+  "name": "Product Template",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "pro_detail_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "pro_detail_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "pro_detail_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "pro_detail_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "pro_detail_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pro_detail_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Breadcrumb title"
+    },
+    {
+      "type": "checkbox",
+      "id": "breadcrumb_enable",
+      "label": "Breadcrumb title enable",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "br_bgcolor",
+      "label": "Breadcrumb Background Color",
+      "default": "#F3F2EE"
+    },
+    {
+      "type": "checkbox",
+      "id": "br_bgcolor_enable",
+      "label": "Show Breadcrumb Background Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "pro_detail_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "pro_detail_bgcolor_enable",
+      "label": "Show Background Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product Position"
+    },
+    {
+      "type": "radio",
+      "id": "product_pos",
+      "label": "Product Position",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Right",
+          "value": "right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "product_pos_sticky_enable",
+      "label": "Show Product Sticky",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product Image Position"
+    },
+    {
+      "type": "radio",
+      "id": "product_img_pos",
+      "label": "Image Position",
+      "options": [
+        {
+          "label": "Top",
+          "value": "top"
+        },
+        {
+          "label": "Right",
+          "value": "right"
+        },
+        {
+          "label": "Bottom",
+          "value": "bottom"
+        },
+        {
+          "label": "Left",
+          "value": "left"
+        }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "header",
+      "content": "Product Zoom"
+    },
+    {
+      "type": "checkbox",
+      "id": "zoom_enable",
+      "label": "Show Product Zoom",
+      "default": true,
+      "info": "When product image mouse hover show zoom image"
+    },
+    {
+      "type": "checkbox",
+      "id": "lightbox_enable",
+      "label": "Light box enable",
+      "default": true,
+      "info": "When product click show full view image"
+    },
+    {
+      "type": "header",
+      "content": "Image ratio"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to image"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "adapt",
+      "label": "Image shape"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "custom_html",
+      "name": "Custom html",
+      "settings": [
+        {
+          "type": "html",
+          "id": "custom_html",
+          "label": "Custom html"
+        }
+      ]
+    },
+{
+  "type": "accordion_trust",
+  "name": "Accordion + Trust Badges",
+  "limit": 1,
+  "settings": [
+    {
+  "type": "checkbox",
+  "id": "show_badges_outside",
+  "label": "Show trust badges outside accordion",
+  "default": false
+},
+{
+  "type": "image_picker",
+  "id": "badge_image_outside",
+  "label": "Trust badges image (outside accordion)"
+},
+
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Accordion Title",
+      "default": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_default",
+      "label": "Open by default",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "use_product_desc",
+      "label": "Use product description (short)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "words_limit",
+      "label": "Short description words",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "default": 40
+    },
+    {
+      "type": "richtext",
+      "id": "custom_text",
+      "label": "Custom text (used when 'Use product description' is OFF)",
+      "default": "<p>Add your custom short description here.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA button row",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "Need it customized?"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text",
+      "default": "Contact here"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "badge_image_1",
+      "label": "Trust badges image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "badge_image_2",
+      "label": "Trust badges image 2"
+    }
+  ]
+},
+
+
+    {
+  "type": "coupon_copy",
+  "name": "Offer Code (Copy)",
+  "limit": 1
+},
+
+    {
+      "type": "product_review",
+      "name": "Product Review",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "review_enable",
+          "label": "Review enable",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "fakesold_enable",
+          "label": "Fakesold enable",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "mins",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "qty",
+          "label": "Min quantity",
+          "default": 5
+        },
+        {
+          "type": "range",
+          "id": "maxs",
+          "min": 10,
+          "max": 110,
+          "step": 1,
+          "unit": "qty",
+          "label": "Max quantity",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "mint",
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "unit": "h",
+          "label": "Min time",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "maxt",
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "unit": "h",
+          "label": "Max time",
+          "default": 24
+        },
+        {
+          "type": "text",
+          "id": "sold_in_last",
+          "label": "Sold in last",
+          "default": "sold in last"
+        },
+        {
+          "type": "text",
+          "id": "hours",
+          "label": "Hours",
+          "default": "hours"
+        }
+      ]
+    },
+    {
+      "type": "product_title",
+      "name": "Product Title",
+      "limit": 1
+    },
+    {
+      "type": "product_price",
+      "name": "Product Price",
+      "limit": 1
+    },
+    {
+      "type": "product_stock_inventory",
+      "name": "Product Stock Inventory",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "availability_title",
+          "label": "Available Title",
+          "default": "Availability:"
+        },
+        {
+          "type": "range",
+          "id": "inventory_threshold",
+          "label": "Low inventory threshold",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "info": "Choose 0 to always show in stock if available.",
+          "default": 10
+        },
+        {
+          "type": "checkbox",
+          "id": "show_inventory_quantity",
+          "label": "Show inventory count",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "product_variant_picker",
+      "name": "Product Variant",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "picker_type",
+          "options": [
+            {
+              "value": "dropdown",
+              "label": "Dropdown"
+            },
+            {
+              "value": "button",
+              "label": "Block"
+            }
+          ],
+          "default": "button",
+          "label": "Selector type"
+        },
+        {
+          "type": "select",
+          "id": "color_picker_type",
+          "options": [
+            {
+              "value": "color_swatch",
+              "label": "Color swatch"
+            },
+            {
+              "value": "variant_image",
+              "label": "Variant image"
+            }
+          ],
+          "default": "color_swatch",
+          "label": "Color selector type",
+          "info": "To select the color it is mandatory to keep the above select box in the block"
+        }
+      ]
+    },
+    {
+      "type": "product_buy_buttons",
+      "name": "Product Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "default": true,
+          "label": "Show dynamic checkout buttons"
+        }
+      ]
+    },
+    {
+      "type": "product_sku",
+      "name": "Product SKU",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "delivery_title",
+          "label": "Delivery title",
+          "default": "Delivery:"
+        },
+        {
+          "type": "text",
+          "id": "delivery_text",
+          "label": "Delivery text",
+          "default": "Estimated delivery time: 12-26 days"
+        },
+        {
+          "type": "text",
+          "id": "return_title",
+          "label": "Return title",
+          "default": "Returns:"
+        },
+        {
+          "type": "text",
+          "id": "return_text",
+          "label": "Return text",
+          "default": "Within 45 days of purchase"
+        }
+      ]
+    },
+    {
+      "type": "product_payment",
+      "name": "Product Payment",
+      "limit": 1
+    },
+    {
+      "type": "product_delivery_date",
+      "name": "Product delivery date",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "delivery_date_info",
+          "label": "Item will be delivered on or before",
+          "default": "Item will be delivered on or before"
+        },
+        {
+          "type": "number",
+          "id": "delivery_date",
+          "label": "Today after delivery days",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "type": "product_modal",
+      "name": "Product Modal",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Question modal"
+        },
+        {
+          "type": "checkbox",
+          "id": "question_modal_enable",
+          "label": "Question modal enable",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "que_title",
+          "label": "Question title",
+          "default": "Aks Question"
+        },
+        {
+          "type": "header",
+          "content": "Sizeguide modal"
+        },
+        {
+          "type": "checkbox",
+          "id": "size_modal_enable",
+          "label": "Sizeguide modal enable",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "size_title",
+          "label": "Sizeguide title",
+          "default": "SizeGuide"
+        },
+        {
+          "type": "page",
+          "id": "sizeguide_page",
+          "label": "Select a page"
+        },
+        {
+          "type": "header",
+          "content": "Share modal"
+        },
+        {
+          "type": "checkbox",
+          "id": "share_modal_enable",
+          "label": "Share modal enable",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "share_title",
+          "label": "Share title",
+          "default": "Share"
+        },
+        {
+          "type": "text",
+          "id": "copy_title",
+          "label": "Copy title",
+          "default": "Copy link"
+        },
+        {
+          "type": "text",
+          "id": "copy_button",
+          "label": "Copy button",
+          "default": "Copy"
+        }
+      ]
+    },
+    {
+      "type": "short_description",
+      "name": "Short Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "metafields add"
+        },
+        {
+          "type": "paragraph",
+          "content": "[Add short description product](/admin/metafields/product/create)"
+        },
+        {
+          "type": "text",
+          "id": "short_description",
+          "label": "Short description"
+        }
+      ]
+    },
+    {
+      "type": "product_countdown",
+      "name": "Product countdown timer",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "hurry_up_text",
+          "label": "Hurry up! Sale ends in:",
+          "default": "Hurry up! Sale ends in:"
+        },
+        {
+          "type": "header",
+          "content": "metafields add"
+        },
+        {
+          "type": "paragraph",
+          "content": "Add name on metafield name 'Timer' and select type only 'date' [Add metafield](/admin/metafields/product/create)"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .product-details-page {
+    {%- if section.settings.pro_detail_bgcolor_enable -%}
+    background-color: {{ section.settings.pro_detail_bgcolor }};
+    {%- endif -%}
+  }
+  .product-breadcrumb {
+    {%- if section.settings.br_bgcolor_enable -%}
+    background-color: {{ section.settings.br_bgcolor }};
+    {%- endif -%}
+  }
+</style>

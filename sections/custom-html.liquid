@@ -1,0 +1,165 @@
+<section class="html-section">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="section-capture">        
+          <div class="section-title">
+            {% if section.settings.section_title != '' %}
+            <h2>{{ section.settings.section_title }}</h2>
+            {% endif %}
+          </div>
+        </div>
+        {% if section.settings.custom_html != '' %}
+        <div class="custom-html">
+          {{ section.settings.custom_html }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Custom html",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop / tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ip",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "fluid"
+    },
+    {
+      "type": "header",
+      "content": "Section Heading"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Custom title"
+    },
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "html",
+      "id": "custom_html",
+      "label": "Custom html"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom html"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .html-section {
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  }
+  @media (max-width: 1199px) {
+    .html-section {
+      padding-top: {{ section.settings.section_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_ip }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .html-section {
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+</style>

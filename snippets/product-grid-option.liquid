@@ -1,0 +1,56 @@
+{%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+{%- unless product.has_only_default_variant -%}
+<div class="pr-gr-option"> 
+  {%- for option in product.options_with_values -%}
+  {%- liquid
+    assign is_color = false
+    assign downcase_option = option.name | downcase
+    if color_label contains downcase_option
+    assign is_color = true
+    assign variant_option = 'option' | append: forloop.index
+    endif
+  -%}
+  {%- if is_color -%}
+  <div class="option-block">
+    {%- capture option_name -%}option{{ option.position }}{%- endcapture -%}
+    {%- for value in option.values -%}
+    {%- liquid 
+      for variant in product.variants
+      if variant[variant_option] == value
+      assign variant_for_value = variant
+      break
+      endif
+      endfor
+      assign downcased_value = value | downcase
+    -%}
+    <form-wrap class="variant-option item-color {% if forloop.first %}active-variant{% endif %}">
+      <div class="variant-item item-data" id="item-color-{{ section.id }}-{{ product.id }}-{{ variant_for_value.id }}" dataprice="{{ variant_for_value.price }}" datacompare="{{ variant_for_value.compare_at_price }}" dataavailable="{{ variant_for_value.available }}" dataimg="{{ variant_for_value.featured_image | image_url: width: 720 }}" dataurl="{{ variant_for_value.url }}">
+        {%- if settings.pro_gr_color_picker_type == "variant_image" -%}
+        <label class="op-lb color-img cust-checkbox-label {{ value | downcase | replace: " ", "-" }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}">
+          {%- capture variant_swatch_id -%}{{ option_name }}-{{ forloop.index }}{%- endcapture -%}
+          {%- for variant in product.variants -%}   
+          {%- if variant[option_name] == value and variant.image -%}
+          {{ variant.image | image_url: width: 40, height: 40, crop: 'center' | image_tag:
+            loading: 'lazy',
+            width: 40,
+            height: 40,
+            class: "img-fluid lazyload",
+            alt: variant.image.alt | escape
+          }}
+          {%- break -%}
+          {%- endif -%}
+          {%- endfor -%}
+        </label>
+        {%- else -%}
+        <label class="op-lb color cust-checkbox-label {{ value | downcase | replace: " ", "-" }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}">
+          <span class="color-swatch cust-check" style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: downcased_value %}"></span>
+        </label>
+        {%- endif -%}
+      </div>
+    </form-wrap>
+    {%- endfor -%} 
+  </div>
+  {%- endif -%}
+  {%- endfor -%}
+</div>
+{%- endunless -%}

@@ -1,0 +1,102 @@
+<div class="search-rap-desktop">
+  {%- if settings.ajax_search_enabled -%}
+  <search-ajax class="search-form">
+    {%- else -%}
+    <search-form class="search-form">
+      {%- endif -%}
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+        <div class="field">
+          <input id="{{ input_id }}" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'templates.search.placeholder' | t }}"
+          {%- if settings.ajax_search_enabled -%}
+          role="combobox"
+          aria-expanded="false"
+          aria-owns="search-ajax-results"
+          aria-controls="search-ajax-results"
+          aria-haspopup="listbox"
+          aria-autocomplete="list"
+          autocorrect="off"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          {%- endif -%}
+          required
+          >
+          <input type="hidden" name="options[prefix]" value="last">
+          <button type="reset" class="reset-input hidden"></button>
+          <button class="search-btn">
+            <i class="feather-search"></i>
+          </button>
+        </div>
+        {%- if settings.ajax_search_enabled -%}
+        <div class="search-ajax" tabindex="-1" data-search-ajax></div>
+        <span class="search-ajax-status visually-hidden" role="status" aria-hidden="true"></span>
+        {%- endif -%}
+      </form>
+      {%- if settings.ajax_search_enabled -%}
+    </search-ajax>
+    {%- else -%}
+  </search-form>
+  {%- endif -%}
+</div>
+<style>
+/*search desktop*/
+.search-rap-desktop form {
+  display: flex;
+  align-items: center;
+}
+.search-rap-desktop .field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-rap-desktop form input{
+  border-radius: 0px;
+  border: none;
+  height: 45px;
+  width: 300px;
+  background-color: transparent;
+}
+.search-rap-desktop form button{
+  font-size: 18px;
+  line-height: 0;
+  position: absolute;
+  {%- if settings.enable_rtl -%}
+  left: 15px;
+  {%- else -%}
+  right: 15px;
+  {%- endif -%}
+}
+.search-rap-desktop form button:hover {
+  color: var(--font-color-primary);
+}
+.search-rap-desktop search-ajax .search-ajax {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 100%;
+  z-index: 9;
+  opacity: 0;
+  padding-bottom: 30px;
+  visibility: hidden;
+  transition: .3s;
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(0,0,0,10%);
+}
+.search-rap-desktop search-ajax[open] .search-ajax {
+  opacity: 1;
+  visibility: visible;
+}
+.search-rap-desktop search-ajax .ajax-result-group .product-list {
+  padding: 0;
+}
+@media(max-width: 1199px){
+  .search-rap-desktop form input {
+    font-size: var(--font-size-body);
+    padding: 12px 15px;
+  }
+  .search-rap-desktop form button {
+    right: 15px;
+    font-size: 16px;
+  }
+}
+</style>

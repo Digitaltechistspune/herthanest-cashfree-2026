@@ -1,0 +1,506 @@
+<section class="about-section3" {% if section.settings.testi_bgimg_enable %}style="background-image: url('{% if section.settings.testi_bgimg %}{{ section.settings.testi_bgimg | image_url: 'master' }}{% else %}https://dummyimage.com/1920x710/f7f7f7/999999{% endif %}');"{% endif %}>
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        {% if section.settings.testi_title != '' %}
+        <div class="section-capture">
+          <div class="section-title" data-fade-in>
+            {% if section.settings.testi_title != '' %}
+            <h2>{{ section.settings.testi_title }}</h2>
+            {% endif %}
+            </div>
+            {% if section.settings.testi_desc != '' %}
+            <p>{{ section.settings.testi_desc }}</p>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+        <div class="about-slider owl-carousel" id="about-slider-{{ section.id }}">
+          {% for block in section.blocks %}
+          <div class="item">
+            <div class="testi-content">
+              <div class="testi-img-avtar">
+                {% if block.settings.testi_img_enable %}
+                <span class="testi-img">
+                  {%- if block.settings.testi_img -%}
+                  {{ block.settings.testi_img | image_url: width: 90 | image_tag:
+                  loading: 'lazy',
+                  width: block.settings.testi_img.width,
+                  height: block.settings.testi_img.height,
+                  class: "img-fluid lazyload",
+                  alt: block.settings.testi_img.alt | escape }}
+                  {%- else -%}
+                  {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+                  {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                  {%- endif -%}
+                </span>
+                {% endif %}
+                <span class="testi-det">{{ block.settings.testi_infotitle }}</span>
+              </div>
+              <div class="testi-desc">
+                <p>{{ block.settings.testi_review_content }}</p>
+                <span class="testi-name">{{ block.settings.testi_authrtitle }}</span>
+              </div>
+            </div>
+          </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+addEventListener('DOMContentLoaded', (event) => {
+  $('#about-slider-{{ section.id }}').owlCarousel({
+    loop: false,
+    rewind: true,
+    items: 1,
+    center: true,
+    loop: true,
+    margin: 30,
+    nav: true,
+    navText: ['<i class="feather-arrow-left"></i>','<i class="feather-arrow-right"></i>'],
+    dots: false,
+    {%- if settings.enable_rtl -%}
+    rtl: true,
+    {%- endif -%}
+    responsive: {
+      0: {
+        items: 1,
+        margin: 12,
+        dots: true,
+        nav: false
+      },
+      479: {
+        items: 1,
+        margin: 12,
+        dots: true,
+        nav: false
+      },
+      540: {
+        items: 1,
+        margin: 12,
+        dots: true,
+        nav: false
+      },
+      640: {
+        items: 1,
+        margin: 12,
+        dots: true,
+        nav: false
+      },
+      768: {
+        items: 1,
+        dots: true,
+        nav: false
+      },
+      979: {
+        items: 1
+      },
+      1199: {
+        items: 1
+      }
+    }
+  });
+});
+</script>
+{% schema %}
+{
+  "name": "About section3",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "testi_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "testi_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "testi_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "testi_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "testi_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "testi_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Backgorund Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "testi_bgimg",
+      "label": "Backgorund Image",
+      "info": "Recommended Size: 1920px x 710px"
+    },
+    {
+      "type": "checkbox",
+      "id": "testi_bgimg_enable",
+      "label": "Show Backgorund Images",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "Background Image Overlay Color"
+    },
+    {
+      "type": "color",
+      "id": "testimonial_banner_overlay_bgcolor",
+      "label": "Background Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "testimonial_banner_overlay_bgcolor_opacity",
+      "label": "Background Color Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.2
+    },
+    {
+      "type": "header",
+      "content": "Section Backgorund Color"
+    },
+    {
+      "type": "color",
+      "id": "testi_bgcolor",
+      "label": "Background Color",
+      "default": "#F9F4F3"
+    },
+    {
+      "type": "checkbox",
+      "id": "testi_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "testi_title",
+      "label": "Title",
+      "default": "Customer love"
+    },
+    {
+      "type": "textarea",
+      "id": "testi_desc",
+      "label": "Description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testi_slide",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "testi_img_enable",
+          "label": "Review Image",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "testi_img",
+          "label": "Review Image",
+          "info": "Recommended Size: 90px x 90px"
+        },
+        {
+          "type": "text",
+          "id": "testi_infotitle",
+          "label": "Detils Name",
+          "default": "Miranda joy"
+        },
+        {
+          "type": "textarea",
+          "id": "testi_review_content",
+          "label": "Review Content",
+          "default": "It is a long established fact that a reader will be distracted when looking at its layout."
+        },
+        {
+          "type": "text",
+          "id": "testi_authrtitle",
+          "label": "Reviewer Name",
+          "default": "Miranda joy"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About section3"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.about-section3 {
+  position: relative;
+  padding-top: {{ section.settings.testi_padding_top }}px;
+  padding-bottom: {{ section.settings.testi_padding_bottom }}px;
+}
+.about-section3::after {
+  content: "";
+  position: absolute;
+  top: calc(0% - -50px);
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: calc(100% - 50px);
+  {% if section.settings.testi_bgcolor_enable %}
+  background-color: {{ section.settings.testi_bgcolor }};
+  {% endif %}
+}
+@media (max-width: 1199px) {
+  .about-section3 {
+    padding-top: {{ section.settings.testi_padding_top_ip }}px;
+    padding-bottom: {{ section.settings.testi_padding_bottom_ip }}px;
+  }
+}
+@media (max-width: 767px) {
+  .about-section3 {
+    padding-top: {{ section.settings.testi_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.testi_padding_bottom_xs }}px;
+  }
+}
+
+/* testi content css */
+.about-section3 .owl-item .item {
+  transform: scale(0.9);
+  opacity: 0.7;
+  -webkit-transition: all .3s ease-in-out 0s;
+  -o-transition: all .3s ease-in-out 0s;
+  transition: all .3s ease-in-out 0s;
+}
+.about-section3 .owl-item.center .item {
+  transform: scale(1);
+  opacity: 1;
+}
+.about-section3 .testi-content {
+  text-align: center;
+  max-width: 41.67%;
+  margin: 0 auto;
+}
+.about-section3 .testi-content .testi-desc {
+  margin-top: 30px;
+}
+.about-section3 .testi-content .testi-desc p {
+  font-size: 26px;
+  line-height: 40px;
+}
+.about-section3 .testi-content .testi-desc span {
+  position: relative;
+  font-size: var(--font-size-subtitle);
+  display: block;
+  margin-top: 30px;
+  color: var(--font-color-header);
+  font-weight: var(--font-weight-subtitle);
+  text-transform: uppercase;
+}
+.about-section3 .testi-content .testi-img-avtar .testi-img {
+  height: 110px;
+  width: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  margin: 0 auto 30px auto;
+  overflow: hidden;
+  border: 10px solid #fff;
+}
+.about-section3 .testi-content .testi-img-avtar .testi-det {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: var(--font-color-header);
+}
+@media (max-width: 1199px) {
+  .about-section3 .testi-content {
+    max-width: 58.33%;
+  }
+  .about-section3 .testi-content .testi-desc p {
+    font-size: 18px;
+    line-height: 30px;
+  }
+  .about-section3 .testi-content .testi-desc {
+    margin-top: 20px;
+  }
+  .about-section3 .testi-content .testi-desc span {
+    margin-top: 20px;
+  }
+}
+@media (max-width: 991px) {
+  .about-section3 .testi-content {
+    max-width: 100%;
+  }
+}
+
+/* slider arrow css */
+
+.about-section3 .about-slider .owl-nav {
+  margin-top: 0px;
+  line-height: 0;
+}
+.about-section3 .about-slider .owl-nav button {
+  color: var(--font-color-header);
+  font-size: 20px;
+  position: absolute;
+  bottom: 50%;
+  transform: translateY(50%);
+  margin: 0px;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--theme-border-color);
+}
+.about-section3 .about-slider .owl-nav button.owl-prev {
+  left: 0;
+}
+.about-section3 .about-slider .owl-nav button.owl-next {
+  right: 0;
+}
+.about-section3 .about-slider .owl-nav button:hover {
+  color: #fff;
+  background-color: var(--font-color-primary);
+}
+@media (max-width: 1199px) {
+  .about-section3 .about-slider .owl-nav button {
+    height: 50px;
+    width: 50px;
+  }
+}
+@media (max-width: 767px) {
+  .about-section3 .about-slider .owl-nav button {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+/* slider dot css */
+.about-section3 .about-slider .owl-dots {
+  margin-top: 30px;
+  line-height: 0;
+  text-align: center;
+}
+.about-section3 .about-slider .owl-dots button {
+  {% if settings.enable_rtl %}
+  margin-left: 5px;
+  {% else %}
+  margin-right: 5px;
+  {% endif %}
+}
+.about-section3 .about-slider .owl-dots button:last-child {
+  {% if settings.enable_rtl %}
+  margin-left: 0px;
+  {% else %}
+  margin-right: 0px;
+  {% endif %}
+}
+.about-section3 .about-slider .owl-dots button span {
+  width: 10px;
+  height: 10px;
+  margin: 0;
+  background-color: transparent;
+  {% if section.settings.testi_bgimg_enable %}
+  border: 1px solid #FFFFFF;
+  {% else %}
+  border: 1px solid var(--font-color-header);
+  {% endif %}
+  border-radius: 100%;
+}
+.about-section3 .about-slider .owl-dots button.active span,
+.about-section3 .about-slider .owl-dots button:hover span {
+  {% if section.settings.testi_bgimg_enable %}
+  background-color: #FFFFFF;
+  border: 1px solid #FFFFFF;
+  {% else %}
+  background-color: var(--font-color-header);
+  border: 1px solid var(--font-color-header);
+  {% endif %}
+}
+</style>

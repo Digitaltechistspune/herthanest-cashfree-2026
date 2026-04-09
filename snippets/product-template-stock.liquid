@@ -1,0 +1,44 @@
+<div class="product-info">
+  <div class="product-inventory{% if current_variant.inventory_management != 'shopify' %} hidden{% endif %}" {{ block.shopify_attributes }} id="Inventory-{{ section.id }}" role="status">
+    <h6>{{ block.settings.availability_title }}</h6>
+    {%- if current_variant.inventory_management == 'shopify' -%}
+      {%- if current_variant.inventory_quantity > 0 -%}
+        {%- if current_variant.inventory_quantity <= block.settings.inventory_threshold -%}
+          <svg width="15" height="15" aria-hidden="true">
+            <circle cx="7.5" cy="7.5" r="7.5" fill="rgb(238,148,65, 0.3)"/>
+            <circle cx="7.5" cy="7.5" r="5" stroke="rgb(255, 255, 255)" stroke-width="1" fill="rgb(238,148,65)"/>
+          </svg>
+          {%- if block.settings.show_inventory_quantity -%}
+            <span>{{- 'products.product.inventory_low_stock_show_count' | t: quantity: current_variant.inventory_quantity -}}</span>
+          {%- else -%}
+            <span>{{- 'products.product.inventory_low_stock' | t -}}</span>
+          {%- endif -%}
+        {%- else -%}
+          <svg width="15" height="15" aria-hidden="true">
+            <circle cx="7.5" cy="7.5" r="7.5" fill="rgb(62,214,96, 0.3)"/>
+            <circle cx="7.5" cy="7.5" r="5" stroke="rgb(255, 255, 255)" stroke-width="1" fill="rgb(62,214,96)"/>
+          </svg>
+          {%- if block.settings.show_inventory_quantity -%}
+           <span>{{- 'products.product.inventory_in_stock_show_count' | t: quantity: current_variant.inventory_quantity -}}</span>
+          {%- else -%}
+            <span>{{- 'products.product.inventory_in_stock' | t -}}</span>
+          {%- endif -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- if current_variant.inventory_policy == 'continue' -%}
+          <svg width="15" height="15" aria-hidden="true">
+            <circle cx="7.5" cy="7.5" r="7.5" fill="rgb(62,214,96, 0.3)"/>
+            <circle cx="7.5" cy="7.5" r="5" stroke="rgb(255, 255, 255)" stroke-width="1" fill="rgb(62,214,96)"/>
+          </svg>
+          <span>{{- 'products.product.inventory_out_of_stock_continue_selling' | t -}}</span>
+        {%- else -%}
+          <svg width="15" height="15" aria-hidden="true">
+            <circle cx="7.5" cy="7.5" r="7.5" fill="rgb(200,200,200, 0.3)"/>
+            <circle cx="7.5" cy="7.5" r="5" stroke="rgb(255, 255, 255)" stroke-width="1" fill="rgb(200,200,200)"/>
+          </svg>
+          <span>{{- 'products.product.inventory_out_of_stock' | t -}}</span>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>

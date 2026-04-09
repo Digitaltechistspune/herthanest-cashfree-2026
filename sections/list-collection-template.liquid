@@ -1,0 +1,164 @@
+<section class="list-collection section-ptb">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <ul class="grid-wrap">
+          {% for collection in collections %}
+          {% unless collection.handle == 'frontpage' %}
+          {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+          {% assign collection =  link.object %}
+          {%- liquid
+            assign ratio = 1
+            if section.settings.image_ratio == 'portrait'
+              assign ratio = 0.8
+            elsif section.settings.image_ratio == 'adapt'
+              if collection.metafields.custom.collection_thumb
+              assign ratio = collection.metafields.custom.collection_thumb.aspect_ratio
+              else
+              assign ratio = collection.products.first.aspect_ratio
+              endif
+            endif
+            if ratio == 0 or ratio == null
+              assign ratio = 1
+            endif
+          -%}
+          <li class="grid-wrapper">
+            <a class="coll-block" href="{{ collection.url }}">
+              <div class="collection-img ratio banner-hover" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+                {%- if collection.metafields.custom.collection_thumb -%}
+                <img
+                  srcset="
+                  {%- if collection.metafields.custom.collection_thumb.width >= 375 -%}{{ collection.metafields.custom.collection_thumb | image_url: width: 375 }} 375w,{%- endif -%}
+                  {%- if collection.metafields.custom.collection_thumb.width >= 500 -%}{{ collection.metafields.custom.collection_thumb | image_url: width: 500 }} 550w,{%- endif -%}
+                  {{ collection.metafields.custom.collection_thumb | image_url }} {{ collection.metafields.custom.collection_thumb.width }}w
+                "
+                src="{{ collection.metafields.custom.collection_thumb | image_url: width: 3840 }}"
+                data-src="{{ collection.metafields.custom.collection_thumb | image_url: width: 3840 }}"
+                alt="{{ collection.metafields.custom.collection_thumb.alt | escape }}"
+                class="img-fluid lazyload desk-img lazyload"
+                width="{{ collection.metafields.custom.collection_thumb.width }}"
+                height="{{ collection.metafields.custom.collection_thumb.width | divided_by: collection.metafields.custom.collection_thumb.aspect_ratio }}"
+                decoding="async"
+                loading="lazy"
+                sizes="50vw">
+                {% else %}
+                <img
+                  srcset="
+                  {%- if collection.products.first.width >= 375 -%}{{ collection.products.first | image_url: width: 375 }} 375w,{%- endif -%}
+                  {%- if collection.products.first.width >= 500 -%}{{ collection.products.first | image_url: width: 500 }} 550w,{%- endif -%}
+                  {{ collection.products.first | image_url }} {{ collection.products.first.width }}w
+                "
+                src="{{ collection.products.first | image_url: width: 3840 }}"
+                data-src="{{ collection.products.first | image_url: width: 3840 }}"
+                alt="{{ collection.products.first.alt | escape }}"
+                class="img-fluid lazyload desk-img lazyload"
+                width="{{ collection.products.first.width }}"
+                height="{{ collection.products.first.width | divided_by: collection.products.first.aspect_ratio }}"
+                decoding="async"
+                loading="lazy"
+                sizes="100vw">
+                {% endif %}
+                <span>{{ collection.all_products_count }}</span>
+              </div>
+              <div class="collection-content">
+                <div class="content">
+                  <h6>{{ collection_title | upcase }}</h6>
+                </div>
+                <span class="shop-btn">{{ section.settings.coll_btn }}</span>
+              </div>
+            </a>
+          </li>
+          {% endunless %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+addEventListener('DOMContentLoaded', (event) => {
+  $('.grid').imagesLoaded(function () {
+    $('.grid').isotope({
+      itemSelector: 'li',
+      layoutMode: 'masonry'
+    });
+  });
+});
+</script>
+{% schema %}
+{
+  "name": "Collection list",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "paragraph",
+      "content": "Button Title"
+    },
+    {
+      "type": "text",
+      "id": "coll_btn",
+      "label": "Title",
+      "default": "Shop now"
+    },
+    {
+      "type": "header",
+      "content": "Collection thumbnail"
+    },
+    {
+      "type": "paragraph",
+      "content": "[Add collection image with metafield](/admin/metafields/product/create)"
+    },
+    {
+      "type": "paragraph",
+      "content": "Input Name: 'collection thumb', Select type: 'file', and save matafield"
+    },
+    {
+      "type": "header",
+      "content": "Image ratio"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to image"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "adapt",
+      "label": "Image shape"
+    }
+  ]
+}
+{% endschema %}

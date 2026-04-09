@@ -1,0 +1,26 @@
+<a href="{{ settings.payment_url }}" class="payment-icon">
+    {% assign enabled_payment_types = settings.payment_picker | replace: ', ', ',' | replace: ' ,', ',' | split: ',' %}
+    {% for type in enabled_payment_types %}
+    {{ type | payment_type_svg_tag }}
+    {% endfor %}
+</a>
+<style>
+    .payment-icon {
+        display: flex;
+        flex-wrap: wrap;
+        {% if settings.enable_rtl %}
+        margin: -5px -5px 0px 0px;
+        {% else %}
+        margin: -5px 0px 0px -5px;
+        {% endif %}
+    }
+    .payment-icon svg {
+        width: {{ settings.payment_svg_width }}px;
+        height: {{ settings.payment_svg_height }}px;
+        {% if settings.enable_rtl %}
+        margin: 5px 5px 0px 0px;
+        {% else %}
+        margin: 5px 0px 0px 5px;
+        {% endif %}
+    }
+</style>

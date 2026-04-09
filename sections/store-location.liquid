@@ -1,0 +1,427 @@
+<section class="store-location">
+    <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+      <div class="row">
+        <div class="col">
+          {% if section.settings.section_sub_title != '' or section.settings.section_title != '' %}
+          <div class="section-capture">
+            <div class="section-title">
+              {% if section.settings.section_sub_title != '' %}
+              <span data-fade-in class="sub-title">{{ section.settings.section_sub_title }}</span>
+              {% endif %}
+              {% if section.settings.section_title != '' %}
+              <h2 data-fade-in>{{ section.settings.section_title }}</h2>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+          {% for block in section.blocks %}
+          <div class="store-content">  
+            <div class="contact-content">
+              <div class="contact-detail image-warp">
+                <a href="{{ block.settings.contact_img_url }}" class="contact-img-wrap banner-hover">
+                  {%- if block.settings.contact_img -%}
+                  {{ block.settings.contact_img | image_url: width: 1024 | image_tag:
+                  loading: 'lazy',
+                  width: block.settings.contact_img.width,
+                  height: block.settings.contact_img.height,
+                  class: "img-fluid lazyload",
+                  alt: block.settings.contact_img.alt | escape }}
+                  {%- else -%}
+                  {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+                  {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                  {%- endif -%}
+                </a>
+              </div>
+              <div class="contact-detail get-info">
+                <div class="store-info">
+                  <div class="section-title">
+                    <h2 data-fade-in>{{ block.settings.store_title }}</h2>
+                  </div>
+                  <ul class="info_wrap">
+                    <li data-fade-in class="info_wrapper">
+                      <div class="info-block">
+                        <div class="icon">
+                          {{ block.settings.info_icon1 }}
+                        </div>
+                        <div class="text-block">
+                          <span>{{ block.settings.sub_title1 }}</span>
+                          <a href="tel:{{ block.settings.contact_number }}">{{ block.settings.contact_number }}</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li data-fade-in class="info_wrapper">
+                      <div class="info-block">
+                        <div class="icon">
+                          {{ block.settings.info_icon2 }}
+                        </div>
+                        <div class="text-block">
+                          <span>{{ block.settings.sub_title2 }}</span>
+                          <a href="mailto:{{ block.settings.mail_address }}">{{ block.settings.mail_address }}</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li data-fade-in class="info_wrapper">
+                      <div class="info-block">
+                        <div class="icon">
+                          {{ block.settings.info_icon3 }}
+                        </div>
+                        <div class="text-block">
+                          <span>{{ block.settings.sub_title3 }}</span>
+                          <p>{{ block.settings.info_link3 }}</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li data-fade-in class="info_wrapper">
+                      <div class="info-block">
+                        <div class="icon">
+                          {{ block.settings.info_icon4 }}
+                        </div>
+                        <div class="text-block">
+                          <span>{{ block.settings.sub_title4 }}</span>
+                          <p>{{ block.settings.info_link4 }}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% schema %}
+{
+  "name": "Store location",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ipad",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Information Content"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section sub title",
+      "default": "Get in touch"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Our store Information"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "store-image",
+      "name": "Store Image",
+      "settings": [
+        {
+          "type": "text",
+          "id": "store_title",
+          "label": "Store title",
+          "default": "Our store Information"
+        },
+        {
+          "type": "image_picker",
+          "id": "contact_img",
+          "label": "Contact Image",
+          "info": "Recommended Size: 1400px x 641px"
+        },
+        {
+          "type": "url",
+          "id": "contact_img_url",
+          "label": "Image url"
+        },
+        {
+          "type": "textarea",
+          "id": "info_icon1",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "sub_title1",
+          "label": "Sub title",
+          "default": "LET'S TALK"
+        },
+        {
+          "type": "text",
+          "id": "contact_number",
+          "label": "Contact number",
+          "default": "+999 3222 000 388"
+        },
+        {
+          "type": "textarea",
+          "id": "info_icon2",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "sub_title2",
+          "label": "Sub title",
+          "default": "SAY HI!"
+        },
+        {
+          "type": "text",
+          "id": "mail_address",
+          "label": "Mail address",
+          "default": "store@domain.com"
+        },
+        {
+          "type": "textarea",
+          "id": "info_icon3",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "sub_title3",
+          "label": "Sub title",
+          "default": "STORE ADDRESS"
+        },
+        {
+          "type": "text",
+          "id": "info_link3",
+          "label": "Store address",
+          "default": "27 Eden walk eden centre, Broadway, United States"
+        },
+        {
+          "type": "textarea",
+          "id": "info_icon4",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "sub_title4",
+          "label": "Sub title",
+          "default": "OPENING HOURS"
+        },
+        {
+          "type": "text",
+          "id": "info_link4",
+          "label": "Store time",
+          "default": "Mon - Fri : 9:00am - 6:00pm"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Store location"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.store-location{
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+}
+@media (max-width: 1199px){
+  .store-location{
+    padding-top: {{ section.settings.section_padding_top_ipad }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_ipad }}px;
+  }
+}
+@media (max-width: 767px){
+  .store-location{
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+  }
+  .store-location .contact-map-wrap{
+    padding-top: 30px;
+  }
+}
+
+.store-location .section-title {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+/* contact-content */
+.store-location .store-content:first-child {
+  padding-top: 0px;
+}
+.store-location .store-content {
+  padding-top: {{ section.settings.section_padding_top }}px;
+}
+.store-location .store-content .contact-content {
+  display : flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: -30px 0 0 -30px;
+} 
+.store-location .store-content .contact-content .contact-detail {
+  width: calc(50% - 30px);
+  margin: 30px 0 0 30px;
+}
+.store-location .store-content:nth-child(even) .contact-content {
+  flex-direction: row-reverse;
+}
+
+/*information block*/
+.store-location .store-info {
+  width: 66.67%;
+  margin: 0 auto;
+}
+.store-location .store-info .info_wrap {
+  margin-top: 60px;
+}
+.store-location .store-info ul li{
+  margin-top: 30px;
+}
+.store-location .store-info ul li:first-child{
+  margin-top: 0px;
+}
+.store-location .store-info ul li .info-block{
+  display: flex;
+  align-items: center;
+}
+.store-location .store-info ul li .info-block .icon {
+  font-size: 20px;
+  color: var(--font-color-header);
+}
+.store-location .store-info ul li .info-block .text-block {
+  {% if settings.enable_rtl %}
+  margin-right: 30px;
+  {% else %}
+  margin-left: 30px;
+  {% endif %}
+}
+.store-location .store-info ul li .info-block .text-block span{
+  font-size: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.store-location .store-info ul li .info-block .text-block p,
+.store-location .store-info ul li .info-block .text-block a{
+  font-size: 16px;
+  font-weight: 600;
+  display: block;
+  padding-top: 5px;
+}
+@media(max-width: 1199px){
+  .store-location .store-content {
+    padding-top: {{ section.settings.section_padding_top_ipad }}px;
+  }
+  .store-location .store-info {
+    width: 100%;
+  }
+  .store-location .store-info .info_wrap {
+    margin-top: 30px;
+  }
+  .store-location .store-info ul li {
+    margin-top: 20px;
+  }
+}
+@media(max-width: 991px) {
+  .store-location .store-content .contact-content .contact-detail {
+    width: calc(100% - 30px); 
+  }
+}
+@media(max-width: 767px) {
+  .store-location .store-content {
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+  }
+  .store-location .store-content .contact-content {
+    margin: -30px 0 0 -12px;
+  }
+  .store-location .store-content .contact-content .contact-detail {
+    width: calc(100% - 12px);
+    margin: 30px 0 0 12px;
+  }
+}
+</style>

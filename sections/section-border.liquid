@@ -1,0 +1,76 @@
+<section class="section-border section-border-{{ section.id }}">
+  <div class="{% if section.settings.border_width == 'full' %}container-full{% elsif section.settings.border_width == 'fluid' %}container-fluid{% else %}container{% endif %}">
+    <div class="border-"></div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Section border",
+  "settings": [
+    {
+      "type": "select",
+      "id": "border_width",
+      "label": "Border width",
+      "options": [
+        {
+          "label": "Full",
+          "value": "full"
+        },
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "color",
+      "id": "border_bg_color",
+      "label": "Border Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "border",
+      "label": "Border",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#222"
+    },
+    {
+      "type": "range",
+      "id": "border_color_opacity",
+      "label": "Theme Border Color Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Section border"
+    }
+  ]
+}
+{% endschema %}
+{% style %}
+.section-border-{{ section.id }} {
+  background-color: {{ section.settings.border_bg_color }};
+}
+.section-border-{{ section.id }} .border- {
+  border-top: {{ section.settings.border }}px solid {{ section.settings.border_color | color_modify: 'alpha', section.settings.border_color_opacity }};
+} 
+{% endstyle %}

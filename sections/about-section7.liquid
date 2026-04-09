@@ -1,0 +1,348 @@
+<section class="about-section7">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="about-content">
+          <div class="abt-vision">
+            <ul>
+              {% for block in section.blocks %}
+              <li>
+                <div class="abt-vision-content">
+                  <div class="about-img">
+                    {% if block.settings.text_icon1 != '' %}
+                      <span class="icon">
+                        {{ block.settings.text_icon1 }}
+                      </span>
+                    {% endif %}
+                  </div>
+                  <h6>{{ block.settings.abt_vision_title }}</h6>
+                  <p>{{ block.settings.abt_vision_desc }}</p>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "About section7",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "about_vision_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "about_vision_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "about_vision_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "about_vision_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "about_vision_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "about_vision_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "about_vision_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "about_vision_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section Sub Title",
+      "default": "About us"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "About us"
+    },
+    {
+      "type": "header",
+      "content": "Section Banner Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "about_banner_img",
+      "label": "Banner Image",
+      "info": "Recommended Size: 1920px x 700px"
+    },
+    {
+      "type": "checkbox",
+      "id": "about_banner_img_enable",
+      "label": "Show Banner Image",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "about_vision_2",
+      "name": "block",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "For service No Title"
+        },
+        {
+          "type": "paragraph",
+          "content": "For icon "
+        },
+        {
+          "type": "textarea",
+          "id": "text_icon1",
+          "label": "Icon Class",
+          "info": "https://feathericons.com"
+        },
+        {
+          "type": "text",
+          "id": "abt_vision_title",
+          "label": "Title",
+          "default": "Our mission"
+        },
+        {
+          "type": "textarea",
+          "id": "abt_vision_desc",
+          "label": "Text",
+          "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry's standard dummy text ever since the 1500s"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About section7"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .about-section7 {
+    padding-top: {{ section.settings.about_vision_padding_top }}px;
+    padding-bottom: {{ section.settings.about_vision_padding_bottom }}px;
+    {% if section.settings.about_vision_bgcolor_enable %}
+    background-color: {{ section.settings.about_vision_bgcolor }};
+    {% endif %}
+  }
+  @media (max-width: 1199px) {
+    .about-section7 {
+      padding-top: {{ section.settings.about_vision_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.about_vision_padding_bottom_ip }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .about-section7 {
+      padding-top: {{ section.settings.about_vision_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.about_vision_padding_bottom_xs }}px;
+    }
+  }
+
+  /* about vision grid css */
+  .about-section7 .about-content .abt-vision {
+    text-align: center;
+  }
+  .about-section7 .about-content .abt-vision ul {
+    display: flex;
+    
+    flex-wrap: wrap;
+    justify-content: center;
+    {% if settings.enable_rtl %}
+    margin: -{{ section.settings.about_vision_padding_top }}px -30px 0px 0px;
+    {% else %}
+    margin: -{{ section.settings.about_vision_padding_top }}px 0px 0px -30px;
+    {% endif %}
+  }
+  .about-section7 .about-content .abt-vision ul li {
+    width: calc(33.33% - 30px);
+    {% if settings.enable_rtl %}
+    margin: {{ section.settings.about_vision_padding_top }}px 30px 0px 0px;
+    {% else %}
+    margin: {{ section.settings.about_vision_padding_top }}px 0px 0px 30px;
+    {% endif %}
+  }
+  @media (max-width: 991px) {
+    .about-section7 .about-content .abt-vision ul {
+      {% if settings.enable_rtl %}
+      margin: -{{ section.settings.about_vision_padding_top_ip }}px -30px 0px 0px;
+      {% else %}
+      margin: -{{ section.settings.about_vision_padding_top_ip }}px 0px 0px -30px;
+      {% endif %}
+    }
+    .about-section7 .about-content .abt-vision ul li {
+      width: calc(50% - 30px);
+      {% if settings.enable_rtl %}
+      margin: {{ section.settings.about_vision_padding_top_ip }}px 30px 0px 0px;
+      {% else %}
+      margin: {{ section.settings.about_vision_padding_top_ip }}px 0px 0px 30px;
+      {% endif %}
+    }
+  }
+  @media (max-width: 767px) {
+    .about-section7 .about-content .abt-vision ul {
+      {% if settings.enable_rtl %}
+      margin: -{{ section.settings.about_vision_padding_top_xs }}px -12px 0px 0px;
+      {% else %}
+      margin: -{{ section.settings.about_vision_padding_top_xs }}px 0px 0px -12px;
+      {% endif %}
+    }
+    .about-section7 .about-content .abt-vision ul li {
+      width: calc(50% - 12px);
+      {% if settings.enable_rtl %}
+      margin: {{ section.settings.about_vision_padding_top_xs }}px 12px 0px 0px;
+      {% else %}
+      margin: {{ section.settings.about_vision_padding_top_xs }}px 0px 0px 12px;
+      {% endif %}
+    }
+  }
+  @media (max-width: 600px) {
+    .about-section7 .about-content .abt-vision ul li {
+      width: calc(100% - 12px);
+    }
+  }
+
+  /* about vision content css */
+  .about-section7 .about-content .abt-vision ul li .abt-vision-content .about-img {
+    width: 120px;
+    height: 120px;
+    color: var(--font-color-primary);
+    font-size: 40px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--sti-bgcolor);
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+  .about-section7 .about-content .abt-vision ul li:hover .abt-vision-content img {
+    -webkit-transform: translateY(-5px);
+    -o-transform: translateY(-5px);
+    transform: translateY(-5px);
+  }
+  .about-section7 .about-content .abt-vision ul li .abt-vision-content img {
+    width: auto;
+  }
+  .about-section7 .about-content .abt-vision ul li .abt-vision-content img,
+  .about-section7 .about-content .abt-vision ul li:hover .abt-vision-content img {
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -o-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+  }
+  .about-section7 .about-content .abt-vision ul li .abt-vision-content h6 {
+    color: var(--font-color-secondary);
+    font-size: 22px;
+    margin-top: 32px;
+  }
+  .about-section7 .about-content .abt-vision ul li .abt-vision-content p {
+    font-size: 18px;
+    max-width: 66.67%;
+    margin: 0 auto;
+    margin-top: 22px;
+  }
+  @media (max-width: 1199px) {
+    .about-section7 .about-content .abt-vision ul li .abt-vision-content p {
+      max-width: 100%;
+    }
+  }
+</style>

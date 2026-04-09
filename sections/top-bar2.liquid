@@ -1,0 +1,240 @@
+<section class="top-bar2">
+  <div class="container-fluid">
+    <div class="offer-text-wrap">
+      <ul class="grid-wrap text1">
+        {% if section.settings.custom_text1 != '' %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            {{ section.settings.custom_text1 }}
+          </div>
+        </li>
+        {% endif %}
+        {% if section.settings.custom_text2 != '' %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            {{ section.settings.custom_text2 }}
+          </div>
+        </li>
+        {% endif %}
+        {% if section.settings.custom_text3 != '' %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            {{ section.settings.custom_text3 }}
+          </div>
+        </li>
+        {% endif %}
+        {% if section.settings.custom_text4 != '' %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            {{ section.settings.custom_text4 }}
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+      <ul class="grid-wrap text2">
+        {% if section.settings.custom_text1 != '' %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            {{ section.settings.custom_text1 }}
+          </div>
+        </li>
+        {% endif %}
+        {% if section.settings.custom_text2 != '' %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            {{ section.settings.custom_text2 }}
+          </div>
+        </li>
+        {% endif %}
+        {% if section.settings.custom_text3 != '' %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            {{ section.settings.custom_text3 }}
+          </div>
+        </li>
+        {% endif %}
+        {% if section.settings.custom_text4 != '' %}
+          <li class="grid-wrapper">
+            <div class="richtext">
+              {{ section.settings.custom_text4 }}
+            </div>
+          </li>
+          {% endif %}
+      </ul>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Top bar2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Background color"
+    },
+    {
+      "type": "color",
+      "id": "notification_bg_color",
+      "label": "Section Background Color",
+      "default": "#232323"
+    },
+    {
+      "type": "header",
+      "content": "Section text color"
+    },
+    {
+      "type": "color",
+      "id": "notification_txt_color",
+      "label": "Section Text Color",
+      "default": "#999"
+    },
+    {
+      "type": "header",
+      "content": "text url"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_text1",
+      "label": "Notification text",
+      "default": "<p>Free shipping over $150!</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_text2",
+      "label": "Notification text",
+      "default": "<p>Chair sale discount off 50% <a href=\"/collections/chair\" title=\"Chair\">Shop Now</a></p>"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_text3",
+      "label": "Notification text",
+      "default": "<p>30% interior collection <a href=\"/collections/sofa\" title=\"Sofa\">Shop Now</a></p>"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_text4",
+      "label": "Notification text",
+      "default": "<p>Up to 45% off <a href=\"/collections/sofa\" title=\"Sofa\">Site Wide</a></p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Top bar2"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.top-bar2{
+  position: relative;
+  padding: 13px 0;
+  overflow: hidden;
+  background-color: {{ section.settings.notification_bg_color }};
+}
+.top-bar2 ul.grid-wrap {
+  display: flex;
+  align-items: center;
+  margin: -30px 0 0 -100px;
+}
+.top-bar2 ul.grid-wrap li.grid-wrapper{
+  width: calc(100% - 100px);
+  white-space: nowrap;
+  margin: 30px 0 0 100px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.top-bar2 ul.grid-wrap li.grid-wrapper:before {
+  content: "/";
+  position: absolute;
+  left: -50px;
+  font-size: 16px;
+  font-weight: 700;
+  color: {{ section.settings.notification_txt_color }};
+}
+.top-bar2 ul li.grid-wrapper .richtext span{
+  {%- if settings.enable_rtl -%}
+  padding-left: 5px;
+  {%- else -%}
+  padding-right: 5px;
+  {%- endif -%}
+}
+.top-bar2 ul li.grid-wrapper .richtext a,
+.top-bar2 ul li.grid-wrapper .richtext p{
+  color: {{ section.settings.notification_txt_color }};
+  font-size: 15px;
+  line-height: 1;
+}
+.top-bar2 ul li.grid-wrapper .richtext a {
+  {%- if settings.enable_rtl -%}
+  padding-right: 10px;
+  {%- else -%}
+  padding-left: 10px;
+  {%- endif -%}
+  font-weight: 700;
+  text-decoration: underline;
+}
+.top-bar2 .offer-text-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  direction: ltr;
+}
+.top-bar2 .offer-text-wrap .grid-wrap {
+  margin: -30px 0 0 0;
+  width: auto;
+}
+.top-bar2 .offer-text-wrap:hover .grid-wrap,
+.top-bar2 .offer-text-wrap:focus-within .grid-wrap {
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  animation-play-state: paused;
+}
+.top-bar2 .offer-text-wrap .text1 {
+  -webkit-animation: slide1 50s linear infinite;
+  animation: slide1 50s linear infinite;
+  -webkit-animation-delay: -50s;
+  animation-delay: -50s;
+  display: flex;
+}
+.top-bar2 .offer-text-wrap .text2 {
+  -webkit-animation: slide2 50s linear infinite;
+  animation: slide2 50s linear infinite;
+  -webkit-animation-delay: -25s;
+  animation-delay: -25s;
+  display: flex;
+}
+@media(max-width: 1199px) {
+  .top-bar2 ul.grid-wrap {
+    margin: -30px 0 0 -60px;
+  }
+  .top-bar2 ul.grid-wrap li.grid-wrapper{
+    width: calc(100% - 60px);
+    margin: 30px 0 0 60px;
+  }
+  .top-bar2 ul.grid-wrap li.grid-wrapper:before {
+    left: -30px;
+  }
+}
+
+@-webkit-keyframes slide1{
+  0%{transform: translateX(100%);} 100%{transform: translateX(-100%);}
+}
+@-moz-keyframes slide1{
+  0%{transform: translateX(100%);} 100%{transform: translateX(-100%);}
+}
+@keyframes slide1{
+  0%{transform: translateX(100%);} 100%{transform: translateX(-100%);}
+}
+@-webkit-keyframes slide2{
+  0%{transform: translateX(0%);} 100%{transform: translateX(-200%);}
+}
+@-moz-keyframes slide2{
+  0%{transform: translateX(0%);} 100%{transform: translateX(-200%);}
+}
+@keyframes slide2{
+  0%{transform: translateX(0%);} 100%{transform: translateX(-200%);}
+}
+</style>

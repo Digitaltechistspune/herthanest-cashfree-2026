@@ -1,0 +1,225 @@
+<section class="offer-grid">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="grid-wrap">
+          {% for block in section.blocks %}
+          {% if block.settings.grid_text != '' %}
+          <div class="grid-wrapper" data-fade-in>
+            <div class="grid-text">
+              <span class="text">{{ block.settings.grid_text }}</span>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Offer grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ipad",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color",
+      "default": "#FFF"
+    },
+    {
+      "type": "color",
+      "id": "section_text_color",
+      "label": "Section text color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "block",
+      "name": "Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "grid_text",
+          "label": "Offer title",
+          "default": "Deals of the week"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Offer grid"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .offer-grid {
+    position: relative;
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    background-color: {{ section.settings.section_bg_color }};
+  }
+  @media (max-width: 1199px) {
+    .offer-grid {
+      padding-top: {{ section.settings.section_padding_top_ipad }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_ipad }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .offer-grid {
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+  .offer-grid .grid-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: -15px 0 0 0;
+  }
+  .offer-grid .grid-wrap .grid-wrapper {
+    width: 25%;
+    margin: 15px 0 0 0;
+  }
+  .offer-grid .grid-wrap .grid-wrapper:nth-child(2) {
+    width: 50%;
+    text-align: center;
+  }
+  .offer-grid .grid-wrap .grid-wrapper:last-child {
+    text-align: right;
+  }
+  .offer-grid .grid-wrap .grid-wrapper .grid-text span.text {
+    color: {{ section.settings.section_text_color }};
+  }
+  .offer-grid .grid-wrap .grid-wrapper .grid-text span.text span {
+    background-color: {{ section.settings.section_text_color }};
+    color: var(--font-color-body);
+    font-size: 13px;
+    padding: 10px 12px;
+    font-weight: var(--font-custom-weight-header);
+    text-transform: uppercase;
+    border-radius: var(--sti-border-radius);
+  }
+  @media(max-width: 1199px){
+    .offer-grid .grid-wrap .grid-wrapper {
+      width: 50%;
+    }
+    .offer-grid .grid-wrap .grid-wrapper:nth-child(2) {
+      width: 100%;
+      order: -1;
+    }
+  }
+  @media(max-width: 479px){
+    .offer-grid .grid-wrap .grid-wrapper {
+      width: 100%;
+      text-align: center;
+    }
+    .offer-grid .grid-wrap .grid-wrapper:nth-child(2) {
+      order: unset;
+    }
+    .offer-grid .grid-wrap .grid-wrapper:last-child {
+      text-align: center;
+    }
+    .offer-grid .grid-wrap .grid-wrapper .grid-text span.text span {
+      display: block;
+      width: fit-content;
+      margin: 0px auto 13px auto;
+    }
+  }
+</style>

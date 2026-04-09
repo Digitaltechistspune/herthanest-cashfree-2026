@@ -1,0 +1,288 @@
+<section class="contact-section1">
+    <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+        <div class="row">
+            <div class="col">
+                <div class="section-capture">
+                    <div class="section-title">
+                      {% if section.settings.section_sub_title != '' %}
+                      <span class="sub-title" data-fade-in>{{ section.settings.section_sub_title }}</span>
+                      {% endif %}
+                      {% if section.settings.section_title != '' %}
+                      <h2 data-fade-in>{{ section.settings.section_title }}</h2>
+                      {% endif %}
+                    </div>
+                </div>
+                <div class="get-info contact-detail">
+                    <ul class="contact-info-list">
+                      {%- render 'company-info' -%}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% schema %}
+{
+  "name": "Contact section1",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "contact_us_3_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "contact_us_3_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section Sub Title",
+      "default": "Get in touch"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Get in touch"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact section1"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.contact-section1 {
+  padding-top: {{ section.settings.contact_us_3_padding_top }}px;
+  padding-bottom: {{ section.settings.contact_us_3_padding_bottom }}px;
+  {% if section.settings.contact_us_3_bgcolor_enable %}
+  background-color: {{ section.settings.contact_us_3_bgcolor }};
+  {% endif %}
+}
+@media (max-width: 1199px) {
+  .contact-section1 {
+    padding-top: {{ section.settings.contact_us_3_padding_top_ip }}px;
+    padding-bottom: {{ section.settings.contact_us_3_padding_bottom_ip }}px;
+  }
+}
+@media (max-width: 767px) {
+  .contact-section1 {
+    padding-top: {{ section.settings.contact_us_3_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.contact_us_3_padding_bottom_xs }}px;
+  }
+}
+
+/* get touch css */
+.contact-section1 ul.contact-info-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  {% if settings.enable_rtl %}
+  margin: -30px -30px 0px 0px;
+  {% else %}
+  margin: -30px 0px 0px -30px;
+  {% endif %}
+}
+.contact-section1 ul.contact-info-list li.ftcon-li {
+  width: calc(33.33% - 30px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  {% if settings.enable_rtl %}
+  margin: 30px 30px 0px 0px;
+  {% else %}
+  margin: 30px 0px 0px 30px;
+  {% endif %}
+  text-align: center;
+}
+@media (max-width: 991px) {
+  .contact-section1 ul.contact-info-list li.ftcon-li {
+    width: calc(50% - 30px);
+  }
+}
+@media (max-width: 767px) {
+  .contact-section1 ul.contact-info-list {
+    {% if settings.enable_rtl %}
+    margin: -30px -12px 0px 0px;
+    {% else %}
+    margin: -30px 0px 0px -12px;
+    {% endif %}
+  }
+  .contact-section1 ul.contact-info-list li.ftcon-li {
+    width: calc(100% - 12px);
+    {% if settings.enable_rtl %}
+    margin: 30px 12px 0px 0px;
+    {% else %}
+    margin: 30px 0px 0px 12px;
+    {% endif %}
+  }
+}
+.contact-section1 ul.contact-info-list li.ftcon-li span {
+  display: block;
+}
+.contact-section1 ul.contact-info-list li.ftcon-li span.con-icon {
+  font-size: 30px;
+  color: var(--font-color-primary);
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 0;
+  background-color: var(--extra-color-body);
+}
+.contact-section1 ul.contact-info-list li.ftcon-li span.con-add,
+.contact-section1 ul.contact-info-list li.ftcon-li a.con-add {
+  color: var(--font-color-body);
+  display: block;
+}
+.contact-section1 ul.contact-info-list li.ftcon-li h6.company-title {
+  color: var(--font-color-header);
+  font-size: 18px;
+  margin-top: 30px;
+}
+.contact-section1 ul.contact-info-list li.ftcon-li .contact-block{
+  margin-top: 15px;
+}
+.contact-section1 ul.contact-info-list li.ftcon-li .contact-block a,
+.contact-section1 ul.contact-info-list li.ftcon-li span.con-add span {
+  font-size: 18px;
+  margin-top: 6px;
+}
+.contact-section1 ul.contact-info-list li.ftcon-li .contact-block a:hover,
+.contact-section1 ul.contact-info-list li.ftcon-li span.con-add span:hover {
+    color: var(--font-color-primary);
+}
+.contact-section1 ul.contact-info-list li.ftcon-li .contact-block a:first-child,
+.contact-section1 ul.contact-info-list li.ftcon-li span.con-add span:first-child {
+    margin-top: 0px;
+}
+@media(max-width:479px) {
+  .contact-section1 ul.contact-info-list li.ftcon-li span.con-icon {
+    width: 80px;
+    height: 80px;
+  }
+  .contact-section1 ul.contact-info-list li.ftcon-li h6.company-title {
+    font-size: 16px;
+    margin-top: 15px;
+  }
+  .contact-section1 ul.contact-info-list li.ftcon-li .contact-block a,
+  .contact-section1 ul.contact-info-list li.ftcon-li span.con-add span{
+    font-size: 16px;
+  }
+}
+
+</style>

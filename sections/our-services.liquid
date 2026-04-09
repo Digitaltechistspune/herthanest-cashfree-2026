@@ -1,0 +1,310 @@
+{% if section.settings.section_enable %}
+  <section class="our-service-area">
+    <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+      <div class="row">
+        <div class="col">
+          <ul class="grid-wrap">
+            {% for block in section.blocks %}
+              <li class="grid-wrapper" data-fade-in>
+                <a data-fade-in href="{{ block.settings.service_url }}" class="ser-block">
+                  <div class="icon">
+                    {% if block.settings.icon_img != '' %}
+                      {{ block.settings.icon_img }}
+                    {% endif %}
+                  </div>
+                  <div class="title-content">
+                    {% if block.settings.service_title != '' %}
+                      <h6>{{ block.settings.service_title }}</h6>
+                    {% endif %}
+                    {% if block.settings.service_des != '' %}
+                      <p>{{ block.settings.service_des }}</p>
+                    {% endif %}
+                  </div>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+{% schema %}
+{
+  "name": "Service",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section enable"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_enable",
+      "label": "Section enable",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop / tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ipad",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Background color",
+      "default": "#797979"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#202020"
+    },
+    {
+      "type": "select",
+      "id": "grid_option",
+      "label": "Select option",
+      "options": [
+        {
+          "label": "2",
+          "value": "2"
+        },
+        {
+          "label": "3",
+          "value": "3"
+        },
+        {
+          "label": "4",
+          "value": "4"
+        },
+        {
+          "label": "5",
+          "value": "5"
+        }
+      ],
+      "default": "4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "our_services",
+      "name": "Our Services",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "For icon "
+        },
+        {
+          "type": "textarea",
+          "id": "icon_img",
+          "label": "Service icon"
+        },
+        {
+          "type": "text",
+          "id": "service_title",
+          "label": "Service title",
+          "default": "Choose products"
+        },
+        {
+          "type": "text",
+          "id": "service_des",
+          "label": "Service description",
+          "default": "Choose products"
+        },
+        {
+          "type": "url",
+          "id": "service_url",
+          "label": "Service url"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Service"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .our-service-area {
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    background-color: {{ section.settings.section_bg_color }};
+  }
+  @media (max-width: 1199px) {
+    .our-service-area {
+      padding-top: {{ section.settings.section_padding_top_ipad }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_ipad }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .our-service-area {
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+  .our-service-area ul.grid-wrap{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: -30px 0 0 -30px;
+  }
+  .our-service-area ul.grid-wrap li.grid-wrapper{
+    {% if section.settings.grid_option == "2" %}
+    width: calc(50% - 30px);
+    {% elsif section.settings.grid_option == "3" %}
+    width: calc(33.33% - 30px);
+    {% elsif section.settings.grid_option == "4" %}
+    width: calc(25% - 30px);
+    {% elsif section.settings.grid_option == "5" %}
+    width: calc(20% - 30px);
+    {% endif %}
+    margin: 30px 0 0 30px;
+  }
+  .our-service-area ul.grid-wrap li.grid-wrapper .ser-block {
+    display: flex;
+    align-items: center;
+  }
+  .our-service-area ul.grid-wrap li.grid-wrapper .ser-block .icon{
+    color: var(--font-color-primary);
+    font-size: 30px;
+    -webkit-transition: all .3s ease-in-out 0s;
+    -o-transition: all .3s ease-in-out 0s;
+    transition: all .3s ease-in-out 0s;
+  }
+  .our-service-area ul.grid-wrap li.grid-wrapper .ser-block:hover .icon{
+    transform: scaleX(-1);
+  }
+  .our-service-area ul.grid-wrap li.grid-wrapper .ser-block .title-content{
+    {%- if settings.enable_rtl -%}
+    margin-right: 20px;
+    {%- else -%}
+    margin-left: 20px;
+    {%- endif -%}
+  }
+  .our-service-area ul.grid-wrap li.grid-wrapper .ser-block h6{
+    color: {{ section.settings.text_color }};
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 700;
+  }
+  .our-service-area ul.grid-wrap li.grid-wrapper .ser-block p{
+    font-size: 16px;
+    font-weight: 600;
+  }
+  @media(max-width: 991px){
+    .our-service-area ul.grid-wrap li.grid-wrapper {
+      width: calc(50% - 30px);
+    }
+  }
+  @media(max-width: 767px){
+    .our-service-area ul.grid-wrap{
+      margin: -30px 0 0 -12px;
+    }
+    .our-service-area ul.grid-wrap li.grid-wrapper {
+      width: calc(50% - 12px);
+      margin: 30px 0 0 12px;
+    }
+  }
+  @media(max-width: 600px){
+    .our-service-area ul.grid-wrap li.grid-wrapper {
+      width: calc(100% - 12px);
+    }
+  }
+</style>

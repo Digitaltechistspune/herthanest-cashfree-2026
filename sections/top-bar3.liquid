@@ -1,0 +1,215 @@
+<section class="top-bar3">
+  <div class="container-fluid">
+    <div class="offer-text-wrap">
+      <ul class="grid-wrap text1">
+        {% if section.settings.custom_text != '' %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            <span class="icon">
+              {{ section.settings.custom_icon }}
+            </span>
+            {{ section.settings.custom_text }}
+            <span class="custom-label" style="color: {{ section.settings.custom_label_color }};">
+              {{ section.settings.custom_label }}
+            </span>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+      <ul class="grid-wrap text2">
+        {% if section.settings.custom_text != '' %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            <span class="icon">
+              {{ section.settings.custom_icon }}
+            </span>
+            <p>{{ section.settings.custom_text }}</p>
+            <span class="custom-label">
+              {{ section.settings.custom_label }}
+            </span>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Top bar3",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Background color"
+    },
+    {
+      "type": "color",
+      "id": "notification_bg_color",
+      "label": "Section Background Color",
+      "default": "#faf9f5"
+    },
+    {
+      "type": "header",
+      "content": "Section text color"
+    },
+    {
+      "type": "color",
+      "id": "notification_txt_color",
+      "label": "Section Text Color",
+      "default": "#222"
+    },
+    {
+      "type": "header",
+      "content": "Offer text"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_icon",
+      "label": "Custom icon",
+      "info": "[See Icon Name](https://dropways.github.io/feathericons/)",
+      "default": "<i class='feather-bookmark'></i>"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_text",
+      "label": "Custom text",
+      "default": "<p>Price will increase soon. Get in before time runs out!</p>"
+    },
+    {
+      "type": "text",
+      "id": "custom_label",
+      "label": "Custom text label",
+      "default": "Limited time offer"
+    },
+    {
+      "type": "color",
+      "id": "custom_label_color",
+      "label": "Custom text label color",
+      "default": "#fff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Top bar3"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.top-bar3{
+  position: relative;
+  padding: 12px 0;
+  overflow: hidden;
+  background-color: {{ section.settings.notification_bg_color }};
+}
+.top-bar3 ul.grid-wrap {
+  display: flex;
+  align-items: center;
+  margin: -30px 0 0 -30px;
+}
+.top-bar3 ul.grid-wrap li.grid-wrapper{
+  width: calc(100% - 30px);
+  white-space: nowrap;  
+  margin: 30px 0 0 30px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.top-bar3 ul li.grid-wrapper .richtext {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.top-bar3 ul li.grid-wrapper .richtext a,
+.top-bar3 ul li.grid-wrapper .richtext p{
+  color: {{ section.settings.notification_txt_color }};
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 700;
+  padding: 0 15px;
+}
+.top-bar3 ul li.grid-wrapper .richtext span.icon {
+  color: {{ section.settings.notification_txt_color }};
+  font-size: 18px;
+  line-height: 1;
+}
+.top-bar3 ul li.grid-wrapper .richtext span.custom-label {
+  color: {{ section.settings.notification_txt_color }};
+  font-size: var(--font-size-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  line-height: 1;
+  border-radius: 50px;
+  line-height: 1;
+  animation: blinker .7s infinite;
+  background-color: var(--font-color-primary);
+}
+.top-bar3 .offer-text-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  direction: ltr;
+}
+.top-bar3 .offer-text-wrap .grid-wrap {
+  margin: -30px 0 0 0;
+  width: auto;
+}
+.top-bar3 .offer-text-wrap .grid-wrap.text2 {
+  display: none;
+}
+@media(max-width: 1199px) {
+  .top-bar3 ul.grid-wrap {
+    margin: -30px 0 0 -60px;
+  }
+  .top-bar3 .offer-text-wrap:hover .grid-wrap,
+  .top-bar3 .offer-text-wrap:focus-within .grid-wrap {
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    -o-animation-play-state: paused;
+    animation-play-state: paused;
+  }
+  .top-bar3 .offer-text-wrap .text1 {
+    -webkit-animation: slide1 50s linear infinite;
+    animation: slide1 50s linear infinite;
+    -webkit-animation-delay: -50s;
+    animation-delay: -50s;
+    display: flex;
+  }
+  .top-bar3 .offer-text-wrap .text2 {
+    -webkit-animation: slide2 50s linear infinite;
+    animation: slide2 50s linear infinite;
+    -webkit-animation-delay: -25s;
+    animation-delay: -25s;
+    display: flex;
+  }
+  .top-bar3 .offer-text-wrap .grid-wrap.text2 {
+    display: flex;
+  }
+}
+
+@keyframes blinker {
+  50% {
+    background: var(--color-primary);
+  }
+}
+@-webkit-keyframes slide1{
+  0%{transform: translateX(100%);} 100%{transform: translateX(-100%);}
+}
+@-moz-keyframes slide1{
+  0%{transform: translateX(100%);} 100%{transform: translateX(-100%);}
+}
+@keyframes slide1{
+  0%{transform: translateX(100%);} 100%{transform: translateX(-100%);}
+}
+@-webkit-keyframes slide2{
+  0%{transform: translateX(0%);} 100%{transform: translateX(-200%);}
+}
+@-moz-keyframes slide2{
+  0%{transform: translateX(0%);} 100%{transform: translateX(-200%);}
+}
+@keyframes slide2{
+  0%{transform: translateX(0%);} 100%{transform: translateX(-200%);}
+}
+</style>

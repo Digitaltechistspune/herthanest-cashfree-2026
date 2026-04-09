@@ -1,0 +1,24 @@
+<div class="product-info">
+  <div class="pro-prlb">
+    <div class="price-box" id="price-{{ section.id }}">
+      <span class="new-price" id="ProductPrice">{{ product.selected_or_first_available_variant.price | money }}</span>
+      {%- if product.compare_at_price_max > product.price -%}
+      <span class="old-price" id="ComparePrice">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+      {%- endif -%}
+      <small class="unit-price caption{% if product.selected_or_first_available_variant.unit_price_measurement == nil %} d-none{% endif %}">
+        <span class="price-item price-item--last">
+          <span class="unit-price-unit">{{- product.selected_or_first_available_variant.unit_price | money -}}</span>
+          <span>
+            {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
+              {{- product.selected_or_first_available_variant.unit_price_measurement.reference_value -}}
+            {%- endif -%}
+            {{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+          </span>
+        </span>
+      </small>
+    </div>
+    <div class="product-label percent-count">
+      <span class="sale-title" id="ProductDiscount">{{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | times: 100.0 | divided_by: product.selected_or_first_available_variant.compare_at_price | money_without_currency | replace: ',', '.' | times: 100 | remove: '.0' }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+{% liquid
+  if template contains 'article' or template contains 'blog'
+    capture permalinkURL
+      echo shop.url 
+      echo article.url
+    endcapture
+    capture shareTitle 
+      echo article.title | url_param_escape
+    endcapture
+  elsif template contains 'product'
+    capture permalinkURL 
+      echo shop.url 
+      echo product.url
+    endcapture
+    capture shareTitle
+      echo product.title | url_param_escape
+    endcapture
+  elsif template == 'password'
+    capture permalinkURL
+      echo shop.url
+    endcapture
+    capture shareTitle 
+    unless shop.description == blank
+    echo shop.description | url_param_escape
+  else 
+    echo shop.name | url_param_escape 
+    endunless
+    endcapture
+  endif
+-%}
+
+<ul class="social-icons">
+  <li>
+    <a target="_blank" href="//www.facebook.com/sharer.php?u={{ permalinkURL }}" tabindex="0" class="facebook">
+      <i class="fa fa-facebook"></i>
+    </a>
+  </li>
+  <li>
+    <a target="_blank" href="//twitter.com/share?text={{ shareTitle }}&amp;url={{ permalinkURL }};source=webclient" tabindex="0" class="twitter">
+      <i class="fa fa-twitter"></i>
+    </a>
+  </li>
+  {% if product.featured_image or article.image %}
+  <li>
+    <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media=http:{% if template contains 'product' %}{{ product | image_url: width: 1024 }}{% else %}{{ article | image_url: width: 1024 }}{% endif %}&amp;description={{ shareTitle }}" tabindex="0" class="pinterest">
+      <i class="fa fa-pinterest"></i>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+<style>
+  ul.social-icons {
+    display: flex;
+    
+    flex-wrap: wrap;
+    {% if settings.enable_rtl %}
+    margin: -5px -15px 0px 0px;
+    {% else %}
+    margin: -5px 0px 0px -15px;
+    {% endif %}
+  }
+  ul.social-icons li {
+    {% if settings.enable_rtl %}
+    margin: 5px 15px 0px 0px;
+    {% else %}
+    margin: 5px 0px 0px 15px;
+    {% endif %}
+  }
+  ul.social-icons li a {
+    color: var(--font-color-body);
+    font-size: 18px;
+    line-height: 1;
+  }
+  ul.social-icons li a:hover {
+    color: var(--font-color-primary);
+  }
+</style>

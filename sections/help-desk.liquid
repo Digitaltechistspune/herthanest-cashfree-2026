@@ -1,0 +1,224 @@
+<section class="section-ptb help-desk">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <ul class="help-wrap">
+          {% for block in section.blocks %}
+          <li class="desk-wrap">
+            <div class="help-desk-info">
+              <a >
+                <i class="{{ block.settings.help_desk_icon }}"></i>
+              </a>
+              <div class="help-desk-text">
+                <h6>{{ block.settings.help_desk_title }}</h6>
+                <p>{{ block.settings.help_desk_desc }}</p>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Help Desk",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Backgorund Color"
+    },
+    {
+      "type": "color",
+      "id": "help_desk_bgcolor",
+      "label": "Background Color",
+      "default": "#f3f2ee"
+    },
+    {
+      "type": "checkbox",
+      "id": "help_desk_bgcolor_check",
+      "label": "Show Backgorund Color",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "help_desk",
+      "name": "Help Desk",
+      "settings": [
+        {
+          "type": "text",
+          "id": "help_desk_icon",
+          "label": "Icon Class",
+          "default": "bi bi-telephone-inbound"
+        },
+        {
+          "type": "text",
+          "id": "help_desk_title",
+          "label": "Title",
+          "default": "Help desk support"
+        },
+        {
+          "type": "textarea",
+          "id": "help_desk_desc",
+          "label": "Description",
+          "default": "Lorem ipsum is simply dummy text of the simply dummy typesetting industry ipsum."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Help Desk",
+      "category": "Faq Page"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  {%- if section.settings.help_desk_bgcolor_check -%}
+  .help-desk {
+    background-color: {{ section.settings.help_desk_bgcolor }};
+  }
+  {%- endif -%}
+
+  /* help-desk grid css */
+  ul.help-wrap {
+    
+    display: flex;
+    
+    flex-wrap: wrap;
+    align-items: center;
+    {% if settings.enable_rtl %}
+    margin: -{{ settings.section_padding_top }}px -30px 0px 0px;
+    {% else %}
+    margin: -{{ settings.section_padding_top }}px 0px 0px -30px;
+    {% endif %}
+  }
+  ul.help-wrap li.desk-wrap {
+    width: calc(50% - 30px);
+    {% if settings.enable_rtl %}
+    margin: {{ settings.section_padding_top }}px 30px 0px 0px;
+    {% else %}
+    margin: {{ settings.section_padding_top }}px 0px 0px 30px;
+    {% endif %}
+  }
+  @media (max-width: 1199px) {
+    ul.help-wrap {
+      {% if settings.enable_rtl %}
+      margin: -{{ settings.section_padding_top_ip }}px -30px 0px 0px;
+      {% else %}
+      margin: -{{ settings.section_padding_top_ip }}px 0px 0px -30px;
+      {% endif %}
+    }
+    ul.help-wrap li.desk-wrap {
+      {% if settings.enable_rtl %}
+      margin: {{ settings.section_padding_top_ip }}px 30px 0px 0px;
+      {% else %}
+      margin: {{ settings.section_padding_top_ip }}px 0px 0px 30px;
+      {% endif %}
+    }
+  }
+  @media (max-width: 991px) {
+    ul.help-wrap li.desk-wrap {
+      width: calc(100% - 30px);
+    }
+  }
+  @media (max-width: 767px) {
+    ul.help-wrap {
+      {% if settings.enable_rtl %}
+      margin: -{{ settings.section_padding_top_xs }}px -12px 0px 0px;
+      {% else %}
+      margin: -{{ settings.section_padding_top_xs }}px 0px 0px -12px;
+      {% endif %}
+    }
+    ul.help-wrap li.desk-wrap {
+      width: calc(100% - 12px);
+      {% if settings.enable_rtl %}
+      margin: {{ settings.section_padding_top_xs }}px 12px 0px 0px;
+      {% else %}
+      margin: {{ settings.section_padding_top_xs }}px 0px 0px 12px;
+      {% endif %}
+    }
+  }
+
+  /* help-desk content css */
+  ul.help-wrap li.desk-wrap .help-desk-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 65%;
+    margin: 0 auto;
+  }
+  ul.help-wrap li.desk-wrap .help-desk-info a {
+    color: var(--font-color-header);
+    font-size: 45px;
+    height: 120px;
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--theme-border-color);
+    border-radius: 100%;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+  }
+  ul.help-wrap li.desk-wrap .help-desk-info a i {
+    display: block;
+    line-height: 0;
+  }
+  ul.help-wrap li.desk-wrap .help-desk-info .help-desk-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 24px;
+  }
+  ul.help-wrap li.desk-wrap .help-desk-info .help-desk-text h6 {
+    font-size: 18px;
+  }
+  ul.help-wrap li.desk-wrap .help-desk-info .help-desk-text p {
+    margin-top: 17px;
+  }
+  @media (max-width: 1199px) {
+    ul.help-wrap li.desk-wrap .help-desk-info {
+      max-width: 85%;
+    }
+  }
+  @media (max-width: 991px) {
+    ul.help-wrap li.desk-wrap .help-desk-info {
+      max-width: 65%;
+    }
+  }
+  @media (max-width: 767px) {
+    ul.help-wrap li.desk-wrap .help-desk-info {
+      max-width: 80%;
+    }
+  }
+  @media (max-width: 479px) {
+    ul.help-wrap li.desk-wrap .help-desk-info {
+      max-width: 100%;
+    }
+  }
+</style>

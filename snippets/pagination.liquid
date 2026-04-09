@@ -1,0 +1,39 @@
+<ul class="pagination-box">
+  {% if paginate.previous %}
+  <li class="prev np-icon">
+    <a href="{{ paginate.previous.url }}" class="previous" aria-label="Previous" title="{{ paginate.previous.title }}">
+      <i class="bi bi-chevron-left"></i>
+    </a>
+  </li>
+  {% endif %}
+  {% for part in paginate.parts %}
+  {% if part.is_link %}
+  <li class="number">
+    <a href="{{ part.url }}" title="{{ part.title }}">{{ part.title }}</a>
+  </li>
+  {% else %}
+  {% if part.title == paginate.current_page %}
+  <li class="number active">
+    <a >{{ part.title }}</a>
+  </li>
+  {% else %}
+  <li class="number">
+    <a >{{ part.title }}</a>
+  </li>
+  {% endif %}
+  {% endif %}
+  {% endfor %}
+  {% if paginate.next %}
+  <li class="next np-icon">
+    <a href="{{ paginate.next.url }}" class="next" aria-label="Next" title="{{ paginate.next.title }}">
+      <i class="bi bi-chevron-right"></i>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+<script type="text/javascript">
+addEventListener('DOMContentLoaded', (event) => {
+  $(".theme-default-pagination .disabled a"). removeAttr("href");
+  $(".theme-default-pagination li.active a"). removeAttr("href");
+});
+</script>

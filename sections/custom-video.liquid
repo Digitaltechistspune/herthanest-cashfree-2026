@@ -1,0 +1,219 @@
+{%- liquid
+  assign video_id = section.settings.video.id | default: section.settings.video_url.id
+-%}
+<section class="video-section">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="aspect-ratio">
+        {%- if section.settings.video == null and section.settings.video_url != null -%}
+          {%- liquid
+            assign loop = ''
+            if section.settings.enable_video_looping
+              assign loop = '&loop=1&playlist=' | append: video_id
+            endif
+          -%}
+          {%- if section.settings.video_url.type == 'youtube' -%}
+            <iframe
+              src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&autoplay=1{{ loop }}"
+              class="js-youtube"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+              title="{{ section.settings.description | escape }}"
+            ></iframe>
+          {%- else -%}
+            <iframe
+              src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1{{ loop }}"
+              class="js-vimeo"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+              title="{{ section.settings.description | escape }}"
+            ></iframe>
+          {%- endif -%}
+        {%- else -%}
+          {{
+            section.settings.video
+            | video_tag:
+              image_size: '1100x',
+              autoplay: true,
+              loop: section.settings.enable_video_looping,
+              controls: true,
+              muted: false
+          }}
+        {%- endif -%}
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Custom video",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop / tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ip",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "fluid"
+    },
+    {
+      "type": "header",
+      "content": "Shopify-hosted video"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_looping",
+      "label": "Play video on loop",
+      "default": false
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video"
+    },
+    {
+      "type": "header",
+      "content": "Or embed video from URL"
+    },
+    {
+      "type": "paragraph",
+      "content": "Shows when no Shopify-hosted video is selected."
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+      "label": "URL",
+      "info": "Use a YouTube or Vimeo URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom video"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.video-section {
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+}
+@media (max-width: 1199px) {
+  .video-section {
+    padding-top: {{ section.settings.section_padding_top_ip }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_ip }}px;
+  }
+}
+@media (max-width: 767px) {
+  .video-section {
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+  }
+}
+.video-section .aspect-ratio {
+  --ratio-percent: 56.25%;
+  position: relative;
+  padding-bottom: calc(var(--ratio-percent));
+}
+.video-section iframe,
+.video-section video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+</style>

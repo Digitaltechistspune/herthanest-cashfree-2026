@@ -1,0 +1,406 @@
+<section class="project-count project-count-{{ section.id }}">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="single-count">
+          <ul>
+            {% for block in section.blocks %}
+            <li class="count-wrap">
+              <div class="count-info">
+                {% if block.settings.counter_number != '' %}
+                <div class="count-number">
+                  <span class="count">{{ block.settings.counter_number }}</span>
+
+                  {% if block.settings.counter_number_text != '' %}
+                  <span>{{ block.settings.counter_number_text }}</span>
+                  {% endif %}
+                </div>
+                {% endif %}
+
+                {% if block.settings.counter_title != '' %}
+                <h6>{{ block.settings.counter_title }}</h6>
+                {% endif %}
+              </div>
+              <div class="counter-icon">
+                <a >
+                  {% if section.settings.abt_counter_img_enable %}
+
+                    {%- if block.settings.abt_counter_img -%}
+                      {{ block.settings.abt_counter_img | image_url: width: 30 | image_tag:
+                        loading: 'lazy',
+                        width: block.settings.abt_counter_img.width,
+                        height: block.settings.abt_counter_img.height,
+                        class: "img-fluid lazyload",
+                        alt: block.settings.abt_counter_img.alt | escape }}
+                    {%- else -%}
+                    {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3 %}{%- endcapture -%}
+                    {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                    {%- endif -%}
+                  {% else %}
+                  <i class="{{ block.settings.abt_counter_icon }}"></i>
+                  {% endif %}
+                </a>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+addEventListener('DOMContentLoaded', (event) => {
+  $('.count').counterUp({
+    delay: 10,
+    time: 1000
+  });
+});
+</script>
+{% schema %}
+{
+  "name": "Counter Up",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "about_counter_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "about_counter_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "about_counter_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "about_counter_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "about_counter_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "about_counter_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "about_counter_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "about_counter_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Counter Service Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "abt_counter_img_enable",
+      "label": "Show Counter Service Image",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "single_item",
+      "name": "Counter Up",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Counter Info"
+        },
+        {
+          "type": "text",
+          "id": "counter_number",
+          "label": "Counter Number",
+          "default": "10"
+        },
+        {
+          "type": "text",
+          "id": "counter_number_text",
+          "label": "Counter Sign",
+          "default": "+"
+        },
+        {
+          "type": "text",
+          "id": "counter_title",
+          "label": "Counter Title",
+          "default": "Years"
+        },
+        {
+          "type": "image_picker",
+          "id": "abt_counter_img",
+          "label": "Counter Image",
+          "info": "Recommended Size: 512px x 512px"
+        },
+        {
+          "type": "text",
+          "id": "abt_counter_icon",
+          "label": "Counter Icon",
+          "default": "bi bi-briefcase"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Counter Up",
+      "category": "About us"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .project-count-{{ section.id }} {
+    padding-top: {{ section.settings.about_counter_padding_top }}px;
+    padding-bottom: {{ section.settings.about_counter_padding_bottom }}px;
+    {% if section.settings.about_counter_bgcolor_enable %}
+    background-color: {{ section.settings.about_counter_bgcolor }};
+    {% endif %}
+  }
+  @media (max-width: 1199px) {
+    .project-count-{{ section.id }} {
+      padding-top: {{ section.settings.about_counter_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.about_counter_padding_bottom_ip }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .project-count-{{ section.id }} {
+      padding-top: {{ section.settings.about_counter_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.about_counter_padding_bottom_xs }}px;
+    }
+  }
+
+  /* counter css */
+  .project-count .single-count {
+    text-align: center;
+  }
+  .project-count .single-count ul {
+    display: flex;
+    
+    flex-wrap: wrap;
+    {% if settings.enable_rtl %}
+    margin: -{{ section.settings.about_counter_padding_top }}px -30px 0px 0px;
+    {% else %}
+    margin: -{{ section.settings.about_counter_padding_top }}px 0px 0px -30px;
+    {% endif %}
+  }
+  .project-count .single-count ul li {
+    width: calc(25% - 30px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    {% if settings.enable_rtl %}
+    margin: {{ section.settings.about_counter_padding_top }}px 30px 0px 0px;
+    {% else %}
+    margin: {{ section.settings.about_counter_padding_top }}px 0px 0px 30px;
+    {% endif %}
+  }
+  @media (max-width: 1199px) {
+    .project-count .single-count ul {
+      {% if settings.enable_rtl %}
+      margin: -{{ section.settings.about_counter_padding_top_ip }}px -30px 0px 0px;
+      {% else %}
+      margin: -{{ section.settings.about_counter_padding_top_ip }}px 0px 0px -30px;
+      {% endif %}
+    }
+    .project-count .single-count ul li {
+      {% if settings.enable_rtl %}
+      margin: {{ section.settings.about_counter_padding_top_ip }}px 30px 0px 0px;
+      {% else %}
+      margin: {{ section.settings.about_counter_padding_top_ip }}px 0px 0px 30px;
+      {% endif %}
+    }
+  }
+  @media (max-width: 991px) {
+    .project-count .single-count ul li {
+      width: calc(50% - 30px);
+    }
+  }
+  @media (max-width: 767px) {
+    .project-count .single-count ul {
+      {% if settings.enable_rtl %}
+      margin: -{{ section.settings.about_counter_padding_top_xs }}px -12px 0px 0px;
+      {% else %}
+      margin: -{{ section.settings.about_counter_padding_top_xs }}px 0px 0px -12px;
+      {% endif %}
+    }
+    .project-count .single-count ul li {
+      width: calc(50% - 12px);
+      {% if settings.enable_rtl %}
+      margin: {{ section.settings.about_counter_padding_top_xs }}px 12px 0px 0px;
+      {% else %}
+      margin: {{ section.settings.about_counter_padding_top_xs }}px 0px 0px 12px;
+      {% endif %}
+    }
+  }
+  @media (max-width: 479px) {
+    .project-count .single-count ul li {
+      width: calc(100% - 12px);
+    }
+  }
+
+  /* counter content css */
+  .project-count .single-count ul li .count-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 45px 30px 60px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 1;
+    border-radius: 0px;
+    overflow: hidden;
+  }
+  .project-count .single-count ul li .count-info::before,
+  .project-count .single-count ul li .count-info::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+  }
+  .project-count .single-count ul li .count-info::before {
+    left: 15px;
+    right: 15px;
+    top: 15px;
+    bottom: 15px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 5px rgba(0, 0 ,0, 0.15);
+  }
+  .project-count .single-count ul li .count-info::after {
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: 0;
+    background-color: var(--font-color-primary);
+    z-index: -2
+  }
+  .project-count .single-count ul li .count-info .count-number {
+    color: var(--font-color-header);
+    font-size: 30px;
+    display: flex;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .project-count .single-count ul li .count-info h6 {
+    color: var(--font-color-body);
+    font-size: 18px;
+    margin-top: 24px;
+  }
+  .project-count .single-count ul li .counter-icon {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    margin: -30px auto 0;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15), 0 0 0 15px {{ settings.tag_border_color | color_modify: 'alpha', settings.tag_border_color_opacity }};
+    position: relative;
+    z-index: 1;
+    line-height: 0;
+    border-radius: 0px;
+  }
+  .project-count .single-count ul li .counter-icon a {
+    display: block;
+  }
+  .project-count .single-count ul li .counter-icon a svg {
+    width: 40px;
+  }
+  .project-count .single-count ul li .counter-icon a img {
+    width: auto;
+    height: auto;
+  }
+  {% if section.settings.abt_counter_img_enable != "" %}
+  .project-count .single-count ul li .counter-icon a i {
+    color: var(--font-color-header);
+    font-size: 30px;
+    display: block;
+    line-height: 0;
+  }
+  {% endif %}
+</style>

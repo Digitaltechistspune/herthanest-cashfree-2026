@@ -1,0 +1,285 @@
+<section class="banner-bg">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="banner-block">
+          <div class="text-content">          
+            <div class="main-title">
+              {% if section.settings.section_sub_title != '' %}
+              <span data-fade-in class="sub-title" style="color: {{ section.settings.sub_title_color }}">{{ section.settings.sub_title }}</span>
+              {% endif %}
+              {% if section.settings.section_title != '' %}
+              <h2 data-fade-in style="color: {{ section.settings.title_color }}">{{ section.settings.title }}</h2>
+              {% endif %}
+            </div> 
+            {% if section.settings.banner_button != '' %}
+            <a data-fade-in class="btn-style3" href="{{ section.settings.banner_bg_url }}">
+              {{ section.settings.banner_button }}
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Banner background",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "fluid"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop "
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_lg",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_lg",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_bg_img_enable",
+      "label": "Show Background Image",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_img",
+      "label": "Section background image",
+      "info": "Recommended Size: 1920 x 450px"
+    },
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "Sub title",
+      "default": "section sub title"
+    },
+    {
+      "type": "color",
+      "id": "sub_title_color",
+      "label": "Sub title color",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Deal of the day"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Section title color",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "banner_button",
+      "label": "Banner button",
+      "default": "Shop collection"
+    },
+    {
+      "type": "color",
+      "id": "banner_button_color",
+      "label": "Banner buttont text color",
+      "default": "#202020"
+    },
+    {
+      "type": "color",
+      "id": "banner_button_bg_color",
+      "label": "Banner button background color",
+      "default": "#ffec43"
+    },
+    {
+      "type": "url",
+      "id": "banner_bg_url",
+      "label": "Banner url"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner background"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.banner-bg{
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+}
+@media(max-width: 1199px){
+  .banner-bg{
+    padding-top: {{ section.settings.section_padding_top_lg }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+  }
+}
+@media(max-width: 767px){
+  .banner-bg{
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+  }
+}
+
+.banner-bg .banner-block {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  {% if section.settings.section_bg_img_enable %}
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url('{% if section.settings.section_bg_img %}{{ section.settings.section_bg_img | image_url }}{% else %}https://dummyimage.com/1920x450/f7f7f7/999999{% endif %}');
+  {% endif %}
+}
+.banner-bg .banner-block .text-content {
+  width: 41.33%;
+  display: flex;
+  align-items: center;
+  padding: 60px 30px 30px 30px;
+}
+.banner-bg .banner-block .text-content .main-title span {
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.banner-bg .banner-block .text-content .main-title h2 {
+  font-size: 32px;
+}
+.banner-bg .banner-block .text-content a {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  color: {{ section.settings.banner_button_color }};
+  background-color: {{ section.settings.banner_button_bg_color }};
+  border-color: {{ section.settings.banner_button_bg_color }};
+  margin-inline-start: 40px;
+}
+.banner-bg .banner-block .text-content a:hover {
+  color: {{ section.settings.banner_button_bg_color }};
+  background-color: transparent;
+}
+@media(max-width: 1499px){
+  .banner-bg .banner-block .text-content {
+    width: 50%;
+  }
+}
+@media(max-width: 1199px){
+  .banner-bg .banner-block .text-content .main-title span {
+    font-size: var(--font-size-body);
+  }
+  .banner-bg .banner-block .text-content .main-title h2 {
+    font-size: 24px;
+  }
+}
+@media(max-width: 991px){
+  .banner-bg .banner-block .text-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .banner-bg .banner-block .text-content a {
+    margin: 15px 0 0 0;
+  }
+}
+@media(max-width: 479px){
+  .banner-bg .banner-block .text-content {
+    width: 100%;
+  }
+}
+</style>

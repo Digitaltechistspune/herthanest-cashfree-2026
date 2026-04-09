@@ -1,0 +1,759 @@
+{% doc %}
+  @prompt
+    Functional Requirements
+    
+    Video source:
+    
+    Option to upload a video file (MP4/WebM)
+    
+    OR add an external video URL (direct MP4 link, etc.)
+    
+    Video settings in the editor:
+    
+    Autoplay (toggle)
+    
+    Loop (toggle)
+    
+    Mute (toggle)
+    
+    Show/Hide native video controls (toggle)
+    
+    Optional start time (in seconds)
+    
+    Option to set a poster/thumbnail image as a fallback (shown before play or if video fails).
+    
+    Layout & Size Controls
+    
+    Section height controls:
+    
+    Presets: Small / Medium / Large
+    
+    Custom height input (px or vh) with separate controls for desktop and mobile.
+    
+    Width controls:
+    
+    Full-width (edge to edge)
+    
+    Boxed layout with adjustable max-width slider (e.g., 1200–1600px).
+    
+    Spacing controls:
+    
+    Padding top/bottom for desktop and mobile separately.
+    
+    All of these layout options must keep the video and overlay content perfectly responsive across all device sizes.
+    
+    Content (Like Image Banner)
+    
+    Optional text overlay:
+    
+    Heading, subheading, and description fields.
+    
+    Text alignment: left / center / right.
+    
+    Vertical alignment: top / middle / bottom.
+    
+    Optional button (CTA):
+    
+    Button label and URL.
+    
+    Button style (primary/secondary) using theme defaults.
+    
+    Text and button should sit inside the video banner as an overlay and adjust nicely on mobile (no cut-off, no overflow).
+    
+    Technical Notes
+    
+    Use standard Shopify section schema with well-organized settings groups.
+    
+    Code must follow Online Store 2.0 standards (JSON templates compatible).
+    
+    Ensure:
+    
+    The video scales proportionally.
+    
+    No horizontal scroll on any device.
+    
+    Text and button are readable and well-spaced on mobile., can you add a functionality like i can choose to hide this section on different devices like desktop mobile and tablet, if i toogle off to mobile then the section only show to desktop and tablet and hide from the mobile. 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-video-banner-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    {% if block.settings.height_preset == 'custom' %}
+      height: {{ block.settings.custom_height_desktop }}px;
+    {% elsif block.settings.height_preset == 'small' %}
+      height: 400px;
+    {% elsif block.settings.height_preset == 'medium' %}
+      height: 600px;
+    {% elsif block.settings.height_preset == 'large' %}
+      height: 800px;
+    {% endif %}
+    padding-top: {{ block.settings.padding_top_desktop }}px;
+    padding-bottom: {{ block.settings.padding_bottom_desktop }}px;
+  }
+
+  .ai-video-banner-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    {% if block.settings.layout_width == 'boxed' %}
+      max-width: {{ block.settings.boxed_max_width }}px;
+      margin: 0 auto;
+    {% endif %}
+  }
+
+  .ai-video-banner-video-wrapper-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .ai-video-banner-video-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+  }
+
+  .ai-video-banner-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.overlay_color }};
+    opacity: {{ block.settings.overlay_opacity }};
+    pointer-events: none;
+  }
+
+  .ai-video-banner-content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: {{ block.settings.text_alignment }};
+    {% if block.settings.vertical_alignment == 'top' %}
+      justify-content: flex-start;
+    {% elsif block.settings.vertical_alignment == 'middle' %}
+      justify-content: center;
+    {% elsif block.settings.vertical_alignment == 'bottom' %}
+      justify-content: flex-end;
+    {% endif %}
+    {% if block.settings.text_alignment == 'left' %}
+      align-items: flex-start;
+    {% elsif block.settings.text_alignment == 'center' %}
+      align-items: center;
+    {% elsif block.settings.text_alignment == 'right' %}
+      align-items: flex-end;
+    {% endif %}
+    padding: 40px 20px;
+  }
+
+  .ai-video-banner-content-inner-{{ ai_gen_id }} {
+    max-width: 800px;
+  }
+
+  .ai-video-banner-heading-{{ ai_gen_id }} {
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 700;
+    margin: 0 0 16px;
+    line-height: 1.2;
+  }
+
+  .ai-video-banner-subheading-{{ ai_gen_id }} {
+    color: {{ block.settings.subheading_color }};
+    font-size: {{ block.settings.subheading_size }}px;
+    font-weight: 500;
+    margin: 0 0 12px;
+    line-height: 1.4;
+  }
+
+  .ai-video-banner-description-{{ ai_gen_id }} {
+    color: {{ block.settings.description_color }};
+    font-size: {{ block.settings.description_size }}px;
+    margin: 0 0 24px;
+    line-height: 1.6;
+  }
+
+  .ai-video-banner-button-{{ ai_gen_id }} {
+    display: inline-block;
+    {% if block.settings.button_style == 'primary' %}
+      background-color: #de7f65;
+      color: #ffffff;
+      border: 2px solid #de7f65;
+    {% else %}
+      background-color: #333333;
+      color: #ffffff;
+      border: 2px solid #333333;
+    {% endif %}
+    padding: 17px 27px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+  }
+
+  .ai-video-banner-button-{{ ai_gen_id }}:hover {
+    {% if block.settings.button_style == 'primary' %}
+      background-color: #333333;
+      border-color: #333333;
+    {% else %}
+      background-color: #de7f65;
+      border-color: #de7f65;
+    {% endif %}
+  }
+
+  {% unless block.settings.show_on_desktop %}
+    @media screen and (min-width: 1025px) {
+      .ai-video-banner-{{ ai_gen_id }} {
+        display: none !important;
+      }
+    }
+  {% endunless %}
+
+  {% unless block.settings.show_on_tablet %}
+    @media screen and (min-width: 769px) and (max-width: 1024px) {
+      .ai-video-banner-{{ ai_gen_id }} {
+        display: none !important;
+      }
+    }
+  {% endunless %}
+
+  {% unless block.settings.show_on_mobile %}
+    @media screen and (max-width: 768px) {
+      .ai-video-banner-{{ ai_gen_id }} {
+        display: none !important;
+      }
+    }
+  {% endunless %}
+
+  @media screen and (max-width: 768px) {
+    .ai-video-banner-{{ ai_gen_id }} {
+      {% if block.settings.height_preset == 'custom' %}
+        height: {{ block.settings.custom_height_mobile }}px;
+      {% elsif block.settings.height_preset == 'small' %}
+        height: 300px;
+      {% elsif block.settings.height_preset == 'medium' %}
+        height: 450px;
+      {% elsif block.settings.height_preset == 'large' %}
+        height: 600px;
+      {% endif %}
+      padding-top: {{ block.settings.padding_top_mobile }}px;
+      padding-bottom: {{ block.settings.padding_bottom_mobile }}px;
+    }
+
+    .ai-video-banner-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-video-banner-subheading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subheading_size | times: 0.8 }}px;
+    }
+
+    .ai-video-banner-description-{{ ai_gen_id }} {
+      font-size: {{ block.settings.description_size | times: 0.9 }}px;
+    }
+
+    .ai-video-banner-content-{{ ai_gen_id }} {
+      padding: 20px 15px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-video-banner-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-video-banner-container-{{ ai_gen_id }}">
+    <div class="ai-video-banner-video-wrapper-{{ ai_gen_id }}">
+      {% if block.settings.video_file != blank %}
+        <video
+          class="ai-video-banner-video-{{ ai_gen_id }}"
+          {% if block.settings.autoplay %}autoplay{% endif %}
+          {% if block.settings.loop %}loop{% endif %}
+          {% if block.settings.mute %}muted{% endif %}
+          {% if block.settings.show_controls %}controls{% endif %}
+          {% if block.settings.poster_image %}poster="{{ block.settings.poster_image | image_url: width: 2000 }}"{% endif %}
+          playsinline
+        >
+          <source src="{{ block.settings.video_file }}" type="video/mp4">
+        </video>
+      {% elsif block.settings.video_url != blank %}
+        <video
+          class="ai-video-banner-video-{{ ai_gen_id }}"
+          {% if block.settings.autoplay %}autoplay{% endif %}
+          {% if block.settings.loop %}loop{% endif %}
+          {% if block.settings.mute %}muted{% endif %}
+          {% if block.settings.show_controls %}controls{% endif %}
+          {% if block.settings.poster_image %}poster="{{ block.settings.poster_image | image_url: width: 2000 }}"{% endif %}
+          playsinline
+        >
+          <source src="{{ block.settings.video_url }}" type="video/mp4">
+        </video>
+      {% else %}
+        {% if block.settings.poster_image %}
+          <img
+            src="{{ block.settings.poster_image | image_url: width: 2000 }}"
+            alt="{{ block.settings.poster_image.alt | escape }}"
+            class="ai-video-banner-video-{{ ai_gen_id }}"
+            loading="lazy"
+          >
+        {% else %}
+          <div class="ai-video-banner-video-{{ ai_gen_id }}" style="background-color: #f5f2ee; display: flex; align-items: center; justify-content: center;">
+            <p style="color: #808080; font-size: 16px; text-align: center; padding: 20px;">
+              Add a video file or URL to get started
+            </p>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    {% if block.settings.show_overlay %}
+      <div class="ai-video-banner-overlay-{{ ai_gen_id }}"></div>
+    {% endif %}
+
+    <div class="ai-video-banner-content-{{ ai_gen_id }}">
+      <div class="ai-video-banner-content-inner-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-video-banner-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+
+        {% if block.settings.subheading != blank %}
+          <h3 class="ai-video-banner-subheading-{{ ai_gen_id }}">{{ block.settings.subheading }}</h3>
+        {% endif %}
+
+        {% if block.settings.description != blank %}
+          <div class="ai-video-banner-description-{{ ai_gen_id }}">{{ block.settings.description }}</div>
+        {% endif %}
+
+        {% if block.settings.button_label != blank and block.settings.button_url != blank %}
+          <a href="{{ block.settings.button_url }}" class="ai-video-banner-button-{{ ai_gen_id }}">
+            {{ block.settings.button_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if block.settings.start_time > 0 %}
+  <script>
+    (function() {
+      const video = document.querySelector('.ai-video-banner-video-{{ ai_gen_id }}');
+      if (video) {
+        video.addEventListener('loadedmetadata', function() {
+          video.currentTime = {{ block.settings.start_time }};
+        });
+      }
+    })();
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Video banner",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video source"
+    },
+    {
+      "type": "url",
+      "id": "video_file",
+      "label": "Video file URL",
+      "info": "Upload video to Files and paste the URL here (MP4 or WebM)"
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "External video URL",
+      "info": "Direct link to MP4 file (used if video file is not set)"
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_image",
+      "label": "Poster image",
+      "info": "Shown before video plays or if video fails to load"
+    },
+    {
+      "type": "header",
+      "content": "Video settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true,
+      "info": "Video will play automatically (muted videos autoplay better)"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mute",
+      "label": "Mute",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Show video controls",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "start_time",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "label": "Start time",
+      "default": 0,
+      "info": "Video will start from this time (in seconds)"
+    },
+    {
+      "type": "header",
+      "content": "Device visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_desktop",
+      "label": "Show on desktop",
+      "default": true,
+      "info": "Show this section on desktop devices (1025px and above)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_tablet",
+      "label": "Show on tablet",
+      "default": true,
+      "info": "Show this section on tablet devices (769px - 1024px)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_mobile",
+      "label": "Show on mobile",
+      "default": true,
+      "info": "Show this section on mobile devices (768px and below)"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout_width",
+      "label": "Width",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "boxed_max_width",
+      "min": 1200,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Boxed max width",
+      "default": 1400,
+      "info": "Only applies when width is set to Boxed"
+    },
+    {
+      "type": "header",
+      "content": "Height"
+    },
+    {
+      "type": "select",
+      "id": "height_preset",
+      "label": "Height preset",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "custom_height_desktop",
+      "min": 300,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "label": "Custom height (desktop)",
+      "default": 600,
+      "info": "Only applies when height preset is Custom"
+    },
+    {
+      "type": "range",
+      "id": "custom_height_mobile",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Custom height (mobile)",
+      "default": 450,
+      "info": "Only applies when height preset is Custom"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top (desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom (desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top (mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom (mobile)",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show overlay",
+      "default": true,
+      "info": "Helps make text more readable"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Overlay opacity",
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Video Banner"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover our collection"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Subheading size",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Add a compelling description to engage your customers"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Content alignment"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "Vertical alignment",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "middle"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video banner"
+    }
+  ]
+}
+{% endschema %}

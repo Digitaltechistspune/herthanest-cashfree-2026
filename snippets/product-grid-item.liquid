@@ -1,0 +1,134 @@
+{%- liquid
+    assign ratio = 1
+    if product.featured_media and settings.image_ratio == 'portrait'
+      assign ratio = 0.93
+    elsif product.featured_media and settings.image_ratio == 'adapt'
+      assign ratio = product.featured_media.aspect_ratio
+    endif
+    if ratio == 0 or ratio == null
+      assign ratio = 1
+    endif
+-%}
+{%- assign color_label = 'Color,color,colour,couleur,cor,colore,farbe,색,色,カラー,färg,farve,szín,barva' | split: ',' -%}
+<div class="single-product-wrap">
+  <div class="product-image" id="pro-img-{{ section.id }}-{{ product.id }}">
+ {% if product.metafields.custom.product_badge != blank %}
+  {% assign badge_text = product.metafields.custom.product_badge.value | downcase %}
+  <span class="
+    new-badge
+    {% if badge_text == 'newly launched' %} badge-green
+    {% elsif badge_text == 'hot' %} badge-red
+    {% elsif badge_text == 'best seller' %} badge-yellow
+    {% elsif badge_text == 'premium' %} badge-black
+    {% else %} badge-default
+    {% endif %}
+  ">
+    {{ product.metafields.custom.product_badge.value }}
+  </span>
+{% endif %}
+
+    <a class="pro-img ratio" href="{{ product.url | within: collection }}" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+      <div class="img1">
+        <img srcset="
+        {%- if product.featured_image.src.width >= 165 -%}{{ product.featured_image.src | image_url: width: 165 }} 165w,{%- endif -%}
+        {%- if product.featured_image.src.width >= 360 -%}{{ product.featured_image.src | image_url: width: 360 }} 360w,{%- endif -%}
+        {%- if product.featured_image.src.width >= 533 -%}{{ product.featured_image.src | image_url: width: 533 }} 533w,{%- endif -%}
+        {%- if product.featured_image.src.width >= 720 -%}{{ product.featured_image.src | image_url: width: 720 }} 720w,{%- endif -%}
+        {{ product.featured_image.src | image_url }} {{ product.featured_image.src.width }}w
+        "
+        src="{{ product.featured_image.src | image_url: width: 720 }}"
+        data-src="{{ product.featured_image.src | image_url: width: 720 }}"
+        alt="{{ product.featured_image.src.alt | escape }}"
+        class="img-fluid lazyload"
+        width="{{ product.featured_image.src.width }}"
+        height="{{ product.featured_image.src.width | divided_by: product.featured_image.src.aspect_ratio }}"
+        decoding="async"
+        loading="lazy"
+        sizes="(min-width: 1920px) {{ '1920' | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)">
+      </div>
+      {%- if settings.pro_hover_enable -%}
+      <div class="img2">
+        <img srcset="
+        {%- if product.images[1].width >= 165 -%}{{ product.images[1] | image_url: width: 165 }} 165w,{%- endif -%}
+        {%- if product.images[1].width >= 360 -%}{{ product.images[1] | image_url: width: 360 }} 360w,{%- endif -%}
+        {%- if product.images[1].width >= 533 -%}{{ product.images[1] | image_url: width: 533 }} 533w,{%- endif -%}
+        {%- if product.images[1].width >= 720 -%}{{ product.images[1] | image_url: width: 720 }} 720w,{%- endif -%}
+        {{ product.images[1] | image_url }} {{ product.images[1].width }}w
+        "
+        src="{{ product.images[1] | image_url: width: 720 }}"
+        data-src="{{ product.images[1] | image_url: width: 720 }}"
+        alt="{{ product.images[1].alt | escape }}"
+        class="img-fluid lazyload"
+        width="{{ product.images[1].width }}"
+        height="{{ product.images[1].width | divided_by: product.images[1].aspect_ratio }}"
+        decoding="async"
+        loading="lazy"
+        sizes="(min-width: 1920px) {{ '1920' | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)">
+      </div>
+      {%- endif -%}
+    </a>
+    <div class="product-label">
+    {%- render 'product-label', product: product -%}
+    </div>
+  </div>
+  <div class="product-content">
+    <div class="content-block">
+      {% if settings.pro_gr_option_enable %}
+      {% render 'product-grid-option', product: product, color_label: color_label, section: section %}
+      {% endif %}
+      {% if settings.show_product_type or settings.product_vendor_enable %}
+      <div class="type-vendor">
+        {% if settings.show_product_type and product.vendor != '' %}
+        {{ product.type | link_to_type: class: 'product-type' }}
+        {% endif %}
+        {% if settings.product_vendor_enable and product.vendor != '' %}
+        {{ product.vendor | link_to_vendor: class: 'product-vendor' }}
+        {% endif %}
+      </div>
+      {% endif %}
+      <h6>
+        <a href="{{ product.url | within: collection }}" title="{{ product.title }}">{{ product.title }}</a>
+      </h6>
+      <div class="price-box" id="price-{{ product.id }}">
+        <span class="new-price" id="ProductPrice">{{ product.selected_or_first_available_variant.price | money }}</span>
+        {%- if product.compare_at_price_max > product.price -%}
+        <span span class="old-price" id="ComparePrice">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+        {%- endif -%}
+      </div>
+      {%- if settings.show_rating -%}
+      <div class="product-grid-rating">
+        {% if product.metafields.judgeme.badge %}
+        <div class='jdgm-widget jdgm-preview-badge'>
+          {{ product.metafields.judgeme.badge }}
+        </div>
+        {% else %}
+        <div class="jdgm-prev-badge jdgm--js" data-average-rating="0.00" data-number-of-reviews="0">
+          <span class="jdgm-prev-badge__stars" data-score="0.00"><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span><span class="jdgm-star jdgm--off"></span></span>
+          <span class="jdgm-prev-badge__text">No reviews</span>
+        </div>
+        {% endif %}
+      </div>
+      {%- endif -%}
+      {%- if product.metafields.custom.custom_content -%}
+      <p class="product-description">{{ product.metafields.custom.custom_content | strip_html | truncatewords: 17 }}</p>
+      {%- else -%}
+      {%- if product.description != '' -%}
+      <p class="product-description">{{ product.description | strip_html | truncatewords: 17 }}</p>
+      {%- endif -%}
+      {%- endif -%}
+    </div>
+    <div class="product-action">
+      {%- liquid
+        if settings.wishlist_enable
+        render 'wishlist-button', product: product
+        endif
+        if settings.cart_enable 
+        render 'cart-button', product: product, section_id: section.id
+        endif
+        if settings.quickview_enable
+        render 'quickview-button', product: product, section_id: section.id
+        endif
+      -%}
+    </div>
+  </div>
+</div>

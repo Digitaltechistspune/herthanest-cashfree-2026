@@ -1,0 +1,317 @@
+<script>
+  window.storeShopifyDomain = {{shop.permanent_domain | json}};
+  window.Shopify = {
+    ...window.Shopify,
+    shop: storeShopifyDomain,
+  };
+  window.onload = () => {
+    let shopifyObjectDomain = window?.Shopify?.shop;
+    if (!window.Shopify.shop || !Shopify.shop.includes("myshopify.com")) {
+      window.Shopify = {
+        ...window.Shopify,
+        shop: shopifyObjectDomain,
+      };
+    }
+  };
+</script>
+
+
+<script>
+  try {
+  const ctaButtonAllowedTypes = ["BUTTON", "A", "INPUT"];
+
+  const checkoutButtonAllowedText = ["checkout", "placeorder"];
+  const buyNowButtonAllowedText = ["buynow", "buyitnow"];
+
+  const cfButtonUniqueClass = "cf-occ-btn";
+
+  const revertLoaderTime = 6500;
+
+  const cfSdkUrl = "https://sdk.cashfree.com/js/v3/cashfree.js";
+
+  let cfOneClickThemeSetupDone = false;
+  const buttonConfigs = {
+    checkout: {
+      allowedTypes: ctaButtonAllowedTypes,
+      allowedText: checkoutButtonAllowedText,
+      action: (node) => {
+        node.setAttribute("data-function", "initCheckout");
+      },
+    },
+    buyNow: {
+      allowedTypes: ctaButtonAllowedTypes,
+      allowedText: buyNowButtonAllowedText,
+      action: (node) => {
+        node.setAttribute("data-function", "initBuyNow");
+      },
+    },
+  };
+
+  const normalizeText = (text) => text?.replace(/\s/g, "").toLowerCase() ?? "";
+
+  const displayLoader = (button) => {
+    try {
+      if (!button) return;
+
+      button.dataset.originalText = button.innerHTML;
+      button.classList.add("cf-loader");
+      button.innerHTML = `<div id="cf-loader-ring"><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div></div>`;
+      button.disabled = true;
+    } catch (err) {
+      console.error(`Error in displayLoader :: ${err?.message}`);
+    }
+  };
+
+  const revertLoader = (button) => {
+    try {
+      if (!button) return;
+
+      button.innerHTML = button.dataset.originalText;
+      button.classList.remove("cf-loader");
+      button.disabled = false;
+    } catch (err) {
+      console.error(`Error in revertLoader :: ${err?.message}`);
+    }
+  };
+
+  const initEventListeners = async () => {
+    try {
+      document.addEventListener(
+        "click",
+        async (e) => {
+          try {
+            let clickTarget = e.target;
+            if (typeof clickTarget?.closest === "function") {
+              clickTarget = clickTarget.closest("." + cfButtonUniqueClass);
+            }
+            if (
+              clickTarget?.classList?.contains(cfButtonUniqueClass) &&
+              clickTarget.dataset?.function
+            ) {
+              let checkoutBtn = clickTarget;
+
+              // * Stopping the event propagation
+              e.preventDefault();
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+
+              // * Displaying loader on the button
+              displayLoader(checkoutBtn);
+
+              // * Removing the loader after revertLoaderTime ms
+              setTimeout(() => {
+                revertLoader(checkoutBtn);
+              }, revertLoaderTime);
+
+              // * Checking if CF theme script is loaded
+              await loadCfThemeScript();
+
+              // * Initializing the checkout process
+              switch (checkoutBtn.dataset.function) {
+                case "initCheckout":
+                  CashfreeOcc.initCheckout(checkoutBtn);
+                  break;
+                case "initBuyNow":
+                  CashfreeOcc.initBuyItNow(checkoutBtn);
+                  break;
+              }
+            }
+          } catch (err) {
+            console.error(`Error in click event listener :: ${err?.message}`);
+          }
+        },
+        true
+      );
+    } catch (err) {
+      console.error(`Error in initEventListeners :: ${err?.message}`);
+    }
+  };
+
+  const checkButtonMatch = (node, config) => {
+    if (!config.allowedTypes.includes(node.nodeName)) return false;
+
+    const nodeText = normalizeText(node.textContent);
+    const nodeValue = normalizeText(node.value);
+
+    return config.allowedText.some(
+      (text) => nodeText.includes(text) || nodeValue.includes(text)
+    );
+  };
+
+  const addEventListener = (node) => {
+    try {
+      // * Returning if element contains the unique class
+      if (node.classList.contains(cfButtonUniqueClass)) return;
+      for (let config of Object.values(buttonConfigs)) {
+        if (checkButtonMatch(node, config)) {
+          node.classList.add(cfButtonUniqueClass);
+          config.action(node);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const automateThemeSetup = () => {
+    try {
+      if (cfOneClickThemeSetupDone) return;
+      cfOneClickThemeSetupDone = true;
+      // * Adding mutation observer to handle the case when the checkout button is added dynamically
+      // * select the node to observe for mutations (in this case, the body element)
+      const targetNode = document.querySelector("body");
+
+      // create a new instance of the MutationObserver
+      const observer = new MutationObserver((mutationsList) => {
+        // loop through each mutation that has occurred
+        for (let mutation of mutationsList) {
+          // check if any nodes have been added
+          if (mutation.type === "childList" || mutation.type === "attributes") {
+            // * Checking if the mutation is of type attributes and the attribute is class
+            if (
+              mutation.type === "attributes" &&
+              mutation.attributeName === "class"
+            ) {
+              let node = mutation.target;
+              addEventListener(node);
+            }
+
+            // loop through each added node
+            for (let node of mutation.addedNodes) {
+              // * Getting all the buttons and anchor tags from node and checking if the node itself is a button or anchor tag
+              if (node instanceof Element) {
+                let nodes = Array.from(
+                  node.querySelectorAll("button, a, input")
+                );
+                nodes = [node, ...nodes];
+
+                for (let subNode of nodes) {
+                  addEventListener(subNode);
+                }
+              }
+            }
+          }
+        }
+      });
+      // * configure the observer to watch for childList mutations and subtree mutations
+      const observerConfig = {
+        childList: true,
+        subtree: true,
+        attributes: true,
+      };
+
+      // * start observing the target node for mutations
+      if (targetNode) {
+        observer.observe(targetNode, observerConfig);
+      }
+
+      // * Adding event listeners to the existing buttons
+      const buttons = Array.from(document.querySelectorAll("button, a, input"));
+
+      for (let button of buttons) {
+        addEventListener(button);
+      }
+    } catch (error) {
+      console.error("Error in automateThemeSetup:", error);
+    }
+  };
+
+  const loadCfThemeScript = () => {
+    return new Promise((resolve, reject) => {
+      try {
+        let themeScriptLoaded = false;
+
+        function loadScriptWithRetries(url, retries) {
+          if (retries <= 0 || themeScriptLoaded) {
+            if (themeScriptLoaded) {
+              resolve();
+            } else {
+              reject(
+                new Error("Failed to load script after multiple attempts")
+              );
+            }
+            return;
+          }
+
+          let script = document.createElement("script");
+          script.type = "text/javascript";
+          script.src = url;
+          script.id = "zecpe-theme-script";
+          script.async = true;
+          script.onload = function () {
+            themeScriptLoaded = true;
+            resolve();
+          };
+          script.onerror = function () {
+            setTimeout(function () {
+              loadScriptWithRetries(url, retries - 1);
+            }, 2000);
+          };
+
+          document.head.appendChild(script);
+        }
+
+        if (!window.CashfreeOcc) {
+          loadScriptWithRetries(
+            "https://shopify-checkout.cashfree.com/bundle.js",
+            3
+          );
+        } else {
+          resolve();
+        }
+      } catch (err) {
+        console.error("Error in loadCfThemeScript:", err);
+        reject(err);
+      }
+    });
+  };
+
+  window.addEventListener("DOMContentLoaded", automateThemeSetup);
+  initEventListeners();
+  } catch (err) {
+  console.error(`Error in doing automated theme setup :: ${err?.message}`);
+  }
+</script>
+
+<style>
+
+
+  #cf-loader-ring {
+    position: relative;
+    width: 24px;
+    height: 30px;
+    place-items: center;
+    text-align: center;
+    max-height: 100%;
+    margin: 0 auto;
+  }
+  #cf-loader-ring div {
+    box-sizing: border-box;
+    display: block;
+    width: 24px;
+    position: absolute;
+    height: 24px;
+    margin: 3px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    animation: cf-loader-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #fff transparent transparent transparent;
+  }
+  #cf-loader-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  #cf-loader-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  #cf-loader-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes cf-loader-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>

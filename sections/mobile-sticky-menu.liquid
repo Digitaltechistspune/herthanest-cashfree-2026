@@ -1,0 +1,174 @@
+{% if section.settings.menu_enable %}
+<ul class="grid-wrap">
+  {% for block in section.blocks %}
+  {%- case block.type -%}
+  {%- when 'icon_custom' -%}
+  <li class="grid-wrapper">
+    <a class="icon-block" href="{{ block.settings.custom_url }}">
+      <span class="icon">{{ block.settings.custom_icon }}</span>
+      <span class="title">{{ block.settings.custom_title }}</span>
+    </a>
+  </li>
+  {%- when 'icon_user' -%}
+  <li class="grid-wrapper">
+    <a class="icon-block" {% if customer and shop.customer_accounts_enabled %}href="{{ routes.account_url }}"{% else %} {% if settings.account_popup_enable %} href="#accountmodal" data-bs-toggle="modal"{% else %} href="{{ routes.account_url }}" {% endif %}{% endif %} class="acc-ti">
+      <span class="icon">{% if customer %}<i class="feather-user-check"></i>{% else %}<i class="feather-user"></i>{% endif %}</span>
+      <span class="title">{{ block.settings.user_title }}</span>
+    </a>
+  </li>
+  {%- when 'icon_wishlist' -%}
+  <li class="grid-wrapper">
+    <a class="icon-block" href="{{ settings.wishlist_page_url }}">
+      <span class="icon"><i class="feather-heart"></i><span class="wishlist-counter"></span></span>
+      <span class="title">{{ block.settings.wishlist_title }}</span>
+    </a>
+  </li>
+  {%- when 'icon_search' -%}
+  <li class="grid-wrapper">
+    <a class="icon-block" href="#seachmodal" class="search-popup" data-bs-toggle="modal">
+      <span class="icon"><i class="feather-search"></i></span>
+      <span class="title">{{ block.settings.search_title }}</span>
+    </a>
+  </li>
+  {%- endcase -%}
+  {% endfor %}
+</ul>
+{% endif %}
+{% schema %}
+{
+  "name": "Mobile sticky menu",
+  "class": "mobile-sticky-menu",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Menu enable"
+    },
+    {
+      "type": "checkbox",
+      "id": "menu_enable",
+      "label": "Menu enable",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_custom",
+      "limit": 3,
+      "name": "Icon Custom",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "custom_icon",
+          "label": "Icon",
+          "info": "[See Icon Name](https://dropways.github.io/feathericons)",
+          "default": "<i class=\"feather-home\"></i>"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Icon title",
+          "default": "Home"
+        },
+        {
+          "type": "url",
+          "id": "custom_url",
+          "label": "url"
+        }
+      ]
+    },
+    {
+      "type": "icon_search",
+      "name": "Icon Search",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "search_title",
+          "label": "Search title",
+          "default": "Search"
+        }
+      ]
+    },
+    {
+      "type": "icon_wishlist",
+      "name": "Icon Wishlist",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "wishlist_title",
+          "label": "Wishlist title",
+          "default": "Wishlist"
+        }
+      ]
+    },
+    {
+      "type": "icon_user",
+      "name": "Icon User",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "user_title",
+          "label": "User title",
+          "default": "Account"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+<style>
+.mobile-sticky-menu {
+  display: none;
+  position: sticky;
+  bottom: 0;
+  z-index: 8;
+  background-color: #fff;
+  box-shadow: 0 0 30px 0 rgba(0,0,0,10%);
+}
+.mobile-sticky-menu ul.grid-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mobile-sticky-menu ul.grid-wrap li.grid-wrapper {
+  width: 25%;
+  padding: 10px 0;
+  border-right: 1px solid rgba(0,0,0,10%);
+}
+.mobile-sticky-menu a.icon-block {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  line-height: 1;
+}
+.mobile-sticky-menu a.icon-block span.icon {
+  font-size: 20px;
+  position: relative;
+}
+.mobile-sticky-menu a.icon-block span.title {
+  font-size: 12px;
+  padding-top: 5px;
+}
+.mobile-sticky-menu a.icon-block span.icon .wishlist-counter {
+    font-size: 10px;
+    color: #fff;
+    border-radius: 50px;
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    top: -5px;
+    inset-inline-end: -7px;
+    margin: 0;
+    display: flex;
+    background-color: var(--font-color-header);
+    align-items: center;
+    justify-content: center;
+}
+@media(max-width: 600px){
+  .mobile-sticky-menu {
+    display: block;
+  }
+}
+</style>

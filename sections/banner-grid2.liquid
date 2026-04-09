@@ -1,0 +1,419 @@
+<section class="banner-grid2">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <ul class="banner-wrap">
+          {% for block in section.blocks %}
+          <li class="banner-block offer-banner">
+            <a href="{{ block.settings.banner_url }}">
+              {% comment %}
+              <img src="https://dummyimage.com/430x550/e2e2e2/999999" class="img-fluid" alt="image">
+              {% endcomment %}
+              {%- if block.settings.banner_img -%}
+              {{
+                block.settings.banner_img
+                | image_url: width: 650
+                | image_tag:
+                  loading: 'lazy',
+                  width: block.settings.banner_img.width,
+                  height: block.settings.banner_img.height,
+                  class: 'img-fluid lazyload',
+                  alt: block.settings.banner_img.alt
+                | escape
+              }}
+              {%- else -%}
+              {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+              {%- endif -%}
+            </a>
+            <div class="text-content {% if block.settings.banner_text_position == "right" %} banner-text-right{% elsif block.settings.banner_text_position == "left" %} banner-text-left{% else %} banner-text-center{% endif %}">
+              {% if block.settings.item_subtitle %}
+              <span data-fade-in class="count" style="color: {{ block.settings.item_subtitle_color }};">{{ block.settings.item_subtitle }}</span>
+              {% endif %}
+              {% if block.settings.banner_title != '' %}
+              <h6 data-fade-in style="color: {{ block.settings.banner_title_color }};">{{ block.settings.banner_title }}</h6>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Banner grid2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop / tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ipad",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "section_bgcolor",
+      "label": "section background color",
+      "default": "#F5F2EE"
+    },
+    {
+      "type": "header",
+      "content": "Section Border"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_enable",
+      "label": "Show Section Border",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "border",
+      "label": "Border",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#808080"
+    },
+    {
+      "type": "range",
+      "id": "border_color_opacity",
+      "label": "Theme Border Color Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.1
+    },
+    {
+      "type": "select",
+      "id": "grid_option",
+      "label": "Select option",
+      "options": [
+        {
+          "label": "2",
+          "value": "2"
+        },
+        {
+          "label": "3",
+          "value": "3"
+        },
+        {
+          "label": "4",
+          "value": "4"
+        }
+      ],
+      "default": "3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "offer_banner",
+      "name": "Offer Banner",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "banner_img",
+          "label": "Banner Image",
+          "info": "Recommended Size: 430x550px"
+        },
+        {
+          "type": "url",
+          "id": "banner_url",
+          "label": "url"
+        },
+        {
+          "type": "text",
+          "id": "item_subtitle",
+          "label": "Banner Subtitle",
+          "default": "Weekly sale discount"
+        },
+        {
+          "type": "color",
+          "id": "item_subtitle_color",
+          "label": "Banner sub title color",
+          "default": "#DE7F65"
+        },
+        {
+          "type": "text",
+          "id": "banner_title",
+          "label": "Banner title",
+          "default": "Living armchair"
+        },
+        {
+          "type": "color",
+          "id": "banner_title_color",
+          "label": "Banner title color",
+          "default": "#333333"
+        },
+        {
+          "type": "header",
+          "content": "Banner Text Position"
+        },
+        {
+          "type": "select",
+          "id": "banner_text_position",
+          "label": "Text Position",
+          "options": [
+            {
+              "label": "left",
+              "value": "left"
+            },
+            {
+              "label": "Right",
+              "value": "right"
+            },
+            {
+              "label": "Center",
+              "value": "center"
+            }
+          ],
+          "default": "center"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner grid2"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.banner-grid2 {
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  background-color: {{ section.settings.section_bgcolor }};
+  {% if section.settings.border_enable %}
+  border-top: {{ section.settings.border }}px solid {{ section.settings.border_color | color_modify: 'alpha', section.settings.border_color_opacity }};
+  {% endif %}
+}
+@media (max-width: 1199px) {
+  .banner-grid2 {
+    padding-top: {{ section.settings.section_padding_top_ipad }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_ipad }}px;
+  }
+}
+@media (max-width: 767px) {
+  .banner-grid2 {
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+  }
+}
+
+/*banner area*/
+.banner-grid2 .banner-wrap{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: -30px 0 0 -30px;
+}
+.banner-grid2 .banner-block {
+  {% if section.settings.grid_option == "2" %}
+  width: calc(50% - 30px);
+  {% elsif section.settings.grid_option == "3" %}
+  width: calc(33.33% - 30px);
+  {% elsif section.settings.grid_option == "4" %}
+  width: calc(25% - 30px);
+  {% endif %}
+  margin: 30px 0 0 30px;
+  position: relative;
+  overflow: hidden;
+  -webkit-transition: all .3s ease-in-out 0s;
+  -o-transition: all .3s ease-in-out 0s;
+  transition: all .3s ease-in-out 0s;
+}
+.banner-grid2 .banner-block:hover{
+  -moz-transform: translate3d(0,-5px,0);
+  -o-transform: translate3d(0,-5px,0);
+  -ms-transform: translate3d(0,-5px,0);
+  -webkit-transform: translate3d(0,-5px,0);
+  transform: translate3d(0,-5px,0);
+}
+@media(max-width: 991px){
+  .banner-grid2 .banner-block {
+    width: calc(50% - 30px);
+  }
+}
+@media(max-width: 767px){
+  .banner-grid2 .banner-wrap{
+    margin: -30px 0 0 -12px;
+  }
+  .banner-grid2 .banner-block {
+    width: calc(50% - 12px);
+    margin: 30px 0 0 12px;
+  }
+}
+@media(max-width: 479px){
+  .banner-grid2 .banner-block {
+    width: calc(100% - 12px);
+  }
+}
+
+/* offer banner css */
+.banner-grid2 .offer-banner > a {
+  display: block;
+  width: 100%;
+  border-radius: var(--sti-border-radius);
+  overflow: hidden;
+}
+.banner-grid2 .offer-banner > a img{
+  width: 100%;
+}
+.banner-grid2 .offer-banner .text-content {
+  position: absolute;
+  top: 30px;
+  inset-inline-start: 30px;
+  inset-inline-end: 30px;
+}
+.banner-grid2 .offer-banner .text-content.banner-text-left {
+  {%- if settings.enable_rtl -%}
+  text-align: right;
+  {%- else -%}
+  text-align: left;
+  {%- endif -%}
+}
+.banner-grid2 .offer-banner .text-content.banner-text-center {
+  text-align: center
+}
+.banner-grid2 .offer-banner .text-content.banner-text-right {
+  {%- if settings.enable_rtl -%}
+  text-align: left;
+  {%- else -%}
+  text-align: right;
+  {%- endif -%}
+}
+.banner-grid2 .offer-banner .text-content span {
+  {% if settings.other_custom_font_handle_enable %}
+  font-family: '{{ settings.other_custom_font_handle }}', sans-serif;
+  {% endif %}
+  font-size: 25px;
+  margin-bottom: 20px;
+  font-style: italic;
+  font-weight: var(--font-weight-subtitle);
+}
+.banner-grid2 .offer-banner .text-content h6{
+  font-size: 30px;
+  font-weight: var(--font-custom-weight-section-header);
+  line-height: 1;
+  text-transform: uppercase;
+}
+@media(max-width: 1399px){
+  .banner-grid2 .offer-banner .text-content h6 {
+    font-size: 24px;
+  }
+}
+@media(max-width: 1199px){
+  .banner-grid2 .offer-banner .text-content span {
+    margin-bottom: 10px;
+  }
+}
+@media (max-width: 767px) {
+  .banner-grid2 .offer-banner .text-content {
+    inset-inline-start: 12px;
+    inset-inline-end: 12px;
+  }
+  .banner-grid2 .offer-banner .text-content span {
+    font-size: 20px;
+    margin-bottom: 11px;
+  }
+}
+</style>

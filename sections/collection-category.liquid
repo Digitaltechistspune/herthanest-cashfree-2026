@@ -1,0 +1,421 @@
+<!-- Browuse categoryies -->
+<section class="collection-cat">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        {% if section.settings.section_sub_title != '' or section.settings.section_title != '' %}
+        <div class="section-capture">
+          <div class="section-title">
+            {% if section.settings.section_sub_title != '' %}
+            <span data-fade-in class="sub-title">{{ section.settings.section_sub_title }}</span>
+            {% endif %}
+            {% if section.settings.section_title != '' %}
+            <h2 data-fade-in>{{ section.settings.section_title }}</h2>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+        <div class="swiper" id="pro-{{ block.id }}" data-slides-per-view="{{ section.settings.product_views }}">
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+            {% assign category_product = collections[block.settings.slider_category_handle] %}
+            <div class="swiper-slide">
+              <a href="{{ category_product.url }}" class="cat-img banner-hover">
+                {%- if block.settings.category_img -%}
+                {{ block.settings.category_img | image_url: width: 1080 | image_tag:
+                loading: 'lazy',
+                width: block.settings.category_img.width,
+                height: block.settings.category_img.height,
+                class: "img-fluid lazyload desk-img",
+                alt: block.settings.category_img.alt | escape }}
+                {%- else -%}
+                {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+                {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                {%- endif -%}
+                <div class="text-content">
+                  <h6>{{ category_product.title | default: "collection" }}</h6>
+                  <!-- <span class="count">{{ category_product.products_count }} {{ block.settings.item_title }} </span> -->
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+  addEventListener('DOMContentLoaded', (event) => {
+    var swiper = new Swiper('#pro-{{ block.id }}', {
+      loop: false,
+      slidesPerView: {{ section.settings.product_views }},
+      grid: {
+        rows: 1,
+        fill: 'row' | 'column',
+      },
+      spaceBetween: 30,
+      observer: true,
+      observeParents: true,
+      watchSlidesProgress: true,
+      {%- if settings.enable_rtl -%}
+      rtl: true,
+      {%- endif -%}
+      navigation: {
+        nextEl: ".arrow-next-{{ section.id }}",
+        prevEl: ".arrow-prev-{{ section.id }}",
+      },
+      pagination: {
+        el: ".swiper-pagination-{{ section.id }}",
+        clickable: true
+      },
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      speed: 1000,
+      breakpoints: {
+        0: {
+          slidesPerView: 1,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        320: {
+          slidesPerView: 1,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        360: {
+          slidesPerView: {{ section.settings.product_views_sm }},
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        540: {
+          slidesPerView: {{ section.settings.product_views_sm }},
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        640: {
+          slidesPerView: {{ section.settings.product_views_lg }},
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        768: {
+          slidesPerView: {{ section.settings.product_views_lg }},
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 30,
+        },
+        1024: {
+          slidesPerView: {{ section.settings.product_views_lg }},
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 30,
+        },
+        1199: {
+          slidesPerView: {{ section.settings.product_views }},
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 30,
+        },
+        1499: {
+          slidesPerView: {{ section.settings.product_views }},
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 30,
+        }
+      }
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Collection category",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "fluid"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ipad",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section Backgorund Color"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color",
+      "default": "transparent"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_bg_color_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section sub title",
+      "default": "Since 1987 about us"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Choose your own "
+    },
+    {
+      "type": "select",
+      "id": "product_views",
+      "label": "Slides per view desktop",
+      "options": [
+        {
+          "label": "3 Products",
+          "value": "3"
+        },
+        {
+          "label": "4 Products",
+          "value": "4"
+        },
+        {
+          "label": "5 Products",
+          "value": "5"
+        }
+      ],
+      "default": "5"
+    },
+    {
+      "type": "select",
+      "id": "product_views_lg",
+      "label": "Slides per view ipad",
+      "options": [
+        {
+          "label": "2 Products",
+          "value": "2"
+        },
+        {
+          "label": "3 Products",
+          "value": "3"
+        },
+        {
+          "label": "4 Products",
+          "value": "4"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "product_views_sm",
+      "label": "Slides per view mobile",
+      "options": [
+        {
+          "label": "1 Products",
+          "value": "1"
+        },
+        {
+          "label": "2 Products",
+          "value": "2"
+        }
+      ],
+      "default": "2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_category",
+      "name": "Category block",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Category"
+        },
+        {
+          "type": "collection",
+          "id": "slider_category_handle",
+          "label": "Select collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "category_img",
+          "label": "Category image",
+          "info": "Recommended Size: 360x430px"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection category"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.collection-cat {
+  position: relative;
+  overflow: hidden;
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  {%- if section.settings.section_bg_color_enable -%}
+  background-color: {{ section.settings.section_bg_color }};
+  {%- endif -%}
+}
+@media (max-width: 1199px) {
+  .collection-cat {
+    padding-top: {{ section.settings.section_padding_top_ipad }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_ipad }}px;
+  }
+}
+@media (max-width: 767px) {
+  .collection-cat {
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+  }
+}
+.collection-cat a.cat-img svg,
+.collection-cat a.cat-img img{
+  width: 100%;
+}
+.collection-cat a.cat-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.collection-cat a.cat-img .text-content {
+  text-align: center;
+  position: absolute;
+  bottom: 25px;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0px 0px 15px rgba(51, 51, 51, 0.15);
+  padding: 10px 15px;
+  min-width: 140px;
+}
+.collection-cat a.cat-img .text-content h6{
+  font-size: var(--font-size-body);
+}
+@media(max-width: 1199px){
+  .collection-cat a.cat-img .text-content h6{
+    font-size: var(--font-size-body);
+  }
+}
+@media(max-width: 479px){
+  .collection-cat a.cat-img .text-content {
+    bottom: 15px;
+    right: 15px;
+    left: 15px;
+  }
+}
+</style>

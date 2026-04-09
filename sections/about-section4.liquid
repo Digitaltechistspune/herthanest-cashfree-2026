@@ -1,0 +1,304 @@
+<section class="about-section4">
+  <div class="banner-content">
+    <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+      <div class="row">
+        <div class="col">
+          <div class="about-banner">
+            <a href="{{ section.settings.banner_url }}" class="banner-hover">
+              {%- if section.settings.about_company_img -%}
+              <img srcset="
+                  {%- if section.settings.about_company_img.width >= 375 -%}{{ section.settings.about_company_img | image_url: width: 375 }} 375w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 550 -%}{{ section.settings.about_company_img | image_url: width: 550 }} 550w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 750 -%}{{ section.settings.about_company_img | image_url: width: 750 }} 750w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 1100 -%}{{ section.settings.about_company_img | image_url: width: 1100 }} 1100w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 1500 -%}{{ section.settings.about_company_img | image_url: width: 1500 }} 1500w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 1780 -%}{{ section.settings.about_company_img | image_url: width: 1780 }} 1780w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 2000 -%}{{ section.settings.about_company_img | image_url: width: 2000 }} 2000w,{%- endif -%}
+                  {{ section.settings.about_company_img | image_url }} {{ section.settings.about_company_img.width }}w
+                "
+                src="{{ section.settings.about_company_img | image_url: width: 2000 }}"
+                data-src="{{ section.settings.about_company_img | image_url: width: 2000 }}"
+                alt="{{ section.settings.about_company_img.alt | escape }}"
+                class="img-fluid lazyload"
+                width="{{ section.settings.about_company_img.width }}"
+                height="{{ section.settings.about_company_img.width | divided_by: section.settings.about_company_img.aspect_ratio }}"
+                decoding="async"
+                loading="lazy"
+                sizes="100vw">
+              {%- else -%}
+              {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+              {%- endif -%}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <ul class="about-service-text">
+          {% for block in section.blocks %}
+          <li class="about-service-wrapper">
+            <div class="service-block">
+              <div class="service-text">
+                {% if block.settings.service_title != '' %}
+                <h6 data-fade-in>{{ block.settings.service_title }}</h6>
+                {% endif %}
+                {% if block.settings.service_desc != '' %}
+                <p data-fade-in>{{ block.settings.service_desc }}</p>
+                {% endif %} 
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "About section4",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "about_template_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "about_template_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "about_company_img",
+      "label": "About Image",
+      "info": "Recommended Size: 1400px x 641px"
+    },
+    {
+      "type": "url",
+      "id": "banner_url",
+      "label": "Banner url"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "about_text",
+      "name": "About Text Service",
+      "settings": [
+        {
+          "type": "text",
+          "id": "service_title",
+          "label": "Service Title",
+          "default": "Choose products"
+        },
+        {
+          "type": "text",
+          "id": "service_desc",
+          "label": "Service Description",
+          "default": "Lorem Ipsum is simply dummy text printing and typesetting"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About section4"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.about-service-text {
+  padding-top: {{ section.settings.about_template_padding_top }}px;
+  padding-bottom: {{ section.settings.about_template_padding_bottom }}px;
+  position: relative;
+}
+@media(max-width: 1199px) {
+  .about-service-text {
+    padding-top: {{ section.settings.about_template_padding_top_ip }}px;
+    padding-bottom: {{ section.settings.about_template_padding_bottom_ip }}px;
+  }
+}
+@media(max-width: 767px) {
+  .about-service-text {
+    padding-top: {{ section.settings.about_template_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.about_template_padding_bottom_xs }}px;
+  }
+}
+.about-section4 .banner-content {
+  position: relative;
+  z-index: 1;
+}
+.about-section4 .banner-content::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 50%;
+  {% if section.settings.about_template_bgcolor_enable %}
+    background-color: {{ section.settings.about_template_bgcolor }};
+  {% endif %}
+}
+.about-section4 .banner-content .about-banner {
+  position: relative;
+  z-index: 1;
+}
+.about-section4 .banner-content .about-banner img {
+  width: 100%;
+}
+/*secrvice content*/
+.about-section4 ul.about-service-text{
+  display: flex;
+  flex-wrap: wrap;
+  margin: -30px 0 0 -30px;
+}
+.about-section4 ul.about-service-text li{
+  width: calc(50% - 30px);
+  margin: 30px 0 0 30px;
+}
+.about-section4 ul.about-service-text li.about-service-wrapper .service-block { 
+  width: 66.67%;
+  margin: 0 auto;
+  text-align: center;
+}
+.about-section4 ul.about-service-text li.about-service-wrapper .service-block h6{
+  color: var(--font-color-header);
+  font-size: 22px;
+}
+.about-section4 ul.about-service-text li.about-service-wrapper .service-block p{
+  font-size: 18px;
+  margin-top: 20px;
+}
+@media (max-width: 1599px) {
+  .about-section4 ul.about-service-text li.about-service-wrapper .service-block { 
+    width: 83.33%;
+  }
+}
+@media (max-width: 1199px) {
+  .about-section4 ul.about-service-text li.about-service-wrapper .service-block { 
+    width: 100%;
+  }
+}
+@media (max-width: 767px) {
+  .about-section4 ul.about-service-text{
+    margin: -30px 0 0 -12px;
+  }
+  .about-section4 ul.about-service-text li{
+    width: calc(50% - 12px);
+    margin: 30px 0 0 12px;
+  }
+}
+@media (max-width: 600px) {
+  .about-section4 ul.about-service-text li{
+    width: calc(100% - 12px);
+  }
+}
+</style>

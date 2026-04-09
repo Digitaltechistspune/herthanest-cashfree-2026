@@ -1,0 +1,305 @@
+<section class="customer-page section-ptb">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="acc-form">
+          <div class="log-acc-page" id="CustomerLoginForm1">
+            <div class="section-capture">
+            <div class="section-title">
+              <h2>{{ 'customer.login.title' | t }}</h2>
+              {%- if settings.login_sub_text != '' -%}
+              <p>{{ settings.login_sub_text }}</p>
+              {%- endif -%}
+            </div>
+            </div>
+            <div class="acc-page">
+              <div class="login">
+                {% form 'customer_login' %}
+                <div class="login-form-container">
+                  {{ form.errors | default_errors }}
+                  <ul class="fill-form">
+                    <li class="log-email">
+                      <label for="Email">{{ 'customer.login.email' | t }}</label>
+                      <input type="email" name="customer[email]" id="CustomerEmail" class="input-full{% if form.errors contains 'email' %} error{% endif %}" placeholder="{{ 'customer.login.email' | t }}" autocorrect="off" autocapitalize="off" autofocus required>
+                    </li>
+
+                    {% if form.password_needed %}
+                    <li class="log-pwd">
+                      <label>{{ 'customer.login.password' | t }}</label>
+                      <input type="password" value="" name="customer[password]" id="CustomerPassword" class="input-full{% if form.errors contains 'password' %} error{% endif %}" placeholder="{{ 'customer.login.password' | t }}" required>
+                    </li>
+                    {% endif %}
+                  </ul>
+                  <div class="form-action-button">
+                    <button type="submit" class="btn btn-style2">{{ 'customer.login.sign_in' | t }}</button>
+                    {% if form.password_needed %}
+                    <a id="RecoverPassword">{{ 'customer.login.forgot_password' | t }}</a>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endform %}
+              </div>
+              <div class="acc-wrapper">
+                <h6>{{ settings.dnt_acc_title }}</h6>
+                <div class="account-optional-action">
+                  {{ 'layout.customer.create_account' | t | customer_register_link }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="log-acc-page" id="RecoverPasswordForm" style="display: none;">
+            <div class="section-capture">
+              <div class="section-title">
+                <h2>
+                  <span class="title-main">{{ 'customer.recover_password.title' | t }}</span>
+                </h2>
+              <p>{{ 'customer.recover_password.subtext' | t }}</p>
+            </div>
+          </div>
+            <div class="acc-page">
+              {% form 'recover_customer_password' %}
+              <div class="login-form-container">
+                {{ form.errors | default_errors }}
+                <ul class="fill-form">
+                  <li class="log-email">
+                    <label for="Email">{{ 'customer.login.email' | t }}</label>
+                    <input type="email" value="" name="email" id="RecoverEmail" class="input-full" placeholder="{{ 'customer.recover_password.email' | t }}" autocorrect="off" autocapitalize="off" required>
+                  </li>
+                  <li class="form-toggle-btn">
+                    <div class="form-action-button">
+                      <button class="btn btn-style2" type="submit">{{ 'customer.recover_password.submit' | t }}</button>
+                      <a id="HideRecoverPasswordLink">{{ 'customer.recover_password.cancel' | t }}</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              {% endform %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% if shop.checkout.guest_login %}
+<section class="customer-page customer-guest-page">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="acc-form">
+          <div class="log-acc-page" id="guest-login">
+            <div class="section-capture">
+                <h2>
+                  <span>{{ 'customer.login.guest_title' | t }}</span>
+                </h2>
+            </div>
+            <div class="acc-page">
+              <div class="login-form-container">
+                {% form 'guest_login' %}
+                <input type="submit" value="{{ 'customer.login.guest_continue' | t }}">
+                {% endform %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+<script type="text/javascript">
+  addEventListener('DOMContentLoaded', (event) => {
+    $('.read-agree').on('click', function () {
+      if($('.create-checkbox').is(':checked')) {
+        $('.create').removeAttr('disabled');
+      }
+      else {
+        $('.create').attr('disabled', 'disabled');
+      }
+    });
+    $('#RecoverPassword').on('click', function () {
+      $('#RecoverPasswordForm').show();
+      $("#CustomerLoginForm1").hide();
+    });
+    $('#HideRecoverPasswordLink').on('click', function () {
+      $('#RecoverPasswordForm').hide();
+      $('#CustomerLoginForm1').show();
+    });
+  });
+</script>
+<style>
+  .customer-page .acc-form .log-acc-page .acc-page {
+    max-width: 50%;
+    margin: 0 auto;
+  }
+  @media (max-width: 1199px) {
+    .customer-page .acc-form .log-acc-page .acc-page {
+      max-width: 60%;
+    }
+  }
+  @media (max-width: 991px) {
+    .customer-page .acc-form .log-acc-page .acc-page {
+      max-width: 70%;
+    }
+  }
+  @media (max-width: 767px) {
+    .customer-page .acc-form .log-acc-page .acc-page {
+      max-width: 100%;
+    }
+  }
+
+  /* form css */
+  .customer-page .log-acc-page .login-form-container ul.fill-form li {
+    margin-top: 25px;
+  }
+  .customer-page .log-acc-page .login-form-container ul.fill-form li:first-child {
+    margin-top: 0px;
+  }
+  .customer-page .log-acc-page .login-form-container ul.fill-form li label {
+    display: block;
+    margin-bottom: 11px;
+    cursor: auto;
+  }
+  .customer-page .log-acc-page .login-form-container input {
+    width: 100%;
+    background-color: #FFFFFF;
+  }
+  .customer-page .log-acc-page .login-form-container .form-action-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  .customer-page .log-acc-page .login-form-container .form-action-button a {
+    cursor: pointer;
+    display: block;
+    color: var(--font-color-body);
+    font-size: 16px;
+    text-decoration: underline;
+    line-height: 1;
+    -webkit-transition: all 0s ease-in-out 0s;
+    -o-transition: all 0s ease-in-out 0s;
+    transition: all 0s ease-in-out 0s;
+  }
+  .customer-page .log-acc-page .login-form-container .form-action-button a:hover {
+    color: var(--font-color-header);
+  }
+  @media (max-width: 479px) {
+    .customer-page .log-acc-page .login-form-container .form-action-button {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .customer-page .log-acc-page .login-form-container .form-action-button a {
+      margin-top: 30px;
+    }
+  }
+
+  /* acc-link css */
+  .customer-page .log-acc-page .acc-wrapper {
+    background-color: var(--font-color-header);
+    margin-top: 30px;
+    padding: 30px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: var(--sti-border-radius);
+  }
+  .customer-page .log-acc-page .acc-wrapper h6 {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .customer-page .log-acc-page .acc-wrapper .account-optional-action {
+    {% if settings.enable_rtl %}
+    margin-right: 5px;
+    {% else %}
+    margin-left: 5px;
+    {% endif %}
+  }
+  .customer-page .log-acc-page .acc-wrapper .account-optional-action a {
+    color: {{ '#FFFFFF' | color_modify: 'alpha', 0.5 }};
+    font-size: 16px;
+    text-decoration: underline;
+    -webkit-transition: all 0s ease-in-out 0s;
+    -o-transition: all 0s ease-in-out 0s;
+    transition: all 0s ease-in-out 0s;
+  }
+  .customer-page .log-acc-page .acc-wrapper .account-optional-action:hover a {
+    color: {{ '#FFFFFF' | color_modify: 'alpha', 0.8 }};
+  }
+  @media (max-width: 479px) {
+    .customer-page .log-acc-page .acc-wrapper {
+      flex-direction: column;
+    }
+    .customer-page .log-acc-page .acc-wrapper .account-optional-action {
+      margin-top: 8px;
+      {% if settings.enable_rtl %}
+      margin-right: 0px;
+      {% else %}
+      margin-left: 0px;
+      {% endif %}
+    }
+  }
+
+  /* error css */
+  .customer-page .log-acc-page .errors {
+    color: #bd2130;
+    font-size: var(--font-size-body);
+    padding: 10px 15px;
+    margin: 0px 0px 30px;
+    background-color: {{ '#bd2130' | color_modify: 'alpha', 0.2 }};
+    {% if settings.enable_rtl %}
+    text-align: right;
+    {% else %}
+    text-align: left;
+    {% endif %}
+    border-radius: 0;
+  }
+  .customer-page .log-acc-page .errors ul {
+    {% if settings.enable_rtl %}
+    margin-right: 15px;
+    margin-left: auto;
+    {% else %}
+    margin-left: 15px;
+    {% endif %}
+    list-style: square;
+    border-radius: 0;
+  }
+  .customer-page .log-acc-page .errors ul li {
+    margin-top: 5px;
+  }
+  .customer-page .log-acc-page .errors ul li:first-child {
+    margin-top: 0px;
+  }
+
+  /*=====================================
+    guest css
+  ======================================*/
+  .customer-guest-page {
+    padding-bottom: {{ settings.section_padding_bottom }}px;
+  }
+  .customer-page.customer-guest-page .log-acc-page .login-form-container input {
+    color: {{ '#FFFFFF' | color_modify: 'alpha', 0.5 }};
+    font-size: 16px;
+    padding: 25px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--font-color-header);
+    text-transform: {{ settings.btn2_text_transform }};
+  }
+  .customer-page.customer-guest-page .log-acc-page .login-form-container input:hover {
+    color: {{ '#FFFFFF' | color_modify: 'alpha', 0.8 }};
+  }
+  @media (max-width: 1199px) {
+    .customer-guest-page {
+      padding-bottom: {{ settings.section_padding_bottom_ip }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .customer-guest-page {
+      padding-bottom: {{ settings.section_padding_bottom_xs }}px;
+    }
+  }
+</style>

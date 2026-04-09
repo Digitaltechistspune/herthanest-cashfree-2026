@@ -1,0 +1,18 @@
+<ul class="shop-element">
+  {%- if settings.search_enable -%}
+  <li class="side-wrap search-wrap">
+    <a href="#seachmodal" class="search-popup" data-bs-toggle="modal"><i class="feather-search"></i></a>
+  </li>
+  {%- endif -%}
+  <li class="side-wrap user-wrap">
+    <div class="acc-desk-header">
+      <div class="acc-title">
+        {% if shop.customer_accounts_enabled %}
+         <a href="{{ routes.account_url }}" class="acc-ti">
+          <span class="user-icon">{% if customer %}<i class="feather-user-check"></i>{% else %}<i class="feather-user"></i>{% endif %}</span>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </li>
+</ul>

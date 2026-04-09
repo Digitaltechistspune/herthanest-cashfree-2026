@@ -1,0 +1,30 @@
+<div class="product-menu-grid">
+  <div class="product-image">
+    <a class="pro-img" href="{{ product.url | within: collection }}">
+      <img class="img-fluid lazyload" src="{{ product.featured_image.src | image_url: width: 300, height: 300, crop: 'center' }}" width="{{ product.featured_image.src.width }}" height="{{ product.featured_image.src.height }}" alt="{{ product.featured_image.src.alt }}" loading="lazy">
+    </a>
+    {% if product.selected_or_first_available_variant.compare_at_price %}
+      <div class="product-label">
+        {%- render 'product-label', product: product -%}
+      </div>
+      {% endif %}
+  </div>
+  <div class="product-content">
+    <h6>
+      <a href="{{ product.url | within: collection }}" title="{{ product.title }}">{{ product.title }}</a>
+    </h6>
+    <div class="price-box">
+      <span class="new-price">{{ product.price | money }}</span>
+      {% if product.compare_at_price_max > product.price %}
+      <span class="old-price">{{ product.compare_at_price | money }}</span>
+      {% endif %}
+    </div>
+    {%- if settings.show_rating -%}
+    <div class="product-grid-rating">
+      <div class='jdgm-widget jdgm-preview-badge'>
+        {{ product.metafields.judgeme.badge }}
+      </div>
+    </div>
+    {%- endif -%}
+  </div>
+</div>

@@ -1,0 +1,88 @@
+{%- assign img_url = media | image_url -%}
+{%- liquid
+    assign ratio = 1
+    if img_url and section.settings.image_ratio == 'portrait'
+      assign ratio = 0.8
+    elsif img_url and section.settings.image_ratio == 'adapt'
+      assign ratio = img_url.aspect_ratio
+    endif
+    if ratio == 0 or ratio == null
+      assign ratio = 1
+    endif
+-%}
+{% capture media_class %}product-featured-media{% endcapture %}
+{% case media.media_type %}
+{% when 'image' %}
+<a href="{{ media.src | image_url }}" class="product-thumb" data-image-id="{{ media.id }}" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+  {% capture zoom_media_id %}ImageZoom-{{ section.id }}-{{ media.id }}{% endcapture %}
+  {% if section.settings.zoom_enable %}
+  <figure class="zoom" onmousemove="zoom(event)" style="background-image: url({{ img_url }})">
+  {% endif %}
+    <img srcset="
+      {%- if img_url.width >= 375 -%}{{ img_url | image_url: width: 375 }} 375w,{%- endif -%}
+      {%- if img_url.width >= 550 -%}{{ img_url | image_url: width: 550 }} 550w,{%- endif -%}
+      {%- if img_url.width >= 750 -%}{{ img_url | image_url: width: 750 }} 750w,{%- endif -%}
+      {%- if img_url.width >= 1100 -%}{{ img_url | image_url: width: 1100 }} 1100w,{%- endif -%}
+      {%- if img_url.width >= 1500 -%}{{ img_url | image_url: width: 1500 }} 1500w,{%- endif -%}
+      {%- if img_url.width >= 1780 -%}{{ img_url | image_url: width: 1780 }} 1780w,{%- endif -%}
+      {%- if img_url.width >= 2000 -%}{{ img_url | image_url: width: 2000 }} 2000w,{%- endif -%}
+      {%- if img_url.width >= 3000 -%}{{ img_url | image_url: width: 3000 }} 3000w,{%- endif -%}
+      {{ img_url | image_url }} {{ img_url.width }}w
+    "
+    src="{{ img_url | image_url: width: 3840 }}"
+    data-src="{{ img_url | image_url: width: 3840 }}"
+    alt="{{ img_url.alt | escape }}"
+    id="{{ media_id }}"
+    class="img-fluid lazyload {{ media_class }}"
+    width="{{ img_url.width }}"
+    height="{{ img_url.width | divided_by: img_url.aspect_ratio }}"
+    decoding="async"
+    loading="lazy"
+    sizes="(min-width: 1920px) {{ '1920' | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)">
+  {% if section.settings.zoom_enable %}
+  </figure>
+  {% endif %}
+</a>
+{% when 'external_video' %}
+<div class="product-thumb ratio" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+  {{ media | external_video_tag }}
+</div>
+{% when 'video' %}
+<div class="product-thumb product-vid product-single__media--video product-single__media--{{ media.id }} ratio" data-image-id="{{ media.id }}" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+  {{ media | video_tag: class: 'media-video', autoplay: true, loop: true, controls: true }}
+</div>
+<style>
+  .product-vid {
+    padding-top: 100%;
+    position: relative;
+  }
+  .product-vid video.media-video {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+  }
+</style>
+{% when 'model' %}
+<div class="product-thumb product-3d" data-image-id="{{ media.id }}">
+  {{ media | media_tag: toggleable: true, data-model-id: media.id }}
+</div>
+<style>
+  .product-3d {
+    padding-top: 100%;
+    position: relative;
+  }
+  .product-3d model-viewer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+  }
+</style>
+{% endcase %}

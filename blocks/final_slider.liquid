@@ -1,0 +1,1905 @@
+{% doc %}
+  @prompt
+    "Create a customizable full-width slider banner section for my Shopify theme.
+    
+    The banner must include:
+    
+    Layout & Responsiveness
+    
+    Banner is slider only with multiple slides.
+    
+    Must be 100% responsive on desktop and mobile.
+    
+    Image Controls
+    
+    Upload/select banner image per slide.
+    
+    Option for overlay (solid or gradient).
+    
+    Background color fallback if no image is added.
+    
+    Text Controls
+    
+    Add Heading, Subtitle, and Description.
+    
+    Support <br> tags for manual line breaks.
+    
+    Independent font size, color, and line-height controls.
+    
+    Separate alignment for desktop & mobile: horizontal and vertical positioning by percentage sliders.
+    
+    Control spacing (margin/padding) between heading, subtitle, and description.
+    
+    Button (CTA)
+    
+    Editable text and link.
+    
+    Background color, text color, size, and corner radius options.
+    
+    Position adjustable with same alignment sliders (desktop & mobile).
+    
+    Slider Controls
+    
+    Autoplay with speed adjustment.
+    
+    Navigation arrows and/or dots.
+    
+    Loop option., in this add two more slider option, description color change does not working
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{%- liquid
+  assign lcp_image = blank
+  for j in (1..5)
+    assign en_key = 'slide_' | append: j | append: '_enabled'
+    assign im_key = 'slide_' | append: j | append: '_image'
+    if block.settings[en_key] and block.settings[im_key] != blank
+      assign lcp_image = block.settings[im_key]
+      break
+    endif
+  endfor
+-%}
+
+{%- if lcp_image != blank -%}
+  <link
+    rel="preload"
+    as="image"
+    href="{{ lcp_image | image_url: width: 720 }}"
+    imagesrcset="
+      {{ lcp_image | image_url: width: 360 }} 360w,
+      {{ lcp_image | image_url: width: 540 }} 540w,
+      {{ lcp_image | image_url: width: 720 }} 720w,
+      {{ lcp_image | image_url: width: 960 }} 960w,
+      {{ lcp_image | image_url: width: 1200 }} 1200w,
+      {{ lcp_image | image_url: width: 1600 }} 1600w
+    "
+    imagesizes="100vw"
+  >
+{%- endif -%}
+
+
+{% style %}
+
+slider-banner-{{ ai_gen_id }} { display: block; }
+.ai-slider-track-{{ ai_gen_id }} { will-change: transform; }
+
+  .ai-slider-banner-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: {{ block.settings.fallback_bg_color }};
+  }
+
+  .ai-slider-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.slider_height_desktop }}px;
+  }
+
+  .ai-slider-track-{{ ai_gen_id }} {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .ai-slide-{{ ai_gen_id }} {
+    position: relative;
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+.ai-slide-bgimg-{{ ai_gen_id }} {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+
+
+  .ai-slide-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .ai-slide-content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .ai-slide-text-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.text_spacing }}px;
+  }
+
+  .ai-slide-heading-{{ ai_gen_id }} {
+    margin: 0;
+    font-size: {{ block.settings.heading_font_size_desktop }}px;
+    line-height: {{ block.settings.heading_line_height }};
+    color: {{ block.settings.heading_color }};
+    font-weight: 600;
+  }
+
+  .ai-slide-subtitle-{{ ai_gen_id }} {
+    margin: 0;
+    font-size: {{ block.settings.subtitle_font_size_desktop }}px;
+    line-height: {{ block.settings.subtitle_line_height }};
+    color: {{ block.settings.subtitle_color }};
+    font-weight: 400;
+  }
+
+  .ai-slide-description-{{ ai_gen_id }} {
+    margin: 0;
+    font-size: {{ block.settings.description_font_size_desktop }}px;
+    line-height: {{ block.settings.description_line_height }};
+    color: {{ block.settings.description_color }};
+    font-weight: 400;
+  }
+
+  .ai-slide-description-{{ ai_gen_id }} p {
+    margin: 0;
+    color: {{ block.settings.description_color }};
+  }
+
+  .ai-slide-description-{{ ai_gen_id }} * {
+    color: {{ block.settings.description_color }} !important;
+  }
+
+  .ai-slide-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: {{ block.settings.text_spacing }}px;
+    align-self: flex-start;
+  }
+
+  .ai-slide-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+    color: {{ block.settings.button_hover_text_color }};
+    transform: translateY(-2px);
+  }
+
+  {% if block.settings.show_navigation %}
+    .ai-slider-nav-{{ ai_gen_id }} {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .ai-slider-nav-{{ ai_gen_id }}:hover {
+      background: rgba(255, 255, 255, 1);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .ai-slider-nav-prev-{{ ai_gen_id }} {
+      left: 20px;
+    }
+
+    .ai-slider-nav-next-{{ ai_gen_id }} {
+      right: 20px;
+    }
+
+    .ai-slider-nav-{{ ai_gen_id }} svg {
+      width: 20px;
+      height: 20px;
+      fill: #333;
+    }
+  {% endif %}
+
+  {% if block.settings.show_dots %}
+    .ai-slider-dots-{{ ai_gen_id }} {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 3;
+    }
+
+    .ai-slider-dot-{{ ai_gen_id }} {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .ai-slider-dot-{{ ai_gen_id }}.active {
+      background: rgba(255, 255, 255, 1);
+      transform: scale(1.2);
+    }
+  {% endif %}
+
+  @media screen and (max-width: 768px) {
+    .ai-slider-container-{{ ai_gen_id }} {
+      height: {{ block.settings.slider_height_mobile }}px;
+    }
+
+    .ai-slide-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_font_size_mobile }}px;
+    }
+
+    .ai-slide-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_font_size_mobile }}px;
+    }
+
+    .ai-slide-description-{{ ai_gen_id }} {
+      font-size: {{ block.settings.description_font_size_mobile }}px;
+    }
+
+    .ai-slide-content-{{ ai_gen_id }} {
+      padding: 0 15px;
+    }
+
+    .ai-slider-nav-{{ ai_gen_id }} {
+      width: 40px;
+      height: 40px;
+    }
+
+    .ai-slider-nav-prev-{{ ai_gen_id }} {
+      left: 10px;
+    }
+
+    .ai-slider-nav-next-{{ ai_gen_id }} {
+      right: 10px;
+    }
+
+    .ai-slider-nav-{{ ai_gen_id }} svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .ai-slide-1-{{ ai_gen_id }} .ai-slide-content-{{ ai_gen_id }} {
+    align-items: {{ block.settings.slide_1_h_align_desktop }};
+    justify-content: {{ block.settings.slide_1_v_align_desktop }};
+    text-align: {% if block.settings.slide_1_h_align_desktop == 'center' %}center{% elsif block.settings.slide_1_h_align_desktop == 'flex-end' %}right{% else %}left{% endif %};
+
+  }
+
+  .ai-slide-2-{{ ai_gen_id }} .ai-slide-content-{{ ai_gen_id }} {
+    align-items: {{ block.settings.slide_2_h_align_desktop }};
+    justify-content: {{ block.settings.slide_2_v_align_desktop }};
+    text-align: {% if block.settings.slide_2_h_align_desktop == 'center' %}center{% elsif block.settings.slide_2_h_align_desktop == 'flex-end' %}right{% else %}left{% endif %};
+  }
+
+  .ai-slide-3-{{ ai_gen_id }} .ai-slide-content-{{ ai_gen_id }} {
+    align-items: {{ block.settings.slide_3_h_align_desktop }};
+    justify-content: {{ block.settings.slide_3_v_align_desktop }};
+    text-align: {{ block.settings.slide_3_h_align_desktop }};
+  }
+
+  .ai-slide-4-{{ ai_gen_id }} .ai-slide-content-{{ ai_gen_id }} {
+    align-items: {{ block.settings.slide_4_h_align_desktop }};
+    justify-content: {{ block.settings.slide_4_v_align_desktop }};
+    text-align: {{ block.settings.slide_4_h_align_desktop }};
+  }
+
+  .ai-slide-5-{{ ai_gen_id }} .ai-slide-content-{{ ai_gen_id }} {
+    align-items: {{ block.settings.slide_5_h_align_desktop }};
+    justify-content: {{ block.settings.slide_5_v_align_desktop }};
+    text-align: {{ block.settings.slide_5_h_align_desktop }};
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-slide-1-{{ ai_gen_id }} .ai-slide-content-{{ ai_gen_id }} {
+      align-items: {{ block.settings.slide_1_h_align_mobile }};
+      justify-content: {{ block.settings.slide_1_v_align_mobile }};
+      text-align: {{ block.settings.slide_1_h_align_mobile }};
+    }
+
+    .ai-slide-2-{{ ai_gen_id }} .ai-slide-content-{{ ai_gen_id }} {
+      align-items: {{ block.settings.slide_2_h_align_mobile }};
+      justify-content: {{ block.settings.slide_2_v_align_mobile }};
+      text-align: {{ block.settings.slide_2_h_align_mobile }};
+    }
+
+    .ai-slide-3-{{ ai_gen_id }} .ai-slide-content-{{ ai_gen_id }} {
+      align-items: {{ block.settings.slide_3_h_align_mobile }};
+      justify-content: {{ block.settings.slide_3_v_align_mobile }};
+      text-align: {{ block.settings.slide_3_h_align_mobile }};
+    }
+
+    .ai-slide-4-{{ ai_gen_id }} .ai-slide-content-{{ ai_gen_id }} {
+      align-items: {{ block.settings.slide_4_h_align_mobile }};
+      justify-content: {{ block.settings.slide_4_v_align_mobile }};
+      text-align: {{ block.settings.slide_4_h_align_mobile }};
+    }
+
+    .ai-slide-5-{{ ai_gen_id }} .ai-slide-content-{{ ai_gen_id }} {
+      align-items: {{ block.settings.slide_5_h_align_mobile }};
+      justify-content: {{ block.settings.slide_5_v_align_mobile }};
+      text-align: {{ block.settings.slide_5_h_align_mobile }};
+    }
+  }
+{% endstyle %}
+
+<slider-banner-{{ ai_gen_id }}
+data-autoplay-after-interaction="{{ block.settings.autoplay_after_interaction }}"
+data-disable-autoplay-mobile="{{ block.settings.disable_autoplay_mobile }}"
+
+  class="ai-slider-banner-{{ ai_gen_id }}"
+  data-autoplay="{{ block.settings.autoplay }}"
+  data-autoplay-speed="{{ block.settings.autoplay_speed }}"
+  data-loop="{{ block.settings.loop }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-slider-container-{{ ai_gen_id }}">
+    <div class="ai-slider-track-{{ ai_gen_id }}">
+    {% assign first_enabled_slide_rendered = false %}
+
+      {% for i in (1..5) %}
+        {% liquid
+          assign slide_enabled_key = 'slide_' | append: i | append: '_enabled'
+          assign slide_image_key = 'slide_' | append: i | append: '_image'
+          assign slide_overlay_key = 'slide_' | append: i | append: '_overlay_type'
+          assign slide_overlay_color_key = 'slide_' | append: i | append: '_overlay_color'
+          assign slide_overlay_opacity_key = 'slide_' | append: i | append: '_overlay_opacity'
+          assign slide_gradient_start_key = 'slide_' | append: i | append: '_gradient_start'
+          assign slide_gradient_end_key = 'slide_' | append: i | append: '_gradient_end'
+          assign slide_gradient_direction_key = 'slide_' | append: i | append: '_gradient_direction'
+          assign slide_heading_key = 'slide_' | append: i | append: '_heading'
+          assign slide_subtitle_key = 'slide_' | append: i | append: '_subtitle'
+          assign slide_description_key = 'slide_' | append: i | append: '_description'
+          assign slide_button_text_key = 'slide_' | append: i | append: '_button_text'
+          assign slide_button_link_key = 'slide_' | append: i | append: '_button_link'
+
+          assign slide_enabled = block.settings[slide_enabled_key]
+          assign slide_image = block.settings[slide_image_key]
+          assign slide_overlay = block.settings[slide_overlay_key]
+          assign slide_overlay_color = block.settings[slide_overlay_color_key]
+          assign slide_overlay_opacity = block.settings[slide_overlay_opacity_key]
+          assign slide_gradient_start = block.settings[slide_gradient_start_key]
+          assign slide_gradient_end = block.settings[slide_gradient_end_key]
+          assign slide_gradient_direction = block.settings[slide_gradient_direction_key]
+          assign slide_heading = block.settings[slide_heading_key]
+          assign slide_subtitle = block.settings[slide_subtitle_key]
+          assign slide_description = block.settings[slide_description_key]
+          assign slide_button_text = block.settings[slide_button_text_key]
+          assign slide_button_link = block.settings[slide_button_link_key]
+        %}
+
+        {% if slide_enabled %}
+
+{% assign is_first = false %}
+{% if first_enabled_slide_rendered == false %}
+  {% assign is_first = true %}
+  {% assign first_enabled_slide_rendered = true %}
+{% endif %}
+
+
+<div 
+  class="ai-slide-{{ ai_gen_id }} ai-slide-{{ i }}-{{ ai_gen_id }} {% if is_first %}is-first-slide{% endif %}"
+  {% if slide_image and is_first == false %}
+    data-bg="{{ slide_image | image_url: width: 720 }}"
+  {% endif %}
+>
+  {% if slide_image and is_first %}
+  <img
+    class="ai-slide-bgimg-{{ ai_gen_id }}"
+    src="{{ slide_image | image_url: width: 720 }}"
+    srcset="
+      {{ slide_image | image_url: width: 360 }} 360w,
+      {{ slide_image | image_url: width: 540 }} 540w,
+      {{ slide_image | image_url: width: 720 }} 720w,
+      {{ slide_image | image_url: width: 960 }} 960w,
+      {{ slide_image | image_url: width: 1200 }} 1200w,
+      {{ slide_image | image_url: width: 1600 }} 1600w
+    "
+    sizes="100vw"
+    width="{{ slide_image.width }}"
+    height="{{ slide_image.height }}"
+    alt="{{ slide_heading | escape }}"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  >
+{% endif %}
+
+          
+            {% if slide_overlay == 'solid' %}
+              <div 
+                class="ai-slide-overlay-{{ ai_gen_id }}"
+                style="background-color: {{ slide_overlay_color }}; opacity: {{ slide_overlay_opacity }};"
+              ></div>
+            {% elsif slide_overlay == 'gradient' %}
+              <div 
+                class="ai-slide-overlay-{{ ai_gen_id }}"
+                style="background: linear-gradient({{ slide_gradient_direction }}deg, {{ slide_gradient_start }}, {{ slide_gradient_end }}); opacity: {{ slide_overlay_opacity }};"
+              ></div>
+            {% endif %}
+
+            <div class="ai-slide-content-{{ ai_gen_id }}">
+              <div class="ai-slide-text-wrapper-{{ ai_gen_id }}">
+                {% if slide_heading != blank %}
+                  <h2 class="ai-slide-heading-{{ ai_gen_id }}">{{ slide_heading }}</h2>
+                {% endif %}
+
+                {% if slide_subtitle != blank %}
+                  <h3 class="ai-slide-subtitle-{{ ai_gen_id }}">{{ slide_subtitle }}</h3>
+                {% endif %}
+
+                {% if slide_description != blank %}
+                  <div class="ai-slide-description-{{ ai_gen_id }}">{{ slide_description }}</div>
+                {% endif %}
+
+                {% if slide_button_text != blank and slide_button_link != blank %}
+                  <a href="{{ slide_button_link }}" class="ai-slide-button-{{ ai_gen_id }}">
+                    {{ slide_button_text }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if block.settings.show_navigation %}
+      <button class="ai-slider-nav-{{ ai_gen_id }} ai-slider-nav-prev-{{ ai_gen_id }}" aria-label="Previous slide">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+      </button>
+      <button class="ai-slider-nav-{{ ai_gen_id }} ai-slider-nav-next-{{ ai_gen_id }}" aria-label="Next slide">
+        <svg viewBox="0 0 24 24">
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+        </svg>
+      </button>
+    {% endif %}
+
+    {% if block.settings.show_dots %}
+      <div class="ai-slider-dots-{{ ai_gen_id }}">
+        {% for i in (1..5) %}
+          {% liquid
+            assign slide_enabled_key = 'slide_' | append: i | append: '_enabled'
+            assign slide_enabled = block.settings[slide_enabled_key]
+          %}
+          {% if slide_enabled %}
+            <button class="ai-slider-dot-{{ ai_gen_id }}" data-slide="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</slider-banner-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    function initSliderBanner() {
+      const tagName = 'slider-banner-{{ ai_gen_id }}';
+      if (customElements.get(tagName)) return;
+
+      class SliderBanner{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+  super();
+
+  this.currentSlide = 0;
+  this.slides = [];
+  this.autoplayInterval = null;
+
+  this.isAutoplay = this.dataset.autoplay === 'true';
+  this.autoplaySpeed = (parseInt(this.dataset.autoplaySpeed, 10) || 5) * 1000;
+  this.isLoop = this.dataset.loop === 'true';
+
+  // NEW options (performance-friendly)
+  this.autoplayAfterInteraction = this.dataset.autoplayAfterInteraction === 'true';
+  this.disableAutoplayMobile = this.dataset.disableAutoplayMobile === 'true';
+
+  if (this.disableAutoplayMobile && window.matchMedia('(max-width: 768px)').matches) {
+    this.isAutoplay = false;
+  }
+
+  // Respect reduced motion
+  try {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      this.isAutoplay = false;
+    }
+  } catch (e) {}
+}
+
+
+        connectedCallback() {
+          // Defer init to next frame (helps first paint)
+          requestAnimationFrame(() => this._init());
+        }
+
+        armAutoplayOnInteraction() {
+  if (this._autoplayArmed) return;
+  this._autoplayArmed = true;
+
+  const start = () => {
+    if (this.isAutoplay && this.slides.length > 1) this.startAutoplay();
+  };
+
+  const opts = { once: true, passive: true };
+  window.addEventListener('pointerdown', start, opts);
+  window.addEventListener('touchstart', start, opts);
+  window.addEventListener('scroll', start, opts);
+  window.addEventListener('keydown', start, opts);
+}
+
+
+        _init() {
+          this.track = this.querySelector('.ai-slider-track-{{ ai_gen_id }}');
+          this.slides = Array.from(this.querySelectorAll('.ai-slide-{{ ai_gen_id }}'));
+          this.prevBtn = this.querySelector('.ai-slider-nav-prev-{{ ai_gen_id }}');
+          this.nextBtn = this.querySelector('.ai-slider-nav-next-{{ ai_gen_id }}');
+          this.dots = Array.from(this.querySelectorAll('.ai-slider-dot-{{ ai_gen_id }}'));
+
+          this.setupEventListeners();
+          this.updateSlider(true);
+
+          if (this.isAutoplay && this.slides.length > 1) {
+  if (this.autoplayAfterInteraction) {
+    this.armAutoplayOnInteraction();
+  } else {
+    // start autoplay slightly later (less competition with LCP)
+    setTimeout(() => this.startAutoplay(), 800);
+  }
+}
+
+        }
+
+        setupEventListeners() {
+          if (this.prevBtn) this.prevBtn.addEventListener('click', () => this.prevSlide());
+          if (this.nextBtn) this.nextBtn.addEventListener('click', () => this.nextSlide());
+
+          this.dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => this.goToSlide(index));
+          });
+
+          // Hover pause (desktop only)
+          this.addEventListener('mouseenter', () => this.stopAutoplay());
+          this.addEventListener('mouseleave', () => {
+            if (this.isAutoplay && this.slides.length > 1) this.startAutoplay();
+          });
+
+          // Touch swipe (passive listeners)
+          let startX = 0;
+          let endX = 0;
+
+          this.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+          }, { passive: true });
+
+          this.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            if (Math.abs(diff) > 50) diff > 0 ? this.nextSlide() : this.prevSlide();
+          }, { passive: true });
+        }
+
+        updateSlider(isFirstRun) {
+          if (!this.track || this.slides.length === 0) return;
+
+          requestAnimationFrame(() => {
+            this.track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+          });
+
+          // Load current bg (for non-first slides)
+          this.ensureBgLoaded(this.currentSlide);
+
+          // Prefetch next bg during idle (warms cache)
+          const next = (this.currentSlide + 1) % this.slides.length;
+          const warm = () => this.ensureBgLoaded(next);
+
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(warm, { timeout: isFirstRun ? 2000 : 1500 });
+          } else {
+            setTimeout(warm, isFirstRun ? 1200 : 800);
+          }
+
+          this.dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentSlide);
+          });
+        }
+
+        nextSlide() {
+          if (this.currentSlide < this.slides.length - 1) {
+            this.currentSlide++;
+          } else if (this.isLoop) {
+            this.currentSlide = 0;
+          }
+          this.updateSlider(false);
+        }
+
+        prevSlide() {
+          if (this.currentSlide > 0) {
+            this.currentSlide--;
+          } else if (this.isLoop) {
+            this.currentSlide = this.slides.length - 1;
+          }
+          this.updateSlider(false);
+        }
+
+        goToSlide(index) {
+          this.currentSlide = index;
+          this.updateSlider(false);
+        }
+
+        startAutoplay() {
+          this.stopAutoplay();
+          if (this.slides.length > 1) {
+            this.autoplayInterval = setInterval(() => this.nextSlide(), this.autoplaySpeed);
+          }
+        }
+
+        ensureBgLoaded(index) {
+          const slide = this.slides[index];
+          if (!slide) return;
+
+          const url = slide.dataset.bg;
+          if (url && !slide.dataset.bgLoaded) {
+            slide.style.backgroundImage = `url('${url}')`;
+            slide.dataset.bgLoaded = 'true';
+
+            // Warm cache
+            const img = new Image();
+            img.decoding = 'async';
+            img.src = url;
+          }
+        }
+
+        stopAutoplay() {
+          if (this.autoplayInterval) {
+            clearInterval(this.autoplayInterval);
+            this.autoplayInterval = null;
+          }
+        }
+
+        disconnectedCallback() {
+          this.stopAutoplay();
+        }
+      }
+
+      customElements.define(tagName, SliderBanner{{ ai_gen_id }});
+    }
+
+    // Idle-init so it doesn't fight LCP
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(initSliderBanner, { timeout: 1500 });
+    } else {
+      setTimeout(initSliderBanner, 1);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Full width slider banner",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slider settings"
+    },
+    {
+      "type": "range",
+      "id": "slider_height_desktop",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Height on desktop",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "slider_height_mobile",
+      "min": 200,
+      "max": 600,
+      "step": 25,
+      "unit": "px",
+      "label": "Height on mobile",
+      "default": 400
+    },
+    {
+      "type": "color",
+      "id": "fallback_bg_color",
+      "label": "Background color fallback",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay speed",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop slides",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show navigation dots",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Text styling"
+    },
+    {
+      "type": "range",
+      "id": "text_spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Spacing between text elements",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading font size desktop",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 18,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading font size mobile",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Heading line height",
+      "default": 1.2
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size_desktop",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Subtitle font size desktop",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size_mobile",
+      "min": 14,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Subtitle font size mobile",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "subtitle_line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Subtitle line height",
+      "default": 1.4
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "description_font_size_desktop",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description font size desktop",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "description_font_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description font size mobile",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "description_line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Description line height",
+      "default": 1.6
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#808080"
+    },
+    {
+      "type": "header",
+      "content": "Button styling"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button font size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 8,
+      "max": 25,
+      "step": 1,
+      "unit": "px",
+      "label": "Button vertical padding",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 15,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Button horizontal padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 5
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background color",
+      "default": "#de7f65"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button hover background color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button hover text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Slide 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "slide_1_enabled",
+      "label": "Enable slide 1",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_1_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "slide_1_overlay_type",
+      "label": "Overlay type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "solid",
+          "label": "Solid color"
+        },
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "slide_1_overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "slide_1_overlay_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Overlay opacity",
+      "default": 0.3
+    },
+    {
+      "type": "color",
+      "id": "slide_1_gradient_start",
+      "label": "Gradient start color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "slide_1_gradient_end",
+      "label": "Gradient end color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "slide_1_gradient_direction",
+      "min": 0,
+      "max": 360,
+      "step": 45,
+      "unit": "deg",
+      "label": "Gradient direction",
+      "default": 45
+    },
+    {
+      "type": "text",
+      "id": "slide_1_heading",
+      "label": "Heading",
+      "default": "Welcome to Our Store"
+    },
+    {
+      "type": "text",
+      "id": "slide_1_subtitle",
+      "label": "Subtitle",
+      "default": "Discover Amazing Products"
+    },
+    {
+      "type": "richtext",
+      "id": "slide_1_description",
+      "label": "Description",
+      "default": "<p>Shop our latest collection and find exactly what you're looking for.</p>"
+    },
+    {
+      "type": "text",
+      "id": "slide_1_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "slide_1_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "slide_1_h_align_desktop",
+      "label": "Horizontal alignment desktop",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "select",
+      "id": "slide_1_v_align_desktop",
+      "label": "Vertical alignment desktop",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_1_h_align_mobile",
+      "label": "Horizontal alignment mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_1_v_align_mobile",
+      "label": "Vertical alignment mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Slide 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "slide_2_enabled",
+      "label": "Enable slide 2",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_2_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "slide_2_overlay_type",
+      "label": "Overlay type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "solid",
+          "label": "Solid color"
+        },
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "slide_2_overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "slide_2_overlay_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Overlay opacity",
+      "default": 0.3
+    },
+    {
+      "type": "color",
+      "id": "slide_2_gradient_start",
+      "label": "Gradient start color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "slide_2_gradient_end",
+      "label": "Gradient end color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "slide_2_gradient_direction",
+      "min": 0,
+      "max": 360,
+      "step": 45,
+      "unit": "deg",
+      "label": "Gradient direction",
+      "default": 45
+    },
+    {
+      "type": "text",
+      "id": "slide_2_heading",
+      "label": "Heading",
+      "default": "New Collection"
+    },
+    {
+      "type": "text",
+      "id": "slide_2_subtitle",
+      "label": "Subtitle",
+      "default": "Fresh Styles Available"
+    },
+    {
+      "type": "richtext",
+      "id": "slide_2_description",
+      "label": "Description",
+      "default": "<p>Explore our newest arrivals and trending items.</p>"
+    },
+    {
+      "type": "text",
+      "id": "slide_2_button_text",
+      "label": "Button text",
+      "default": "View Collection"
+    },
+    {
+      "type": "url",
+      "id": "slide_2_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "slide_2_h_align_desktop",
+      "label": "Horizontal alignment desktop",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_2_v_align_desktop",
+      "label": "Vertical alignment desktop",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_2_h_align_mobile",
+      "label": "Horizontal alignment mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_2_v_align_mobile",
+      "label": "Vertical alignment mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Slide 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "slide_3_enabled",
+      "label": "Enable slide 3",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_3_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "slide_3_overlay_type",
+      "label": "Overlay type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "solid",
+          "label": "Solid color"
+        },
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "slide_3_overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "slide_3_overlay_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Overlay opacity",
+      "default": 0.3
+    },
+    {
+      "type": "color",
+      "id": "slide_3_gradient_start",
+      "label": "Gradient start color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "slide_3_gradient_end",
+      "label": "Gradient end color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "slide_3_gradient_direction",
+      "min": 0,
+      "max": 360,
+      "step": 45,
+      "unit": "deg",
+      "label": "Gradient direction",
+      "default": 45
+    },
+    {
+      "type": "text",
+      "id": "slide_3_heading",
+      "label": "Heading",
+      "default": "Special Offers"
+    },
+    {
+      "type": "text",
+      "id": "slide_3_subtitle",
+      "label": "Subtitle",
+      "default": "Limited Time Deals"
+    },
+    {
+      "type": "richtext",
+      "id": "slide_3_description",
+      "label": "Description",
+      "default": "<p>Don't miss out on our exclusive promotions and discounts.</p>"
+    },
+    {
+      "type": "text",
+      "id": "slide_3_button_text",
+      "label": "Button text",
+      "default": "Shop Sale"
+    },
+    {
+      "type": "url",
+      "id": "slide_3_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "slide_3_h_align_desktop",
+      "label": "Horizontal alignment desktop",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "flex-end"
+    },
+    {
+      "type": "select",
+      "id": "slide_3_v_align_desktop",
+      "label": "Vertical alignment desktop",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_3_h_align_mobile",
+      "label": "Horizontal alignment mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_3_v_align_mobile",
+      "label": "Vertical alignment mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Slide 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "slide_4_enabled",
+      "label": "Enable slide 4",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_4_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "slide_4_overlay_type",
+      "label": "Overlay type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "solid",
+          "label": "Solid color"
+        },
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "slide_4_overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "slide_4_overlay_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Overlay opacity",
+      "default": 0.3
+    },
+    {
+      "type": "color",
+      "id": "slide_4_gradient_start",
+      "label": "Gradient start color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "slide_4_gradient_end",
+      "label": "Gradient end color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "slide_4_gradient_direction",
+      "min": 0,
+      "max": 360,
+      "step": 45,
+      "unit": "deg",
+      "label": "Gradient direction",
+      "default": 45
+    },
+    {
+      "type": "text",
+      "id": "slide_4_heading",
+      "label": "Heading",
+      "default": "Premium Quality"
+    },
+    {
+      "type": "text",
+      "id": "slide_4_subtitle",
+      "label": "Subtitle",
+      "default": "Crafted with Care"
+    },
+    {
+      "type": "richtext",
+      "id": "slide_4_description",
+      "label": "Description",
+      "default": "<p>Experience the finest materials and exceptional craftsmanship.</p>"
+    },
+    {
+      "type": "text",
+      "id": "slide_4_button_text",
+      "label": "Button text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "slide_4_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "slide_4_h_align_desktop",
+      "label": "Horizontal alignment desktop",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "select",
+      "id": "slide_4_v_align_desktop",
+      "label": "Vertical alignment desktop",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_4_h_align_mobile",
+      "label": "Horizontal alignment mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_4_v_align_mobile",
+      "label": "Vertical alignment mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Slide 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "slide_5_enabled",
+      "label": "Enable slide 5",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_5_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "slide_5_overlay_type",
+      "label": "Overlay type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "solid",
+          "label": "Solid color"
+        },
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "slide_5_overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "slide_5_overlay_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Overlay opacity",
+      "default": 0.3
+    },
+    {
+      "type": "color",
+      "id": "slide_5_gradient_start",
+      "label": "Gradient start color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "slide_5_gradient_end",
+      "label": "Gradient end color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "slide_5_gradient_direction",
+      "min": 0,
+      "max": 360,
+      "step": 45,
+      "unit": "deg",
+      "label": "Gradient direction",
+      "default": 45
+    },
+    {
+      "type": "text",
+      "id": "slide_5_heading",
+      "label": "Heading",
+      "default": "Customer Favorites"
+    },
+    {
+      "type": "text",
+      "id": "slide_5_subtitle",
+      "label": "Subtitle",
+      "default": "Top Rated Products"
+    },
+    {
+      "type": "richtext",
+      "id": "slide_5_description",
+      "label": "Description",
+      "default": "<p>Discover what our customers love most about our products.</p>"
+    },
+    {
+      "type": "text",
+      "id": "slide_5_button_text",
+      "label": "Button text",
+      "default": "Shop Favorites"
+    },
+    {
+      "type": "url",
+      "id": "slide_5_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "slide_5_h_align_desktop",
+      "label": "Horizontal alignment desktop",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_5_v_align_desktop",
+      "label": "Vertical alignment desktop",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_5_h_align_mobile",
+      "label": "Horizontal alignment mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "slide_5_v_align_mobile",
+      "label": "Vertical alignment mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Full width slider banner"
+    }
+  ]
+}
+{% endschema %}

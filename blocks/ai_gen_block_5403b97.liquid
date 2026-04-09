@@ -1,0 +1,1084 @@
+{% doc %}
+  @prompt
+    Create a fully customizable Shopify section that shows up to 5 vertical videos in a row, styled like Instagram Reels.
+    
+    Layout & Behavior
+    
+    Support 3, 4, or 5 videos (selectable in editor).
+    
+    Desktop: videos in one horizontal row.
+    
+    Mobile: swipeable carousel (Instagram-style).
+    
+    Each video is 9:16 vertical, with rounded corners and clean spacing.
+    
+    Videos support: autoplay (optional), mute by default, loop (optional), pause on hover (optional).
+    
+    Pause videos when out of viewport.
+    
+    Fully responsive and clean, minimal design.
+    
+    Layout must not break if fewer than 5 videos are added.
+    
+    Video Source Options per Block
+    
+    MP4 upload
+    
+    Shopify-hosted video
+    
+    External URL (optional)
+    
+    Optional poster/thumbnail
+    
+    Toggle “show play icon”
+    
+    Per-Block Controls
+    
+    Toggle: autoplay, loop, mute, pause on hover
+    
+    Clickable link for the whole video (product/collection/external).
+    
+    Optional button under video with: enable/disable, text, link, style (primary/secondary).
+    
+    Section Design Controls
+    
+    Adjust: video corner radius, spacing between videos, padding top/bottom.
+    
+    Optional section heading + subheading.
+    
+    Light or dark background style.
+    
+    Mobile carousel options: enable swipe, drag speed, autoplay.
+    
+    Device Visibility
+    
+    Add toggles to show/hide the section on desktop, tablet, and mobile.
+    
+    Technical
+    
+    Output as a Liquid section with schema so the merchant can:
+    
+    Add/remove video blocks
+    
+    Reorder blocks
+    
+    Choose video count
+    
+    Control all settings from the theme editor.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-reels-block-{{ ai_gen_id }} {
+    padding: 40px 20px;
+    background-color: #ffffff;
+  }
+
+  .ai-reels-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .ai-reels-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ai-reels-heading-{{ ai_gen_id }} {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: #333333;
+  }
+
+  .ai-reels-subheading-{{ ai_gen_id }} {
+    font-size: 16px;
+    color: #666666;
+    margin: 0;
+  }
+
+  .ai-reels-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin: 0 auto;
+  }
+
+  .ai-reel-item-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #000000;
+  }
+
+  .ai-reel-video-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-reel-link-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .ai-reel-play-icon-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 3;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-reel-play-icon-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
+    fill: #000000;
+    margin-left: 3px;
+  }
+
+  .ai-reel-item-{{ ai_gen_id }}:hover .ai-reel-play-icon-{{ ai_gen_id }} {
+    opacity: 0.8;
+  }
+
+  .ai-reel-button-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 4;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  .ai-reel-button-{{ ai_gen_id }}:hover {
+    background-color: #f0f0f0;
+  }
+
+  .ai-reel-empty-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .ai-reel-empty-icon-{{ ai_gen_id }} {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .ai-reels-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-reels-block-{{ ai_gen_id }} {
+      padding: 30px 0;
+    }
+
+    .ai-reels-heading-{{ ai_gen_id }} {
+      font-size: 24px;
+    }
+
+    .ai-reels-subheading-{{ ai_gen_id }} {
+      font-size: 14px;
+    }
+
+    .ai-reels-grid-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-reels-carousel-{{ ai_gen_id }} {
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ai-reels-carousel-wrapper-{{ ai_gen_id }} {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 0 20px;
+    }
+
+    .ai-reels-carousel-wrapper-{{ ai_gen_id }}::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ai-reels-carousel-wrapper-{{ ai_gen_id }} .ai-reel-item-{{ ai_gen_id }} {
+      flex: 0 0 70%;
+      scroll-snap-align: center;
+    }
+
+    .ai-reel-play-icon-{{ ai_gen_id }} {
+      width: 50px;
+      height: 50px;
+    }
+
+    .ai-reel-play-icon-{{ ai_gen_id }} svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .ai-reel-button-{{ ai_gen_id }} {
+      padding: 10px 20px;
+      font-size: 13px;
+    }
+  }
+
+  .ai-reels-carousel-{{ ai_gen_id }} {
+    display: none;
+  }
+{% endstyle %}
+
+<reels-block-{{ ai_gen_id }} class="ai-reels-block-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-reels-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank or block.settings.subheading != blank %}
+      <div class="ai-reels-header-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-reels-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+        {% if block.settings.subheading != blank %}
+          <p class="ai-reels-subheading-{{ ai_gen_id }}">{{ block.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-reels-grid-{{ ai_gen_id }}">
+      {% if block.settings.video_1_file != blank or block.settings.video_1_url != blank %}
+        <div class="ai-reel-item-{{ ai_gen_id }}" data-video-index="1">
+          {% if block.settings.video_1_file != blank %}
+            <video
+              class="ai-reel-video-{{ ai_gen_id }}"
+              {% if block.settings.video_1_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_1_loop %}loop{% endif %}
+              {% if block.settings.video_1_mute %}muted{% endif %}
+              playsinline
+              {% if block.settings.video_1_poster != blank %}
+                poster="{{ block.settings.video_1_poster | image_url: width: 600 }}"
+              {% endif %}
+              data-pause-hover="{{ block.settings.video_1_pause_hover }}"
+            >
+              <source src="{{ block.settings.video_1_file }}" type="video/mp4">
+            </video>
+          {% elsif block.settings.video_1_url != blank %}
+            <video
+              class="ai-reel-video-{{ ai_gen_id }}"
+              {% if block.settings.video_1_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_1_loop %}loop{% endif %}
+              {% if block.settings.video_1_mute %}muted{% endif %}
+              playsinline
+              {% if block.settings.video_1_poster != blank %}
+                poster="{{ block.settings.video_1_poster | image_url: width: 600 }}"
+              {% endif %}
+              data-pause-hover="{{ block.settings.video_1_pause_hover }}"
+            >
+              <source src="{{ block.settings.video_1_url }}" type="video/mp4">
+            </video>
+          {% endif %}
+
+          {% if block.settings.video_1_link != blank %}
+            <a href="{{ block.settings.video_1_link }}" class="ai-reel-link-{{ ai_gen_id }}" aria-label="View video"></a>
+          {% endif %}
+
+          {% if block.settings.video_1_show_play %}
+            <div class="ai-reel-play-icon-{{ ai_gen_id }}">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          {% endif %}
+
+          {% if block.settings.video_1_button_text != blank %}
+            <a href="{{ block.settings.video_1_button_link }}" class="ai-reel-button-{{ ai_gen_id }}">
+              {{ block.settings.video_1_button_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="ai-reel-item-{{ ai_gen_id }}">
+          <div class="ai-reel-empty-{{ ai_gen_id }}">
+            <svg class="ai-reel-empty-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 10l-4 4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <div>Add video 1</div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.video_2_file != blank or block.settings.video_2_url != blank %}
+        <div class="ai-reel-item-{{ ai_gen_id }}" data-video-index="2">
+          {% if block.settings.video_2_file != blank %}
+            <video
+              class="ai-reel-video-{{ ai_gen_id }}"
+              {% if block.settings.video_2_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_2_loop %}loop{% endif %}
+              {% if block.settings.video_2_mute %}muted{% endif %}
+              playsinline
+              {% if block.settings.video_2_poster != blank %}
+                poster="{{ block.settings.video_2_poster | image_url: width: 600 }}"
+              {% endif %}
+              data-pause-hover="{{ block.settings.video_2_pause_hover }}"
+            >
+              <source src="{{ block.settings.video_2_file }}" type="video/mp4">
+            </video>
+          {% elsif block.settings.video_2_url != blank %}
+            <video
+              class="ai-reel-video-{{ ai_gen_id }}"
+              {% if block.settings.video_2_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_2_loop %}loop{% endif %}
+              {% if block.settings.video_2_mute %}muted{% endif %}
+              playsinline
+              {% if block.settings.video_2_poster != blank %}
+                poster="{{ block.settings.video_2_poster | image_url: width: 600 }}"
+              {% endif %}
+              data-pause-hover="{{ block.settings.video_2_pause_hover }}"
+            >
+              <source src="{{ block.settings.video_2_url }}" type="video/mp4">
+            </video>
+          {% endif %}
+
+          {% if block.settings.video_2_link != blank %}
+            <a href="{{ block.settings.video_2_link }}" class="ai-reel-link-{{ ai_gen_id }}" aria-label="View video"></a>
+          {% endif %}
+
+          {% if block.settings.video_2_show_play %}
+            <div class="ai-reel-play-icon-{{ ai_gen_id }}">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          {% endif %}
+
+          {% if block.settings.video_2_button_text != blank %}
+            <a href="{{ block.settings.video_2_button_link }}" class="ai-reel-button-{{ ai_gen_id }}">
+              {{ block.settings.video_2_button_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="ai-reel-item-{{ ai_gen_id }}">
+          <div class="ai-reel-empty-{{ ai_gen_id }}">
+            <svg class="ai-reel-empty-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 10l-4 4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <div>Add video 2</div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.video_3_file != blank or block.settings.video_3_url != blank %}
+        <div class="ai-reel-item-{{ ai_gen_id }}" data-video-index="3">
+          {% if block.settings.video_3_file != blank %}
+            <video
+              class="ai-reel-video-{{ ai_gen_id }}"
+              {% if block.settings.video_3_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_3_loop %}loop{% endif %}
+              {% if block.settings.video_3_mute %}muted{% endif %}
+              playsinline
+              {% if block.settings.video_3_poster != blank %}
+                poster="{{ block.settings.video_3_poster | image_url: width: 600 }}"
+              {% endif %}
+              data-pause-hover="{{ block.settings.video_3_pause_hover }}"
+            >
+              <source src="{{ block.settings.video_3_file }}" type="video/mp4">
+            </video>
+          {% elsif block.settings.video_3_url != blank %}
+            <video
+              class="ai-reel-video-{{ ai_gen_id }}"
+              {% if block.settings.video_3_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_3_loop %}loop{% endif %}
+              {% if block.settings.video_3_mute %}muted{% endif %}
+              playsinline
+              {% if block.settings.video_3_poster != blank %}
+                poster="{{ block.settings.video_3_poster | image_url: width: 600 }}"
+              {% endif %}
+              data-pause-hover="{{ block.settings.video_3_pause_hover }}"
+            >
+              <source src="{{ block.settings.video_3_url }}" type="video/mp4">
+            </video>
+          {% endif %}
+
+          {% if block.settings.video_3_link != blank %}
+            <a href="{{ block.settings.video_3_link }}" class="ai-reel-link-{{ ai_gen_id }}" aria-label="View video"></a>
+          {% endif %}
+
+          {% if block.settings.video_3_show_play %}
+            <div class="ai-reel-play-icon-{{ ai_gen_id }}">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          {% endif %}
+
+          {% if block.settings.video_3_button_text != blank %}
+            <a href="{{ block.settings.video_3_button_link }}" class="ai-reel-button-{{ ai_gen_id }}">
+              {{ block.settings.video_3_button_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="ai-reel-item-{{ ai_gen_id }}">
+          <div class="ai-reel-empty-{{ ai_gen_id }}">
+            <svg class="ai-reel-empty-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 10l-4 4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <div>Add video 3</div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.video_4_file != blank or block.settings.video_4_url != blank %}
+        <div class="ai-reel-item-{{ ai_gen_id }}" data-video-index="4">
+          {% if block.settings.video_4_file != blank %}
+            <video
+              class="ai-reel-video-{{ ai_gen_id }}"
+              {% if block.settings.video_4_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_4_loop %}loop{% endif %}
+              {% if block.settings.video_4_mute %}muted{% endif %}
+              playsinline
+              {% if block.settings.video_4_poster != blank %}
+                poster="{{ block.settings.video_4_poster | image_url: width: 600 }}"
+              {% endif %}
+              data-pause-hover="{{ block.settings.video_4_pause_hover }}"
+            >
+              <source src="{{ block.settings.video_4_file }}" type="video/mp4">
+            </video>
+          {% elsif block.settings.video_4_url != blank %}
+            <video
+              class="ai-reel-video-{{ ai_gen_id }}"
+              {% if block.settings.video_4_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_4_loop %}loop{% endif %}
+              {% if block.settings.video_4_mute %}muted{% endif %}
+              playsinline
+              {% if block.settings.video_4_poster != blank %}
+                poster="{{ block.settings.video_4_poster | image_url: width: 600 }}"
+              {% endif %}
+              data-pause-hover="{{ block.settings.video_4_pause_hover }}"
+            >
+              <source src="{{ block.settings.video_4_url }}" type="video/mp4">
+            </video>
+          {% endif %}
+
+          {% if block.settings.video_4_link != blank %}
+            <a href="{{ block.settings.video_4_link }}" class="ai-reel-link-{{ ai_gen_id }}" aria-label="View video"></a>
+          {% endif %}
+
+          {% if block.settings.video_4_show_play %}
+            <div class="ai-reel-play-icon-{{ ai_gen_id }}">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          {% endif %}
+
+          {% if block.settings.video_4_button_text != blank %}
+            <a href="{{ block.settings.video_4_button_link }}" class="ai-reel-button-{{ ai_gen_id }}">
+              {{ block.settings.video_4_button_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="ai-reel-item-{{ ai_gen_id }}">
+          <div class="ai-reel-empty-{{ ai_gen_id }}">
+            <svg class="ai-reel-empty-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 10l-4 4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <div>Add video 4</div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.video_5_file != blank or block.settings.video_5_url != blank %}
+        <div class="ai-reel-item-{{ ai_gen_id }}" data-video-index="5">
+          {% if block.settings.video_5_file != blank %}
+            <video
+              class="ai-reel-video-{{ ai_gen_id }}"
+              {% if block.settings.video_5_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_5_loop %}loop{% endif %}
+              {% if block.settings.video_5_mute %}muted{% endif %}
+              playsinline
+              {% if block.settings.video_5_poster != blank %}
+                poster="{{ block.settings.video_5_poster | image_url: width: 600 }}"
+              {% endif %}
+              data-pause-hover="{{ block.settings.video_5_pause_hover }}"
+            >
+              <source src="{{ block.settings.video_5_file }}" type="video/mp4">
+            </video>
+          {% elsif block.settings.video_5_url != blank %}
+            <video
+              class="ai-reel-video-{{ ai_gen_id }}"
+              {% if block.settings.video_5_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_5_loop %}loop{% endif %}
+              {% if block.settings.video_5_mute %}muted{% endif %}
+              playsinline
+              {% if block.settings.video_5_poster != blank %}
+                poster="{{ block.settings.video_5_poster | image_url: width: 600 }}"
+              {% endif %}
+              data-pause-hover="{{ block.settings.video_5_pause_hover }}"
+            >
+              <source src="{{ block.settings.video_5_url }}" type="video/mp4">
+            </video>
+          {% endif %}
+
+          {% if block.settings.video_5_link != blank %}
+            <a href="{{ block.settings.video_5_link }}" class="ai-reel-link-{{ ai_gen_id }}" aria-label="View video"></a>
+          {% endif %}
+
+          {% if block.settings.video_5_show_play %}
+            <div class="ai-reel-play-icon-{{ ai_gen_id }}">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          {% endif %}
+
+          {% if block.settings.video_5_button_text != blank %}
+            <a href="{{ block.settings.video_5_button_link }}" class="ai-reel-button-{{ ai_gen_id }}">
+              {{ block.settings.video_5_button_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="ai-reel-item-{{ ai_gen_id }}">
+          <div class="ai-reel-empty-{{ ai_gen_id }}">
+            <svg class="ai-reel-empty-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 10l-4 4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <div>Add video 5</div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ai-reels-carousel-{{ ai_gen_id }}">
+      <div class="ai-reels-carousel-wrapper-{{ ai_gen_id }}">
+        {% for i in (1..5) %}
+          {% assign video_file_key = 'video_' | append: i | append: '_file' %}
+          {% assign video_url_key = 'video_' | append: i | append: '_url' %}
+          {% assign video_poster_key = 'video_' | append: i | append: '_poster' %}
+          {% assign video_autoplay_key = 'video_' | append: i | append: '_autoplay' %}
+          {% assign video_loop_key = 'video_' | append: i | append: '_loop' %}
+          {% assign video_mute_key = 'video_' | append: i | append: '_mute' %}
+          {% assign video_pause_hover_key = 'video_' | append: i | append: '_pause_hover' %}
+          {% assign video_link_key = 'video_' | append: i | append: '_link' %}
+          {% assign video_show_play_key = 'video_' | append: i | append: '_show_play' %}
+          {% assign video_button_text_key = 'video_' | append: i | append: '_button_text' %}
+          {% assign video_button_link_key = 'video_' | append: i | append: '_button_link' %}
+
+          {% if block.settings[video_file_key] != blank or block.settings[video_url_key] != blank %}
+            <div class="ai-reel-item-{{ ai_gen_id }}" data-video-index="{{ i }}">
+              {% if block.settings[video_file_key] != blank %}
+                <video
+                  class="ai-reel-video-{{ ai_gen_id }}"
+                  {% if block.settings[video_autoplay_key] %}autoplay{% endif %}
+                  {% if block.settings[video_loop_key] %}loop{% endif %}
+                  {% if block.settings[video_mute_key] %}muted{% endif %}
+                  playsinline
+                  {% if block.settings[video_poster_key] != blank %}
+                    poster="{{ block.settings[video_poster_key] | image_url: width: 600 }}"
+                  {% endif %}
+                  data-pause-hover="{{ block.settings[video_pause_hover_key] }}"
+                >
+                  <source src="{{ block.settings[video_file_key] }}" type="video/mp4">
+                </video>
+              {% elsif block.settings[video_url_key] != blank %}
+                <video
+                  class="ai-reel-video-{{ ai_gen_id }}"
+                  {% if block.settings[video_autoplay_key] %}autoplay{% endif %}
+                  {% if block.settings[video_loop_key] %}loop{% endif %}
+                  {% if block.settings[video_mute_key] %}muted{% endif %}
+                  playsinline
+                  {% if block.settings[video_poster_key] != blank %}
+                    poster="{{ block.settings[video_poster_key] | image_url: width: 600 }}"
+                  {% endif %}
+                  data-pause-hover="{{ block.settings[video_pause_hover_key] }}"
+                >
+                  <source src="{{ block.settings[video_url_key] }}" type="video/mp4">
+                </video>
+              {% endif %}
+
+              {% if block.settings[video_link_key] != blank %}
+                <a href="{{ block.settings[video_link_key] }}" class="ai-reel-link-{{ ai_gen_id }}" aria-label="View video"></a>
+              {% endif %}
+
+              {% if block.settings[video_show_play_key] %}
+                <div class="ai-reel-play-icon-{{ ai_gen_id }}">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              {% endif %}
+
+              {% if block.settings[video_button_text_key] != blank %}
+                <a href="{{ block.settings[video_button_link_key] }}" class="ai-reel-button-{{ ai_gen_id }}">
+                  {{ block.settings[video_button_text_key] }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</reels-block-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ReelsBlock{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.videos = this.querySelectorAll('.ai-reel-video-{{ ai_gen_id }}');
+        this.observer = null;
+      }
+
+      connectedCallback() {
+        this.setupIntersectionObserver();
+        this.setupHoverPause();
+      }
+
+      setupIntersectionObserver() {
+        const options = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.5
+        };
+
+        this.observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+              if (video.hasAttribute('autoplay')) {
+                video.play().catch(() => {});
+              }
+            } else {
+              video.pause();
+            }
+          });
+        }, options);
+
+        this.videos.forEach(video => {
+          this.observer.observe(video);
+        });
+      }
+
+      setupHoverPause() {
+        this.videos.forEach(video => {
+          const pauseOnHover = video.dataset.pauseHover === 'true';
+          if (pauseOnHover) {
+            const container = video.closest('.ai-reel-item-{{ ai_gen_id }}');
+            if (container) {
+              container.addEventListener('mouseenter', () => {
+                video.pause();
+              });
+              container.addEventListener('mouseleave', () => {
+                if (video.hasAttribute('autoplay')) {
+                  video.play().catch(() => {});
+                }
+              });
+            }
+          }
+        });
+      }
+
+      disconnectedCallback() {
+        if (this.observer) {
+          this.observer.disconnect();
+        }
+      }
+    }
+
+    customElements.define('reels-block-{{ ai_gen_id }}', ReelsBlock{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Instagram Reels videos",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Watch Our Reels"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover our latest stories"
+    },
+    {
+      "type": "header",
+      "content": "Video 1"
+    },
+    {
+      "type": "text",
+      "id": "video_1_file",
+      "label": "MP4 video URL"
+    },
+    {
+      "type": "url",
+      "id": "video_1_url",
+      "label": "External video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_1_poster",
+      "label": "Poster image"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_mute",
+      "label": "Mute",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_pause_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_show_play",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "video_1_link",
+      "label": "Click destination"
+    },
+    {
+      "type": "text",
+      "id": "video_1_button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "video_1_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Video 2"
+    },
+    {
+      "type": "text",
+      "id": "video_2_file",
+      "label": "MP4 video URL"
+    },
+    {
+      "type": "url",
+      "id": "video_2_url",
+      "label": "External video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_2_poster",
+      "label": "Poster image"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_mute",
+      "label": "Mute",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_pause_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_show_play",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "video_2_link",
+      "label": "Click destination"
+    },
+    {
+      "type": "text",
+      "id": "video_2_button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "video_2_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Video 3"
+    },
+    {
+      "type": "text",
+      "id": "video_3_file",
+      "label": "MP4 video URL"
+    },
+    {
+      "type": "url",
+      "id": "video_3_url",
+      "label": "External video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_3_poster",
+      "label": "Poster image"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_mute",
+      "label": "Mute",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_pause_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_show_play",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "video_3_link",
+      "label": "Click destination"
+    },
+    {
+      "type": "text",
+      "id": "video_3_button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "video_3_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Video 4"
+    },
+    {
+      "type": "text",
+      "id": "video_4_file",
+      "label": "MP4 video URL"
+    },
+    {
+      "type": "url",
+      "id": "video_4_url",
+      "label": "External video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_4_poster",
+      "label": "Poster image"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_mute",
+      "label": "Mute",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_pause_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_show_play",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "video_4_link",
+      "label": "Click destination"
+    },
+    {
+      "type": "text",
+      "id": "video_4_button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "video_4_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Video 5"
+    },
+    {
+      "type": "text",
+      "id": "video_5_file",
+      "label": "MP4 video URL"
+    },
+    {
+      "type": "url",
+      "id": "video_5_url",
+      "label": "External video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_5_poster",
+      "label": "Poster image"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_mute",
+      "label": "Mute",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_pause_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_show_play",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "video_5_link",
+      "label": "Click destination"
+    },
+    {
+      "type": "text",
+      "id": "video_5_button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "video_5_button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Reels videos"
+    }
+  ]
+}
+{% endschema %}

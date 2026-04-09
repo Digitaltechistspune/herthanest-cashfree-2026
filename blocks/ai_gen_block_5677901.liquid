@@ -1,0 +1,1089 @@
+{% doc %}
+  @prompt
+    Create a fully customizable Shopify section that displays up to five videos in a horizontal row, styled like Instagram Reels. Each video must use a tall 9:16 aspect ratio with rounded corners and clean spacing.
+    
+    Layout Requirements
+    
+    Support 5, 4, or 3 videos (selectable in the editor).
+    
+    Desktop: videos appear side-by-side in one row.
+    
+    Mobile: convert into a swipeable Reels-style carousel.
+    
+    Each video supports MP4 upload, Shopify-hosted video, or external URL.
+    
+    Videos can autoplay, be muted by default, loop, and pause on hover (all toggles).
+    
+    Editor Controls (per video block)
+    
+    Upload/select video.
+    
+    Toggles: autoplay, loop, mute, pause on hover, show play icon.
+    
+    Add poster/thumbnail.
+    
+    Link field for making the entire video clickable (product, collection, or external).
+    
+    Optional button below video with: enable/disable, button text, button link, and style (primary/secondary).
+    
+    Design & Section Controls
+    
+    Adjust video corner radius.
+    
+    Adjust spacing between videos.
+    
+    Padding top/bottom for the section.
+    
+    Optional section heading and subheading.
+    
+    Light or dark background style.
+    
+    Mobile carousel settings: enable swipe, drag speed, autoplay.
+    
+    Device Visibility Controls
+    
+    Toggles to show/hide the section on Desktop, Tablet, and Mobile.
+    
+    Behavior & Output
+    
+    Smooth autoplay, optimized and lightweight.
+    
+    Pause videos when out of viewport.
+    
+    Fully responsive and clean grid even with fewer than 5 videos.
+    
+    Generate a Liquid section with schema so the merchant can add/remove video blocks, choose number of videos, rearrange order, edit all settings, and control visibility per device from the theme editor.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-reels-section-{{ ai_gen_id }} {
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+    background-color: {% if block.settings.background_style == 'dark' %}#000000{% else %}#ffffff{% endif %};
+  }
+
+  .ai-reels-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-reels-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ai-reels-heading-{{ ai_gen_id }} {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: {% if block.settings.background_style == 'dark' %}#ffffff{% else %}#333333{% endif %};
+  }
+
+  .ai-reels-subheading-{{ ai_gen_id }} {
+    font-size: 16px;
+    color: {% if block.settings.background_style == 'dark' %}#cccccc{% else %}#808080{% endif %};
+    margin: 0;
+  }
+
+  .ai-reels-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.videos_count }}, 1fr);
+    gap: {{ block.settings.video_spacing }}px;
+  }
+
+  .ai-reel-item-{{ ai_gen_id }} {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    border-radius: {{ block.settings.corner_radius }}px;
+    overflow: hidden;
+    background-color: #000000;
+  }
+
+  .ai-reel-video-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-reel-link-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .ai-reel-play-icon-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 3;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-reel-play-icon-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
+    fill: #000000;
+    margin-left: 3px;
+  }
+
+  .ai-reel-item-{{ ai_gen_id }}:hover .ai-reel-play-icon-{{ ai_gen_id }} {
+    opacity: 0.8;
+  }
+
+  .ai-reel-button-wrapper-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    width: calc(100% - 40px);
+  }
+
+  .ai-reel-button-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .ai-reel-button-primary-{{ ai_gen_id }} {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  .ai-reel-button-primary-{{ ai_gen_id }}:hover {
+    background-color: #f0f0f0;
+  }
+
+  .ai-reel-button-secondary-{{ ai_gen_id }} {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+  }
+
+  .ai-reel-button-secondary-{{ ai_gen_id }}:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .ai-reels-carousel-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-reels-section-{{ ai_gen_id }}.hide-mobile-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-reels-grid-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-reels-carousel-{{ ai_gen_id }} {
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ai-reels-carousel-track-{{ ai_gen_id }} {
+      display: flex;
+      gap: {{ block.settings.video_spacing }}px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 0 20px;
+    }
+
+    .ai-reels-carousel-track-{{ ai_gen_id }}::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ai-reels-carousel-track-{{ ai_gen_id }} .ai-reel-item-{{ ai_gen_id }} {
+      flex: 0 0 280px;
+      scroll-snap-align: center;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .ai-reels-section-{{ ai_gen_id }}.hide-tablet-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-reels-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({% if block.settings.videos_count == '5' %}3{% elsif block.settings.videos_count == '4' %}2{% else %}{{ block.settings.videos_count }}{% endif %}, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .ai-reels-section-{{ ai_gen_id }}.hide-desktop-{{ ai_gen_id }} {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+<video-reels-{{ ai_gen_id }}
+  class="ai-reels-section-{{ ai_gen_id }} {% if block.settings.hide_desktop %}hide-desktop-{{ ai_gen_id }}{% endif %} {% if block.settings.hide_tablet %}hide-tablet-{{ ai_gen_id }}{% endif %} {% if block.settings.hide_mobile %}hide-mobile-{{ ai_gen_id }}{% endif %}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-reels-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank or block.settings.subheading != blank %}
+      <div class="ai-reels-header-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-reels-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+        {% if block.settings.subheading != blank %}
+          <p class="ai-reels-subheading-{{ ai_gen_id }}">{{ block.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-reels-grid-{{ ai_gen_id }}">
+      {% for i in (1..5) %}
+        {% liquid
+          assign video_key = 'video_' | append: i
+          assign video_url_key = 'video_url_' | append: i
+          assign poster_key = 'poster_' | append: i
+          assign autoplay_key = 'autoplay_' | append: i
+          assign loop_key = 'loop_' | append: i
+          assign muted_key = 'muted_' | append: i
+          assign pause_hover_key = 'pause_hover_' | append: i
+          assign show_play_key = 'show_play_' | append: i
+          assign link_key = 'link_' | append: i
+          assign button_enable_key = 'button_enable_' | append: i
+          assign button_text_key = 'button_text_' | append: i
+          assign button_link_key = 'button_link_' | append: i
+          assign button_style_key = 'button_style_' | append: i
+
+          assign video = block.settings[video_key]
+          assign video_url = block.settings[video_url_key]
+          assign poster = block.settings[poster_key]
+          assign autoplay = block.settings[autoplay_key]
+          assign loop = block.settings[loop_key]
+          assign muted = block.settings[muted_key]
+          assign pause_hover = block.settings[pause_hover_key]
+          assign show_play = block.settings[show_play_key]
+          assign link = block.settings[link_key]
+          assign button_enable = block.settings[button_enable_key]
+          assign button_text = block.settings[button_text_key]
+          assign button_link = block.settings[button_link_key]
+          assign button_style = block.settings[button_style_key]
+        %}
+
+        {% if video != blank or video_url != blank %}
+          {% if i <= block.settings.videos_count %}
+            <div class="ai-reel-item-{{ ai_gen_id }}">
+              {% if video != blank %}
+                <video
+                  class="ai-reel-video-{{ ai_gen_id }}"
+                  {% if autoplay %}autoplay{% endif %}
+                  {% if muted %}muted{% endif %}
+                  {% if loop %}loop{% endif %}
+                  playsinline
+                  {% if poster %}poster="{{ poster | image_url: width: 600 }}"{% endif %}
+                  data-pause-hover="{{ pause_hover }}"
+                  data-video-id="{{ i }}"
+                >
+                  <source src="{{ video.sources[1].url }}" type="video/mp4">
+                </video>
+              {% elsif video_url != blank %}
+                <video
+                  class="ai-reel-video-{{ ai_gen_id }}"
+                  {% if autoplay %}autoplay{% endif %}
+                  {% if muted %}muted{% endif %}
+                  {% if loop %}loop{% endif %}
+                  playsinline
+                  {% if poster %}poster="{{ poster | image_url: width: 600 }}"{% endif %}
+                  data-pause-hover="{{ pause_hover }}"
+                  data-video-id="{{ i }}"
+                >
+                  <source src="{{ video_url }}" type="video/mp4">
+                </video>
+              {% endif %}
+
+              {% if link != blank %}
+                <a href="{{ link }}" class="ai-reel-link-{{ ai_gen_id }}" aria-label="View video content"></a>
+              {% endif %}
+
+              {% if show_play %}
+                <div class="ai-reel-play-icon-{{ ai_gen_id }}">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              {% endif %}
+
+              {% if button_enable and button_text != blank %}
+                <div class="ai-reel-button-wrapper-{{ ai_gen_id }}">
+                  <a 
+                    href="{{ button_link }}" 
+                    class="ai-reel-button-{{ ai_gen_id }} ai-reel-button-{{ button_style }}-{{ ai_gen_id }}"
+                  >
+                    {{ button_text }}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="ai-reels-carousel-{{ ai_gen_id }}">
+      <div class="ai-reels-carousel-track-{{ ai_gen_id }}">
+        {% for i in (1..5) %}
+          {% liquid
+            assign video_key = 'video_' | append: i
+            assign video_url_key = 'video_url_' | append: i
+            assign poster_key = 'poster_' | append: i
+            assign loop_key = 'loop_' | append: i
+            assign muted_key = 'muted_' | append: i
+            assign pause_hover_key = 'pause_hover_' | append: i
+            assign show_play_key = 'show_play_' | append: i
+            assign link_key = 'link_' | append: i
+            assign button_enable_key = 'button_enable_' | append: i
+            assign button_text_key = 'button_text_' | append: i
+            assign button_link_key = 'button_link_' | append: i
+            assign button_style_key = 'button_style_' | append: i
+
+            assign video = block.settings[video_key]
+            assign video_url = block.settings[video_url_key]
+            assign poster = block.settings[poster_key]
+            assign loop = block.settings[loop_key]
+            assign muted = block.settings[muted_key]
+            assign pause_hover = block.settings[pause_hover_key]
+            assign show_play = block.settings[show_play_key]
+            assign link = block.settings[link_key]
+            assign button_enable = block.settings[button_enable_key]
+            assign button_text = block.settings[button_text_key]
+            assign button_link = block.settings[button_link_key]
+            assign button_style = block.settings[button_style_key]
+          %}
+
+          {% if video != blank or video_url != blank %}
+            {% if i <= block.settings.videos_count %}
+              <div class="ai-reel-item-{{ ai_gen_id }}">
+                {% if video != blank %}
+                  <video
+                    class="ai-reel-video-{{ ai_gen_id }}"
+                    {% if block.settings.mobile_autoplay %}autoplay{% endif %}
+                    {% if muted %}muted{% endif %}
+                    {% if loop %}loop{% endif %}
+                    playsinline
+                    {% if poster %}poster="{{ poster | image_url: width: 600 }}"{% endif %}
+                    data-pause-hover="{{ pause_hover }}"
+                    data-video-id="mobile-{{ i }}"
+                  >
+                    <source src="{{ video.sources[1].url }}" type="video/mp4">
+                  </video>
+                {% elsif video_url != blank %}
+                  <video
+                    class="ai-reel-video-{{ ai_gen_id }}"
+                    {% if block.settings.mobile_autoplay %}autoplay{% endif %}
+                    {% if muted %}muted{% endif %}
+                    {% if loop %}loop{% endif %}
+                    playsinline
+                    {% if poster %}poster="{{ poster | image_url: width: 600 }}"{% endif %}
+                    data-pause-hover="{{ pause_hover }}"
+                    data-video-id="mobile-{{ i }}"
+                  >
+                    <source src="{{ video_url }}" type="video/mp4">
+                  </video>
+                {% endif %}
+
+                {% if link != blank %}
+                  <a href="{{ link }}" class="ai-reel-link-{{ ai_gen_id }}" aria-label="View video content"></a>
+                {% endif %}
+
+                {% if show_play %}
+                  <div class="ai-reel-play-icon-{{ ai_gen_id }}">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                {% endif %}
+
+                {% if button_enable and button_text != blank %}
+                  <div class="ai-reel-button-wrapper-{{ ai_gen_id }}">
+                    <a 
+                      href="{{ button_link }}" 
+                      class="ai-reel-button-{{ ai_gen_id }} ai-reel-button-{{ button_style }}-{{ ai_gen_id }}"
+                    >
+                      {{ button_text }}
+                    </a>
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</video-reels-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class VideoReels{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.videos = [];
+        this.observer = null;
+      }
+
+      connectedCallback() {
+        this.videos = this.querySelectorAll('.ai-reel-video-{{ ai_gen_id }}');
+        this.setupHoverPause();
+        this.setupIntersectionObserver();
+      }
+
+      setupHoverPause() {
+        this.videos.forEach(video => {
+          const pauseOnHover = video.dataset.pauseHover === 'true';
+          
+          if (pauseOnHover) {
+            video.addEventListener('mouseenter', () => {
+              video.pause();
+            });
+
+            video.addEventListener('mouseleave', () => {
+              video.play();
+            });
+          }
+        });
+      }
+
+      setupIntersectionObserver() {
+        const options = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.5
+        };
+
+        this.observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const video = entry.target;
+            
+            if (entry.isIntersecting) {
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        }, options);
+
+        this.videos.forEach(video => {
+          this.observer.observe(video);
+        });
+      }
+
+      disconnectedCallback() {
+        if (this.observer) {
+          this.observer.disconnect();
+        }
+      }
+    }
+
+    customElements.define('video-reels-{{ ai_gen_id }}', VideoReels{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Instagram Reels videos",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Watch Our Stories"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover our latest moments"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "videos_count",
+      "label": "Number of videos",
+      "options": [
+        {
+          "value": "3",
+          "label": "3 videos"
+        },
+        {
+          "value": "4",
+          "label": "4 videos"
+        },
+        {
+          "value": "5",
+          "label": "5 videos"
+        }
+      ],
+      "default": "5"
+    },
+    {
+      "type": "range",
+      "id": "video_spacing",
+      "label": "Spacing",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Mobile carousel"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_autoplay",
+      "label": "Autoplay on mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Device visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_desktop",
+      "label": "Hide on desktop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_tablet",
+      "label": "Hide on tablet",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_mobile",
+      "label": "Hide on mobile",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Video 1"
+    },
+    {
+      "type": "video",
+      "id": "video_1",
+      "label": "Video file"
+    },
+    {
+      "type": "text",
+      "id": "video_url_1",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_1",
+      "label": "Poster"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay_1",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_1",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "muted_1",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_hover_1",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play_1",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "link_1",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_enable_1",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_text_1",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link_1",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style_1",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Video 2"
+    },
+    {
+      "type": "video",
+      "id": "video_2",
+      "label": "Video file"
+    },
+    {
+      "type": "text",
+      "id": "video_url_2",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_2",
+      "label": "Poster"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay_2",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_2",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "muted_2",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_hover_2",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play_2",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "link_2",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_enable_2",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_text_2",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style_2",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Video 3"
+    },
+    {
+      "type": "video",
+      "id": "video_3",
+      "label": "Video file"
+    },
+    {
+      "type": "text",
+      "id": "video_url_3",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_3",
+      "label": "Poster"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay_3",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_3",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "muted_3",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_hover_3",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play_3",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "link_3",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_enable_3",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_text_3",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link_3",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style_3",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Video 4"
+    },
+    {
+      "type": "video",
+      "id": "video_4",
+      "label": "Video file"
+    },
+    {
+      "type": "text",
+      "id": "video_url_4",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_4",
+      "label": "Poster"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay_4",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_4",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "muted_4",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_hover_4",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play_4",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "link_4",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_enable_4",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_text_4",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link_4",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style_4",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Video 5"
+    },
+    {
+      "type": "video",
+      "id": "video_5",
+      "label": "Video file"
+    },
+    {
+      "type": "text",
+      "id": "video_url_5",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_5",
+      "label": "Poster"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay_5",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_5",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "muted_5",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_hover_5",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play_5",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "link_5",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_enable_5",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_text_5",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link_5",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style_5",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Reels videos"
+    }
+  ]
+}
+{% endschema %}

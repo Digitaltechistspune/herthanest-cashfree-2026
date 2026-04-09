@@ -1,0 +1,81 @@
+<div class="modal fade size-modal" id="size-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close"><i class="feather-x"></i></button>
+                {%- for block in section.blocks -%}
+                {%- case block.type -%}
+                {%- when 'product_modal' -%}
+                {% assign page_content = block.settings.sizeguide_page %}  
+                {{ pages[page_content].content }}
+                {%- endcase -%}
+                {%- endfor -%}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade share-modal" id="share-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close"><i class="feather-x"></i></button>
+                {%- for block in section.blocks -%}
+                {%- case block.type -%}
+                {%- when 'product_modal' -%}
+                <div class="product_share-social">
+                    <div class="product_share-copy" data-text="Copy link">
+                        <span class="sub-title">{{ block.settings.copy_title }}</span>
+                        <div class="content">
+                            <input class="url_share" type="text" id="copy-input" value="{{ shop.url }}{{ product.url }}" readonly>
+                            <button onclick="myFunction()">{{ block.settings.copy_button }}</button>
+                        </div>
+                    </div>
+                    <div class="product_share-icon">
+                        <span class="sub-title">{{ block.settings.share_title }}</span>
+                        {% render 'social-share' %}
+                    </div>
+                </div>
+                {%- endcase -%}
+                {%- endfor -%}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade que-modal" id="que-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close"><i class="feather-x"></i></button>
+                <div class="ask-form">
+                    <h6>{{ 'contact.ask-form.heading' | t }}</h6>
+                    {% form 'contact', id: 'contact-form-ask' %}
+                    <input type="hidden" name="contact[product]" value="{{ product.title }}" />
+                    <input type="hidden" name="contact[product url]" value="{{ shop.url }}{{ product.url }}" />
+                    <div class="form-grp">
+                        <input type="text" name="contact[name]" required placeholder="{{ 'contact.ask-form.name' | t }}*">
+                        <input type="text" name="contact[phone]" placeholder="{{ 'contact.ask-form.phone' | t }}">
+                        <input type="email" name="contact[email]" required autocorrect="off" placeholder="{{ 'contact.ask-form.email' | t }}*">
+                        <textarea name="contact[question]" rows="4" required placeholder="{{ 'contact.ask-form.message' | t }}*"></textarea>
+                        <p>* {{ 'contact.ask-form.required-fields' | t }}</p>
+                        <button type="submit" class="btn-style2">{{ 'contact.ask-form.send' | t }}</button>
+                    </div>
+                    {% if form.posted_successfully? %}
+                        <p class="alert alert-success">{{ 'contact.ask-form.post_success' | t }}</p>
+                    {% endif %}
+                    {% endform %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+function myFunction() {
+  // Get the text field
+  var copyText = document.getElementById("copy-input");
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+  // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+}
+</script>

@@ -1,0 +1,68 @@
+{%- if settings.logo_header -%}
+<a href="{{ shop.url }}" class="theme-header-logo" style="max-width: {{ settings.logo_header_max_width }}px;">
+  {% if settings.logo_header.src %}
+  {{ settings.logo_header.src | image_url: width: 500 | image_tag:
+    loading: 'lazy',
+    width: settings.logo_header.width,
+    height: settings.logo_header.height,
+    class: "img-fluid lazyload main-logo",
+    alt: shop.name | escape }}
+  {% endif %}
+  {% if settings.logo_other.src %}
+  {{ settings.logo_other.src | image_url: width: 500 | image_tag:
+    loading: 'lazy',
+    width: settings.logo_header.width,
+    height: settings.logo_header.height,
+    class: "img-fluid lazyload stcky-logo",
+    alt: shop.name | escape }}
+  {% endif %}
+  </a>
+{%- else -%}
+<a href="{{ shop.url }}" class="theme-header-logo">
+  <span>{{ shop.name }}</span>
+</a>
+{%- endif -%}
+<style>
+  /* logo css */
+  a.theme-header-logo {
+    display: block;
+  }
+  a.theme-header-logo img {
+    max-width: {{ settings.logo_header_max_width }}px;
+  }
+  a.theme-header-logo img.stcky-logo {
+    display: none;
+  }
+  .header-area.sticky a.theme-header-logo img.stcky-logo {
+    display: block;
+  }
+  .header-area.sticky a.theme-header-logo img.main-logo {
+    display: none;
+  }
+  {% if template != 'index' %}
+  a.theme-header-logo img.main-logo {
+    display: none;
+  }
+  a.theme-header-logo img.stcky-logo {
+    display: block;
+  }
+  {% endif %}
+  @media(max-width: 1199px){
+    a.theme-header-logo img.main-logo {
+      display: none;
+    }
+    a.theme-header-logo img.stcky-logo {
+      display: block;
+    }
+  }
+  /* store css */
+  a.theme-header-logo {
+    display: block;
+  }
+  a.theme-header-logo span {
+    color: var(--font-color-header);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+</style>

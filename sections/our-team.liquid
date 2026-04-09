@@ -1,0 +1,317 @@
+<section class="about-team">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="our-team">
+          <div class="section-capture">
+            <div class="section-title">
+              {% if section.settings.section_sub_title != '' %}
+              <span class="sub-title" data-fade-in>{{ section.settings.section_sub_title }}</span>
+              {% endif %}
+              {% if section.settings.section_title != '' %}
+              <h2 data-fade-in>{{ section.settings.section_title }}</h2>
+              {% endif %}
+            </div>
+          </div>
+          <div class="team-wrap">
+            <ul>
+              {% for block in section.blocks %}
+              <li class="team-content">
+                <a href="{{ block.settings.member_url }}" class="banner-hover">
+                  {%- if block.settings.member_img -%}
+                  {{ block.settings.member_img | image_url: width: 500 | image_tag:
+                    loading: 'lazy',
+                    width: block.settings.member_img.width,
+                    height: block.settings.member_img.height,
+                    class: "img-fluid lazyload",
+                    alt: block.settings.member_img.alt | escape }}
+                  {%- else -%}
+                  {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+                  {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                  {%- endif -%}
+                </a>
+                <div class="team-info">
+                  <h6 data-fade-in>{{ block.settings.member_name }}</h6>
+                  <span data-fade-in>{{ block.settings.member_position }}</span>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Our Team",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop / tablet"
+    },
+    {
+      "type": "range",
+      "id": "abt_team_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "abt_team_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "abt_team_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "abt_team_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "abt_team_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "abt_team_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "abt_team_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "abt_team_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section Sub Title",
+      "default": "Our team"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Title",
+      "default": "Our team"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "our-team",
+      "name": "Our Team",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "member_img",
+          "label": "Image",
+          "info": "Recommended Size: 450px x 580px"
+        },
+        {
+          "type": "url",
+          "id": "member_url",
+          "label": "Image url"
+        },
+        {
+          "type": "text",
+          "id": "member_name",
+          "label": "Team Member Name",
+          "default": "Johnny walker"
+        },
+        {
+          "type": "text",
+          "id": "member_position",
+          "label": "Team Member Position",
+          "default": "Web designer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Team",
+      "category": "About Us"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.about-team {
+  padding-top: {{ section.settings.abt_team_padding_top }}px;
+  padding-bottom: {{ section.settings.abt_team_padding_bottom }}px;
+  {% if section.settings.abt_team_bgcolor_enable %}
+  background-color: {{ section.settings.abt_team_bgcolor }};
+  {% endif %}
+}
+@media (max-width: 1199px) {
+  .about-team {
+    padding-top: {{ section.settings.abt_team_padding_top_ip }}px;
+    padding-bottom: {{ section.settings.abt_team_padding_bottom_ip }}px;
+  }
+}
+@media (max-width: 767px) {
+  .about-team {
+    padding-top: {{ section.settings.abt_team_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.abt_team_padding_bottom_xs }}px;
+  }
+}
+.about-team .our-team .team-wrap ul {
+  display: flex;
+  
+  flex-wrap: wrap;
+  {%- if settings.enable_rtl -%}
+  margin: -30px -30px 0px 0px;
+  {%- else -%}
+  margin: -30px 0px 0px -30px;
+  {%- endif -%}
+}
+.about-team .our-team .team-wrap ul li.team-content {
+  width: calc(25% - 30px);
+  {%- if settings.enable_rtl -%}
+  margin: 30px 30px 0px 0px;
+  {%- else -%}
+  margin: 30px 0px 0px 30px;
+  {%- endif -%}
+}
+@media (max-width: 1199px) {
+  .about-team .our-team .team-wrap ul {
+    {%- if settings.enable_rtl -%}
+    margin: -30px -30px 0px 0px;
+    {%- else -%}
+    margin: -30px 0px 0px -30px;
+    {%- endif -%}
+  }
+  .about-team .our-team .team-wrap ul li.team-content {
+    {%- if settings.enable_rtl -%}
+    margin: 30px 30px 0px 0px;
+    {%- else -%}
+    margin: 30px 0px 0px 30px;
+    {%- endif -%}
+  }
+}
+@media (max-width: 991px) {
+  .about-team .our-team .team-wrap ul li.team-content {
+    width: calc(50% - 30px);
+  }
+}
+@media (max-width: 767px) {
+  .about-team .our-team .team-wrap ul {
+    {%- if settings.enable_rtl -%}
+    margin: -30px -12px 0px 0px;
+    {%- else -%}
+    margin: -30px 0px 0px -12px;
+    {%- endif -%}
+  }
+  .about-team .our-team .team-wrap ul li.team-content {
+    width: calc(50% - 12px);
+    {%- if settings.enable_rtl -%}
+    margin: 30px 12px 0px 0px;
+    {%- else -%}
+    margin: 30px 0px 0px 12px;
+    {%- endif -%}
+  }
+}
+@media (max-width: 320px) {
+  .about-team .our-team .team-wrap ul li.team-content{
+      width: calc(100% - 12px);
+  }
+}
+
+/* team content css */
+.about-team .our-team .team-wrap ul li.team-content .team-info {
+  text-align: center;
+  padding-top: 30px;
+}
+.about-team .our-team .team-wrap ul li.team-content .team-info h6 {
+  color: var(--font-color-header);
+  font-size: var(--font-size-subtitle);
+  font-weight: var(--font-weight-subtitle);
+  text-transform: uppercase;
+}
+.about-team .our-team .team-wrap ul li.team-content .team-info span {
+  font-size: 16px;
+  display: block;
+  margin-top: 5px;
+  font-weight: 500;
+}
+</style>

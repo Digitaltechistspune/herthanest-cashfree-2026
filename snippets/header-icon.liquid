@@ -1,0 +1,53 @@
+<ul class="shop-element">
+  {%- if settings.search_enable -%}
+  <li class="side-wrap search-wrap">
+    {%- render 'search-bar2' -%}
+    <a href="#seachmodal" class="header-icon search-popup" data-bs-toggle="modal">
+      <span class="icon"><i class="feather-search"></i></span>
+      <span class="title">{{ 'sections.header.search_title' | t }}</span>
+    </a>
+  </li>
+  {%- endif -%}
+  <li class="side-wrap user-wrap">
+    <div class="acc-desk-header">
+      <div class="acc-title">
+        {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}" class="header-icon acc-ti">
+          <span class="icon">{% if customer %}<i class="feather-user-check"></i>{% else %}<i class="feather-user"></i>{% endif %}</span>
+          <span class="title">{{ 'sections.header.user_title' | t }}</span>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </li>
+  {%- if settings.wishlist_enable -%}
+  <li class="side-wrap wishlist-wrap">
+    <a class="header-icon header-wishlist-btn" href="{{ settings.wishlist_page_url }}" title="Wishlist">
+      <span class="icon"><i class="feather-heart"></i></span>
+      <span class="title">{{ 'sections.header.wishlist_title' | t }}</span>
+      <span class="wishlist-counter">{{ wishlist.count }}</span>
+    </a>
+  </li>
+  {%- endif -%}
+  {%- if settings.cart_enable -%}
+  <li class="side-wrap cart-wrap">
+    <div class="shopping-cart">
+      <a href="{{ routes.cart_url }}" class="header-icon cart-count" id="ajax-cart-icon">
+        <span class="cart-icon-wrap">
+          <span class="icon">
+            <i class="feather-shopping-bag"></i>
+          </span>
+          <span class="title">{{ 'sections.header.cart_title' | t }}</span>
+          <div class="ajax-cart-count bigcounter">
+            {%- if cart.item_count < 100 -%}
+            <span aria-hidden="true">{{ cart.item_count }}</span>
+            {%- endif -%}
+            <span class="visually-hidden">{{ 'sections.cart_count' | t: count: cart.item_count }}</span>
+          </div>
+          <span id="cart-total" class="total-price"> {{ cart.total_price | money }}</span>
+        </span>
+      </a>
+    </div>
+  </li>
+  {%- endif -%}
+</ul>

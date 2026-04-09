@@ -1,0 +1,716 @@
+<section class="refund-policy refund-policy-{{ section.id }}">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+          <div class="grid-wrap">
+            <div class="grid-wrapper">
+              <ul class="rule-wrap">
+                {% for block in section.blocks %}
+                {%- case block.type -%}
+                {%- when 'title' -%}
+                <li data-fade-in class="rule-wrapper">
+                  {% if block.settings.title != '' %}
+                  <h2>{{ block.settings.title }}</h2>
+                  {% endif %}
+                </li>
+                {%- when 'sub_title' -%}
+                <li data-fade-in class="rule-wrapper">
+                  {% if block.settings.sub_title != '' %}
+                  <h6>{{ block.settings.sub_title }}</h6>
+                  {% endif %}
+                </li>
+                {%- when 'description' -%}
+                <li data-fade-in class="rule-wrapper">
+                  {% if block.settings.list_desc != '' or block.settings.list_email != '' %}
+                  <p>
+                    {{ block.settings.list_desc }}
+                    {% if block.settings.list_email != '' %}
+                    <a href="mailto:{{ block.settings.list_email }}">{{ block.settings.list_email }}</a>
+                    {% endif %}
+                  </p>
+                  {% endif %}
+                </li>
+                {%- when 'text_point' -%}
+                <li data-fade-in class="rule-wrapper">
+                  <ul class="list-block">
+                    <li>
+                      {% if block.settings.list_point != '' %}
+                      <span>{{ block.settings.list_point }}</span>
+                      {% endif %}
+                      {% if block.settings.list_desc != '' %}
+                      <p>{{ block.settings.list_desc }}</p>
+                      {% endif %}
+                    </li>
+                  </ul>
+                </li>
+                {%- when 'list_table' -%}
+                <li data-fade-in class="rule-wrapper">
+                  <table>
+                    {% if block.settings.heading1 != '' or block.settings.heading2 != '' %}
+                    <tr>
+                      <th>
+                        <li>{{ block.settings.heading1 }}</li>
+                      </th>
+                      <th>
+                        <li>{{ block.settings.heading2 }}</li>
+                      </th>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point1 != '' or block.settings.heading2_point1 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point1 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point1 }}</span></td>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point2 != '' or block.settings.heading2_point2 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point2 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point2 }}</span></td>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point3 != '' or block.settings.heading2_point3 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point3 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point3 }}</span></td>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point4 != '' or block.settings.heading2_point4 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point4 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point4 }}</span></td>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point5 != '' or block.settings.heading2_point5 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point5 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point5 }}</span></td>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point6 != '' or block.settings.heading2_point6 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point6 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point6 }}</span></td>
+                    </tr>
+                    {% endif %}
+                  </table>
+                </li>
+                {%- endcase -%}
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="grid-wrapper">
+              <ul class="rule-wrap">
+                {% for block in section.blocks %}
+                {%- case block.type -%}
+                {%- when 'title2' -%}
+                <li data-fade-in class="rule-wrapper">
+                    {% if block.settings.title != '' %}
+                    <h2>{{ block.settings.title }}</h2>
+                    {% endif %}
+                </li>
+                {%- when 'sub_title2' -%}
+                <li data-fade-in class="rule-wrapper">
+                    {% if block.settings.sub_title != '' %}
+                    <h6>{{ block.settings.sub_title }}</h6>
+                    {% endif %}
+                </li>
+                {%- when 'description2' -%}
+                <li data-fade-in class="rule-wrapper">
+                  {% if block.settings.list_desc != '' or block.settings.list_email != '' %}
+                  <p>
+                    {{ block.settings.list_desc }}
+                    {% if block.settings.list_email != '' %}
+                    <a href="mailto:{{ block.settings.list_email }}">{{ block.settings.list_email }}</a>
+                    {% endif %}
+                  </p>
+                  {% endif %}
+                </li>
+                {%- when 'text_point2' -%}
+                <li data-fade-in class="rule-wrapper">
+                  <ul class="list-block">
+                    <li>
+                      {% if block.settings.list_point != '' %}
+                      <span>{{ block.settings.list_point }}</span>
+                      {% endif %}
+                      {% if block.settings.list_desc != '' %}
+                      <p>{{ block.settings.list_desc }}</p>
+                      {% endif %}
+                    </li>
+                  </ul>
+                </li>
+                {%- when 'list_table2' -%}
+                <li data-fade-in class="rule-wrapper">
+                  <table>
+                    {% if block.settings.heading1 != '' or block.settings.heading2 != '' %}
+                    <tr>
+                      <th>
+                        <li>{{ block.settings.heading1 }}</li>
+                      </th>
+                      <th>
+                        <li>{{ block.settings.heading2 }}</li>
+                      </th>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point1 != '' or block.settings.heading2_point1 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point1 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point1 }}</span></td>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point2 != '' or block.settings.heading2_point2 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point2 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point2 }}</span></td>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point3 != '' or block.settings.heading2_point3 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point3 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point3 }}</span></td>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point4 != '' or block.settings.heading2_point4 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point4 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point4 }}</span></td>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point5 != '' or block.settings.heading2_point5 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point5 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point5 }}</span></td>
+                    </tr>
+                    {% endif %}
+                    {% if block.settings.heading1_point6 != '' or block.settings.heading2_point6 != '' %}
+                    <tr>
+                      <td><span>{{ block.settings.heading1_point6 }}</span></td>
+                      <td><span>{{ block.settings.heading2_point6 }}</span></td>
+                    </tr>
+                    {% endif %}
+                  </table>
+                </li>
+                {%- endcase -%}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Refund policy",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_lg",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_lg",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Collecting personal information"
+        }
+      ]
+    },
+    {
+      "type": "sub_title",
+      "name": "Sub title",
+      "settings": [
+        {
+          "type": "text",
+          "id": "sub_title",
+          "label": "Sub title",
+          "default": "Damages and issues"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "settings": [
+        {
+          "type": "text",
+          "id": "list_desc",
+          "label": "List description",
+          "default": "We have a 30-day return policy, which means you have 30 days after receiving your item to request a return."
+        }
+      ]
+    },
+    {
+      "type": "text_point",
+      "name": "Text point",
+      "settings": [
+        {
+          "type": "text",
+          "id": "list_point",
+          "label": "List point",
+          "default": "Damages and issues"
+        },
+        {
+          "type": "text",
+          "id": "list_desc",
+          "label": "List description",
+          "default": "Lorem Ipsum is simply dummy text of the printing typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    {
+      "type": "list_table",
+      "name": "Table",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading1",
+          "label": "Heading",
+          "default": "Name"
+        },
+        {
+          "type": "text",
+          "id": "heading2",
+          "label": "Heading",
+          "default": "Function"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point1",
+          "label": "list",
+          "default": "_dgjc"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point1",
+          "label": "list",
+          "default": "Lorem Ipsum simply dummy the printing"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point2",
+          "label": "list",
+          "default": "_secure"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point2",
+          "label": "list",
+          "default": "Standard dummy text ever since the"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point3",
+          "label": "list",
+          "default": "cart_st"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point3",
+          "label": "list",
+          "default": "Dummy text of the printing typesetting"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point4",
+          "label": "list",
+          "default": "secret"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point4",
+          "label": "list",
+          "default": "Lorem Ipsum simply dummy the printing"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point5",
+          "label": "list",
+          "default": "secure_customer"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point5",
+          "label": "list",
+          "default": "Standard dummy text ever since the"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point6",
+          "label": "list",
+          "default": "_shopify_u"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point6",
+          "label": "list",
+          "default": "Dummy text of the printing typesetting"
+        }
+      ]
+    },
+    {
+      "type": "title2",
+      "name": "Title 2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Collecting personal information"
+        }
+      ]
+    },
+    {
+      "type": "sub_title2",
+      "name": "Sub title 2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "sub_title",
+          "label": "Sub title",
+          "default": "Damages and issues"
+        }
+      ]
+    },
+    {
+      "type": "description2",
+      "name": "Description 2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "list_desc",
+          "label": "List description",
+          "default": "We have a 30-day return policy, which means you have 30 days after receiving your item to request a return."
+        }
+      ]
+    },
+    {
+      "type": "text_point2",
+      "name": "Text point 2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "list_point",
+          "label": "List point",
+          "default": "Damages and issues"
+        },
+        {
+          "type": "text",
+          "id": "list_desc",
+          "label": "List description",
+          "default": "Lorem Ipsum is simply dummy text of the printing typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    {
+      "type": "list_table2",
+      "name": "Table 2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading1",
+          "label": "Heading",
+          "default": "Name"
+        },
+        {
+          "type": "text",
+          "id": "heading2",
+          "label": "Heading",
+          "default": "Function"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point1",
+          "label": "list",
+          "default": "_dgjc"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point1",
+          "label": "list",
+          "default": "Lorem Ipsum simply dummy the printing"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point2",
+          "label": "list",
+          "default": "_secure"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point2",
+          "label": "list",
+          "default": "Standard dummy text ever since the"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point3",
+          "label": "list",
+          "default": "cart_st"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point3",
+          "label": "list",
+          "default": "Dummy text of the printing typesetting"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point4",
+          "label": "list",
+          "default": "secret"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point4",
+          "label": "list",
+          "default": "Lorem Ipsum simply dummy the printing"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point5",
+          "label": "list",
+          "default": "secure_customer"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point5",
+          "label": "list",
+          "default": "Standard dummy text ever since the"
+        },
+        {
+          "type": "text",
+          "id": "heading1_point6",
+          "label": "list",
+          "default": "_shopify_u"
+        },
+        {
+          "type": "text",
+          "id": "heading2_point6",
+          "label": "list",
+          "default": "Dummy text of the printing typesetting"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Refund policy"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .refund-policy-{{ section.id }} {
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  }
+  @media (max-width: 1199px) {
+    .refund-policy-{{ section.id }} {
+      padding-top: {{ section.settings.section_padding_top_lg }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .refund-policy-{{ section.id }} {
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+  .refund-policy .grid-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -30px 0 0 -100px;
+  }
+  .refund-policy .grid-wrap .grid-wrapper {
+    width: calc(50% - 100px);
+    margin: 30px 0 0 100px;
+  }
+  .refund-policy ul.rule-wrap {
+    margin: -30px 0 0 -30px;
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper {
+    margin: 30px 0 0 30px;
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper h2 {
+    font-size: 28px;
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper h6{
+    color: var(--font-color-header);
+    font-size: var(--font-size-subtitle);
+    font-weight: var(--font-weight-subtitle);
+    text-transform: uppercase;
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper p a {
+    color: var(--font-color-secondary);
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper ul.list-block {
+    list-style: disc;
+    {% if settings.enable_rtl %}
+    padding-right: 15px;
+    {% else %}
+    padding-left: 15px;
+    {% endif %}
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper span {
+    font-size: var(--font-size-subtitle);
+    color: var(--font-color-header);
+    font-weight: var(--font-weight-subtitle);
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper ul.list-block p {
+    padding-top: 10px;
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper table tr th {
+    padding-bottom: 30px;
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper table tr td {
+    padding-bottom: 15px;
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper table tr th li {
+    color: var(--font-color-header);
+    font-size: 18px;
+    list-style: disc;
+    {% if settings.enable_rtl %}
+    margin-right: 15px;
+    {% else %}
+    margin-left: 15px;
+    {% endif %}
+  }
+  .refund-policy ul.rule-wrap li.rule-wrapper table tr td span {
+    color: var(--font-color-body);
+    min-width: 200px;
+  }
+
+  @media(max-width: 1199px){
+    .refund-policy .grid-wrap {
+      margin: -30px 0 0 -30px;
+    }
+    .refund-policy .grid-wrap .grid-wrapper {
+      width: calc(50% - 30px);
+      margin: 30px 0 0 30px;
+    }
+    .refund-policy ul.rule-wrap li.rule-wrapper h2 {
+      font-size: 20px;
+    }
+    .refund-policy ul.rule-wrap li.rule-wrapper table tr td span {
+      padding-right: 15px;
+      min-width: auto; 
+    }
+  }
+  @media(max-width: 991px){
+    .refund-policy ul.rule-wrap {
+      margin: -30px 0 0 -30px;
+    }
+    .refund-policy .grid-wrap .grid-wrapper {
+      width: calc(100% - 30px);
+      margin: 30px 0 0 30px;
+    }
+  }
+  @media(max-width: 767px){
+    .refund-policy .grid-wrap {
+      margin: -30px 0 0 -12px;
+    }
+    .refund-policy .grid-wrap .grid-wrapper {
+      width: calc(100% - 12px);
+      margin: 30px 0 0 12px;
+    }
+    .refund-policy ul.rule-wrap {
+      margin: -30px 0 0 -12px;
+    }
+    .refund-policy ul.rule-wrap li.rule-wrapper {
+      margin: 30px 0 0 12px;
+    }
+  }
+</style>

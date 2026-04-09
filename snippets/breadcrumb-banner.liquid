@@ -1,0 +1,162 @@
+<section class="breadcrumb-area">
+    {%- liquid
+      assign ratio = 1
+        assign ratio = settings.breadcrumb_bgimg.aspect_ratio
+      if ratio == 0 or ratio == null
+        assign ratio = 1
+      endif
+    -%}
+    <div class="ratio" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+        {%- if settings.breadcrumb_bgimg -%}
+        <img srcset="
+          {%- if settings.breadcrumb_bgimg.width >= 375 -%}{{ settings.breadcrumb_bgimg | image_url: width: 375 }} 375w,{%- endif -%}
+          {%- if settings.breadcrumb_bgimg.width >= 550 -%}{{ settings.breadcrumb_bgimg | image_url: width: 550 }} 550w,{%- endif -%}
+          {%- if settings.breadcrumb_bgimg.width >= 750 -%}{{ settings.breadcrumb_bgimg | image_url: width: 750 }} 750w,{%- endif -%}
+          {%- if settings.breadcrumb_bgimg.width >= 1100 -%}{{ settings.breadcrumb_bgimg | image_url: width: 1100 }} 1100w,{%- endif -%}
+          {%- if settings.breadcrumb_bgimg.width >= 1500 -%}{{ settings.breadcrumb_bgimg | image_url: width: 1500 }} 1500w,{%- endif -%}
+          {%- if settings.breadcrumb_bgimg.width >= 1780 -%}{{ settings.breadcrumb_bgimg | image_url: width: 1780 }} 1780w,{%- endif -%}
+          {%- if settings.breadcrumb_bgimg.width >= 2000 -%}{{ settings.breadcrumb_bgimg | image_url: width: 2000 }} 2000w,{%- endif -%}
+          {{ settings.breadcrumb_bgimg | image_url }} {{ settings.breadcrumb_bgimg.width }}w
+        "
+        src="{{ settings.breadcrumb_bgimg | image_url: width: 2000 }}"
+        data-src="{{ settings.breadcrumb_bgimg | image_url: width: 2000 }}"
+        alt="{{ settings.breadcrumb_bgimg.alt | escape }}"
+        class="img-fluid lazyload"
+        width="{{ settings.breadcrumb_bgimg.width }}"
+        height="{{ settings.breadcrumb_bgimg.width | divided_by: settings.breadcrumb_bgimg.aspect_ratio }}"
+        decoding="async"
+        loading="lazy"
+        sizes="100vw">
+        {%- else -%}
+        {%- capture placeholder -%}hero-apparel-{% cycle 1, 2, 3 %}{%- endcapture -%}
+        {{ placeholder | placeholder_svg_tag: 'placeholder-svg desk-img' }}
+        {%- endif -%}
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    {% render 'breadcrumb-builtin' %}
+                    <!-- breadcrumb-list end -->
+                    <!-- breadcrumb main-title start-->
+                    <div class="breadcrumb-title">
+                        {% if template contains 'product' %}
+                        <h1>{{ product.title }}</h1>
+                        {% elsif template contains 'collection' and collection.handle %}
+                        <h1>{{ collection.title }}</h1>
+                        {% elsif template == 'blog' %}
+                        <h1>{{ blog.title }}</h1>
+                        {% elsif template == 'article' %}
+                        <h1>{{ blog.title }}</h1>
+                        {% else %}
+                        <h1>{{ page_title }}</h1>
+                        {% endif %}
+                    </div>
+                    <!-- breadcrumb main-title end-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+.breadcrumb-area {
+    padding-top: {{ settings.breadcrumb_padding_top }}px;
+    padding-bottom: {{ settings.breadcrumb_padding_bottom }}px;
+    {% if settings.breadcrumb_bgimg_enable %}
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    {% endif %}
+    {% if settings.breadcrumb_bgcolor_enable %}
+    background-color: {{ settings.breadcrumb_bgcolor }};
+    {% endif %}
+    position: relative;
+    {% if settings.breadcrumb_bottom_border_enable %}
+    border-bottom: 1px solid var(--theme-border-color);
+    {% endif %}
+}
+.breadcrumb-area .ratio {
+    display: block;
+    max-width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+.breadcrumb-area img {
+    display: block;
+    max-width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+{% if settings.breadcrumb_bgimg_enable %}
+.breadcrumb-area::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    {% if settings.enable_rtl %}
+    right: 0;
+    {% else %}
+    left: 0;
+    {% endif %}
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    {% if settings.breadcrumb_bgimg_overlay_color_enable %}
+    background-color: {{ settings.breadcrumb_bgimg_overlay_color }};
+    opacity: {{ settings.breadcrumb_bgimg_overlay_color_opacity }};
+    {% endif %}
+    {% if settings.breadcrumb_bgimg_overlay_gradient_color_enable %}
+    background-image: linear-gradient({{ settings.breadcrumb_bgimg_overlay_gradient_color_degree }}deg, {{ settings.breadcrumb_bgimg_overlay_gradient_color1 | color_modify: 'alpha', settings.breadcrumb_bgimg_overlay_gradient_color1_opacity }}, {{ settings.breadcrumb_bgimg_overlay_gradient_color2 | color_modify: 'alpha', settings.breadcrumb_bgimg_overlay_gradient_color2_opacity }});
+    {% endif %}
+}
+{% endif %}
+@media (max-width: 1199px) {
+    .breadcrumb-area {
+        padding-top: {{ settings.breadcrumb_padding_top_ip }}px;
+        padding-bottom: {{ settings.breadcrumb_padding_bottom_ip }}px;
+        {% if settings.breadcrumb_bottom_border_enable %}
+        border-top: 1px solid var(--theme-border-color);
+        {% endif %}
+    }
+}
+@media (max-width: 767px) {
+    .breadcrumb-area {
+        padding-top: {{ settings.breadcrumb_padding_top_xs }}px;
+        padding-bottom: {{ settings.breadcrumb_padding_bottom_xs }}px;
+    }
+}
+/* breadcrumb title css */
+.breadcrumb-area .breadcrumb-index {
+    position: relative;
+    z-index: 1;
+}
+.breadcrumb-area .breadcrumb-index .breadcrumb-title {
+    text-align: center;
+    margin-top: 5px;
+    position: relative;
+}
+.breadcrumb-area .breadcrumb-index .breadcrumb-title h1 {
+    color: {{ settings.breadcrumb_main_title_color }};
+    font-size: 40px;
+}
+@media (max-width: 1199px) {
+    .breadcrumb-area .breadcrumb-index .breadcrumb-title h1 {
+        font-size: 30px;
+    }
+}
+@media (max-width: 479px) {
+    .breadcrumb-area .breadcrumb-index .breadcrumb-title h1 {
+        font-size: 24px;
+    }
+}
+</style>

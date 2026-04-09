@@ -1,0 +1,1458 @@
+{% doc %}
+  @prompt
+    Create a product tabs section for my Shopify theme with these features:
+    
+    Tabs & Headings
+    
+    3–6 tabs, each with its own title.
+    
+    Section heading updates to match the active tab.
+    
+    Desktop: tabs look like normal/static tabs.
+    
+    Tab & Product Settings
+    
+    Add/remove tabs (minimum 3, maximum 6).
+    
+    Select a collection for each tab.
+    
+    Set products per tab (e.g. 4, 6, 8, 10).
+    
+    Set desktop columns per row (3, 4, or 5).
+    
+    Desktop & Mobile Layout
+    
+    Desktop: products are shown in a normal grid under the active tab.
+    
+    Mobile: do NOT use a slider or carousel.
+    
+    Show all products from the active tab in a vertical scrolling layout, like a standard product listing on most websites.
+    
+    Products should appear as full, uncropped cards in a clean vertical grid/list (no half-cut products).
+    
+    Product Card Controls
+    
+    Toggle “Add to Cart” button on/off.
+    
+    “Add to Cart” style options: normal, hover effect, or popup.
+    
+    Card hover/tap animations: none, zoom, or shadow.
+    
+    Control spacing/gap between product cards.
+    
+    Section Design & Visibility
+    
+    Padding and margin controls for the whole section.
+    
+    Text alignment controls for section heading and tab titles.
+    
+    Background options: solid color, gradient, or image.
+    
+    Show/hide this section separately on desktop, tablet, and mobile.
+    
+    Animation & Basics
+    
+    Optional animation when switching tabs (fade or slide).
+    
+    Fully responsive with basic accessible tab titles and clear active tab state.
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-product-tabs-{{ ai_gen_id }} {
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+    margin-top: {{ block.settings.margin_top }}px;
+    margin-bottom: {{ block.settings.margin_bottom }}px;
+    {% if block.settings.background_type == 'color' %}
+      background-color: {{ block.settings.background_color }};
+    {% elsif block.settings.background_type == 'gradient' %}
+      background: linear-gradient({{ block.settings.gradient_angle }}deg, {{ block.settings.gradient_color_1 }}, {{ block.settings.gradient_color_2 }});
+    {% elsif block.settings.background_type == 'image' and block.settings.background_image %}
+      background-image: url('{{ block.settings.background_image | image_url: width: 2000 }}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    {% endif %}
+  }
+
+  .ai-product-tabs-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-product-tabs-heading-{{ ai_gen_id }} {
+    text-align: {{ block.settings.heading_alignment }};
+    margin-bottom: 30px;
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+  }
+
+  .ai-product-tabs-nav-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: {{ block.settings.tabs_alignment }};
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid {{ block.settings.tab_border_color }};
+    padding-bottom: 0;
+  }
+
+  .ai-product-tab-button-{{ ai_gen_id }} {
+    background: none;
+    border: none;
+    padding: 15px 25px;
+    cursor: pointer;
+    font-size: {{ block.settings.tab_font_size }}px;
+    color: {{ block.settings.tab_text_color }};
+    transition: all 0.3s ease;
+    position: relative;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+
+  .ai-product-tab-button-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.tab_hover_color }};
+  }
+
+  .ai-product-tab-button-{{ ai_gen_id }}.active {
+    color: {{ block.settings.tab_active_color }};
+    border-bottom-color: {{ block.settings.tab_active_border_color }};
+  }
+
+  .ai-product-tabs-content-{{ ai_gen_id }} {
+    position: relative;
+  }
+
+  .ai-product-tab-panel-{{ ai_gen_id }} {
+    display: none;
+    {% if block.settings.tab_animation == 'fade' %}
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    {% elsif block.settings.tab_animation == 'slide' %}
+      transform: translateX(20px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    {% endif %}
+  }
+
+  .ai-product-tab-panel-{{ ai_gen_id }}.active {
+    display: block;
+    {% if block.settings.tab_animation == 'fade' %}
+      opacity: 1;
+    {% elsif block.settings.tab_animation == 'slide' %}
+      transform: translateX(0);
+      opacity: 1;
+    {% endif %}
+  }
+
+  .ai-product-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.desktop_columns }}, 1fr);
+    gap: {{ block.settings.product_gap }}px;
+  }
+
+  .ai-product-card-{{ ai_gen_id }} {
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  {% if block.settings.card_hover_effect == 'zoom' %}
+    .ai-product-card-{{ ai_gen_id }}:hover {
+      transform: scale(1.05);
+    }
+  {% elsif block.settings.card_hover_effect == 'shadow' %}
+    .ai-product-card-{{ ai_gen_id }}:hover {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+  {% endif %}
+
+  .ai-product-card-image-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 15px;
+    background-color: #f5f5f5;
+  }
+
+  .ai-product-card-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .ai-product-card-info-{{ ai_gen_id }} {
+    padding: 10px 0;
+  }
+
+  .ai-product-card-title-{{ ai_gen_id }} {
+    font-size: 16px;
+    margin: 0 0 8px;
+    color: {{ block.settings.product_title_color }};
+  }
+
+  .ai-product-card-title-{{ ai_gen_id }} a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .ai-product-card-price-{{ ai_gen_id }} {
+    font-size: 18px;
+    font-weight: 600;
+    color: {{ block.settings.product_price_color }};
+    margin-bottom: 10px;
+  }
+
+  .ai-product-card-actions-{{ ai_gen_id }} {
+    {% if block.settings.add_to_cart_style == 'hover' %}
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    {% endif %}
+  }
+
+  {% if block.settings.add_to_cart_style == 'hover' %}
+    .ai-product-card-{{ ai_gen_id }}:hover .ai-product-card-actions-{{ ai_gen_id }} {
+      opacity: 1;
+    }
+  {% endif %}
+
+  .ai-add-to-cart-btn-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+
+  .ai-add-to-cart-btn-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+    color: {{ block.settings.button_hover_text_color }};
+  }
+
+  @media screen and (max-width: 1024px) {
+    .ai-product-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ai-product-tabs-{{ ai_gen_id }} {
+      padding-top: {{ block.settings.padding_top_tablet }}px;
+      padding-bottom: {{ block.settings.padding_bottom_tablet }}px;
+    }
+
+    {% if block.settings.hide_on_tablet %}
+      .ai-product-tabs-{{ ai_gen_id }} {
+        display: none;
+      }
+    {% endif %}
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-product-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.mobile_columns }}, 1fr);
+    }
+
+    .ai-product-tabs-{{ ai_gen_id }} {
+      padding-top: {{ block.settings.padding_top_mobile }}px;
+      padding-bottom: {{ block.settings.padding_bottom_mobile }}px;
+    }
+
+    .ai-product-tabs-nav-{{ ai_gen_id }} {
+      justify-content: center;
+    }
+
+    .ai-product-tab-button-{{ ai_gen_id }} {
+      padding: 12px 15px;
+      font-size: 14px;
+    }
+
+    .ai-product-tabs-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.8 }}px;
+    }
+
+    {% if block.settings.hide_on_mobile %}
+      .ai-product-tabs-{{ ai_gen_id }} {
+        display: none;
+      }
+    {% endif %}
+  }
+
+  .ai-product-empty-state-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 16px;
+  }
+{% endstyle %}
+
+<div class="ai-product-tabs-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-product-tabs-container-{{ ai_gen_id }}">
+    <h2 class="ai-product-tabs-heading-{{ ai_gen_id }}" id="ai-tabs-heading-{{ ai_gen_id }}">
+      {% if block.settings.tab_1_enabled %}
+        {{ block.settings.tab_1_title }}
+      {% elsif block.settings.tab_2_enabled %}
+        {{ block.settings.tab_2_title }}
+      {% elsif block.settings.tab_3_enabled %}
+        {{ block.settings.tab_3_title }}
+      {% elsif block.settings.tab_4_enabled %}
+        {{ block.settings.tab_4_title }}
+      {% elsif block.settings.tab_5_enabled %}
+        {{ block.settings.tab_5_title }}
+      {% elsif block.settings.tab_6_enabled %}
+        {{ block.settings.tab_6_title }}
+      {% endif %}
+    </h2>
+
+    <div class="ai-product-tabs-nav-{{ ai_gen_id }}" role="tablist">
+      {% if block.settings.tab_1_enabled %}
+        <button
+          class="ai-product-tab-button-{{ ai_gen_id }} active"
+          role="tab"
+          aria-selected="true"
+          aria-controls="ai-tab-panel-1-{{ ai_gen_id }}"
+          data-tab="1"
+          data-title="{{ block.settings.tab_1_title }}"
+        >
+          {{ block.settings.tab_1_title }}
+        </button>
+      {% endif %}
+
+      {% if block.settings.tab_2_enabled %}
+        <button
+          class="ai-product-tab-button-{{ ai_gen_id }}"
+          role="tab"
+          aria-selected="false"
+          aria-controls="ai-tab-panel-2-{{ ai_gen_id }}"
+          data-tab="2"
+          data-title="{{ block.settings.tab_2_title }}"
+        >
+          {{ block.settings.tab_2_title }}
+        </button>
+      {% endif %}
+
+      {% if block.settings.tab_3_enabled %}
+        <button
+          class="ai-product-tab-button-{{ ai_gen_id }}"
+          role="tab"
+          aria-selected="false"
+          aria-controls="ai-tab-panel-3-{{ ai_gen_id }}"
+          data-tab="3"
+          data-title="{{ block.settings.tab_3_title }}"
+        >
+          {{ block.settings.tab_3_title }}
+        </button>
+      {% endif %}
+
+      {% if block.settings.tab_4_enabled %}
+        <button
+          class="ai-product-tab-button-{{ ai_gen_id }}"
+          role="tab"
+          aria-selected="false"
+          aria-controls="ai-tab-panel-4-{{ ai_gen_id }}"
+          data-tab="4"
+          data-title="{{ block.settings.tab_4_title }}"
+        >
+          {{ block.settings.tab_4_title }}
+        </button>
+      {% endif %}
+
+      {% if block.settings.tab_5_enabled %}
+        <button
+          class="ai-product-tab-button-{{ ai_gen_id }}"
+          role="tab"
+          aria-selected="false"
+          aria-controls="ai-tab-panel-5-{{ ai_gen_id }}"
+          data-tab="5"
+          data-title="{{ block.settings.tab_5_title }}"
+        >
+          {{ block.settings.tab_5_title }}
+        </button>
+      {% endif %}
+
+      {% if block.settings.tab_6_enabled %}
+        <button
+          class="ai-product-tab-button-{{ ai_gen_id }}"
+          role="tab"
+          aria-selected="false"
+          aria-controls="ai-tab-panel-6-{{ ai_gen_id }}"
+          data-tab="6"
+          data-title="{{ block.settings.tab_6_title }}"
+        >
+          {{ block.settings.tab_6_title }}
+        </button>
+      {% endif %}
+    </div>
+
+    <div class="ai-product-tabs-content-{{ ai_gen_id }}">
+      {% if block.settings.tab_1_enabled %}
+        <div
+          class="ai-product-tab-panel-{{ ai_gen_id }} active"
+          role="tabpanel"
+          id="ai-tab-panel-1-{{ ai_gen_id }}"
+        >
+          {% if block.settings.tab_1_collection != blank %}
+            <div class="ai-product-grid-{{ ai_gen_id }}">
+              {% for product in block.settings.tab_1_collection.products limit: block.settings.products_per_tab %}
+                <div class="ai-product-card-{{ ai_gen_id }}">
+                  <div class="ai-product-card-image-{{ ai_gen_id }}">
+                    {% if product.featured_image %}
+                      <a href="{{ product.url }}">
+                        <img
+                          src="{{ product.featured_image | image_url: width: 600 }}"
+                          alt="{{ product.featured_image.alt | escape }}"
+                          loading="lazy"
+                          width="600"
+                          height="600"
+                        >
+                      </a>
+                    {% else %}
+                      <div class="ai-product-placeholder-{{ ai_gen_id }}">
+                        {{ 'product-1' | placeholder_svg_tag }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="ai-product-card-info-{{ ai_gen_id }}">
+                    <h3 class="ai-product-card-title-{{ ai_gen_id }}">
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h3>
+                    <div class="ai-product-card-price-{{ ai_gen_id }}">
+                      {{ product.price | money }}
+                    </div>
+                    {% if block.settings.show_add_to_cart %}
+                      <div class="ai-product-card-actions-{{ ai_gen_id }}">
+                        <button
+                          class="ai-add-to-cart-btn-{{ ai_gen_id }}"
+                          data-product-id="{{ product.variants.first.id }}"
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="ai-product-empty-state-{{ ai_gen_id }}">
+              Select a collection for this tab
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.tab_2_enabled %}
+        <div
+          class="ai-product-tab-panel-{{ ai_gen_id }}"
+          role="tabpanel"
+          id="ai-tab-panel-2-{{ ai_gen_id }}"
+        >
+          {% if block.settings.tab_2_collection != blank %}
+            <div class="ai-product-grid-{{ ai_gen_id }}">
+              {% for product in block.settings.tab_2_collection.products limit: block.settings.products_per_tab %}
+                <div class="ai-product-card-{{ ai_gen_id }}">
+                  <div class="ai-product-card-image-{{ ai_gen_id }}">
+                    {% if product.featured_image %}
+                      <a href="{{ product.url }}">
+                        <img
+                          src="{{ product.featured_image | image_url: width: 600 }}"
+                          alt="{{ product.featured_image.alt | escape }}"
+                          loading="lazy"
+                          width="600"
+                          height="600"
+                        >
+                      </a>
+                    {% else %}
+                      <div class="ai-product-placeholder-{{ ai_gen_id }}">
+                        {{ 'product-1' | placeholder_svg_tag }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="ai-product-card-info-{{ ai_gen_id }}">
+                    <h3 class="ai-product-card-title-{{ ai_gen_id }}">
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h3>
+                    <div class="ai-product-card-price-{{ ai_gen_id }}">
+                      {{ product.price | money }}
+                    </div>
+                    {% if block.settings.show_add_to_cart %}
+                      <div class="ai-product-card-actions-{{ ai_gen_id }}">
+                        <button
+                          class="ai-add-to-cart-btn-{{ ai_gen_id }}"
+                          data-product-id="{{ product.variants.first.id }}"
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="ai-product-empty-state-{{ ai_gen_id }}">
+              Select a collection for this tab
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.tab_3_enabled %}
+        <div
+          class="ai-product-tab-panel-{{ ai_gen_id }}"
+          role="tabpanel"
+          id="ai-tab-panel-3-{{ ai_gen_id }}"
+        >
+          {% if block.settings.tab_3_collection != blank %}
+            <div class="ai-product-grid-{{ ai_gen_id }}">
+              {% for product in block.settings.tab_3_collection.products limit: block.settings.products_per_tab %}
+                <div class="ai-product-card-{{ ai_gen_id }}">
+                  <div class="ai-product-card-image-{{ ai_gen_id }}">
+                    {% if product.featured_image %}
+                      <a href="{{ product.url }}">
+                        <img
+                          src="{{ product.featured_image | image_url: width: 600 }}"
+                          alt="{{ product.featured_image.alt | escape }}"
+                          loading="lazy"
+                          width="600"
+                          height="600"
+                        >
+                      </a>
+                    {% else %}
+                      <div class="ai-product-placeholder-{{ ai_gen_id }}">
+                        {{ 'product-1' | placeholder_svg_tag }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="ai-product-card-info-{{ ai_gen_id }}">
+                    <h3 class="ai-product-card-title-{{ ai_gen_id }}">
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h3>
+                    <div class="ai-product-card-price-{{ ai_gen_id }}">
+                      {{ product.price | money }}
+                    </div>
+                    {% if block.settings.show_add_to_cart %}
+                      <div class="ai-product-card-actions-{{ ai_gen_id }}">
+                        <button
+                          class="ai-add-to-cart-btn-{{ ai_gen_id }}"
+                          data-product-id="{{ product.variants.first.id }}"
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="ai-product-empty-state-{{ ai_gen_id }}">
+              Select a collection for this tab
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.tab_4_enabled %}
+        <div
+          class="ai-product-tab-panel-{{ ai_gen_id }}"
+          role="tabpanel"
+          id="ai-tab-panel-4-{{ ai_gen_id }}"
+        >
+          {% if block.settings.tab_4_collection != blank %}
+            <div class="ai-product-grid-{{ ai_gen_id }}">
+              {% for product in block.settings.tab_4_collection.products limit: block.settings.products_per_tab %}
+                <div class="ai-product-card-{{ ai_gen_id }}">
+                  <div class="ai-product-card-image-{{ ai_gen_id }}">
+                    {% if product.featured_image %}
+                      <a href="{{ product.url }}">
+                        <img
+                          src="{{ product.featured_image | image_url: width: 600 }}"
+                          alt="{{ product.featured_image.alt | escape }}"
+                          loading="lazy"
+                          width="600"
+                          height="600"
+                        >
+                      </a>
+                    {% else %}
+                      <div class="ai-product-placeholder-{{ ai_gen_id }}">
+                        {{ 'product-1' | placeholder_svg_tag }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="ai-product-card-info-{{ ai_gen_id }}">
+                    <h3 class="ai-product-card-title-{{ ai_gen_id }}">
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h3>
+                    <div class="ai-product-card-price-{{ ai_gen_id }}">
+                      {{ product.price | money }}
+                    </div>
+                    {% if block.settings.show_add_to_cart %}
+                      <div class="ai-product-card-actions-{{ ai_gen_id }}">
+                        <button
+                          class="ai-add-to-cart-btn-{{ ai_gen_id }}"
+                          data-product-id="{{ product.variants.first.id }}"
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="ai-product-empty-state-{{ ai_gen_id }}">
+              Select a collection for this tab
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.tab_5_enabled %}
+        <div
+          class="ai-product-tab-panel-{{ ai_gen_id }}"
+          role="tabpanel"
+          id="ai-tab-panel-5-{{ ai_gen_id }}"
+        >
+          {% if block.settings.tab_5_collection != blank %}
+            <div class="ai-product-grid-{{ ai_gen_id }}">
+              {% for product in block.settings.tab_5_collection.products limit: block.settings.products_per_tab %}
+                <div class="ai-product-card-{{ ai_gen_id }}">
+                  <div class="ai-product-card-image-{{ ai_gen_id }}">
+                    {% if product.featured_image %}
+                      <a href="{{ product.url }}">
+                        <img
+                          src="{{ product.featured_image | image_url: width: 600 }}"
+                          alt="{{ product.featured_image.alt | escape }}"
+                          loading="lazy"
+                          width="600"
+                          height="600"
+                        >
+                      </a>
+                    {% else %}
+                      <div class="ai-product-placeholder-{{ ai_gen_id }}">
+                        {{ 'product-1' | placeholder_svg_tag }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="ai-product-card-info-{{ ai_gen_id }}">
+                    <h3 class="ai-product-card-title-{{ ai_gen_id }}">
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h3>
+                    <div class="ai-product-card-price-{{ ai_gen_id }}">
+                      {{ product.price | money }}
+                    </div>
+                    {% if block.settings.show_add_to_cart %}
+                      <div class="ai-product-card-actions-{{ ai_gen_id }}">
+                        <button
+                          class="ai-add-to-cart-btn-{{ ai_gen_id }}"
+                          data-product-id="{{ product.variants.first.id }}"
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="ai-product-empty-state-{{ ai_gen_id }}">
+              Select a collection for this tab
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.tab_6_enabled %}
+        <div
+          class="ai-product-tab-panel-{{ ai_gen_id }}"
+          role="tabpanel"
+          id="ai-tab-panel-6-{{ ai_gen_id }}"
+        >
+          {% if block.settings.tab_6_collection != blank %}
+            <div class="ai-product-grid-{{ ai_gen_id }}">
+              {% for product in block.settings.tab_6_collection.products limit: block.settings.products_per_tab %}
+                <div class="ai-product-card-{{ ai_gen_id }}">
+                  <div class="ai-product-card-image-{{ ai_gen_id }}">
+                    {% if product.featured_image %}
+                      <a href="{{ product.url }}">
+                        <img
+                          src="{{ product.featured_image | image_url: width: 600 }}"
+                          alt="{{ product.featured_image.alt | escape }}"
+                          loading="lazy"
+                          width="600"
+                          height="600"
+                        >
+                      </a>
+                    {% else %}
+                      <div class="ai-product-placeholder-{{ ai_gen_id }}">
+                        {{ 'product-1' | placeholder_svg_tag }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="ai-product-card-info-{{ ai_gen_id }}">
+                    <h3 class="ai-product-card-title-{{ ai_gen_id }}">
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h3>
+                    <div class="ai-product-card-price-{{ ai_gen_id }}">
+                      {{ product.price | money }}
+                    </div>
+                    {% if block.settings.show_add_to_cart %}
+                      <div class="ai-product-card-actions-{{ ai_gen_id }}">
+                        <button
+                          class="ai-add-to-cart-btn-{{ ai_gen_id }}"
+                          data-product-id="{{ product.variants.first.id }}"
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="ai-product-empty-state-{{ ai_gen_id }}">
+              Select a collection for this tab
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    class ProductTabs{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.tabButtons = this.querySelectorAll('.ai-product-tab-button-{{ ai_gen_id }}');
+        this.tabPanels = this.querySelectorAll('.ai-product-tab-panel-{{ ai_gen_id }}');
+        this.heading = this.querySelector('#ai-tabs-heading-{{ ai_gen_id }}');
+        this.addToCartButtons = this.querySelectorAll('.ai-add-to-cart-btn-{{ ai_gen_id }}');
+      }
+
+      connectedCallback() {
+        this.setupTabs();
+        this.setupAddToCart();
+      }
+
+      setupTabs() {
+        this.tabButtons.forEach((button) => {
+          button.addEventListener('click', (e) => {
+            const tabId = button.getAttribute('data-tab');
+            const tabTitle = button.getAttribute('data-title');
+            this.switchTab(tabId, tabTitle);
+          });
+        });
+      }
+
+      switchTab(tabId, tabTitle) {
+        this.tabButtons.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+        });
+
+        this.tabPanels.forEach((panel) => {
+          panel.classList.remove('active');
+        });
+
+        const activeButton = this.querySelector(`[data-tab="${tabId}"]`);
+        const activePanel = this.querySelector(`#ai-tab-panel-${tabId}-{{ ai_gen_id }}`);
+
+        if (activeButton && activePanel) {
+          activeButton.classList.add('active');
+          activeButton.setAttribute('aria-selected', 'true');
+          activePanel.classList.add('active');
+          
+          if (this.heading && tabTitle) {
+            this.heading.textContent = tabTitle;
+          }
+        }
+      }
+
+      setupAddToCart() {
+        this.addToCartButtons.forEach((button) => {
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const variantId = button.getAttribute('data-product-id');
+            
+            {% if block.settings.add_to_cart_style == 'popup' %}
+              this.addToCartPopup(variantId, button);
+            {% else %}
+              this.addToCart(variantId, button);
+            {% endif %}
+          });
+        });
+      }
+
+      addToCart(variantId, button) {
+        const originalText = button.textContent;
+        button.textContent = 'Adding...';
+        button.disabled = true;
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: 1
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          button.textContent = 'Added!';
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+          }, 2000);
+          
+          if (window.theme && window.theme.cart) {
+            window.theme.cart.refresh();
+          }
+        })
+        .catch(error => {
+          button.textContent = 'Error';
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+          }, 2000);
+        });
+      }
+
+      addToCartPopup(variantId, button) {
+        const originalText = button.textContent;
+        button.textContent = 'Adding...';
+        button.disabled = true;
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: 1
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          button.textContent = originalText;
+          button.disabled = false;
+          
+          if (window.theme && window.theme.cart) {
+            window.theme.cart.refresh();
+          }
+          
+          alert('Product added to cart!');
+        })
+        .catch(error => {
+          button.textContent = originalText;
+          button.disabled = false;
+          alert('Error adding product to cart');
+        });
+      }
+    }
+
+    customElements.define('product-tabs-{{ ai_gen_id }}', ProductTabs{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product tabs",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Tab 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_1_enabled",
+      "label": "Enable tab 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_1_title",
+      "label": "Title",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "collection",
+      "id": "tab_1_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Tab 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_2_enabled",
+      "label": "Enable tab 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_2_title",
+      "label": "Title",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "collection",
+      "id": "tab_2_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Tab 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_3_enabled",
+      "label": "Enable tab 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_3_title",
+      "label": "Title",
+      "default": "Featured"
+    },
+    {
+      "type": "collection",
+      "id": "tab_3_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Tab 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_4_enabled",
+      "label": "Enable tab 4",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "tab_4_title",
+      "label": "Title",
+      "default": "On Sale"
+    },
+    {
+      "type": "collection",
+      "id": "tab_4_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Tab 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_5_enabled",
+      "label": "Enable tab 5",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "tab_5_title",
+      "label": "Title",
+      "default": "Trending"
+    },
+    {
+      "type": "collection",
+      "id": "tab_5_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Tab 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_6_enabled",
+      "label": "Enable tab 6",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "tab_6_title",
+      "label": "Title",
+      "default": "Limited Edition"
+    },
+    {
+      "type": "collection",
+      "id": "tab_6_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Product display"
+    },
+    {
+      "type": "range",
+      "id": "products_per_tab",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "label": "Products per tab",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "options": [
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "product_gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Product gap",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Add to cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "label": "Show add to cart button",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "add_to_cart_style",
+      "label": "Add to cart style",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "hover",
+          "label": "Show on hover"
+        },
+        {
+          "value": "popup",
+          "label": "Popup confirmation"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Card effects"
+    },
+    {
+      "type": "select",
+      "id": "card_hover_effect",
+      "label": "Hover effect",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "zoom",
+          "label": "Zoom"
+        },
+        {
+          "value": "shadow",
+          "label": "Shadow"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Size",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Tabs style"
+    },
+    {
+      "type": "select",
+      "id": "tabs_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Text color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "tab_hover_color",
+      "label": "Hover color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_color",
+      "label": "Active color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_border_color",
+      "label": "Active border color",
+      "default": "#de7f65"
+    },
+    {
+      "type": "color",
+      "id": "tab_border_color",
+      "label": "Border color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "header",
+      "content": "Tab animation"
+    },
+    {
+      "type": "select",
+      "id": "tab_animation",
+      "label": "Animation",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade",
+          "label": "Fade"
+        },
+        {
+          "value": "slide",
+          "label": "Slide"
+        }
+      ],
+      "default": "fade"
+    },
+    {
+      "type": "header",
+      "content": "Product colors"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Title color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "product_price_color",
+      "label": "Price color",
+      "default": "#de7f65"
+    },
+    {
+      "type": "header",
+      "content": "Button colors"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Background",
+      "default": "#de7f65"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Hover background",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Type",
+      "options": [
+        {
+          "value": "color",
+          "label": "Solid color"
+        },
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        }
+      ],
+      "default": "color"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_1",
+      "label": "Gradient color 1",
+      "default": "#f5f2ee"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_2",
+      "label": "Gradient color 2",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle",
+      "min": 0,
+      "max": 360,
+      "step": 10,
+      "unit": "deg",
+      "label": "Gradient angle",
+      "default": 180
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Tablet spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_tablet",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_tablet",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Mobile spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Hide on mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_tablet",
+      "label": "Hide on tablet",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product tabs"
+    }
+  ]
+}
+{% endschema %}

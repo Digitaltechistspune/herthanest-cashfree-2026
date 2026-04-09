@@ -1,0 +1,224 @@
+<section class="contact-section4">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="section-capture">
+          <div class="section-title">
+            {% if section.settings.section_sub_title != '' %}
+            <span class="sub-title" data-fade-in>{{ section.settings.section_sub_title }}</span>
+            {% endif %}
+            {% if section.settings.section_title != '' %}
+            <h2 data-fade-in>{{ section.settings.section_title }}</h2>
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-warp contact-detail">
+          <div class="contact-form-list">
+            {% render 'contact-form' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Contact section4",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "contact_us_2_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "contact_us_2_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "contact_us_2_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "contact_us_2_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "contact_us_2_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "contact_us_2_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "contact_us_2_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "contact_us_2_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "name_placeholder",
+      "label": "Name Placeholder",
+      "default": "Your full name"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Placeholder",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "phone_placeholder",
+      "label": "Phone Placeholder",
+      "default": "Your mobile number"
+    },
+    {
+      "type": "text",
+      "id": "message_placeholder",
+      "label": "Message Placeholder",
+      "default": "Your message here..."
+    },
+    {
+      "type": "text",
+      "id": "form_button_name",
+      "label": "Button Name",
+      "default": "Send Message"
+    },
+    {
+      "type": "text",
+      "id": "read_agree_text",
+      "label": "Terms Text",
+      "default": "I accept the terms & conditions and I understand that my data will be hold securely in accordance with the privacy policy."
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section Sub Title",
+      "default": "Get in touch"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Get in touch"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact section4"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .contact-section4 {
+    padding-top: {{ section.settings.contact_us_2_padding_top }}px;
+    padding-bottom: {{ section.settings.contact_us_2_padding_bottom }}px;
+    {% if section.settings.contact_us_2_bgcolor_enable %}
+    background-color: {{ section.settings.contact_us_2_bgcolor }};
+    {% endif %}
+  }
+  @media (max-width: 1199px) {
+    .contact-section4 {
+      padding-top: {{ section.settings.contact_us_2_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.contact_us_2_padding_bottom_ip }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .contact-section4 {
+      padding-top: {{ section.settings.contact_us_2_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.contact_us_2_padding_bottom_xs }}px;
+    }
+  }
+</style>

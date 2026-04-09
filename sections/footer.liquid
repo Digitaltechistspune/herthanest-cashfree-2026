@@ -1,0 +1,1054 @@
+<section class="footer" {% if section.settings.footer_bg_img_enable %}style="background-image: url('{% if section.settings.footer_bg_img %}{{ section.settings.footer_bg_img | image_url }}{% else %}https://dummyimage.com/1920x450/f7f7f7/999999{% endif %}');"{% endif %}>
+  {% if section.settings.footer_top_enable %}
+  <div class="footer-top-area">
+    <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+      <div class="row">
+        <div class="col">
+          <div class="footer-top-block">
+            <ul class="top-wrap">
+              <li data-fade-in class="top-wrapper service">
+                <div class="footer-ser-main">
+                  {% if section.settings.service_1_icon != '' %}
+                  <div class="ser-icon">
+                    <span class="icon"><i class="{{ section.settings.service_1_icon }}"></i></span>
+                  </div>
+                  {% endif %}
+                  <div class="ser-content">
+                    {% if section.settings.service_1_title != '' %}
+                    <h4 class="title">{{ section.settings.service_1_title }}</h4>
+                    {% endif %}
+                    {% if section.settings.service_1_desc != '' %}
+                    <p class="desc">{{ section.settings.service_1_desc }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </li>
+              <li data-fade-in class="top-wrapper f-newsletter">
+                <div class="f-news-main">
+                  <div class="section-capture">
+                    <div class="section-title">
+                      {% if section.settings.news_subtitle != '' %}
+                      <span class="sub-title">{{ section.settings.news_subtitle }}</span>
+                      {% endif %}
+                      {% if section.settings.news_title != '' %}
+                      <h2 data-fade-in class="fade-in">{{ section.settings.news_title }}</h2>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="news-content">
+                    {% form 'customer' %}
+                    {{ form.errors | default_errors }}
+                    {% if form.posted_successfully? %}
+                    <p class="text-success">
+                      <span>{{ 'general.newsletter_form.confirmation' | t }}</span>
+                    </p>
+                    {% endif %}
+                    <div class="news-wrap">
+                      <input type="hidden" name="contact[tags]" value="newsletter">
+                      <input type="email" name="contact[email]" class="email mail" id="E-mail" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" autocapitalize="off" required>
+                      <button type="submit" name="commit" id="Subscribe" class="btn-style">{{ 'general.newsletter_form.submit' | t }}</button>
+                    </div>
+                    {% endform %}
+                  </div>
+                </div>
+              </li>
+              <li data-fade-in class="top-wrapper service">
+                <div class="footer-ser-main">
+                  {% if section.settings.service_2_icon != '' %}
+                  <div class="ser-icon">
+                    <span class="icon"><i class="{{ section.settings.service_2_icon }}"></i></span>
+                  </div>
+                  {% endif %}
+                  <div class="ser-content">
+                    {% if section.settings.service_2_title != '' %}
+                    <h4 class="title">{{ section.settings.service_2_title }}</h4>
+                    {% endif %}
+                    {% if section.settings.service_2_desc != '' %}
+                    <p class="desc">{{ section.settings.service_2_desc }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="footer-list-wrap">
+          <ul class="footer-list">
+            {% for block in section.blocks %}
+            {%- case block.type -%}
+            {%- when 'logo_info' -%}
+            <li class="ftlink-li logo-info width-{{ block.id }}" data-fade-in>
+              <div class="footer-info">
+                {% if block.settings.logo_enable %}
+                {%- render 'company-logo-footer' -%}
+                {% endif %}
+                {% if block.settings.logo_desc != '' %}
+                <div class="logo-desc">
+                  <p class="desc">{{ block.settings.logo_desc }}</p>
+                </div>
+                {% endif %}
+                <div class="custom-info">
+                  {% if block.settings.custom_info_icon != '' %}
+                  <div class="info-icon">
+                    <span class="icon"><i class="{{ block.settings.custom_info_icon }}"></i></span>
+                  </div>
+                  {% endif %}
+                  <div class="info-content">
+                    {% if block.settings.custom_info_label != '' %}
+                    <span class="label">{{ block.settings.custom_info_label }}</span>
+                    {% endif %}
+                    {% if block.settings.custom_info_text != '' %}
+                    <div class="text">{{ block.settings.custom_info_text }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% if block.settings.social_enable %}
+                {%- render 'social-media' -%}
+                {% endif %}
+              </div>      
+            </li>
+            {%- when 'footer_menu' -%}
+            <li class="ftlink-li link-list width-{{ block.id }}" data-fade-in>
+              {% assign footer_menu = block.settings.footer_menu_handle %}
+              {%- if block.settings.show_nav_title -%}
+              <h2 class="ft-title">{{ linklists[footer_menu].title }}</h2>
+              {%- endif -%}
+              <a data-bs-toggle="collapse" href="#collapse-{{ linklists[footer_menu].title | handleize }}" class="ft-title">
+                <span>{{ linklists[footer_menu].title }}</span>
+                <i class="feather-plus"></i>
+              </a>
+              <ul class="{% if block.settings.show_nav_title %}collapse {% endif %} footer-sublist link" id="{%- if block.settings.show_nav_title -%}collapse-{{ linklists[footer_menu].title | handleize }}{%- endif -%}">
+                {% assign footer_menu = block.settings.footer_menu_handle %}
+                {% for link in linklists[footer_menu].links %}
+                {% if linklists[footer_menu].links != '' %}
+                <li class="ftsublink-li">
+                  <a href="{{ link.url }}" class="ft-sublink">{{ link.title }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+            {%- when 'custom_menu' -%}
+            <li class="ftlink-li link-list" data-fade-in>
+              {%- if block.settings.nav_title != '' -%}
+              <h2 class="ft-title">{{ block.settings.nav_title }}</h2>
+              <a data-bs-toggle="collapse" href="#collapse-{{ block.settings.nav_title | handleize }}" class="ft-title">
+                <span>{{ block.settings.nav_title }}</span>
+                <i class="feather-plus"></i>
+              </a>
+              {%- endif -%}
+              <ul class="collapse footer-sublist link" id="collapse-{{ block.settings.nav_title | handleize }}">
+                {%- if block.settings.link_title1 != '' -%}
+                <li class="ftsublink-li">
+                  <a href="{{ block.settings.link_url1 }}" class="ft-sublink">{{ block.settings.link_title1 }}</a>
+                </li>
+                {%- endif -%}
+                {%- if block.settings.link_title2 != '' -%}
+                <li class="ftsublink-li">
+                  <a href="{{ block.settings.link_url2 }}" class="ft-sublink">{{ block.settings.link_title2 }}</a>
+                </li>
+                {%- endif -%}
+                {%- if block.settings.link_title3 != '' -%}
+                <li class="ftsublink-li">
+                  <span class="ft-sublink ft-sublink-bold">{{ block.settings.link_title3 }}</span>
+                </li>
+                {%- endif -%}
+                {%- if block.settings.link_title4 != '' -%}
+                <li class="ftsublink-li">
+                  <span class="ft-sublink">{{ block.settings.link_title4 }}</span>
+                </li>
+                {%- endif -%}
+                {%- if block.settings.link_title5 != '' -%}
+                <li class="ftsublink-li">
+                  <span class="ft-sublink">{{ block.settings.link_title5 }}</span>
+                </li>
+                {%- endif -%}
+              </ul>
+            </li>
+            {%- endcase -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Footer",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop / tablet"
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_bottom_ipad",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Footer background"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_bg_img",
+      "label": "Image",
+      "info": "Recommended Size: 1920 x 770px"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_bg_img_enable",
+      "label": "Show Background Image",
+      "default": false
+    },
+    {
+      "type": "color_background",
+      "id": "footer_bg_color",
+      "label": "Background Color",
+      "default": "linear-gradient(72deg, rgba(237, 243, 253, 1), rgba(248, 244, 245, 1) 100%)"
+    },
+    {
+      "type": "header",
+      "content": "Section Border"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_enable",
+      "label": "Show Section Border",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "border",
+      "label": "Border",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#808080"
+    },
+    {
+      "type": "range",
+      "id": "border_color_opacity",
+      "label": "Theme Border Color Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.1
+    },
+    {
+      "type": "header",
+      "content": "Menu title"
+    },
+    {
+      "type": "range",
+      "id": "menu_title_font_size",
+      "label": "Menu title font size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "menu_title_font_size_lg",
+      "label": "Menu title font size laptop",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "menu_title_font_weight",
+      "label": "Menu title font weight",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "select",
+      "id": "menu_title_text_transform",
+      "label": "Menu title property",
+      "options": [
+        {
+          "label": "Capitalize",
+          "value": "capitalize"
+        },
+        {
+          "label": "Lowercase",
+          "value": "lowercase"
+        },
+        {
+          "label": "Uppercase",
+          "value": "uppercase"
+        },
+        {
+          "label": "None",
+          "value": "none"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "color",
+      "id": "menu_title_color",
+      "label": "Menu title color",
+      "default": "#dfc50e"
+    },
+    {
+      "type": "header",
+      "content": "Menu text"
+    },
+    {
+      "type": "range",
+      "id": "menu_text_font_size",
+      "label": "Menu text font size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "menu_text_font_size_lg",
+      "label": "Menu text font size laptop",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "menu_text_font_weight",
+      "label": "Menu text font weight",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "select",
+      "id": "menu_text_text_transform",
+      "label": "Menu text property",
+      "options": [
+        {
+          "label": "Capitalize",
+          "value": "capitalize"
+        },
+        {
+          "label": "Lowercase",
+          "value": "lowercase"
+        },
+        {
+          "label": "Uppercase",
+          "value": "uppercase"
+        },
+        {
+          "label": "None",
+          "value": "none"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "menu_text_color",
+      "label": "Menu text color",
+      "default": "#807d7a"
+    },
+    {
+      "type": "color",
+      "id": "menu_text_hv_color",
+      "label": "Menu text hover color",
+      "default": "#dfc50e"
+    },
+    {
+      "type": "header",
+      "content": "Footer service"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_top_enable",
+      "label": "Footer service enable",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Footer service 1"
+    },
+    {
+      "type": "text",
+      "id": "service_1_icon",
+      "label": "Icon",
+      "default": "feather-truck"
+    },
+    {
+      "type": "text",
+      "id": "service_1_title",
+      "label": "Title",
+      "default": "Worldwide shipping"
+    },
+    {
+      "type": "textarea",
+      "id": "service_1_desc",
+      "label": "Description",
+      "default": "The point of using Lorem Ipsum is that are more-or-less normal distribution of !"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter Content"
+    },
+    {
+      "type": "text",
+      "id": "news_subtitle",
+      "label": "Title",
+      "default": "Our newsletter"
+    },
+    {
+      "type": "text",
+      "id": "news_title",
+      "label": "Title",
+      "default": "Enjoy 10% off your first order"
+    },
+    {
+      "type": "header",
+      "content": "Footer service 2"
+    },
+    {
+      "type": "text",
+      "id": "service_2_icon",
+      "label": "Icon",
+      "default": "feather-lock"
+    },
+    {
+      "type": "text",
+      "id": "service_2_title",
+      "label": "Title",
+      "default": "Secure payment"
+    },
+    {
+      "type": "textarea",
+      "id": "service_2_desc",
+      "label": "Description",
+      "default": "The point of using Lorem Ipsum is that are more-or-less normal distribution of !"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo_info",
+      "name": "Logo information",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "logo_enable",
+          "label": "Show logo",
+          "default": true
+        },
+        {
+          "type": "textarea",
+          "id": "logo_desc",
+          "label": "Logo Description",
+          "default": "If you are going to use a passage of you need to be sure there isn't anything embarrassing hidden."
+        },
+        {
+          "type": "header",
+          "content": "Custom Info"
+        },
+        {
+          "type": "text",
+          "id": "custom_info_icon",
+          "label": "Icon Class",
+          "default": "feather-headphones"
+        },
+        {
+          "type": "text",
+          "id": "custom_info_label",
+          "label": "Text Label",
+          "default": "Hotline number"
+        },
+        {
+          "type": "richtext",
+          "id": "custom_info_text",
+          "label": "Text"
+        },
+        {
+          "type": "checkbox",
+          "id": "social_enable",
+          "label": "Show social media",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "footer_menu",
+      "name": "Navigation",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_nav_title",
+          "label": "Show heading",
+          "default": true
+        },
+        {
+          "type": "link_list",
+          "id": "footer_menu_handle",
+          "label": "Select Menu"
+        }
+      ]
+    },
+    {
+      "type": "custom_menu",
+      "name": "Custom menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "nav_title",
+          "label": "Nav title",
+          "default": "Contact us"
+        },
+        {
+          "type": "text",
+          "id": "link_title1",
+          "label": "Link title",
+          "default": "+1234 567 890"
+        },
+        {
+          "type": "url",
+          "id": "link_url1",
+          "label": "Link url"
+        },
+        {
+          "type": "text",
+          "id": "link_title2",
+          "label": "Link title",
+          "default": "info@domain.com"
+        },
+        {
+          "type": "url",
+          "id": "link_url2",
+          "label": "Link url"
+        },
+        {
+          "type": "text",
+          "id": "link_title3",
+          "label": "Link title",
+          "default": "We're located in Australia"
+        },
+        {
+          "type": "text",
+          "id": "link_title4",
+          "label": "Link title",
+          "default": "Custom care hours"
+        },
+        {
+          "type": "text",
+          "id": "link_title5",
+          "label": "Link title",
+          "default": "3:00 PM - 11:30 PM"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        {
+          "type": "logo_info"
+        },
+        {
+          "type": "footer_menu"
+        },
+        {
+          "type": "footer_menu"
+        },
+        {
+          "type": "footer_menu"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+<style>
+:root {
+  --footer-menu-title-font-size: {{ section.settings.menu_title_font_size }}px;
+  --footer-menu-title-font-size-lg: {{ section.settings.menu_title_font_size_lg }}px;
+  --footer-menu-title-font-weight: {{ section.settings.menu_title_font_weight }};
+  --footer-menu-title-text-transform: {{ section.settings.menu_title_text_transform }};
+  --footer-menu-title-color: {{ section.settings.menu_title_color }};
+  --footer-menu-text-font-size: {{ section.settings.menu_text_font_size }}px;
+  --footer-menu-text-font-size-lg: {{ section.settings.menu_text_font_size_lg }}px;
+  --footer-menu-text-font-weight: {{ section.settings.menu_text_font_weight }};
+  --footer-menu-text-transform: {{ section.settings.menu_text_text_transform }};
+  --footer-menu-text-color: {{ section.settings.menu_text_color }};
+  --footer-menu-text-hover-color: {{ section.settings.menu_text_hv_color }};
+}
+.footer{
+  padding-top: {{ section.settings.foot_padding_top }}px;
+  padding-bottom: {{ section.settings.foot_padding_bottom }}px;
+  position: relative;
+  {% if section.settings.footer_bg_img_enable %}
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  {% endif %}
+  background: {{ section.settings.footer_bg_color }};
+  {% if section.settings.border_enable %}
+  {% if template == 'collection' or template == 'collection.list' or template == 'collection.list-right' or template == 'collection.list-without' or template == 'collection.right' or template == 'collection.without' or template == 'page.wishlist' or template == 'product' or template == 'product.template2' or template == 'product.template3' or template == 'product.template4' or template == 'product.template5' %}
+  border-top: {{ section.settings.border }}px solid {{ section.settings.border_color | color_modify: 'alpha', section.settings.border_color_opacity }};
+  {% endif %}
+  {% endif %}
+}
+@media (max-width: 1199px){
+  .footer{
+    padding-top: {{ section.settings.foot_padding_top_ipad }}px;
+    padding-bottom: {{ section.settings.foot_padding_bottom_ipad }}px;
+  }
+}
+@media (max-width: 767px){
+  .footer{
+    padding-top: {{ section.settings.foot_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.foot_padding_bottom_xs }}px;
+  }
+}
+/*footer top*/
+.footer .footer-top-area {
+  padding-bottom: {{ section.settings.foot_padding_top }}px;
+  margin-bottom: {{ section.settings.foot_padding_top }}px;
+  border-bottom: 1px solid var(--theme-border-color);
+}
+.footer .footer-top-area ul.top-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: -50px;
+  margin-inline-start: -30px;
+}
+.footer .footer-top-area ul.top-wrap li.top-wrapper {
+  margin-top: 50px;
+  margin-inline-start: 30px;
+}
+.footer .footer-top-area ul.top-wrap li.top-wrapper.service {
+  width: calc(25% - 30px);
+}  
+.footer .footer-top-area ul.top-wrap li.top-wrapper.f-newsletter {
+  width: calc(50% - 30px);
+} 
+@media (max-width: 1199px) {
+  .footer .footer-top-area{
+    padding-bottom: {{ section.settings.foot_padding_top_ipad }}px;
+    margin-bottom: {{ section.settings.foot_padding_top_ipad }}px;
+  }
+  .footer .footer-top-area ul.top-wrap {
+    margin-top: -40px;
+  }
+  .footer .footer-top-area ul.top-wrap li.top-wrapper {
+    margin-top: 40px;
+  }
+  .footer .footer-top-area ul.top-wrap li.top-wrapper.service {
+    width: calc(50% - 30px);
+  }  
+  .footer .footer-top-area ul.top-wrap li.top-wrapper.f-newsletter {
+    width: calc(100% - 30px);
+    order: -1;
+  } 
+}
+@media(max-width: 767px){
+  .footer .footer-top-area{
+    padding-bottom: {{ section.settings.foot_padding_top_xs }}px;
+    margin-bottom: {{ section.settings.foot_padding_top_xs }}px;
+  }
+  .footer .footer-top-area ul.top-wrap {
+    margin-top: -30px;
+    margin-inline-start: -12px;
+  }
+  .footer .footer-top-area ul.top-wrap li.top-wrapper {
+    margin-top: 30px;
+    margin-inline-start: 12px;
+  }
+  .footer .footer-top-area ul.top-wrap li.top-wrapper.service {
+    width: calc(50% - 12px);
+  }  
+  .footer .footer-top-area ul.top-wrap li.top-wrapper.f-newsletter {
+    width: calc(100% - 12px);
+    order: -1;
+  } 
+}
+@media(max-width: 479px){
+  .footer .footer-top-area ul.top-wrap li.top-wrapper.service {
+    width: calc(100% - 12px);
+  }  
+  .footer .footer-top-area ul.top-wrap li.top-wrapper.f-newsletter {
+    order: unset;
+  } 
+}
+
+/* service css */
+.footer .footer-top-area ul.top-wrap li.service .footer-ser-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.footer .footer-top-area ul.top-wrap li.service .footer-ser-main .ser-icon span.icon {
+  background-color: #FFFFFF;
+  color: var(--font-color-primary);
+  font-size: 28px;
+  width: 85px;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+}
+.footer .footer-top-area ul.top-wrap li.service .footer-ser-main .ser-content {
+  margin-top: 28px;
+}
+.footer .footer-top-area ul.top-wrap li.service .footer-ser-main .ser-content h4.title {
+  color: var(--footer-menu-title-color);
+  font-size: var(--footer-menu-title-font-size);
+  font-weight: var(--footer-menu-title-font-weight);
+  text-transform: var(--footer-menu-title-text-transform);
+  line-height: 1;
+}
+.footer .footer-top-area ul.top-wrap li.service .footer-ser-main .ser-content p.desc {
+  color: var(--footer-menu-text-color);
+  font-size: var(--footer-menu-text-font-size);
+  font-weight: var(--footer-menu-text-font-weight);
+  text-transform: var(--footer-menu-text-transform);
+  margin-top: 19px;
+}
+/* newsletter css */
+.footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main {
+  padding: 0px 50px;
+}
+.footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main .section-capture {
+  width: 75%;
+  margin: 0 auto 45px auto;
+}
+.footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main .news-content .rich-text p {
+  color: var(--footer-menu-text-color);
+  font-size: var(--footer-menu-text-font-size);
+  font-weight: var(--footer-menu-text-font-weight);
+  line-height: normal;
+}
+.footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main .news-content .news-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main .news-content .news-wrap input {
+  width: 100%;
+  border: none;
+}
+.footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main .news-content .news-wrap button {
+  position: absolute;
+  {%- if settings.enable_rtl -%}
+  left: 0px;
+  {%- else -%}
+  right: 0px;
+  {%- endif -%}
+  height: 100%;
+}
+.footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main .news-content .news-wrap button:hover {
+  background-color: var(--font-color-secondary);
+}
+@media (max-width: 1199px){
+  .footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main {
+    padding: 0px; 
+  }
+  .footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main .section-capture {
+    width: 100%;
+    margin: 0 auto 29px auto;
+  }
+}
+@media(max-width: 767px){
+  .footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main .section-capture {
+    margin: 0 auto 21px auto;
+  }
+}
+@media(max-width: 479px){
+  .footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main .news-content .news-wrap {
+    flex-direction: column;
+  }
+  .footer .footer-top-area ul.top-wrap li.f-newsletter .f-news-main .news-content .news-wrap button {
+    position: unset;
+    margin-top: 20px;
+  }
+}
+
+/* footer bottom */
+.footer .footer-list-wrap ul.footer-list{
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: -50px;
+  margin-inline-start: -30px;
+}
+.footer .footer-list-wrap ul.footer-list li.ftlink-li{
+  width: calc(16.66% - 30px);
+  margin-top: 50px;
+  margin-inline-start: 30px;
+}
+.footer .footer-list-wrap ul.footer-list li.ftlink-li.logo-info {
+  width: calc(33.33% - 30px);
+}
+.footer .footer-list-wrap ul.footer-list li.ftlink-li .ft-title{
+  color: var(--footer-menu-title-color);
+  font-size: var(--footer-menu-title-font-size);
+  font-weight: var(--footer-menu-title-font-weight);
+  text-transform: var(--footer-menu-title-text-transform);
+  line-height: 1;
+}
+.footer .footer-list-wrap ul.footer-list li.ftlink-li a.ft-title{
+  display: none;
+}
+.footer .footer-list-wrap ul.footer-list li.ftlink-li .footer-sublist.collapse:not(.show){
+  display: block;
+}
+.footer .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li{
+  margin-top: 19px;
+}
+.footer .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li:first-child{
+  margin-top: 22px;
+}
+.footer .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li span,
+.footer .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a{
+  color: var(--footer-menu-text-color);
+  font-size: var(--footer-menu-text-font-size);
+  font-weight: var(--footer-menu-text-font-weight);
+  text-transform: var(--footer-menu-text-transform);
+  line-height: normal;
+}
+.footer .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a:hover{
+  color: var(--footer-menu-text-hover-color);
+}
+
+/* logo description */
+.footer .footer-list-wrap .logo-desc {
+  width: 75%;
+  margin-top: 21px;
+}
+.footer .footer-list-wrap .custom-info {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+}
+.footer .footer-list-wrap .custom-info .info-icon span.icon {
+  color: var(--font-color-primary);
+  font-size: 40px;
+  line-height: 0;
+  display: block;
+}
+.footer .footer-list-wrap .custom-info .info-content {
+  margin-inline-start: 15px;
+}
+.footer .footer-list-wrap .custom-info .info-content span.label {
+  color: var(--footer-menu-title-color);
+  font-size: var(--footer-menu-title-font-size);
+  font-weight: var(--footer-menu-title-font-weight);
+  text-transform: var(--footer-menu-title-text-transform);
+  line-height: 1;
+}
+.footer .footer-list-wrap .custom-info .info-content .text {
+  margin-top: 6px;
+}
+.footer .footer-list-wrap .custom-info .info-content .text p,
+.footer .footer-list-wrap .custom-info .info-content .text p a {
+  color: var(--footer-menu-text-color);
+  font-size: var(--footer-menu-text-font-size);
+  font-weight: var(--footer-menu-text-font-weight);
+  text-transform: var(--footer-menu-text-transform);
+  line-height: normal;
+}
+.footer .footer-list-wrap .custom-info .info-content .text p a:hover {
+  color: var(--font-color-primary);
+}
+
+/*social icon*/
+.footer .footer-list-wrap ul.social-icon {
+  padding-top: 21px;
+} 
+
+@media (max-width: 1499px){
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li .ft-title { 
+    font-size: var(--footer-menu-title-font-size-lg);
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li span,
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a{
+    font-size: var(--footer-menu-text-font-size-lg);
+  }
+}
+@media (max-width: 1399px) {
+  .footer .footer-list-wrap .logo-desc {
+    width: 100%;
+  }
+}
+@media (max-width: 1199px) {
+  .footer .footer-list-wrap ul.footer-list {
+    margin-top: -40px;
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li{
+    width: calc(25% - 30px);
+    margin-top: 40px;
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li.logo-info {
+    width: calc(100% - 30px);
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li.logo-info .footer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer .footer-list-wrap .logo-desc {
+    text-align: center;
+  }
+}
+@media (max-width: 991px){
+  .footer .footer-list-wrap ul.social-icon {
+    padding-top: 20px;
+  }  
+}
+@media(max-width: 767px){
+  .footer .footer-list-wrap ul.footer-list {
+    margin-top: -30px;
+    margin-inline-start: -12px;
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li{
+    width: calc(25% - 12px);
+    margin-top: 30px;
+    margin-inline-start: 12px;
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li.logo-info {
+    width: calc(100% - 12px);
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li {
+    margin-top: 9px;
+  }
+}
+@media(max-width: 600px){
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li {
+    width: calc(100% - 12px);
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li h2.ft-title {
+    display: none;
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li a.ft-title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0;
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li a.ft-title[aria-expanded=true] i::before {
+    content: "\e996";
+  }
+  .footer .footer-list-wrap ul.footer-list li.ftlink-li .footer-sublist.collapse:not(.show) {
+    display: none;
+  }
+}
+</style>

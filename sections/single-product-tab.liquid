@@ -1,0 +1,557 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{{ 'single-product-tab.css' | asset_url | stylesheet_tag }}
+<section class="product-description-tab">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="product-tab {% if section.settings.product_detail_tab_option == 'vertical_tab' %}vertical-tab{% elsif section.settings.product_detail_tab_option == 'horizontal_tab' %}horizontal-tab{% elsif section.settings.product_detail_tab_option == 'collpase_tab' %}collpase-tab{% endif %}{% if template == 'product.template5' %} full-tab{% endif %}">
+          {% if section.settings.product_detail_tab_option == 'vertical_tab' or section.settings.product_detail_tab_option == 'horizontal_tab' %}
+          <div class="tab">
+            {% endif %}
+            {% if section.settings.product_detail_tab_option == 'collpase_tab' %}
+            <ul class="tab" role="tablist" id="collapse-tab">
+            {% else %}
+            <ul class="nav nav-tabs" role="tablist">
+            {% endif %}
+              {%- for block in section.blocks -%}
+              {%- case block.type -%}
+              {%- when 'product_desc' -%}
+              {% if section.settings.product_detail_tab_option == 'collpase_tab' %}
+              <li role="presentation">
+                 <button type="button" data-bs-target="#collapse-{{ block.settings.product_info_tab_title | handleize }}" class="tab-title {% if forloop.first %}active{% endif %}" data-bs-toggle="collapse" {% if forloop.first %}aria-expanded="true"{% else %}aria-expanded="false"{% endif %}>
+                  <h6 class="tab-name">{{ block.settings.product_info_tab_title }}</h6>
+                  <span class="tab-icon"><i class="bi bi-plus"></i></span>
+                </button>
+                <div class="collapse {% if forloop.first %}show{% endif %}" id="collapse-{{ block.settings.product_info_tab_title | handleize }}" data-bs-parent="#collapse-tab">
+                  <div class="description-review-text">
+                    <div class="product-description">
+                      {{ product.description }}
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {% else %}
+              <li role="presentation">
+                <button type="button" data-bs-target="#pro-dec" {% if forloop.first %}class="active"{% endif %} data-bs-toggle="tab" {% if forloop.first %}aria-selected="true"{% else %}aria-selected="false"{% endif %}>
+                  <h6>{{ block.settings.product_info_tab_title }}</h6>
+                </button>
+              </li>
+              {% endif %}
+              {%- when 'product_add_info' -%}
+              {% if section.settings.product_detail_tab_option == 'collpase_tab' %}
+              <li role="presentation">
+                <button type="button" data-bs-target="#collapse-{{ block.settings.product_add_info_tab_title | handleize }}" class="tab-title {% if forloop.first %}active{% endif %}" data-bs-toggle="collapse" {% if forloop.first %}aria-expanded="true"{% else %}aria-expanded="false"{% endif %}>
+                  <h6 class="tab-name">{{ block.settings.product_add_info_tab_title }}</h6>
+                  <span class="tab-icon"><i class="bi bi-plus"></i></span>
+                </button>
+                <div class="collapse {% if forloop.first %}show{% endif %}" id="collapse-{{ block.settings.product_add_info_tab_title | handleize }}" data-bs-parent="#collapse-tab">
+                  <div class="description-review-text">
+                    <div class="product-additional-info">
+                      <table>
+                        <tbody>
+                          {%- if product.vendor != blank -%}
+                          <tr class="product-info">
+                            <th>{{ 'products.general.vendor' | t }}</th>
+                            <td>{{ product.vendor | link_to_vendor }}</td>
+                          </tr>
+                          {%- endif -%}
+
+                          {%- if product.type != blank -%}
+                          <tr class="product-info">
+                            <th>{{ 'products.general.type' | t }}</th>
+                            <td>{{ product.type | link_to_type }}</td>
+                          </tr>
+                          {%- endif -%}
+
+                          {%- unless product.options.size == 1 and product.variants[0].title == 'Default Title' -%}
+                          {%- for option in product.options_with_values -%}
+                          <tr class="product-info">
+                            <th>{{ option.name }}</th>
+                            <td>
+                              {%- for item_option in option.values -%}
+                              {{ item_option }}{%- unless forloop.last -%}{{ ', ' }}{%- endunless -%}
+                              {%- endfor -%}
+                            </td>
+                           </tr>
+                          {%- endfor -%}
+                          {%- endunless -%}
+
+                          {%- if current_variant.sku != blank -%}
+                          <tr class="product-info">
+                            <th>{{ 'products.general.sku' | t }}</th>
+                            <td>{{ current_variant.sku }}</td>
+                          </tr>
+                          {%- endif -%}
+
+                          {%- if current_variant.barcode != blank -%}
+                          <tr class="product-info">
+                            <th>{{ 'products.general.barcode' | t }}</th>
+                            <td>{{ current_variant.barcode }}</td>
+                          </tr>
+                          {%- endif -%}
+
+                          {% if product.variants.first.weight > 0 %}
+                          <tr class="product-info">
+                            <th>{{ 'products.general.weight' | t }}</th>
+                            <td>{{ product.variants.first.weight | weight_with_unit }}</td>
+                          </tr>
+                          {%- endif -%}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {% else %}
+              <li role="presentation">
+                <button type="button" data-bs-target="#pro-add-info" {% if forloop.first %}class="active"{% endif %} data-bs-toggle="tab" {% if forloop.first %}aria-selected="true"{% else %}aria-selected="false"{% endif %}>
+                  <h6>{{ block.settings.product_add_info_tab_title }}</h6>
+                </button>
+              </li>
+              {% endif %}
+              {%- when 'product_custom_content' -%}
+              {% if section.settings.product_detail_tab_option == 'collpase_tab' %}
+              <li role="presentation">
+                <button type="button" data-bs-target="#collapse-{{ block.settings.product_custom_tab_title | handleize }}" class="tab-title {% if forloop.first %}active{% endif %}" data-bs-toggle="collapse" {% if forloop.first %}aria-expanded="true"{% else %}aria-expanded="false"{% endif %}>
+                  <h6 class="tab-name">{{ block.settings.product_custom_tab_title }}</h6>
+                  <span class="tab-icon"><i class="bi bi-plus"></i></span>
+                </button>
+                <div class="collapse {% if forloop.first %}show{% endif %}" id="collapse-{{ block.settings.product_custom_tab_title | handleize }}" data-bs-parent="#collapse-tab">
+                  <div class="description-review-text">
+                    <div class="product-custom-content">
+                      {{ block.settings.custom_content }}
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {% else %}
+              <li role="presentation">
+                <button type="button" data-bs-target="#pro-custom-content" {% if forloop.first %}class="active"{% endif %} data-bs-toggle="tab" {% if forloop.first %}aria-selected="true"{% else %}aria-selected="false"{% endif %}>
+                  <h6>{{ block.settings.product_custom_tab_title }}</h6>
+                </button>
+              </li>
+              {% endif %}
+              {%- when 'product_video' -%}
+              {% if section.settings.product_detail_tab_option == 'collpase_tab' %}
+              {%- if product.metafields.custom.product_video -%}
+              <li role="presentation">
+                <button type="button" data-bs-target="#collapse-{{ block.settings.product_video_title | handleize }}" class="tab-title {% if forloop.first %}active{% endif %}" data-bs-toggle="collapse" {% if forloop.first %}aria-expanded="true"{% else %}aria-expanded="false"{% endif %}>
+                  <h6 class="tab-name">{{ block.settings.product_video_title }}</h6>
+                  <span class="tab-icon"><i class="bi bi-plus"></i></span>
+                </button>
+                <div class="collapse {% if forloop.first %}show{% endif %}" id="collapse-{{ block.settings.product_video_title | handleize }}" data-bs-parent="#collapse-tab">
+                  <div class="description-review-text">
+                    <div class="video">
+                      <iframe src="{{ product.metafields.custom.product_video }}" allowfullscreen></iframe>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {%- endif -%}
+              {% else %}
+              {%- if product.metafields.custom.product_video -%}
+              <li role="presentation">
+                <button type="button" data-bs-target="#product-video" {% if forloop.first %}class="active"{% endif %} data-bs-toggle="tab" {% if forloop.first %}aria-selected="true"{% else %}aria-selected="false"{% endif %}>
+                  <h6>{{ block.settings.product_video_title }}</h6>
+                </button>
+              </li>
+              {%- endif -%}
+              {% endif %}
+              
+              {%- endcase -%}
+              {%- endfor -%}
+              {% if section.settings.review_title != '' %}
+              {% if section.settings.product_detail_tab_option == 'collpase_tab' %}
+              <li role="presentation">
+                <button type="button" data-bs-target="#pro-review" class="tab-title" data-bs-toggle="collapse" {% if forloop.first %}aria-expanded="true"{% else %}aria-expanded="false"{% endif %}>
+                  <h6 class="tab-name">{{ section.settings.review_title }}</h6>
+                  <span class="tab-icon"><i class="bi bi-plus"></i></span>
+                </button>
+                {%- for block in section.blocks -%}
+                {%- case block.type -%}
+                {%- when '@app' -%}
+                <div class="collapse" id="pro-review" data-bs-parent="#collapse-tab">
+                  <div class="description-review-text">
+                    {%- render block -%}
+                  </div>
+                </div>
+                {%- endcase -%}
+                {%- endfor -%}
+              </li>
+              {% else %}
+              <li role="presentation">
+                <button type="button" data-bs-target="#pro-review" {% if forloop.first %}class="active"{% endif %} data-bs-toggle="tab" {% if forloop.first %}aria-selected="true"{% else %}aria-selected="false"{% endif %}>
+                  <h6>{{ section.settings.review_title }}</h6>
+                </button>
+              </li>
+              {% endif %}
+              {% endif %}
+            </ul>
+          {% if section.settings.product_detail_tab_option == 'vertical_tab' or section.settings.product_detail_tab_option == 'horizontal_tab' %}
+          </div>
+          {% endif %}
+
+          {% if section.settings.product_detail_tab_option == 'vertical_tab' or section.settings.product_detail_tab_option == 'horizontal_tab' %}
+          <div class="description-review-text tab-content">
+            {%- for block in section.blocks -%}
+            {%- case block.type -%}
+            {%- when '@app' -%}
+            <div class="tab-pane{% if forloop.first %} active{% endif %}" id="pro-review" role="tabpanel">
+              {%- render block -%}
+            </div>
+
+            {%- when 'product_desc' -%}
+            {%- if product.description -%}
+            <div class="tab-pane{% if forloop.first %} active{% endif %}" id="pro-dec" role="tabpanel">
+              <div class="product-description">
+                {{ product.description }}
+              </div>
+            </div>
+            {%- endif -%}
+            {%- when 'product_add_info' -%}
+            <div class="tab-pane{% if forloop.first %} active{% endif %}" id="pro-add-info" role="tabpanel">
+              <div class="product-additional-info">
+                <table>
+                  <tbody>
+                    {%- if product.vendor != blank -%}
+                    <tr class="product-info">
+                      <th>{{ 'products.general.vendor' | t }}</th>
+                      <td>{{ product.vendor | link_to_vendor }}</td>
+                    </tr>
+                    {%- endif -%}
+
+                    {%- if product.type != blank -%}
+                    <tr class="product-info">
+                      <th>{{ 'products.general.type' | t }}</th>
+                      <td>{{ product.type | link_to_type }}</td>
+                    </tr>
+                    {%- endif -%}
+
+                    {%- unless product.options.size == 1 and product.variants[0].title == 'Default Title' -%}
+                    {%- for option in product.options_with_values -%}
+                    <tr class="product-info">
+                      <th>{{ option.name }}</th>
+                      <td>
+                        {%- for item_option in option.values -%}
+                        {{ item_option }}{%- unless forloop.last -%}{{ ', ' }}{%- endunless -%}
+                        {%- endfor -%}
+                      </td>
+                     </tr>
+                    {%- endfor -%}
+                    {%- endunless -%}
+                    {%- if current_variant.sku != blank -%}
+                    <tr class="product-info">
+                      <th>{{ 'products.general.sku' | t }}</th>
+                      <td>{{ current_variant.sku }}</td>
+                    </tr>
+                    {%- endif -%}
+
+                    {%- if current_variant.barcode != blank -%}
+                    <tr class="product-info">
+                      <th>{{ 'products.general.barcode' | t }}</th>
+                      <td>{{ current_variant.barcode }}</td>
+                    </tr>
+                    {%- endif -%}
+
+                    {%- if product.variants.first.weight > 0 -%}
+                    <tr class="product-info">
+                      <th>{{ 'products.general.weight' | t }}</th>
+                      <td>{{ product.variants.first.weight | weight_with_unit }}</td>
+                    </tr>
+                    {%- endif -%}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            {%- when 'product_custom_content' -%}
+            <div class="tab-pane{% if forloop.first %} active{% endif %}" id="pro-custom-content" role="tabpanel">
+              <div class="product-custom-content">
+                {{ block.settings.custom_content }}
+              </div>
+            </div>
+            {%- when 'product_video' -%}
+            {%- if product.metafields.custom.product_video -%}
+            <div class="tab-pane{% if forloop.first %} active{% endif %}" id="product-video" role="tabpanel">
+              <div class="video">
+                <iframe src="{{ product.metafields.custom.product_video }}" allowfullscreen></iframe>
+              </div>
+            </div>
+            {%- endif -%}
+            {%- endcase -%}
+            {%- endfor -%}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Information Tab",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "product_detail_tab_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "product_detail_tab_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "product_detail_tab_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "product_detail_tab_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "product_detail_tab_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "product_detail_tab_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section Backgorund Color"
+    },
+    {
+      "type": "color",
+      "id": "product_detail_tab_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "product_detail_tab_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Review tab"
+    },
+    {
+      "type": "text",
+      "id": "review_title",
+      "label": "Review title",
+      "default": "Review"
+    },
+    {
+      "type": "header",
+      "content": "Tab"
+    },
+    {
+      "type": "select",
+      "id": "product_detail_tab_option",
+      "label": "Tab Option",
+      "options": [
+        {
+          "label": "Horizontal",
+          "value": "horizontal_tab"
+        },
+        {
+          "label": "Vertical",
+          "value": "vertical_tab"
+        },
+        {
+          "label": "Collapse",
+          "value": "collpase_tab"
+        }
+      ],
+      "default": "horizontal_tab"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "product_desc",
+      "name": "Product Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Description Tab"
+        },
+        {
+          "type": "text",
+          "id": "product_info_tab_title",
+          "label": "Title",
+          "default": "Description"
+        }
+      ]
+    },
+    {
+      "type": "product_add_info",
+      "name": "Additional Information",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Additional-info Tab"
+        },
+        {
+          "type": "text",
+          "id": "product_add_info_tab_title",
+          "label": "Title",
+          "default": "Additional-info"
+        }
+      ]
+    },
+    {
+      "type": "product_custom_content",
+      "name": "Product Custom Content",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Custom-content Tab"
+        },
+        {
+          "type": "text",
+          "id": "product_custom_tab_title",
+          "label": "Title",
+          "default": "Other-content"
+        },
+        {
+          "type": "text",
+          "id": "custom_content",
+          "label": "Custom content",
+          "default": "Custom content"
+        }
+      ]
+    },
+    {
+      "type": "product_video",
+      "name": "Product Video",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Product Video Tab"
+        },
+        {
+          "type": "text",
+          "id": "product_video_title",
+          "label": "Title",
+          "default": "Video"
+        },
+        {
+          "type": "header",
+          "content": "metafields add"
+        },
+        {
+          "type": "paragraph",
+          "content": "Add name on metafield name 'Product video' and select type only 'URL' [Add metafield](/admin/metafields/product/create)"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .product-description-tab {
+    padding-top: {{ section.settings.product_detail_tab_padding_top }}px;
+    padding-bottom: {{ section.settings.product_detail_tab_padding_bottom }}px;
+    {%- if section.settings.product_detail_tab_bgcolor_enable -%}
+    background-color: {{ section.settings.product_detail_tab_bgcolor }};
+    {%- endif -%}
+  }
+  .product-description-tab .product-tab.horizontal-tab .description-review-text {
+    padding-top: {{ section.settings.product_detail_tab_padding_top }}px;
+  }
+  @media (max-width: 1199px) {
+    .product-description-tab {
+      padding-top: {{ section.settings.product_detail_tab_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.product_detail_tab_padding_bottom_ip }}px;
+    }
+    .product-description-tab .product-tab.horizontal-tab .description-review-text  {
+      padding-top: {{ section.settings.product_detail_tab_padding_top_ip }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .product-description-tab {
+      padding-top: {{ section.settings.product_detail_tab_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.product_detail_tab_padding_bottom_xs }}px;
+    }
+    .product-description-tab .product-tab.horizontal-tab .description-review-text {
+      padding-top: {{ section.settings.product_detail_tab_padding_top_xs }}px;
+    }
+  }
+</style>

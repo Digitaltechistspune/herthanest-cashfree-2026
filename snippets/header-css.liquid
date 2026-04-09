@@ -1,0 +1,96 @@
+{%- comment -%}
+  Optimized CSS loading:
+  - Main theme CSS stays BLOCKING for stable first paint
+  - Font Awesome loads FAST (preload+onload). If you see icon flash, switch to blocking (note below)
+  - Everything else async via async-css snippet
+  - Load slider CSS only where needed
+{%- endcomment -%}
+
+{%- comment -%} Core libs (async) {%- endcomment -%}
+{% render 'async-css', file: 'bootstrap.min.css' %}
+{% render 'async-css', file: 'bootstrap-icons.css' %}
+
+{%- comment -%} Font Awesome (FAST load) {%- endcomment -%}
+<link rel="preload" as="style"
+  href="{{ 'font-awesome.min.css' | asset_url }}"
+  onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet" href="{{ 'font-awesome.min.css' | asset_url }}">
+</noscript>
+
+{%- comment -%} Feather + Popup (async) {%- endcomment -%}
+{% render 'async-css', file: 'feather.css' %}
+{% render 'async-css', file: 'magnific-popup.css' %}
+
+{%- comment -%} Sliders CSS (load only where needed) {%- endcomment -%}
+{%- if request.page_type == 'product' -%}
+  {% render 'async-css', file: 'swiper-bundle.min.css' %}
+{%- endif -%}
+
+{%- if request.page_type == 'index' -%}
+  {% render 'async-css', file: 'owl.carousel.min.css' %}
+  {% render 'async-css', file: 'owl.theme.default.min.css' %}
+  {% render 'async-css', file: 'swiper-bundle.min.css' %}
+{%- endif -%}
+
+{%- comment -%} Main theme CSS (BLOCKING) {%- endcomment -%}
+{%- if settings.enable_rtl -%}
+  <link href="{{ 'style-rtl.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+{%- else -%}
+  <link href="{{ 'style.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+{%- endif -%}
+
+{%- comment -%} Skin/theme extras (async) {%- endcomment -%}
+{% render 'async-css', file: 'skin-theme.css' %}
+
+{%- comment -%} Page-specific CSS (async) {%- endcomment -%}
+{%- if template == 'cart' -%}
+  {% render 'async-css', file: 'cart-page.css' %}
+{%- endif -%}
+
+{%- if template contains 'list-collections' -%}
+  {% render 'async-css', file: 'list-collection.css' %}
+{%- endif -%}
+
+{%- comment -%} Collection OR Search pages {%- endcomment -%}
+{%- if template contains 'collection' or template contains 'search' -%}
+  {% render 'async-css', file: 'collection.css' %}
+  {% render 'async-css', file: 'collection-sidebar.css' %}
+{%- endif -%}
+
+{%- comment -%} Product CSS only on product pages {%- endcomment -%}
+{%- if request.page_type == 'product' -%}
+  {% render 'async-css', file: 'product-template.css' %}
+{%- endif -%}
+
+{%- if template == 'product.template2' -%}
+  {% render 'async-css', file: 'product-template2.css' %}
+{%- endif -%}
+
+{%- if template == 'product.template3' -%}
+  {% render 'async-css', file: 'product-template3.css' %}
+{%- endif -%}
+
+{%- if template == 'product.template5' -%}
+  {% render 'async-css', file: 'product-template5.css' %}
+{%- endif -%}
+
+{%- if template contains 'blog' or template contains 'article' -%}
+  {% render 'async-css', file: 'blog-sidebar.css' %}
+{%- endif -%}
+
+{%- if template contains 'article' -%}
+  {% render 'async-css', file: 'article.css' %}
+{%- endif -%}
+
+{%- if template contains 'search' -%}
+  {% render 'async-css', file: 'search-page.css' %}
+{%- endif -%}
+
+{%- comment -%}
+  If icons flash / load late, replace the Font Awesome block above with this blocking line:
+
+  <link href="{{ 'font-awesome.min.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+
+  (and remove the preload+noscript block)
+{%- endcomment -%}

@@ -1,0 +1,4972 @@
+{%- if settings.cart_type == "drawer" -%}
+{%- if template.name != "cart" -%}
+<script src="{{ 'ajax-cart.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+{%- endif -%}
+<link href="{{ 'header6.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+<header class="header header6">
+  <!-- headert-top start -->
+  <div class="header-area">
+    <div class="header-main-area">
+      <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+        <div class="row">
+          <div class="col">
+            <div class="header-main {% if section.settings.logo_alignment == 'center' %}logo-center{% else %}logo-left{% endif %}">
+              <div class="header-element toggle-content">
+                <button class="navbar-toggle" aria-label="Navbar icon" type="button">
+                  <i class="feather-menu"></i>
+                </button>
+              </div>
+              {%- if settings.search_enable -%}
+              <div class="header-element left-block-box">
+                {%- render 'search-bar2' -%}
+              </div>
+              {%- endif -%}
+              <div class="header-element logo">
+                {%- render 'company-logo' -%}
+              </div>
+              <div class="header-element right-block-box">
+                {%- render 'header-icon', section: section -%}
+              </div>
+            </div>
+            <div class="header-menu megamenu-content">
+            <div class="menu-grid {% if section.settings.vegamenu_enable %}vegamenu-enable {% endif %}{% if section.settings.offer_text_enable %}offer-enable{% endif %}">
+              {% if section.settings.vegamenu_enable %}
+              <div class="header-element left-block-box">
+                <div class="vega-menu-area">
+                    <a href="#vega-collapse" class="browse-cat" data-bs-toggle="collapse" aria-expanded="false" style="--font-size: {{ section.settings.menu_font_size }}px; --font-size-lg: {{ section.settings.menu_font_size_lg }}px; --padding: {{ section.settings.menu_padding_y }}px {{ section.settings.menu_padding_x }}px; --padding-lg: {{ section.settings.menu_padding_y_lg }}px {{ section.settings.menu_padding_x_lg }}px; --text-transform: {{ section.settings.menu_text_transform }};  --font-weight: {{ section.settings.menu_font_weight }};">
+                      <span class="menu-icon"><i class="feather-menu"></i></span>
+                      <span class="menu-title">{{ section.settings.header_vega_menu_title }}</span>
+                      <span class="menu-arrow"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <div class="vegawrap collapse" id="vega-collapse">
+                      <ul class="vega-menu">
+                        {%- liquid
+                          for block in section.blocks
+                          case block.type
+                          when 'vega_menu_link'
+                          render 'vega-menu-link', block: block
+                          when 'vega_menu_single'
+                          render 'vega-menu-single', block: block
+                          when 'vega_menu_sub'
+                          render 'vega-menu-sub', block: block
+                          when 'vega_menu_shop'
+                          render 'vega-menu-shop' block: block
+                          when 'vega_menu_collection'
+                          render 'vega-menu-collection', block: block
+                          when 'vega_menu_product'
+                          render 'vega-menu-product', block: block
+                          when 'vega_menu_product2'
+                          render 'vega-menu-product2', block: block
+                          when 'vega_menu_category'
+                          render 'vega-menu-category', block: block
+                          when 'vega_menu_shop_banner'
+                          render 'vega-menu-shop-banner' block: block
+                          endcase
+                        endfor 
+                        -%}
+                      </ul>
+                    </div>
+                </div>
+              </div>
+              {% endif %}
+              <div class="header-element center-block-box">
+                <div class="mainwrap">
+                  <ul class="main-menu {% if section.settings.menu_alignment == 'center' %}menu-center{% elsif section.settings.menu_alignment == 'left' %}menu-left{% else %}menu-right{% endif %}">
+                    {%- liquid
+                      for block in section.blocks
+                      case block.type
+                      when 'menu_link'
+                      render 'menu-link', block: block
+                      when 'menu_single'
+                      render 'menu-single', block: block
+                      when 'menu_sub'
+                      render 'menu-sub', block: block
+                      when 'menu_shop'
+                      render 'menu-shop' block: block
+                      when 'menu_collection'
+                      render 'menu-collection', block: block
+                      when 'menu_product'
+                      render 'menu-product', block: block
+                      when 'menu_product2'
+                      render 'menu-product2', block: block
+                      when 'menu_category'
+                      render 'menu-category', block: block
+                      when 'company_logo'
+                      render 'company-logo', block: block
+                      when 'menu_shop_banner'
+                      render 'menu-shop-banner' block: block
+                      endcase
+                    endfor 
+                    -%}
+                  </ul>
+                </div>
+              </div>
+              {% if section.settings.offer_text_enable %}
+              <div class="header-element right-block-box">
+                <div class="offer-text">
+                  <a href="{{ section.settings.offer_text_url }}" style="background-color: {{ section.settings.offer_text_bg_color }}; color: {{ section.settings.offer_text_color }};">
+                    <span class="icon">{{ section.settings.offer_text_icon }}</span>
+                    <span class="txt">{{ section.settings.offer_text }}</span>
+                  </a>
+                  <a href="{{ section.settings.offer_text2_url }}" style="background-color: {{ section.settings.offer_text2_bg_color }}; color: {{ section.settings.offer_text2_color }};">
+                    <span class="icon">{{ section.settings.offer_text2_icon }}</span>
+                    <span class="txt">{{ section.settings.offer_text2 }}</span>
+                  </a>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- headert-top end -->
+  <!-- headert-bottom start -->
+  <div class="header-bottom-area">
+    <div class="container header-bottom-container">
+      <div class="row">
+        <div class="col">
+          <div class="main-menu-area">
+            <div class="box-header">
+              <button class="close-box" type="button"><i class="feather-x"></i></button>
+            </div>
+            <div class="main-menu-wrap">
+              <div class="megamenu-content">
+                <a href="#" class="browse-cat">
+                  <span class="menu-title">{{ section.settings.header_main_menu_title }}</span>
+                </a>
+                <div class="mainwrap">
+                  <ul class="main-menu">
+                    {%- liquid
+                      for block in section.blocks
+                      case block.type
+                      when 'menu_link'
+                      render 'menu-link', block: block
+                      when 'menu_single'
+                      render 'menu-single', block: block
+                      when 'menu_sub'
+                      render 'menu-sub', block: block
+                      when 'menu_shop'
+                      render 'menu-shop' block: block
+                      when 'menu_collection'
+                      render 'menu-collection', block: block
+                      when 'menu_product'
+                      render 'menu-product', block: block
+                      when 'menu_product2'
+                      render 'menu-product2', block: block
+                      when 'menu_category'
+                      render 'menu-category', block: block
+                      when 'company_logo'
+                      render 'company-logo', block: block
+                      when 'menu_shop_banner'
+                      render 'menu-shop-banner' block: block
+                      endcase
+                    endfor 
+                    -%}
+                  </ul>
+                </div>
+                <div class="vega-menu-area">
+                  <ul class="vega-menu">
+                    {%- liquid
+                      for block in section.blocks
+                      case block.type
+                      when 'vega_menu_link'
+                      render 'vega-menu-link', block: block
+                      when 'vega_menu_single'
+                      render 'vega-menu-single', block: block
+                      when 'vega_menu_sub'
+                      render 'vega-menu-sub', block: block
+                      when 'vega_menu_shop'
+                      render 'vega-menu-shop' block: block
+                      when 'vega_menu_collection'
+                      render 'vega-menu-collection', block: block
+                      when 'vega_menu_product'
+                      render 'vega-menu-product', block: block
+                      when 'vega_menu_product2'
+                      render 'vega-menu-product2', block: block
+                      when 'vega_menu_category'
+                      render 'vega-menu-category', block: block
+                      when 'vega_menu_shop_banner'
+                      render 'vega-menu-shop-banner' block: block
+                      endcase
+                    endfor 
+                    -%}
+                  </ul>
+                </div>
+                <div class="locali-block">
+                  {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+                  <div class="locali-box">
+                    <noscript>
+                      {%- form 'localization', id: 'HeaderCountryMobileFormNoScript', class: 'localization-form' -%}
+                      <select name="country_code" aria-labelledby="HeaderCountryMobileLabelNoScript">
+                        {%- for country in localization.available_countries -%}
+                        <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                          {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                        </option>
+                        {%- endfor -%}
+                      </select>
+                      {%- endform -%}
+                    </noscript>
+                    <localization-form>
+                      {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
+                      {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
+                      {%- endform -%}
+                    </localization-form>
+                  </div>
+                  {% endif %}
+                  {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+                  <div class="locali-box">
+                    <noscript>
+                      {%- form 'localization', id: 'HeaderLanguageMobileFormNoScript', class: 'localization-form' -%}
+                      <select name="locale_code" aria-labelledby="HeaderLanguageMobileLabelNoScript">
+                        {%- for language in localization.available_languages -%}
+                        <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}" {%- if language.iso_code == localization.language.iso_code %} selected{% endif %}>
+                          {{ language.endonym_name | capitalize }}
+                        </option>
+                        {%- endfor -%}
+                      </select>
+                      {%- endform -%}
+                    </noscript>
+                    <localization-form>
+                      {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+                      {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
+                      {%- endform -%}
+                    </localization-form>
+                  </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- headert-bottom end -->
+</header>
+{%- render 'search-popup' -%}
+{% if settings.account_popup_enable %}
+{%- render 'account-modal' -%}
+{% endif %}
+<script type="text/javascript">
+addEventListener('DOMContentLoaded', (event) => {
+    var lastScrollTop = 0;
+    $(window).scroll(function() {
+      var scroll = $(this).scrollTop();
+      if (scroll > lastScrollTop) {
+        if (scroll > 500) {
+          $('.header-area').addClass('sticky-down');
+        }
+        $('.header-area').removeClass('sticky-up');
+      } else {
+        if (lastScrollTop <= 500) {
+          $('.header-area').removeClass('sticky');
+          $('.header-area').removeClass('sticky-down');
+          $('.header-area').removeClass('sticky-up');
+        } else {
+          $('.header-area').addClass('sticky');
+          $('.header-area').removeClass('sticky-down');
+          $('.header-area').addClass('sticky-up');
+        }
+      }
+      lastScrollTop = scroll;
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Header6",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "fluid"
+    },
+    {
+      "type": "header",
+      "content": "Logo alignment"
+    },
+    {
+      "type": "select",
+      "id": "logo_alignment",
+      "label": "Logo alignment",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Menu alignment"
+    },
+    {
+      "type": "select",
+      "id": "menu_alignment",
+      "label": "Menu alignment",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        },
+        {
+          "label": "Right",
+          "value": "right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Logo Notice",
+      "info": "For logo go to 'Theme Settings' click on 'Company Logo' & set both Header-Footer Logo"
+    },
+    {
+      "type": "header",
+      "content": "Header Transparent Option"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_transparent_enable",
+      "label": "Show Header Transparent",
+      "default": false,
+      "info": "This option only work for main 'Home page' page"
+    },
+    {
+      "type": "header",
+      "content": "Header Sticky Option"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_sticky_enable",
+      "label": "Show Header Sticky",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Header Background Color"
+    },
+    {
+      "type": "color",
+      "id": "header_bgcolor",
+      "label": "Header Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "header_bottom_bgcolor",
+      "label": "Menu Background Color",
+      "default": "#F7F7F7"
+    },
+    {
+      "type": "header",
+      "content": "Main Menu"
+    },
+    {
+      "type": "text",
+      "id": "header_main_menu_title",
+      "label": "Menu Title For Responsive",
+      "default": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Menu Text"
+    },
+    {
+      "type": "color",
+      "id": "header_menutext_color",
+      "label": "Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "header_menutext_hvr_color",
+      "label": "Hover Color",
+      "default": "#6F6F6F"
+    },
+    {
+      "type": "range",
+      "id": "menu_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "menu_font_size_lg",
+      "label": "Font size laptop",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "menu_font_weight",
+      "label": "Font weight",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "select",
+      "id": "menu_text_transform",
+      "label": "Text Property",
+      "options": [
+        {
+          "label": "Capitalize",
+          "value": "capitalize"
+        },
+        {
+          "label": "Lowercase",
+          "value": "lowercase"
+        },
+        {
+          "label": "Uppercase",
+          "value": "uppercase"
+        },
+        {
+          "label": "None",
+          "value": "none"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "menu_padding_x",
+      "label": "Menu space between",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "menu_padding_y",
+      "label": "Menu space top bottom",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "menu_padding_x_lg",
+      "label": "Menu space between laptop",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "menu_padding_y_lg",
+      "label": "Menu space top bottom laptop",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Menu Icon Color"
+    },
+    {
+      "type": "color",
+      "id": "header_menuicon_color",
+      "label": "Color",
+      "default": "#222"
+    },
+    {
+      "type": "color",
+      "id": "header_menuicon_hvr_color",
+      "label": "Hover Color",
+      "default": "#222"
+    },
+    {
+      "type": "header",
+      "content": "Offer text"
+    },
+    {
+      "type": "checkbox",
+      "id": "offer_text_enable",
+      "label": "Offer text enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "offer_text",
+      "label": "Offer text icon",
+      "default": "Offer zone"
+    },
+    {
+      "type": "text",
+      "id": "offer_text_icon",
+      "label": "Offer icon",
+      "default": "<i class=\"feather-zap\"></i>",
+      "info": "More icon[Learn more](https://dropways.github.io/feathericons)"
+    },
+    {
+      "type": "color",
+      "id": "offer_text_color",
+      "label": "Offer text color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "offer_text_bg_color",
+      "label": "Offer text background color",
+      "default": "#d33b3b"
+    },
+    {
+      "type": "url",
+      "id": "offer_text_url",
+      "label": "Offer text url"
+    },
+    {
+      "type": "text",
+      "id": "offer_text2",
+      "label": "Offer text icon",
+      "default": "Offer zone"
+    },
+    {
+      "type": "text",
+      "id": "offer_text2_icon",
+      "label": "Offer icon",
+      "default": "<i class=\"feather-zap\"></i>",
+      "info": "More icon[Learn more](https://dropways.github.io/feathericons)"
+    },
+    {
+      "type": "color",
+      "id": "offer_text2_color",
+      "label": "Offer text color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "offer_text2_bg_color",
+      "label": "Offer text background color",
+      "default": "#d33b3b"
+    },
+    {
+      "type": "url",
+      "id": "offer_text2_url",
+      "label": "Offer text url"
+    },
+    {
+      "type": "header",
+      "content": "Vegamenu"
+    },
+    {
+      "type": "checkbox",
+      "id": "vegamenu_enable",
+      "label": "Vegamenu enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "header_vega_menu_title",
+      "label": "Vegamenu Title",
+      "default": "Shop categories"
+    },
+    {
+      "type": "color",
+      "id": "header_vega_menu_title_color",
+      "label": "Title Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "header_vega_menu_title_bgcolor",
+      "label": "Title Background Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "header_vega_menu_title_hvr_color",
+      "label": "Title Hover Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "header_vega_menu_title_hvr_bgcolor",
+      "label": "Title Hover Background Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Vega Menu 'SVG' Setting"
+    },
+    {
+      "type": "range",
+      "id": "header_vega_menu_svg_width",
+      "label": "Width",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "header_vega_menu_svg_height",
+      "label": "Height",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Mobile menu Country/region selector",
+      "info": "To add a country/region, go to your [market settings.](/admin/settings/markets)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": false,
+      "label": "Enable country/region selecto"
+    },
+    {
+      "type": "header",
+      "content": "Mobile menu Language selector",
+      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": false,
+      "label": "Enable language selector"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_link",
+      "name": "Menu Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_link_title",
+          "label": "Menu Title",
+          "default": "Home"
+        },
+        {
+          "type": "url",
+          "id": "menu_link_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_link_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_link_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_link_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_link_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_link_label_bgcolor",
+          "label": "Background Color",
+          "default": "#05D14B"
+        },
+        {
+          "type": "select",
+          "id": "menu_link_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_link_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_link_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_link_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        }
+      ]
+    },
+    {
+      "type": "menu_single",
+      "name": "Menu Single",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_single_title",
+          "label": "Menu Title",
+          "default": "Home"
+        },
+        {
+          "type": "url",
+          "id": "menu_single_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_single_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_single_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_single_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_single_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_single_label_bgcolor",
+          "label": "Background Color",
+          "default": "#05D14B"
+        },
+        {
+          "type": "select",
+          "id": "menu_single_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_single_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_single_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_single_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Single"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_single_select",
+          "label": "Select Menu"
+        }
+      ]
+    },
+    {
+      "type": "menu_shop",
+      "name": "Menu Shop",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_shop_title",
+          "label": "Menu Title",
+          "default": "Shop"
+        },
+        {
+          "type": "url",
+          "id": "menu_shop_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_shop_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_shop_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_shop_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_shop_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_shop_label_bgcolor",
+          "label": "Background Color",
+          "default": "#FF0C32"
+        },
+        {
+          "type": "select",
+          "id": "menu_shop_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_shop_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_shop_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_shop_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop 1"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_select1",
+          "label": "Select Menu Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_collection_select1",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop 2"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_select2",
+          "label": "Select Menu Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_collection_select2",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop 3"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_select3",
+          "label": "Select Menu Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_collection_select3",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop 4"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_select4",
+          "label": "Select Menu Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_collection_select4",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop Banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_shop_banner_img1",
+          "label": "Banner Image",
+          "info": "Recommended Size: 350x385px"
+        },
+        {
+          "type": "url",
+          "id": "menu_shop_banner_url1",
+          "label": "Banner URL"
+        }
+      ]
+    },
+    {
+      "type": "menu_product",
+      "name": "Menu Product",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_product_title",
+          "label": "Menu Title",
+          "default": "Product"
+        },
+        {
+          "type": "url",
+          "id": "menu_product_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_product_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select2",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select2",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select3",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select3",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select4",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select4",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop Banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_product_banner_img1",
+          "label": "Banner Image",
+          "info": "Recommended Size: 350x385px"
+        },
+        {
+          "type": "url",
+          "id": "menu_product_banner_url1",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Collection Product"
+        },
+        {
+          "type": "collection",
+          "id": "menu_product_collection1",
+          "label": "Select Collection"
+        },
+        {
+          "type": "number",
+          "id": "menu_product_collection1_limit",
+          "label": "Collection product limit",
+          "default": 12
+        },
+        {
+          "type": "select",
+          "id": "menu_product_collection1_view",
+          "label": "Slides per view",
+          "options": [
+            {
+              "label": "3 Products",
+              "value": "3"
+            },
+            {
+              "label": "4 Products",
+              "value": "4"
+            }
+          ],
+          "default": "4"
+        }
+      ]
+    },
+    {
+      "type": "menu_product2",
+      "name": "Menu Product2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_product_title",
+          "label": "Menu Title",
+          "default": "Product"
+        },
+        {
+          "type": "url",
+          "id": "menu_product_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_product_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select2",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select2",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select3",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select3",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select4",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select4",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Collection Product"
+        },
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "Product title",
+          "default": "Best seller"
+        },
+        {
+          "type": "collection",
+          "id": "menu_product_collection1",
+          "label": "Select Collection"
+        },
+        {
+          "type": "number",
+          "id": "menu_product_collection1_limit",
+          "label": "Collection product limit",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "menu_collection",
+      "name": "Menu Banner Collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_collection_title",
+          "label": "Menu Title",
+          "default": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_collection_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_collection_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_collection_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_collection_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_collection_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_collection_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Banner Collection"
+        },
+        {
+          "type": "checkbox",
+          "id": "banner_title_mobile_enable",
+          "label": "Banner title only mobile visible",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img1",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title1",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label1",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label1_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label1_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url1",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img2",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title2",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label2",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label2_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label2_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url2",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img3",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title3",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label3",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label3_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label3_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url3",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img4",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title4",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label4",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label4_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label4_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url4",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img5",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title5",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label5",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label5_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label5_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url5",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img6",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title6",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label6",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label6_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label6_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url6",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img7",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title7",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label7",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label7_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label7_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url7",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img8",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title8",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label8",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label8_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label8_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url8",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img9",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title9",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label9",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label9_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label9_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url9",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img10",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title10",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label10",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label10_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label10_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url10",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img11",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title11",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label11",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label11_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label11_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url11",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img12",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title12",
+          "label": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_label12",
+          "label": "Banner label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label12_color",
+          "label": "Banner label color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_banner_label12_bg_color",
+          "label": "Banner label background color",
+          "default": "#ff3707"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url12",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "View all button"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_all_url",
+          "label": "Button URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_all_button",
+          "label": "Banner Title",
+          "default": "Explore all demo (15+)"
+        }
+      ]
+    },
+    {
+      "type": "menu_sub",
+      "name": "Menu Sub",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_sub_title",
+          "label": "Menu Title",
+          "default": "Pages"
+        },
+        {
+          "type": "url",
+          "id": "menu_sub_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_sub_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_sub_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_sub_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_sub_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_sub_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_sub_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_sub_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_sub_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_sub_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Sub"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_sub_select",
+          "label": "Select Menu"
+        },
+        {
+          "type": "header",
+          "content": "Menu Icon Color"
+        },
+        {
+          "type": "color",
+          "id": "header_menuicon_color",
+          "label": "Color",
+          "default": "#333333"
+        },
+        {
+          "type": "color",
+          "id": "header_menuicon_hvr_color",
+          "label": "Hover Color",
+          "default": "#333333"
+        }
+      ]
+    },
+    {
+      "type": "menu_category",
+      "name": "Menu category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_product_title",
+          "label": "Menu Title",
+          "default": "Product"
+        },
+        {
+          "type": "url",
+          "id": "menu_product_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_product_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select2",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select2",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select3",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select3",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select4",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select4",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Collection Product"
+        },
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "Product title",
+          "default": "Popular categories"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img1",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url1",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title1",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img2",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url2",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title2",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img3",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url3",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title3",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img4",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url4",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title4",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img5",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url5",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title5",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img6",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url6",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title6",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img7",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url7",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title7",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img8",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url8",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title8",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img9",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url9",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title9",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img10",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url10",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title10",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img11",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url11",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title11",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img12",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url12",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title12",
+          "label": "Banner title",
+          "default": "One pieces"
+        }
+      ]
+    },
+    {
+      "type": "menu_shop_banner",
+      "name": "Menu shop banner",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_product_title",
+          "label": "Menu Title",
+          "default": "Product"
+        },
+        {
+          "type": "url",
+          "id": "menu_product_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_product_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select2",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select2",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select3",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select3",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select4",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select4",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img1",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x200px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url1",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img2",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x200px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url2",
+          "label": "Banner URL"
+        }
+      ]
+    },
+    {
+      "type": "vega_menu_link",
+      "name": "Vega Menu Link",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image / Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "menuvega_link_image",
+          "label": "Menu link thumb",
+          "info": "Recommended Size: 512px x 512px use 'PNG' image for better look"
+        },
+        {
+          "type": "text",
+          "id": "menu_link_title",
+          "label": "Menu Title",
+          "default": "Home"
+        },
+        {
+          "type": "url",
+          "id": "menu_link_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_link_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_link_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_link_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_link_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_link_label_bgcolor",
+          "label": "Background Color",
+          "default": "#05D14B"
+        },
+        {
+          "type": "select",
+          "id": "menu_link_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_link_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_link_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_link_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        }
+      ]
+    },
+    {
+      "type": "vega_menu_single",
+      "name": "Vega Menu Single",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image / Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "menuvega_link_image",
+          "label": "Menu link thumb",
+          "info": "Recommended Size: 512px x 512px use 'PNG' image for better look"
+        },
+        {
+          "type": "text",
+          "id": "menu_single_title",
+          "label": "Menu Title",
+          "default": "Home"
+        },
+        {
+          "type": "url",
+          "id": "menu_single_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_single_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_single_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_single_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_single_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_single_label_bgcolor",
+          "label": "Background Color",
+          "default": "#05D14B"
+        },
+        {
+          "type": "select",
+          "id": "menu_single_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_single_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_single_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_single_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Single"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_single_select",
+          "label": "Select Menu"
+        }
+      ]
+    },
+    {
+      "type": "vega_menu_shop",
+      "name": "Vega Menu Shop",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image / Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "menuvega_link_image",
+          "label": "Menu link thumb",
+          "info": "Recommended Size: 512px x 512px use 'PNG' image for better look"
+        },
+        {
+          "type": "text",
+          "id": "menu_shop_title",
+          "label": "Menu Title",
+          "default": "Shop"
+        },
+        {
+          "type": "url",
+          "id": "menu_shop_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_shop_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_shop_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_shop_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_shop_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_shop_label_bgcolor",
+          "label": "Background Color",
+          "default": "#FF0C32"
+        },
+        {
+          "type": "select",
+          "id": "menu_shop_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_shop_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_shop_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_shop_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop 1"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_select1",
+          "label": "Select Menu Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_collection_select1",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop 2"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_select2",
+          "label": "Select Menu Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_collection_select2",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop 3"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_select3",
+          "label": "Select Menu Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_shop_collection_select3",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop Banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_shop_banner_img1",
+          "label": "Banner Image",
+          "info": "Recommended Size: 350x385px"
+        },
+        {
+          "type": "url",
+          "id": "menu_shop_banner_url1",
+          "label": "Banner URL"
+        }
+      ]
+    },
+    {
+      "type": "vega_menu_product",
+      "name": "Vega Menu Product",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image / Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "menuvega_link_image",
+          "label": "Menu link thumb",
+          "info": "Recommended Size: 512px x 512px use 'PNG' image for better look"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_title",
+          "label": "Menu Title",
+          "default": "Product"
+        },
+        {
+          "type": "url",
+          "id": "menu_product_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_product_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select2",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select2",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select3",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select3",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select4",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select4",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Shop Banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_product_banner_img1",
+          "label": "Banner Image",
+          "info": "Recommended Size: 350x385px"
+        },
+        {
+          "type": "url",
+          "id": "menu_product_banner_url1",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Collection Product"
+        },
+        {
+          "type": "collection",
+          "id": "menu_product_collection1",
+          "label": "Select Collection"
+        },
+        {
+          "type": "number",
+          "id": "menu_product_collection1_limit",
+          "label": "Collection product limit",
+          "default": 12
+        },
+        {
+          "type": "select",
+          "id": "menu_product_collection1_view",
+          "label": "Slides per view",
+          "options": [
+            {
+              "label": "2 Products",
+              "value": "2"
+            },
+            {
+              "label": "3 Products",
+              "value": "3"
+            }
+          ],
+          "default": "3"
+        }
+      ]
+    },
+    {
+      "type": "vega_menu_product2",
+      "name": "Vega Menu Product2",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image / Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "menuvega_link_image",
+          "label": "Menu link thumb",
+          "info": "Recommended Size: 512px x 512px use 'PNG' image for better look"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_title",
+          "label": "Menu Title",
+          "default": "Product"
+        },
+        {
+          "type": "url",
+          "id": "menu_product_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_product_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select2",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select2",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Collection Product"
+        },
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "Product title",
+          "default": "Best seller"
+        },
+        {
+          "type": "collection",
+          "id": "menu_product_collection1",
+          "label": "Select Collection"
+        },
+        {
+          "type": "number",
+          "id": "menu_product_collection1_limit",
+          "label": "Collection product limit",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "vega_menu_collection",
+      "name": "Vega Menu Banner",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image / Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "menuvega_link_image",
+          "label": "Menu link thumb",
+          "info": "Recommended Size: 512px x 512px use 'PNG' image for better look"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_title",
+          "label": "Menu Title",
+          "default": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_collection_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_collection_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_collection_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_collection_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_collection_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_collection_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_collection_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Banner Collection"
+        },
+        {
+          "type": "checkbox",
+          "id": "banner_title_mobile_enable",
+          "label": "Banner title only mobile visible",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img1",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title1",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url1",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img2",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title2",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url2",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img3",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title3",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url3",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img4",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title4",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url4",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img5",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title5",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url5",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img6",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title6",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url6",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img7",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title7",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url7",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img8",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title8",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url8",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img9",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title9",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url9",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img10",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title10",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url10",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img11",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title11",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url11",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_collection_banner_img12",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x550px"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_banner_title12",
+          "label": "Banner Title"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_banner_url12",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "View all button"
+        },
+        {
+          "type": "url",
+          "id": "menu_collection_all_url",
+          "label": "Button URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_collection_all_button",
+          "label": "Banner Title",
+          "default": "Explore all demo (15+)"
+        }
+      ]
+    },
+    {
+      "type": "vega_menu_sub",
+      "name": "Vega Menu Sub",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image / Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "menuvega_link_image",
+          "label": "Menu link thumb",
+          "info": "Recommended Size: 512px x 512px use 'PNG' image for better look"
+        },
+        {
+          "type": "text",
+          "id": "menu_sub_title",
+          "label": "Menu Title",
+          "default": "Pages"
+        },
+        {
+          "type": "url",
+          "id": "menu_sub_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_sub_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_sub_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_sub_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_sub_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_sub_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_sub_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_sub_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_sub_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_sub_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Sub"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_sub_select",
+          "label": "Select Menu"
+        },
+        {
+          "type": "header",
+          "content": "Menu Icon Color"
+        },
+        {
+          "type": "color",
+          "id": "header_menuicon_color",
+          "label": "Color",
+          "default": "#333333"
+        },
+        {
+          "type": "color",
+          "id": "header_menuicon_hvr_color",
+          "label": "Hover Color",
+          "default": "#333333"
+        }
+      ]
+    },
+    {
+      "type": "vega_menu_category",
+      "name": "Vega Menu category",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image / Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "menuvega_link_image",
+          "label": "Menu link thumb",
+          "info": "Recommended Size: 512px x 512px use 'PNG' image for better look"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_title",
+          "label": "Menu Title",
+          "default": "Product"
+        },
+        {
+          "type": "url",
+          "id": "menu_product_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_product_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select2",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select2",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Collection Product"
+        },
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "Product title",
+          "default": "Popular categories"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img1",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url1",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title1",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img2",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url2",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title2",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img3",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url3",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title3",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img4",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url4",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title4",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img5",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url5",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title5",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img6",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url6",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title6",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img7",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url7",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title7",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img8",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url8",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title8",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img9",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url9",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title9",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img10",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url10",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title10",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img11",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url11",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title11",
+          "label": "Banner title",
+          "default": "One pieces"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img12",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x700px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url12",
+          "label": "Banner URL"
+        },
+        {
+          "type": "text",
+          "id": "menu_cat_banner_title12",
+          "label": "Banner title",
+          "default": "One pieces"
+        }
+      ]
+    },
+    {
+      "type": "vega_menu_shop_banner",
+      "name": "Vega Menu shop banner",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image / Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "menuvega_link_image",
+          "label": "Menu link thumb",
+          "info": "Recommended Size: 512px x 512px use 'PNG' image for better look"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_title",
+          "label": "Menu Title",
+          "default": "Product"
+        },
+        {
+          "type": "url",
+          "id": "menu_product_url",
+          "label": "Menu URL"
+        },
+        {
+          "type": "header",
+          "content": "Menu Label"
+        },
+        {
+          "type": "text",
+          "id": "menu_product_label",
+          "label": "Label"
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_color",
+          "label": "Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font_size",
+          "label": "Font Size",
+          "min": 8,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_top_position",
+          "label": "Top Position",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "menu_product_label_bgcolor",
+          "label": "Background Color",
+          "default": "#0C32FF"
+        },
+        {
+          "type": "select",
+          "id": "menu_product_label_text_transform",
+          "label": "Text Property",
+          "options": [
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "None",
+              "value": "none"
+            }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_font-weight",
+          "label": "Font Weight",
+          "min": 400,
+          "max": 600,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "menu_product_label_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select2",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select2",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select3",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select3",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_select4",
+          "label": "Select Menu Product"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_product_collection_select4",
+          "label": "Select Menu Shop Collection",
+          "info": "If this filed 'EMPTY' then catch above 'Menu'"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img1",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x200px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url1",
+          "label": "Banner URL"
+        },
+        {
+          "type": "header",
+          "content": "Category banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_cat_banner_img2",
+          "label": "Banner Image",
+          "info": "Recommended Size: 600x200px"
+        },
+        {
+          "type": "url",
+          "id": "menu_cat_banner_url2",
+          "label": "Banner URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header6",
+      "blocks": [
+        {
+          "type": "menu_single"
+        },
+        {
+          "type": "menu_product"
+        },
+        {
+          "type": "menu_collection"
+        },
+        {
+          "type": "menu_sub"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+<style>
+.header6 .header-area{
+  {% if template == 'index' and section.settings.header_transparent_enable %}
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  z-index: 2;
+  {% else %}
+  background-color: {{ section.settings.header_bgcolor }};
+  {% endif %}
+}
+
+.header6 .header-menu {
+  background-color: {{ section.settings.header_bottom_bgcolor }};
+}
+
+{% if template == 'index' %}
+@media (max-width: 1199px) {
+  .header6 .header-area{
+    {% if section.settings.header_transparent_enable %}
+    position: unset;
+    background-color: {{ section.settings.header_bgcolor }};
+    {% endif %}
+  }
+}
+{% endif %}
+
+/* sticky menu css */
+{% if section.settings.header_sticky_enable %}
+.header6 .header-area.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #FFFFFF;
+  z-index: 3;
+  box-shadow: 0px 0px 15px rgba(51, 51, 51, 0.15);
+}
+.header6 .header-area.sticky-down {
+  transform: translateY(-100%);
+}
+.header6 .header-area.sticky-up {
+  transform: translateY(0);
+}
+.header6 .header-area.sticky,
+.header6 .header-area.sticky-down,
+.header6 .header-area.sticky-up {
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  -o-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+{% endif %}
+
+/*=====================================
+  menu-text color css
+======================================*/
+
+.header6 .megamenu-content .vega-menu-area a.browse-cat {
+  color: {{ section.settings.header_vega_menu_title_color }};
+  background-color: {{ section.settings.header_vega_menu_title_bgcolor }};
+}
+.header6 .megamenu-content .vega-menu-area a.browse-cat:hover {
+  color: {{ section.settings.header_vega_menu_title_hvr_color }};
+  background-color: {{ section.settings.header_vega_menu_title_hvr_bgcolor }};
+}
+.header6 .megamenu-content .mainwrap ul.main-menu li.menu-link a.link-title {
+  color: {{ section.settings.header_menutext_color }};
+}
+.header6 .megamenu-content .mainwrap ul.main-menu li.menu-link a.link-title span.sp-link-title::after {
+  background-color: {{ section.settings.header_menutext_hvr_color }};
+}
+.header6 .header-area .megamenu-content .mainwrap ul.main-menu li.menu-link:hover a.link-title {
+  color: {{ section.settings.header_menutext_hvr_color }};
+}
+.header6 .header-area .header-menu .menu-grid .custom-text a:hover {
+  color: {{ section.settings.header_menutext_hvr_color }};
+}
+
+/*=====================================
+  menu-icon color css
+======================================*/
+
+.header6 a.search-popup,
+.header6 a.acc-ti,
+.header6 a.header-wishlist-btn,
+.header6 a.cart-count {
+  {% if template == 'index' %}
+  color: {{ section.settings.header_menuicon_color }};
+  {% else %}
+  color: var(--font-color-header);
+  {% endif %}
+}
+.header6 .header-area.sticky a.search-popup,
+.header6 .header-area.sticky a.acc-ti,
+.header6 .header-area.sticky a.header-wishlist-btn,
+.header6 .header-area.sticky a.cart-count {
+  color: var(--font-color-header);
+}
+.header6 a.search-popup:hover,
+.header6 a.acc-ti:hover,
+.header6 a.header-wishlist-btn:hover,
+.header6 a.cart-count:hover {
+  {% if template == 'index' %}
+  color: {{ section.settings.header_menuicon_hvr_color }};
+  {% else %}
+  color: var(--font-color-primary);
+  {% endif %}
+}
+.header6 .header-area.sticky a.acc-ti:hover,
+.header6 .header-area.sticky a.header-wishlist-btn:hover,
+.header6 .header-area.sticky a.cart-count:hover,
+.header6 .header-area.sticky a.search-popup:hover {
+  color: var(--font-color-primary);
+}
+@media(max-width: 1199px){
+  .header6 a.search-popup,
+  .header6 a.acc-ti,
+  .header6 a.header-wishlist-btn,
+  .header6 a.cart-count,
+  .header6 a.search-popup:hover,
+  .header6 a.acc-ti:hover,
+  .header6 a.header-wishlist-btn:hover,
+  .header6 a.cart-count:hover {
+    color: var(--font-color-header);
+  }
+}
+</style>

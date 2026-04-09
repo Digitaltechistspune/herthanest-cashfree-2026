@@ -1,0 +1,33 @@
+<a href="{{ shop.url }}" class="theme-footer-logo" style="max-width: {{ settings.logo_footer_max_width }}px;">
+  {%- if settings.logo_footer -%}
+  {{ settings.logo_footer.src | image_url: width: 500 | image_tag:
+    loading: 'lazy',
+    width: settings.logo_footer.width,
+    height: settings.logo_footer.height,
+    class: "img-fluid lazyload",
+    alt: shop.name | escape }}
+  {%- else -%}
+  <span>{{ shop.name }}</span>
+  {%- endif -%}
+</a>
+<style>
+  /* logo css */
+  a.theme-footer-logo {
+    display: block;
+  }
+  a.theme-footer-logo svg {
+    width: {{ settings.logo_footer_max_width }}px;
+  }
+  a.theme-footer-logo img {
+    max-width: {{ settings.logo_footer_max_width }}px;
+  }
+  /* store css */
+  a.theme-footer-logo {
+    display: block;
+  }
+  a.theme-footer-logo span {
+    color: var(--font-color-header);
+    font-size: 16px;
+    font-weight: 600;
+  }
+</style>

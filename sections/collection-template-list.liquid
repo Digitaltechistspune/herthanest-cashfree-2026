@@ -1,0 +1,477 @@
+<div class="main-content-wrap shop-page section-ptb">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="pro-grli-wrapper{% if section.settings.sidebar_handle == 'left_sidebar_handle' %} left-side-wrap{% elsif section.settings.sidebar_handle == 'right_sidebar_handle' %} right-side-wrap{% else %} full-side-wrap{% endif %}">
+          <div class="pro-grli-wrap product-grid">
+            <div class="collection-img-wrap">
+              <h6 class="st-title">{{ collection.title }} ({{ collection.all_products_count }})</h6>
+              {%- if section.settings.collection_info_enable -%}
+              <div class="collection-info">
+                {%- if section.settings.collection_image_enable -%}
+                <div class="collection-image">
+                  {% if collection.image %}
+                    {%- if collection.image -%}
+                      {{ collection.image | image_url: width: 1920 | image_tag:
+                        loading: 'lazy',
+                        width: collection.image.width,
+                        height: collection.image.height,
+                        class: "img-fluid lazyload",
+                        alt: collection.image.alt | escape }}
+                    {%- else -%}
+                    {{ 'hero-apparel-1' | placeholder_svg_tag }}
+                    {%- endif -%}
+                  {% else %}
+                  {%- if section.settings.collection_image -%}
+                      {{ section.settings.collection_image | image_url: width: 1920 | image_tag:
+                        loading: 'lazy',
+                        width: section.settings.collection_image.width,
+                        height: section.settings.collection_image.height,
+                        class: "img-fluid lazyload",
+                        alt: section.settings.collection_image.alt | escape }}
+                    {%- else -%}
+                    {{ 'hero-apparel-1' | placeholder_svg_tag }}
+                    {%- endif -%}
+                  {% endif %}
+                </div>
+                {%- endif -%}
+                {%- if section.settings.collection_desc_enable -%}
+                <div class="collection-description">
+                  {% if collection.description != '' %}
+                  {{ collection.description }}
+                  {% else %}
+                  <p>{{ section.settings.collection_desc | truncate: 190 }}</p>
+                  {% endif %}
+                </div>
+                {%- endif -%}
+              </div>
+              {%- endif -%}
+            </div>
+            {%- if section.settings.tab_bar_enable or section.settings.short_by_enable -%}
+            {%- render 'collection-sorting' -%}
+            {%- endif -%}
+            <div class="get-data-products">
+              <div id="ProductGridContainer">
+                {%- assign products_limit = section.settings.products_limit_handle -%}
+                {%- paginate collection.products by products_limit -%}
+                {%- if collection.products.size > 0 -%}
+                <div class="product-grid-view">
+                  <div class="shop-product-wrap grid-1 collection">
+                    <ul class="product-view" id="product-grid" data-id="{{ section.id }}">
+                      {%- for product in collection.products -%}
+                      <li class="st-col-item {{ section.settings.product_view }} {{ section.settings.product_view_lg }} {{ section.settings.product_view_sm }}">
+                        {%- render 'product-grid-item', product: product -%}
+                      </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                  {% if paginate.pages > 1 %}
+                  <div class="paginatoin-area">
+                    {%- render 'pagination', paginate: paginate -%}
+                  </div>
+                  {% endif %}
+                </div>
+                {%- else -%}
+                <div class="empty-product collection" id="product-grid" data-id="{{ section.id }}">
+                  <div class="product-icon-title">
+                    <span class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i></span>
+                    <h2>{{ 'collections.general.empty_product_title' | t }}</h2>
+                  </div>
+                  <div class="product-desc">
+                    <flt-clear>
+                      <p class="text-danger">{{ 'collections.general.empty_product_desc' | t | append: "," }} {{ 'collections.general.empty_product_use_fewer_filters' | t }} {{ 'collections.general.empty_product_text_or' | t }} <a href="{{ collection.url }}" class="product-link">{{ 'collections.general.empty_product_html_link' | t | append: "." }}</a></p>
+                    </flt-clear>
+                  </div>
+                </div>
+                {%- endif -%}
+                {%- endpaginate -%}
+              </div>
+            </div>
+          </div>
+          <div class="pro-grli-wrap product-sidebar{% if section.settings.sidebar_handle == 'without_sidebar' %} product-without-sidebar{% endif %}">
+            <div id="main-collection-filters" data-id="{{ section.id }}">
+              {% render 'collection-sidebar', results: collection %}
+              <script src="{{ 'collection-sidebar.js' | asset_url }}" defer="defer"></script>
+              {% assign special_pro = collections[section.settings.special_pro] %}
+              {% if section.settings.special_pro != '' %}
+              <div class="shop-sidebar sidebar-pro {% if section.settings.sidebar_handle == 'without_sidebar' %} sidebar-without{% endif %}">
+                {%- if section.settings.special_pro_title -%}
+                <h6 class="title">{{ section.settings.special_pro_title }}</h6>
+                {%- endif -%}
+                <div class="swiper spe-slider" id="pro-{{ section.id }}">
+                  <div class="swiper-wrapper">
+                    {% for product in special_pro.products limit: section.settings.special_pro_limit %}
+                    <div class="swiper-slide">
+                        <div class="spe-product-list">
+                          <div class="product-image{% unless product.available %} stock-out{% endunless %}">
+                            <a class="pro-img" href="{{ product.url | within: collection }}">
+                              <img class="img-fluid lazyload" src="{{ product.featured_image.src | image_url: width: 300, height: 300, crop: 'center' }}" width="300" height="300" alt="{{ product.featured_image.src.alt }}" loading="lazy">
+                            </a>
+                            {% if product.selected_or_first_available_variant.compare_at_price %}
+                              <div class="product-label">
+                                {%- render 'product-label', product: product -%}
+                              </div>
+                              {% endif %}
+                          </div>
+                          <div class="product-content">
+                            {%- if settings.show_rating -%}
+                            <div class="product-grid-rating">
+                              <div class='jdgm-widget jdgm-preview-badge'>
+                                {{ product.metafields.judgeme.badge }}
+                              </div>
+                            </div>
+                            {%- endif -%}
+                            <h6>
+                              <a href="{{ product.url | within: collection }}" title="{{ product.title }}">{{ product.title }}</a>
+                            </h6>
+                            <div class="price-box">
+                              <span class="new-price">{{ product.price | money }}</span>
+                              {% if product.compare_at_price_max > product.price %}
+                              <span class="old-price">{{ product.compare_at_price | money }}</span>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              {% if section.settings.sidebar_banner_enable %}
+              <div class="sidebar-banner banner-hover{% if section.settings.sidebar_handle == 'without_sidebar' %} sidebar-without-banner{% endif %}">
+                <a href="{{ section.settings.sidebar_banner_url }}" class="sidebar-img banner-img">
+                  <span class="sidebar-banner-image">
+                    {%- if section.settings.sidebar_banner_img -%}
+                      {{ section.settings.sidebar_banner_img | image_url: width: 500 | image_tag:
+                        loading: 'lazy',
+                        width: section.settings.sidebar_banner_img.width,
+                        height: section.settings.sidebar_banner_img.height,
+                        class: "img-fluid lazyload",
+                        alt: section.settings.sidebar_banner_img.alt | escape }}
+                    {%- else -%}
+                    {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+                    {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                    {%- endif -%}  
+                  </span>
+                  
+                </a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  addEventListener('DOMContentLoaded', (event) => {
+    var swiper = new Swiper('#pro-{{ section.id }}', {
+      slidesPerView: 1,
+      grid: {
+        rows: 2,
+        fill: 'row' | 'column',
+      },
+      spaceBetween: 30,
+      observer: true,
+      observeParents: true,
+      watchSlidesProgress: true,
+      {%- if settings.enable_rtl -%}
+      rtl: true,
+      {%- endif -%}
+      navigation: {
+        nextEl: '.swiper-next-{{ section.id }}',
+        prevEl: '.swiper-prev-{{ section.id }}',
+      },
+      pagination: {
+        el: ".swiper-pagination-{{ section.id }}",
+        clickable: true
+      },
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      speed: 1000,
+      breakpoints: {
+        1199: {
+          slidesPerView: 1,
+          grid: {
+            rows: 2,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 30,
+        },
+        1499: {
+          slidesPerView: 1,
+          grid: {
+            rows: 2,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 30,
+        }
+      }
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Collection List",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Backgorund Color"
+    },
+    {
+      "type": "color",
+      "id": "collection_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product Options"
+    },
+    {
+      "type": "number",
+      "id": "products_limit_handle",
+      "label": "Product Limit",
+      "default": 20,
+      "info": "How many posts will appear on each page"
+    },
+    {
+      "type": "select",
+      "id": "product_view",
+      "label": "Slides per view",
+      "options": [
+        {
+          "label": "2 Products",
+          "value": "grid-2"
+        },
+        {
+          "label": "3 Products",
+          "value": "grid-3"
+        },
+        {
+          "label": "4 Products",
+          "value": "grid-4"
+        },
+        {
+          "label": "5 Products",
+          "value": "grid-5"
+        },
+        {
+          "label": "6 Products",
+          "value": "grid-6"
+        }
+      ],
+      "default": "grid-3"
+    },
+    {
+      "type": "select",
+      "id": "product_view_lg",
+      "label": "Slides per view ipad",
+      "options": [
+        {
+          "label": "2 Products",
+          "value": "grid-lg-2"
+        },
+        {
+          "label": "3 Products",
+          "value": "grid-lg-3"
+        },
+        {
+          "label": "4 Products",
+          "value": "grid-lg-4"
+        }
+      ],
+      "default": "grid-lg-4"
+    },
+    {
+      "type": "select",
+      "id": "product_view_sm",
+      "label": "Slides per view mobile",
+      "options": [
+        {
+          "label": "1 Products",
+          "value": "grid-sm-1"
+        },
+        {
+          "label": "2 Products",
+          "value": "grid-sm-2"
+        }
+      ],
+      "default": "grid-sm-2"
+    },
+    {
+      "type": "header",
+      "content": "Collection Information"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_info_enable",
+      "label": "Show Collection Image/Description",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "collection_image",
+      "label": "Collection Image",
+      "info": "Recommended Size: 1410px x 365px"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_image_enable",
+      "label": "Show Collection Image",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "collection_desc",
+      "label": "Collecton Description",
+      "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_desc_enable",
+      "label": "Show Collection Description",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Collection Sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_bar_enable",
+      "label": "Show Grid/List View",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "short_by_enable",
+      "label": "Show Short By",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Collection Sidebar"
+    },
+    {
+      "type": "radio",
+      "id": "sidebar_handle",
+      "label": "Sidebar Position",
+      "options": [
+        {
+          "label": "Left Sidebar",
+          "value": "left_sidebar_handle"
+        },
+        {
+          "label": "Right Sidebar",
+          "value": "right_sidebar_handle"
+        },
+        {
+          "label": "Without Sidebar",
+          "value": "without_sidebar"
+        }
+      ],
+      "default": "left_sidebar_handle"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar Categories"
+    },
+    {
+      "type": "text",
+      "id": "collection_categories_title",
+      "label": "Categories Title",
+      "default": "Categories"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_categories_enable",
+      "label": "Show Categories",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Sidebar Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "sidebar_banner_img",
+      "label": "Sidebar Image",
+      "info": "Recommended Size: 350x470px"
+    },
+    {
+      "type": "url",
+      "id": "sidebar_banner_url",
+      "label": "Image URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "sidebar_banner_enable",
+      "label": "Show Banner",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Collection Product"
+    },
+    {
+      "type": "text",
+      "id": "special_pro_title",
+      "label": "Product title",
+      "default": "Special product"
+    },
+    {
+      "type": "collection",
+      "id": "special_pro",
+      "label": "Select Collection"
+    },
+    {
+      "type": "number",
+      "id": "special_pro_limit",
+      "label": "Collection product limit",
+      "default": 12
+    }
+  ]
+}
+{% endschema %}
+<style>
+/*=====================================
+  collection-template css
+======================================*/
+{% if section.settings.collection_bgcolor_enable %}
+.shop-page {
+  background-color: {{ section.settings.collection_bgcolor }};
+}
+{% endif %}
+</style>

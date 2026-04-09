@@ -1,0 +1,224 @@
+<section class="about-section2">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <ul class="about-service-wrap">
+          {% for block in section.blocks %}
+          <li class="about-service-wrapper">
+            <div class="service-block">
+              <div class="service-text">
+                {% if block.settings.service_title != '' %}
+                <h6 data-fade-in>{{ block.settings.service_title }}</h6>
+                {% endif %}
+                {% if block.settings.service_desc != '' %}
+                <p data-fade-in>{{ block.settings.service_desc }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "About section2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_lg",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_lg",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "about_service",
+      "name": "Services",
+      "settings": [
+        {
+          "type": "text",
+          "id": "service_title",
+          "label": "Service Title",
+          "default": "Choose products"
+        },
+        {
+          "type": "text",
+          "id": "service_desc",
+          "label": "Service Description",
+          "default": "Lorem Ipsum is simply dummy text printing and typesetting"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About section2"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.about-section2 {
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+}
+@media(max-width: 1199px) {
+  .about-section2 {
+    padding-top: {{ section.settings.section_padding_top_lg }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+  }
+}
+@media(max-width: 767px) {
+  .about-section2 {
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+  }
+}
+
+/*secrvice content*/
+.about-section2 ul.about-service-wrap {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: -30px 0 0 -30px;
+}
+.about-section2 ul.about-service-wrap li {
+  width: calc(33.33% - 30px);
+  margin: 30px 0 0 30px;
+}
+.about-section2 ul.about-service-wrap li.about-service-wrapper .service-block {
+  width: 83.33%;
+  margin: 0 auto;
+  text-align: center;
+}
+.about-section2 ul.about-service-wrap li.about-service-wrapper .service-block h6 {
+  color: var(--font-color-header);
+  font-size: var(--font-size-subtitle);
+  font-weight: var(--font-weight-subtitle);
+  text-transform: uppercase;
+}
+.about-section2 ul.about-service-wrap li.about-service-wrapper .service-block p {
+  font-size: 18px;
+  margin-top: 15px;
+}
+@media(max-width: 1499px) {
+  .about-section2 ul.about-service-wrap li.about-service-wrapper .service-block {
+    width: 100%;
+  }
+}
+@media(max-width: 991px) {
+  .about-section2 ul.about-service-wrap li {
+    width: calc(50% - 30px);
+  }
+}
+@media(max-width: 767px) {
+  .about-section2 ul.about-service-wrap {
+    margin: -30px 0 0 -12px;
+  }
+  .about-section2 ul.about-service-wrap li {
+    width: calc(50% - 12px);
+    margin: 30px 0 0 12px;
+  }
+}
+@media(max-width: 600px) {
+  .about-section2 ul.about-service-wrap li {
+    width: calc(100% - 12px);
+  }
+  .about-section2 ul.about-service-wrap li.about-service-wrapper .service-block p {
+    font-size: 16px;
+  }
+}
+</style>

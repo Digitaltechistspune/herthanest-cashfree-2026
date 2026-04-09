@@ -1,0 +1,416 @@
+<section class="contact-section2">
+  <div class="banner-bg" id="banner-bg">
+    {%- if section.settings.banner_img -%}
+    {{ section.settings.banner_img | image_url: width: 1920 | image_tag:
+      loading: 'lazy',
+      width: section.settings.banner_img.width,
+      height: section.settings.banner_img.height,
+      class: "img-fluid lazyload",
+      alt: section.settings.banner_img.alt | escape }}
+      {%- else -%}
+      {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+      {{ 'hero-apparel-1' | placeholder_svg_tag }}
+      {%- endif -%}
+    </div>
+    <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+      <div class="row">
+        <div class="col">
+          <div class="location-block" id="location-block">
+            <div class="section-capture">
+              <div class="section-title">
+                {% if section.settings.section_sub_title != '' %}
+                <span class="sub-title" data-fade-in>{{ section.settings.section_sub_title }}</span>
+                {% endif %}
+                {% if section.settings.section_title != '' %}
+                <h2 data-fade-in>{{ section.settings.section_title }}</h2>
+                {% endif %}
+              </div>
+            </div>
+            <div class="location-slider owl-carousel" id="location-slider-{{ section.id }}">
+              {% for block in section.blocks %}
+                <div class="add-block">
+                  <span class="flag-img">
+                    {%- if block.settings.flag_img -%}
+                    {{ block.settings.flag_img | image_url: width: 200 | image_tag:
+                    loading: 'lazy',
+                    width: block.settings.flag_img.width,
+                    height: block.settings.flag_img.height,
+                    class: "img-fluid lazyload",
+                    alt: block.settings.flag_img.alt | escape }}
+                    {%- else -%}
+                    {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+                    {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                    {%- endif -%}
+                  </span>
+                  <p>{{ block.settings.address_text }}</p>
+                  <div class="url-content">
+                    <a class="mobile" href="tel:{{ block.settings.add_mobile }}">{{ block.settings.add_mobile }}</a>
+                    <a class="mail" href="mail:{{ block.settings.add_email }}">{{ block.settings.add_email }}</a>
+                  </div>
+                  <span class="cnt-title">{{ block.settings.country_name }}</span>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+  addEventListener('DOMContentLoaded', (event) => {
+    $('#location-slider-{{ section.id }}').owlCarousel({
+      loop: false,
+      rewind: true,
+      items: 4,
+      center: false,
+      margin: 30,
+      nav: true,
+      navText: ['<i class=" feather-arrow-left"></i>','<i class="feather-arrow-right"></i>'],
+      dots: false,
+      {%- if settings.enable_rtl -%}
+      rtl: true,
+      {%- endif -%}
+      responsive: {
+        0: {
+          items: 1,
+          margin: 12
+        },
+        479: {
+          items: 1,
+          margin: 12
+        },
+        540: {
+          items: 1,
+          margin: 12
+        },
+        640: {
+          items: 1,
+          margin: 12
+        },
+        768: {
+          items: 2
+        },
+        979: {
+          items: 3
+        },
+        1199: {
+          items: 4
+        }
+      }
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Contact section2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "contact_us_3_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_bg_color_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_img",
+      "label": "Banner Image",
+      "info": "Recommended Size: 1920x770px"
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section Sub Title",
+      "default": "Get in touch"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Get in touch"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "address",
+      "name": "Address",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "flag_img",
+          "label": "Flag image",
+          "info": "Recommended Size: 72x44px"
+        },
+        {
+          "type": "text",
+          "id": "address_text",
+          "label": "Address text",
+          "default": "425 Broadway, 20th floor pharchard view, London"
+        },
+        {
+          "type": "text",
+          "id": "add_mobile",
+          "label": "Mmobile number",
+          "default": "+91 123 456 7890"
+        },
+        {
+          "type": "text",
+          "id": "add_email",
+          "label": "Email address",
+          "default": "support@store.com"
+        },
+        {
+          "type": "text",
+          "id": "country_name",
+          "label": "Country name",
+          "default": "London"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact section2"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .contact-section2 {
+    padding-top: {{ section.settings.contact_us_3_padding_top }}px;
+    padding-bottom: {{ section.settings.contact_us_3_padding_bottom }}px;
+    background-color: {{ section.settings.section_bg_color }};
+  }
+  @media (max-width: 1199px) {
+    .contact-section2 {
+      padding-top: {{ section.settings.contact_us_3_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.contact_us_3_padding_bottom_ip }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .contact-section2 {
+      padding-top: {{ section.settings.contact_us_3_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.contact_us_3_padding_bottom_xs }}px;
+    }
+  }
+
+/* get touch css */
+
+.contact-section2 .location-block {
+  background-color: #fff;
+  padding: 100px;
+  margin-top: -16.66%;
+}
+.contact-section2 .location-block .add-block {
+  text-align: center;
+}
+.contact-section2 .location-block .add-block .flag-img {
+  max-width: 70px;
+  margin: 0 auto;
+}
+.contact-section2 .location-block .add-block p {
+  font-size: 18px;
+  max-width: 75%;
+  margin: 30px auto 0;
+}
+.contact-section2 .location-block .add-block .url-content {
+  margin-top: 30px;
+}
+.contact-section2 .location-block .add-block .url-content .mobile {
+  color: var(--font-color-body);
+  font-size: 16px;
+  display: block;
+}
+
+.contact-section2 .location-block .add-block .url-content .mail {
+  color: var(--font-color-body);
+  font-size: 18px;
+  display: block;
+  padding-top: 5px;
+}
+.contact-section2 .location-block .add-block .url-content a:hover {
+  color: var(--font-color-header);
+}
+.contact-section2 .location-block .add-block .cnt-title {
+  font-size: 22px;
+  color: var(--font-color-primary);
+  line-height: 1;
+  margin-top: 30px;
+  padding-bottom: 5px;
+  border-bottom: 3px solid transparent;
+  -webkit-transition: all .3s ease-in-out 0s;
+  -o-transition: all .3s ease-in-out 0s;
+  transition: all .3s ease-in-out 0s;
+}
+.contact-section2 .location-block .add-block:hover .cnt-title {
+  border-color: var(--font-color-primary);
+}
+@media(max-width: 1499px){
+  .contact-section2 .location-block .add-block p {
+    font-size: 16px;
+    max-width: 100%;
+  }
+}
+@media(max-width: 1199px){
+  .contact-section2 .location-block {
+    padding: 50px;
+  }
+}
+@media(max-width: 767px){
+  .contact-section2 .location-block {
+    padding: 30px;
+    margin: 30px 0 0;
+  }
+}
+@media(max-width: 479px){
+  .contact-section2 .location-block .add-block p {
+    font-size: 16px;
+    max-width: 100%;
+    margin: 15px auto 0;
+  }
+  .contact-section2 .location-block .add-block .url-content {
+    margin-top: 15px;
+  }
+  .contact-section2 .location-block .add-block .url-content .mail {
+    font-size: 16px;
+  }
+  .contact-section2 .location-block .add-block .cnt-title {
+    font-size: 18px;
+    margin-top: 15px;
+  }
+}
+
+.contact-section2 .location-slider {
+  display: flex;
+  align-items: center;
+}
+.contact-section2 .location-slider .owl-nav button {
+  font-size: 24px;
+  line-height: 1;
+  position: absolute;
+}
+.contact-section2 .location-slider .owl-nav button.owl-prev {
+  left: -30px;
+}
+.contact-section2 .location-slider .owl-nav button.owl-next {
+  right: -30px;
+}
+@media(max-width: 767px){
+  .contact-section2 .location-slider .owl-nav button.owl-prev {
+    left: -15px;
+  }
+  .contact-section2 .location-slider .owl-nav button.owl-next {
+    right: -15px;
+  }
+}
+</style>

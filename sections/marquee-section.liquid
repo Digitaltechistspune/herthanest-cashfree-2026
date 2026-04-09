@@ -1,0 +1,215 @@
+<section class="marquee-section">
+  <div class="container-fluid">
+    <div class="offer-text-wrap">
+      <ul class="grid-wrap text1">
+        {% for block in section.blocks %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            {{ block.settings.offer_text }}
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      <ul class="grid-wrap text2">
+        {% for block in section.blocks %}
+        <li class="grid-wrapper">
+          <div class="richtext">
+            {{ block.settings.offer_text }}
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Marquee section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_img",
+      "label": "Background Image",
+      "info": "Recommended Size: 1920 x 200px"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_bg_img_enable",
+      "label": "Show Background Image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Background color"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "header",
+      "content": "Section text color"
+    },
+    {
+      "type": "color",
+      "id": "notification_txt_color",
+      "label": "Section Text Color",
+      "default": "#fff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "text",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Offer text"
+        },
+        {
+          "type": "richtext",
+          "id": "offer_text",
+          "label": "Offer text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee section"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.marquee-section{
+  position: relative;
+  padding: 20px 0;
+  overflow: hidden;
+  background-color: {{ section.settings.section_bg_color }};
+  {% if section.settings.section_bg_img_enable %}
+  background-image: url('{% if section.settings.section_bg_img %}{{ section.settings.section_bg_img | image_url }}{% else %}https://dummyimage.com/1920x200/f7f7f7/999999{% endif %}');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  {% endif %}
+}
+.marquee-section ul.grid-wrap {
+  display: flex;
+  align-items: center;
+  margin: -30px 0 0 -100px;
+}
+.marquee-section ul.grid-wrap li.grid-wrapper{
+  position: relative;
+  width: calc(100% - 100px);
+  white-space: nowrap;
+  margin: 30px 0 0 100px;
+  display: flex;
+  align-items: center;
+}
+.marquee-section ul.grid-wrap li.grid-wrapper:before {
+  color: {{ section.settings.notification_txt_color }};
+  content: "•";
+  position: absolute;
+  left: -50px;
+  line-height: 1;
+  font-size: 18px;
+}
+.marquee-section ul li.grid-wrapper .richtext span{
+  {%- if settings.enable_rtl -%}
+  padding-left: 5px;
+  {%- else -%}
+  padding-right: 5px;
+  {%- endif -%}
+}
+.marquee-section ul li.grid-wrapper .richtext a,
+.marquee-section ul li.grid-wrapper .richtext p{
+  color: {{ section.settings.notification_txt_color }};
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 500;
+}
+.marquee-section ul li.grid-wrapper .richtext a {
+  {%- if settings.enable_rtl -%}
+  padding-right: 10px;
+  {%- else -%}
+  padding-left: 10px;
+  {%- endif -%}
+  font-weight: 700;
+  text-decoration: underline;
+}
+.marquee-section .offer-text-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  direction: ltr;
+}
+.marquee-section .offer-text-wrap .grid-wrap {
+  margin: -30px 0 0 0;
+  width: auto;
+}
+.marquee-section .offer-text-wrap:hover .grid-wrap,
+.marquee-section .offer-text-wrap:focus-within .grid-wrap {
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  animation-play-state: paused;
+}
+.marquee-section .offer-text-wrap .text1 {
+  -webkit-animation: slide1 50s linear infinite;
+  animation: slide1 50s linear infinite;
+  -webkit-animation-delay: -50s;
+  animation-delay: -50s;
+  display: flex;
+}
+.marquee-section .offer-text-wrap .text2 {
+  -webkit-animation: slide2 50s linear infinite;
+  animation: slide2 50s linear infinite;
+  -webkit-animation-delay: -25s;
+  animation-delay: -25s;
+  display: flex;
+}
+@media(max-width: 1199px) {
+  .marquee-section ul.grid-wrap {
+    margin: -30px 0 0 -60px;
+  }
+  .marquee-section ul.grid-wrap li.grid-wrapper{
+    width: calc(100% - 60px);
+    margin: 30px 0 0 60px;
+  }
+  .marquee-section ul.grid-wrap li.grid-wrapper:before {
+    left: -30px;
+  }
+}
+@media(max-width: 479px) {
+  .marquee-section ul li.grid-wrapper .richtext a,
+  .marquee-section ul li.grid-wrapper .richtext p {
+    font-size: var(--font-size-body);
+  }
+}
+
+@-webkit-keyframes slide1{
+  0%{transform: translateX(100%);} 100%{transform: translateX(-100%);}
+}
+@-moz-keyframes slide1{
+  0%{transform: translateX(100%);} 100%{transform: translateX(-100%);}
+}
+@keyframes slide1{
+  0%{transform: translateX(100%);} 100%{transform: translateX(-100%);}
+}
+@-webkit-keyframes slide2{
+  0%{transform: translateX(0%);} 100%{transform: translateX(-200%);}
+}
+@-moz-keyframes slide2{
+  0%{transform: translateX(0%);} 100%{transform: translateX(-200%);}
+}
+@keyframes slide2{
+  0%{transform: translateX(0%);} 100%{transform: translateX(-200%);}
+}
+</style>

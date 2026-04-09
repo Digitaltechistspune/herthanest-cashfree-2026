@@ -1,0 +1,285 @@
+<li class="menu-link">
+  <a href="{{ block.settings.menu_collection_url }}" class="link-title" style="--font-size: {{ section.settings.menu_font_size }}px; --font-size-lg: {{ section.settings.menu_font_size_lg }}px; --padding: {{ section.settings.menu_padding_y }}px {{ section.settings.menu_padding_x }}px; --padding-lg: {{ section.settings.menu_padding_y_lg }}px {{ section.settings.menu_padding_x_lg }}px; --text-transform: {{ section.settings.menu_text_transform }};  --font-weight: {{ section.settings.menu_font_weight }};">
+    <span class="sp-link-title">{{ block.settings.menu_collection_title }}{% if block.settings.menu_collection_label != '' %}<span class="{{ section.id }}}-{{ block.id }}-label">{{ block.settings.menu_collection_label }}</span>{% endif %}</span>
+    <span class="menu-arrow"><i class="fa fa-angle-down"></i></span>
+  </a>
+  <div class="link-title-lg">
+    <a href="{{ block.settings.menu_collection_url }}" class="sp-link-title">{{ block.settings.menu_collection_title }}</a>
+    <a href="#single-collapse-{{ block.settings.menu_collection_title | handleize }}" data-bs-toggle="collapse" class="menu-arrow"><i class="feather-plus"></i></a>
+  </div>
+  <ul class="menu-dropdown banner-menu collapse" id="single-collapse-{{ block.settings.menu_collection_title | handleize }}">
+    <div class="container-fluid">
+    <div class="ul">
+      {%- if block.settings.menu_collection_banner_img1 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url1 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img1 | image_url: width: 500 | image_tag:
+            loading: 'lazy',
+            width: block.settings.menu_collection_banner_img1.width,
+            height: block.settings.menu_collection_banner_img1.height,
+            class: "img-fluid lazyload",
+            alt: block.settings.menu_collection_banner_img1.alt | escape
+          }}
+          {%- if block.settings.menu_collection_banner_label1 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label1_color }}; --bg-color: {{ block.settings.menu_collection_banner_label1_bg_color }};">{{ block.settings.menu_collection_banner_label1 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title1 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url1 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %} {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title1 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img2 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url2 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img2 | image_url: width: 500 | image_tag:
+            loading: 'lazy',
+            width: block.settings.menu_collection_banner_img2.width,
+            height: block.settings.menu_collection_banner_img2.height,
+            class: "img-fluid lazyload",
+            alt: block.settings.menu_collection_banner_img2.alt | escape }}
+            {%- if block.settings.menu_collection_banner_label2 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label2_color }}; --bg-color: {{ block.settings.menu_collection_banner_label2_bg_color }};">{{ block.settings.menu_collection_banner_label2 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title2 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url2 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title2 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img3 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url3 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img3 | image_url: width: 500 | image_tag:
+            loading: 'lazy',
+            width: block.settings.menu_collection_banner_img3.width,
+            height: block.settings.menu_collection_banner_img3.height,
+            class: "img-fluid lazyload",
+            alt: block.settings.menu_collection_banner_img3.alt | escape }}
+            {%- if block.settings.menu_collection_banner_label3 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label3_color }}; --bg-color: {{ block.settings.menu_collection_banner_label3_bg_color }};">{{ block.settings.menu_collection_banner_label3 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title3 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url3 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title3 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img4 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url4 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img4 | image_url: width: 500 | image_tag:
+            loading: 'lazy',
+            width: block.settings.menu_collection_banner_img4.width,
+            height: block.settings.menu_collection_banner_img4.height,
+            class: "img-fluid lazyload",
+            alt: block.settings.menu_collection_banner_img4.alt | escape }}
+            {%- if block.settings.menu_collection_banner_label4 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label4_color }}; --bg-color: {{ block.settings.menu_collection_banner_label4_bg_color }};">{{ block.settings.menu_collection_banner_label4 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title4 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url4 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title4 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img5 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url5 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img5 | image_url: width: 500 | image_tag:
+          loading: 'lazy',
+          width: block.settings.menu_collection_banner_img5.width,
+          height: block.settings.menu_collection_banner_img5.height,
+          class: "img-fluid lazyload",
+          alt: block.settings.menu_collection_banner_img5.alt | escape }}
+          {%- if block.settings.menu_collection_banner_label5 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label5_color }}; --bg-color: {{ block.settings.menu_collection_banner_label5_bg_color }};">{{ block.settings.menu_collection_banner_label5 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title5 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url5 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title5 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img6 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url6 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img6 | image_url: width: 500 | image_tag:
+          loading: 'lazy',
+          width: block.settings.menu_collection_banner_img6.width,
+          height: block.settings.menu_collection_banner_img6.height,
+          class: "img-fluid lazyload",
+          alt: block.settings.menu_collection_banner_img6.alt | escape }}
+          {%- if block.settings.menu_collection_banner_label6 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label6_color }}; --bg-color: {{ block.settings.menu_collection_banner_label6_bg_color }};">{{ block.settings.menu_collection_banner_label6 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title6 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url6 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title6 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img7 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url7 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img7 | image_url: width: 500 | image_tag:
+          loading: 'lazy',
+          width: block.settings.menu_collection_banner_img7.width,
+          height: block.settings.menu_collection_banner_img7.height,
+          class: "img-fluid lazyload",
+          alt: block.settings.menu_collection_banner_img7.alt | escape }}
+          {%- if block.settings.menu_collection_banner_label7 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label7_color }}; --bg-color: {{ block.settings.menu_collection_banner_label7_bg_color }};">{{ block.settings.menu_collection_banner_label7 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title7 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url7 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title7 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img8 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url8 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img8 | image_url: width: 500 | image_tag:
+          loading: 'lazy',
+          width: block.settings.menu_collection_banner_img8.width,
+          height: block.settings.menu_collection_banner_img8.height,
+          class: "img-fluid lazyload",
+          alt: block.settings.menu_collection_banner_img8.alt | escape }}
+          {%- if block.settings.menu_collection_banner_label8 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label8_color }}; --bg-color: {{ block.settings.menu_collection_banner_label8_bg_color }};">{{ block.settings.menu_collection_banner_label8 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title8 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url8 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title8 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img9 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url9 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img9 | image_url: width: 500 | image_tag:
+          loading: 'lazy',
+          width: block.settings.menu_collection_banner_img9.width,
+          height: block.settings.menu_collection_banner_img9.height,
+          class: "img-fluid lazyload",
+          alt: block.settings.menu_collection_banner_img9.alt | escape }}
+          {%- if block.settings.menu_collection_banner_label9 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label9_color }}; --bg-color: {{ block.settings.menu_collection_banner_label9_bg_color }};">{{ block.settings.menu_collection_banner_label9 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title9 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url9 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title9 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img10 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url10 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img10 | image_url: width: 500 | image_tag:
+          loading: 'lazy',
+          width: block.settings.menu_collection_banner_img10.width,
+          height: block.settings.menu_collection_banner_img10.height,
+          class: "img-fluid lazyload",
+          alt: block.settings.menu_collection_banner_img10.alt | escape }}
+          {%- if block.settings.menu_collection_banner_label10 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label10_color }}; --bg-color: {{ block.settings.menu_collection_banner_label10_bg_color }};">{{ block.settings.menu_collection_banner_label10 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title10 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url10 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title10 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img11 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url11 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img11 | image_url: width: 500 | image_tag:
+          loading: 'lazy',
+          width: block.settings.menu_collection_banner_img11.width,
+          height: block.settings.menu_collection_banner_img11.height,
+          class: "img-fluid lazyload",
+          alt: block.settings.menu_collection_banner_img11.alt | escape }}
+          {%- if block.settings.menu_collection_banner_label11 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label11_color }}; --bg-color: {{ block.settings.menu_collection_banner_label11_bg_color }};">{{ block.settings.menu_collection_banner_label11 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title11 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url11 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title11 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_banner_img12 -%}
+      <li class="bannermenu-li">
+        <a href="{{ block.settings.menu_collection_banner_url12 }}" class="collection-img banner-img">
+          {{ block.settings.menu_collection_banner_img12 | image_url: width: 500 | image_tag:
+          loading: 'lazy',
+          width: block.settings.menu_collection_banner_img12.width,
+          height: block.settings.menu_collection_banner_img12.height,
+          class: "img-fluid lazyload",
+          alt: block.settings.menu_collection_banner_img12.alt | escape }}
+          {%- if block.settings.menu_collection_banner_label12 != '' -%}
+          <span style="--color: {{ block.settings.menu_collection_banner_label12_color }}; --bg-color: {{ block.settings.menu_collection_banner_label12_bg_color }};">{{ block.settings.menu_collection_banner_label12 }}</span>
+          {%- endif -%}
+        </a>
+        {%- if block.settings.menu_collection_banner_title12 != '' -%}
+        <a href="{{ block.settings.menu_collection_banner_url12 }}" class="collection-title {% if block.settings.banner_title_mobile_enable %} visible-lg{% endif %}"><span>{{ block.settings.menu_collection_banner_title12 }}</span></a>
+        {%- endif -%}
+      </li>
+      {%- endif -%}
+      {%- if block.settings.menu_collection_all_button != '' -%}
+      <li class="bannermenu-li button-li">
+        <a href="{{ block.settings.menu_collection_all_url }}" class="btn-style">{{ block.settings.menu_collection_all_button }}</a>
+        <a href="{{ block.settings.menu_collection_all_url }}" class="btn-lg">{{ block.settings.menu_collection_all_button }}</a>
+      </li>
+      {%- endif -%}
+    </div>
+    </div>
+  </ul>
+</li>
+<style>
+  /*=====================================
+    header label css
+  ======================================*/
+  a.link-title span.sp-link-title span.{{ section.id }}}-{{ block.id }}-label {
+    color: {{ block.settings.menu_collection_label_color }};
+    font-size: {{ block.settings.menu_collection_label_font_size }}px;
+    padding: 2px 5px;
+    position: absolute;
+    top: -{{ block.settings.menu_collection_label_top_position }}px;
+    {% if settings.enable_rtl %}
+    left: 0;
+    transform: translateX(-100%);
+    {% else %}
+    right: 0;
+    transform: translateX(100%);
+    {% endif %}
+    background-color: {{ block.settings.menu_collection_label_bgcolor }};
+    text-transform: {{ block.settings.menu_collection_label_text_transform }};
+    font-weight: {{ block.settings.menu_collection_label_font-weight }};
+    border-radius: {{ block.settings.menu_collection_label_border_radius }}px;
+    line-height: {{ block.settings.menu_collection_label_line_height }};
+  }
+  a.link-title span.sp-link-title span.{{ section.id }}}-{{ block.id }}-label::before {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    {% if settings.enable_rtl %}
+    right: 0;
+    {% else %}
+    left: 0;
+    {% endif %}
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    {% if settings.enable_rtl %}
+    border-right: 4px solid {{ block.settings.menu_collection_label_bgcolor }};
+    {% else %}
+    border-left: 4px solid {{ block.settings.menu_collection_label_bgcolor }};
+    {% endif %}
+  }
+  @media (max-width: 1199px) {
+    a.link-title span.sp-link-title span.{{ section.id }}}-{{ block.id }}-label {
+      top: -8px;
+    }
+  }
+</style>

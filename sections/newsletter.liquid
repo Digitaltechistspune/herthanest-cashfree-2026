@@ -1,0 +1,263 @@
+<section class="newsletter-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="news-block">
+          <div class="main-title">
+            <h6 data-fade-in>{{ section.settings.section_title }}</h6>
+          </div>
+          {% form 'customer' %}
+            {{ form.errors | default_errors }}
+            {% if form.posted_successfully? %}
+              <p class="text-success">
+                <span>{{ 'general.newsletter_form.confirmation' | t }}</span>
+              </p>
+            {% endif %}
+            <div class="news-content" data-fade-in>
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <input
+                type="email"
+                name="contact[email]"
+                class="email mail"
+                id="E-mail"
+                value="{% if customer %}{{ customer.email }}{% endif %}"
+                placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}"
+                autocapitalize="off"
+                required
+              >
+              <button type="submit" name="commit" id="Subscribe">
+                {{ 'general.newsletter_form.submit' | t }}
+                <i class="feather-mail"></i>
+              </button>
+            </div>
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_lg",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_lg",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section background"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_bg_img_enable",
+      "label": "Show Background Image",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_img",
+      "label": "Section background image",
+      "info": "Recommended Size: 1920 x 450px"
+    },
+    {
+      "type": "color_background",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "New products and sales. Directly to your inbox."
+    },
+    {
+      "type": "color",
+      "id": "section_title_color",
+      "label": "Section title color",
+      "default": "#fff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .newsletter-bg{
+    margin-top:{{ section.settings.section_padding_top }}px;
+    margin-bottom:{{ section.settings.section_padding_bottom }}px;
+    padding: 30px 0;
+    {% if section.settings.section_bg_img_enable %}
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url('{% if section.settings.section_bg_img %}{{ section.settings.section_bg_img | image_url }}{% else %}https://dummyimage.com/1920x450/f7f7f7/999999{% endif %}');
+    {% endif %}
+    background: {{ section.settings.section_bg_color }};
+  }
+  @media (max-width: 991px){
+    .newsletter-bg{
+      margin-top:{{ section.settings.section_padding_top_lg }}px;
+      margin-bottom:{{ section.settings.section_padding_bottom_lg }}px;
+    }
+  }
+  @media (max-width: 767px){
+    .newsletter-bg{
+      margin-top:{{ section.settings.section_padding_top_xs }}px;
+      margin-bottom:{{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+  .newsletter-bg .news-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .newsletter-bg .main-title{
+    {%- if settings.enable_rtl -%}
+    padding-left: 30px;
+    {%- else -%}
+    padding-right: 30px;
+    {%- endif -%}
+  }
+  .newsletter-bg .main-title h6{
+    font-size: 22px;
+    color: {{ section.settings.section_title_color }};
+  }
+  .newsletter-bg .news-content{
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .newsletter-bg form p.text-success{
+    margin-bottom: 10px;
+  }
+  .newsletter-bg .news-content input{
+    width: 500px;
+    border: none;
+    height: 50px;
+  }
+  .newsletter-bg .news-content button{
+    position: absolute;
+    {%- if settings.enable_rtl -%}
+    left: 15px;
+    {%- else -%}
+    right: 15px;
+    {%- endif -%}
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .newsletter-bg .news-content button i {
+    padding-inline-start: 5px;
+    font-size: 18px;
+    line-height: 1;
+    padding-bottom: 2px;
+  }
+  .newsletter-bg .news-content button:hover{
+    color: var(--font-color-primary);
+  }
+  @media(max-width: 1199px){
+    .newsletter-bg .main-title h6 {
+      font-size: 18px;
+    }
+    .newsletter-bg .news-content input{
+      width: 300px;
+    }
+    .newsletter-bg .news-content button {
+      font-size: var(--font-size-body);
+    }
+  }
+  @media(max-width: 479px){
+    .newsletter-bg .news-block {
+      flex-direction: column;
+    }
+    .newsletter-bg .main-title{
+      {%- if settings.enable_rtl -%}
+        padding-left: 0px;
+        {%- else -%}
+        padding-right: 0px;
+      {%- endif -%}
+    }
+    .newsletter-bg form {
+      margin-top: 15px;
+      width: 100%;
+    }
+    .newsletter-bg .news-content input {
+      width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,1436 @@
+{% doc %}
+  @prompt
+    Create a fully customizable Shopify section that displays up to five videos in a horizontal row, styled like Instagram Reels. Each video must use a tall 9:16 aspect ratio with rounded corners and clean spacing.
+    
+    Layout Requirements
+    
+    Support 5, 4, or 3 videos (selectable in the editor).
+    
+    Desktop: videos appear side-by-side in one row.
+    
+    Mobile: convert into a swipeable Reels-style carousel.
+    
+    Each video supports MP4 upload, Shopify-hosted video, or external URL.
+    
+    Videos can autoplay, be muted by default, loop, and pause on hover (all toggles).
+    
+    Editor Controls (per video block)
+    
+    Upload/select video.
+    
+    Toggles: autoplay, loop, mute, pause on hover, show play icon.
+    
+    Add poster/thumbnail.
+    
+    Link field for making the entire video clickable (product, collection, or external).
+    
+    Optional button below video with: enable/disable, button text, button link, and style (primary/secondary).
+    
+    Design & Section Controls
+    
+    Adjust video corner radius.
+    
+    Adjust spacing between videos.
+    
+    Padding top/bottom for the section.
+    
+    Optional section heading and subheading.
+    
+    Light or dark background style.
+    
+    Mobile carousel settings: enable swipe, drag speed, autoplay.
+    
+    Device Visibility Controls
+    
+    Toggles to show/hide the section on Desktop, Tablet, and Mobile.
+    
+    Behavior & Output
+    
+    Smooth autoplay, optimized and lightweight.
+    
+    Pause videos when out of viewport.
+    
+    Fully responsive and clean grid even with fewer than 5 videos.
+    
+    Generate a Liquid section with schema so the merchant can add/remove video blocks, choose number of videos, rearrange order, edit all settings, and control visibility per device from the theme editor.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-reels-section-{{ ai_gen_id }} {
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+    background-color: {% if block.settings.background_style == 'dark' %}#1a1a1a{% else %}#ffffff{% endif %};
+  }
+
+  .ai-reels-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-reels-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ai-reels-heading-{{ ai_gen_id }} {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: {% if block.settings.background_style == 'dark' %}#ffffff{% else %}#333333{% endif %};
+  }
+
+  .ai-reels-subheading-{{ ai_gen_id }} {
+    font-size: 16px;
+    color: {% if block.settings.background_style == 'dark' %}#cccccc{% else %}#808080{% endif %};
+    margin: 0;
+  }
+
+  .ai-reels-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.videos_count }}, 1fr);
+    gap: {{ block.settings.video_spacing }}px;
+    margin-bottom: 0;
+  }
+
+  .ai-reels-video-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    border-radius: {{ block.settings.corner_radius }}px;
+    overflow: hidden;
+    background-color: #000000;
+  }
+
+  .ai-reels-video-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-reels-video-link-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-reels-play-icon-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-reels-video-wrapper-{{ ai_gen_id }}:hover .ai-reels-play-icon-{{ ai_gen_id }} {
+    opacity: 1;
+  }
+
+  .ai-reels-play-icon-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
+    fill: #333333;
+    margin-left: 3px;
+  }
+
+  .ai-reels-button-wrapper-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 30px);
+    text-align: center;
+  }
+
+  .ai-reels-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+
+  .ai-reels-button-primary-{{ ai_gen_id }} {
+    background-color: #de7f65;
+    color: #ffffff;
+  }
+
+  .ai-reels-button-primary-{{ ai_gen_id }}:hover {
+    background-color: #333333;
+  }
+
+  .ai-reels-button-secondary-{{ ai_gen_id }} {
+    background-color: #333333;
+    color: #ffffff;
+  }
+
+  .ai-reels-button-secondary-{{ ai_gen_id }}:hover {
+    background-color: #de7f65;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .ai-reels-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-reels-section-{{ ai_gen_id }} {
+      padding-top: {{ block.settings.padding_top | times: 0.6 }}px;
+      padding-bottom: {{ block.settings.padding_bottom | times: 0.6 }}px;
+    }
+
+    .ai-reels-heading-{{ ai_gen_id }} {
+      font-size: 24px;
+    }
+
+    .ai-reels-subheading-{{ ai_gen_id }} {
+      font-size: 14px;
+    }
+
+    .ai-reels-grid-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-reels-carousel-{{ ai_gen_id }} {
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ai-reels-carousel-track-{{ ai_gen_id }} {
+      display: flex;
+      gap: {{ block.settings.video_spacing }}px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 0 20px;
+    }
+
+    .ai-reels-carousel-track-{{ ai_gen_id }}::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ai-reels-carousel-item-{{ ai_gen_id }} {
+      flex: 0 0 280px;
+      scroll-snap-align: center;
+    }
+
+    .ai-reels-play-icon-{{ ai_gen_id }} {
+      opacity: 1;
+    }
+  }
+
+  @media screen and (min-width: 769px) {
+    .ai-reels-carousel-{{ ai_gen_id }} {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 1025px) {
+    .ai-reels-section-{{ ai_gen_id }}.hide-desktop {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    .ai-reels-section-{{ ai_gen_id }}.hide-tablet {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-reels-section-{{ ai_gen_id }}.hide-mobile {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+<video-reels-{{ ai_gen_id }}
+  class="ai-reels-section-{{ ai_gen_id }} 
+    {% unless block.settings.show_on_desktop %}hide-desktop{% endunless %}
+    {% unless block.settings.show_on_tablet %}hide-tablet{% endunless %}
+    {% unless block.settings.show_on_mobile %}hide-mobile{% endunless %}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-reels-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank or block.settings.subheading != blank %}
+      <div class="ai-reels-header-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-reels-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+        {% if block.settings.subheading != blank %}
+          <p class="ai-reels-subheading-{{ ai_gen_id }}">{{ block.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-reels-grid-{{ ai_gen_id }}">
+      {% if block.settings.video_1_url != blank or block.settings.video_1_shopify != blank %}
+        <div class="ai-reels-video-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.video_1_link != blank %}
+            <a href="{{ block.settings.video_1_link }}" class="ai-reels-video-link-{{ ai_gen_id }}">
+          {% endif %}
+
+          <video
+            class="ai-reels-video-{{ ai_gen_id }}"
+            {% if block.settings.video_1_autoplay %}autoplay{% endif %}
+            {% if block.settings.video_1_muted %}muted{% endif %}
+            {% if block.settings.video_1_loop %}loop{% endif %}
+            {% if block.settings.video_1_pause_hover %}data-pause-hover="true"{% endif %}
+            playsinline
+            {% if block.settings.video_1_poster %}poster="{{ block.settings.video_1_poster | image_url: width: 600 }}"{% endif %}
+          >
+            {% if block.settings.video_1_shopify != blank %}
+              {% for source in block.settings.video_1_shopify.sources %}
+                <source src="{{ source.url }}" type="{{ source.mime_type }}">
+              {% endfor %}
+            {% elsif block.settings.video_1_url != blank %}
+              <source src="{{ block.settings.video_1_url }}" type="video/mp4">
+            {% endif %}
+          </video>
+
+          {% if block.settings.video_1_show_icon %}
+            <div class="ai-reels-play-icon-{{ ai_gen_id }}">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          {% endif %}
+
+          {% if block.settings.video_1_link != blank %}
+            </a>
+          {% endif %}
+
+          {% if block.settings.video_1_button_enabled and block.settings.video_1_button_text != blank %}
+            <div class="ai-reels-button-wrapper-{{ ai_gen_id }}">
+              <a 
+                href="{{ block.settings.video_1_button_link }}" 
+                class="ai-reels-button-{{ ai_gen_id }} ai-reels-button-{{ block.settings.video_1_button_style }}-{{ ai_gen_id }}"
+              >
+                {{ block.settings.video_1_button_text }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.video_2_url != blank or block.settings.video_2_shopify != blank %}
+        <div class="ai-reels-video-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.video_2_link != blank %}
+            <a href="{{ block.settings.video_2_link }}" class="ai-reels-video-link-{{ ai_gen_id }}">
+          {% endif %}
+
+          <video
+            class="ai-reels-video-{{ ai_gen_id }}"
+            {% if block.settings.video_2_autoplay %}autoplay{% endif %}
+            {% if block.settings.video_2_muted %}muted{% endif %}
+            {% if block.settings.video_2_loop %}loop{% endif %}
+            {% if block.settings.video_2_pause_hover %}data-pause-hover="true"{% endif %}
+            playsinline
+            {% if block.settings.video_2_poster %}poster="{{ block.settings.video_2_poster | image_url: width: 600 }}"{% endif %}
+          >
+            {% if block.settings.video_2_shopify != blank %}
+              {% for source in block.settings.video_2_shopify.sources %}
+                <source src="{{ source.url }}" type="{{ source.mime_type }}">
+              {% endfor %}
+            {% elsif block.settings.video_2_url != blank %}
+              <source src="{{ block.settings.video_2_url }}" type="video/mp4">
+            {% endif %}
+          </video>
+
+          {% if block.settings.video_2_show_icon %}
+            <div class="ai-reels-play-icon-{{ ai_gen_id }}">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          {% endif %}
+
+          {% if block.settings.video_2_link != blank %}
+            </a>
+          {% endif %}
+
+          {% if block.settings.video_2_button_enabled and block.settings.video_2_button_text != blank %}
+            <div class="ai-reels-button-wrapper-{{ ai_gen_id }}">
+              <a 
+                href="{{ block.settings.video_2_button_link }}" 
+                class="ai-reels-button-{{ ai_gen_id }} ai-reels-button-{{ block.settings.video_2_button_style }}-{{ ai_gen_id }}"
+              >
+                {{ block.settings.video_2_button_text }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.video_3_url != blank or block.settings.video_3_shopify != blank %}
+        <div class="ai-reels-video-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.video_3_link != blank %}
+            <a href="{{ block.settings.video_3_link }}" class="ai-reels-video-link-{{ ai_gen_id }}">
+          {% endif %}
+
+          <video
+            class="ai-reels-video-{{ ai_gen_id }}"
+            {% if block.settings.video_3_autoplay %}autoplay{% endif %}
+            {% if block.settings.video_3_muted %}muted{% endif %}
+            {% if block.settings.video_3_loop %}loop{% endif %}
+            {% if block.settings.video_3_pause_hover %}data-pause-hover="true"{% endif %}
+            playsinline
+            {% if block.settings.video_3_poster %}poster="{{ block.settings.video_3_poster | image_url: width: 600 }}"{% endif %}
+          >
+            {% if block.settings.video_3_shopify != blank %}
+              {% for source in block.settings.video_3_shopify.sources %}
+                <source src="{{ source.url }}" type="{{ source.mime_type }}">
+              {% endfor %}
+            {% elsif block.settings.video_3_url != blank %}
+              <source src="{{ block.settings.video_3_url }}" type="video/mp4">
+            {% endif %}
+          </video>
+
+          {% if block.settings.video_3_show_icon %}
+            <div class="ai-reels-play-icon-{{ ai_gen_id }}">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          {% endif %}
+
+          {% if block.settings.video_3_link != blank %}
+            </a>
+          {% endif %}
+
+          {% if block.settings.video_3_button_enabled and block.settings.video_3_button_text != blank %}
+            <div class="ai-reels-button-wrapper-{{ ai_gen_id }}">
+              <a 
+                href="{{ block.settings.video_3_button_link }}" 
+                class="ai-reels-button-{{ ai_gen_id }} ai-reels-button-{{ block.settings.video_3_button_style }}-{{ ai_gen_id }}"
+              >
+                {{ block.settings.video_3_button_text }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.videos_count == '4' or block.settings.videos_count == '5' %}
+        {% if block.settings.video_4_url != blank or block.settings.video_4_shopify != blank %}
+          <div class="ai-reels-video-wrapper-{{ ai_gen_id }}">
+            {% if block.settings.video_4_link != blank %}
+              <a href="{{ block.settings.video_4_link }}" class="ai-reels-video-link-{{ ai_gen_id }}">
+            {% endif %}
+
+            <video
+              class="ai-reels-video-{{ ai_gen_id }}"
+              {% if block.settings.video_4_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_4_muted %}muted{% endif %}
+              {% if block.settings.video_4_loop %}loop{% endif %}
+              {% if block.settings.video_4_pause_hover %}data-pause-hover="true"{% endif %}
+              playsinline
+              {% if block.settings.video_4_poster %}poster="{{ block.settings.video_4_poster | image_url: width: 600 }}"{% endif %}
+            >
+              {% if block.settings.video_4_shopify != blank %}
+                {% for source in block.settings.video_4_shopify.sources %}
+                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                {% endfor %}
+              {% elsif block.settings.video_4_url != blank %}
+                <source src="{{ block.settings.video_4_url }}" type="video/mp4">
+              {% endif %}
+            </video>
+
+            {% if block.settings.video_4_show_icon %}
+              <div class="ai-reels-play-icon-{{ ai_gen_id }}">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            {% endif %}
+
+            {% if block.settings.video_4_link != blank %}
+              </a>
+            {% endif %}
+
+            {% if block.settings.video_4_button_enabled and block.settings.video_4_button_text != blank %}
+              <div class="ai-reels-button-wrapper-{{ ai_gen_id }}">
+                <a 
+                  href="{{ block.settings.video_4_button_link }}" 
+                  class="ai-reels-button-{{ ai_gen_id }} ai-reels-button-{{ block.settings.video_4_button_style }}-{{ ai_gen_id }}"
+                >
+                  {{ block.settings.video_4_button_text }}
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+
+      {% if block.settings.videos_count == '5' %}
+        {% if block.settings.video_5_url != blank or block.settings.video_5_shopify != blank %}
+          <div class="ai-reels-video-wrapper-{{ ai_gen_id }}">
+            {% if block.settings.video_5_link != blank %}
+              <a href="{{ block.settings.video_5_link }}" class="ai-reels-video-link-{{ ai_gen_id }}">
+            {% endif %}
+
+            <video
+              class="ai-reels-video-{{ ai_gen_id }}"
+              {% if block.settings.video_5_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_5_muted %}muted{% endif %}
+              {% if block.settings.video_5_loop %}loop{% endif %}
+              {% if block.settings.video_5_pause_hover %}data-pause-hover="true"{% endif %}
+              playsinline
+              {% if block.settings.video_5_poster %}poster="{{ block.settings.video_5_poster | image_url: width: 600 }}"{% endif %}
+            >
+              {% if block.settings.video_5_shopify != blank %}
+                {% for source in block.settings.video_5_shopify.sources %}
+                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                {% endfor %}
+              {% elsif block.settings.video_5_url != blank %}
+                <source src="{{ block.settings.video_5_url }}" type="video/mp4">
+              {% endif %}
+            </video>
+
+            {% if block.settings.video_5_show_icon %}
+              <div class="ai-reels-play-icon-{{ ai_gen_id }}">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            {% endif %}
+
+            {% if block.settings.video_5_link != blank %}
+              </a>
+            {% endif %}
+
+            {% if block.settings.video_5_button_enabled and block.settings.video_5_button_text != blank %}
+              <div class="ai-reels-button-wrapper-{{ ai_gen_id }}">
+                <a 
+                  href="{{ block.settings.video_5_button_link }}" 
+                  class="ai-reels-button-{{ ai_gen_id }} ai-reels-button-{{ block.settings.video_5_button_style }}-{{ ai_gen_id }}"
+                >
+                  {{ block.settings.video_5_button_text }}
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <div class="ai-reels-carousel-{{ ai_gen_id }}">
+      <div class="ai-reels-carousel-track-{{ ai_gen_id }}">
+        {% if block.settings.video_1_url != blank or block.settings.video_1_shopify != blank %}
+          <div class="ai-reels-carousel-item-{{ ai_gen_id }}">
+            <div class="ai-reels-video-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.video_1_link != blank %}
+                <a href="{{ block.settings.video_1_link }}" class="ai-reels-video-link-{{ ai_gen_id }}">
+              {% endif %}
+
+              <video
+                class="ai-reels-video-{{ ai_gen_id }}"
+                {% if block.settings.mobile_autoplay %}autoplay{% endif %}
+                {% if block.settings.video_1_muted %}muted{% endif %}
+                {% if block.settings.video_1_loop %}loop{% endif %}
+                playsinline
+                {% if block.settings.video_1_poster %}poster="{{ block.settings.video_1_poster | image_url: width: 600 }}"{% endif %}
+              >
+                {% if block.settings.video_1_shopify != blank %}
+                  {% for source in block.settings.video_1_shopify.sources %}
+                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                  {% endfor %}
+                {% elsif block.settings.video_1_url != blank %}
+                  <source src="{{ block.settings.video_1_url }}" type="video/mp4">
+                {% endif %}
+              </video>
+
+              {% if block.settings.video_1_show_icon %}
+                <div class="ai-reels-play-icon-{{ ai_gen_id }}">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              {% endif %}
+
+              {% if block.settings.video_1_link != blank %}
+                </a>
+              {% endif %}
+
+              {% if block.settings.video_1_button_enabled and block.settings.video_1_button_text != blank %}
+                <div class="ai-reels-button-wrapper-{{ ai_gen_id }}">
+                  <a 
+                    href="{{ block.settings.video_1_button_link }}" 
+                    class="ai-reels-button-{{ ai_gen_id }} ai-reels-button-{{ block.settings.video_1_button_style }}-{{ ai_gen_id }}"
+                  >
+                    {{ block.settings.video_1_button_text }}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.video_2_url != blank or block.settings.video_2_shopify != blank %}
+          <div class="ai-reels-carousel-item-{{ ai_gen_id }}">
+            <div class="ai-reels-video-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.video_2_link != blank %}
+                <a href="{{ block.settings.video_2_link }}" class="ai-reels-video-link-{{ ai_gen_id }}">
+              {% endif %}
+
+              <video
+                class="ai-reels-video-{{ ai_gen_id }}"
+                {% if block.settings.mobile_autoplay %}autoplay{% endif %}
+                {% if block.settings.video_2_muted %}muted{% endif %}
+                {% if block.settings.video_2_loop %}loop{% endif %}
+                playsinline
+                {% if block.settings.video_2_poster %}poster="{{ block.settings.video_2_poster | image_url: width: 600 }}"{% endif %}
+              >
+                {% if block.settings.video_2_shopify != blank %}
+                  {% for source in block.settings.video_2_shopify.sources %}
+                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                  {% endfor %}
+                {% elsif block.settings.video_2_url != blank %}
+                  <source src="{{ block.settings.video_2_url }}" type="video/mp4">
+                {% endif %}
+              </video>
+
+              {% if block.settings.video_2_show_icon %}
+                <div class="ai-reels-play-icon-{{ ai_gen_id }}">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              {% endif %}
+
+              {% if block.settings.video_2_link != blank %}
+                </a>
+              {% endif %}
+
+              {% if block.settings.video_2_button_enabled and block.settings.video_2_button_text != blank %}
+                <div class="ai-reels-button-wrapper-{{ ai_gen_id }}">
+                  <a 
+                    href="{{ block.settings.video_2_button_link }}" 
+                    class="ai-reels-button-{{ ai_gen_id }} ai-reels-button-{{ block.settings.video_2_button_style }}-{{ ai_gen_id }}"
+                  >
+                    {{ block.settings.video_2_button_text }}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.video_3_url != blank or block.settings.video_3_shopify != blank %}
+          <div class="ai-reels-carousel-item-{{ ai_gen_id }}">
+            <div class="ai-reels-video-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.video_3_link != blank %}
+                <a href="{{ block.settings.video_3_link }}" class="ai-reels-video-link-{{ ai_gen_id }}">
+              {% endif %}
+
+              <video
+                class="ai-reels-video-{{ ai_gen_id }}"
+                {% if block.settings.mobile_autoplay %}autoplay{% endif %}
+                {% if block.settings.video_3_muted %}muted{% endif %}
+                {% if block.settings.video_3_loop %}loop{% endif %}
+                playsinline
+                {% if block.settings.video_3_poster %}poster="{{ block.settings.video_3_poster | image_url: width: 600 }}"{% endif %}
+              >
+                {% if block.settings.video_3_shopify != blank %}
+                  {% for source in block.settings.video_3_shopify.sources %}
+                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                  {% endfor %}
+                {% elsif block.settings.video_3_url != blank %}
+                  <source src="{{ block.settings.video_3_url }}" type="video/mp4">
+                {% endif %}
+              </video>
+
+              {% if block.settings.video_3_show_icon %}
+                <div class="ai-reels-play-icon-{{ ai_gen_id }}">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              {% endif %}
+
+              {% if block.settings.video_3_link != blank %}
+                </a>
+              {% endif %}
+
+              {% if block.settings.video_3_button_enabled and block.settings.video_3_button_text != blank %}
+                <div class="ai-reels-button-wrapper-{{ ai_gen_id }}">
+                  <a 
+                    href="{{ block.settings.video_3_button_link }}" 
+                    class="ai-reels-button-{{ ai_gen_id }} ai-reels-button-{{ block.settings.video_3_button_style }}-{{ ai_gen_id }}"
+                  >
+                    {{ block.settings.video_3_button_text }}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.video_4_url != blank or block.settings.video_4_shopify != blank %}
+          <div class="ai-reels-carousel-item-{{ ai_gen_id }}">
+            <div class="ai-reels-video-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.video_4_link != blank %}
+                <a href="{{ block.settings.video_4_link }}" class="ai-reels-video-link-{{ ai_gen_id }}">
+              {% endif %}
+
+              <video
+                class="ai-reels-video-{{ ai_gen_id }}"
+                {% if block.settings.mobile_autoplay %}autoplay{% endif %}
+                {% if block.settings.video_4_muted %}muted{% endif %}
+                {% if block.settings.video_4_loop %}loop{% endif %}
+                playsinline
+                {% if block.settings.video_4_poster %}poster="{{ block.settings.video_4_poster | image_url: width: 600 }}"{% endif %}
+              >
+                {% if block.settings.video_4_shopify != blank %}
+                  {% for source in block.settings.video_4_shopify.sources %}
+                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                  {% endfor %}
+                {% elsif block.settings.video_4_url != blank %}
+                  <source src="{{ block.settings.video_4_url }}" type="video/mp4">
+                {% endif %}
+              </video>
+
+              {% if block.settings.video_4_show_icon %}
+                <div class="ai-reels-play-icon-{{ ai_gen_id }}">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              {% endif %}
+
+              {% if block.settings.video_4_link != blank %}
+                </a>
+              {% endif %}
+
+              {% if block.settings.video_4_button_enabled and block.settings.video_4_button_text != blank %}
+                <div class="ai-reels-button-wrapper-{{ ai_gen_id }}">
+                  <a 
+                    href="{{ block.settings.video_4_button_link }}" 
+                    class="ai-reels-button-{{ ai_gen_id }} ai-reels-button-{{ block.settings.video_4_button_style }}-{{ ai_gen_id }}"
+                  >
+                    {{ block.settings.video_4_button_text }}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.video_5_url != blank or block.settings.video_5_shopify != blank %}
+          <div class="ai-reels-carousel-item-{{ ai_gen_id }}">
+            <div class="ai-reels-video-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.video_5_link != blank %}
+                <a href="{{ block.settings.video_5_link }}" class="ai-reels-video-link-{{ ai_gen_id }}">
+              {% endif %}
+
+              <video
+                class="ai-reels-video-{{ ai_gen_id }}"
+                {% if block.settings.mobile_autoplay %}autoplay{% endif %}
+                {% if block.settings.video_5_muted %}muted{% endif %}
+                {% if block.settings.video_5_loop %}loop{% endif %}
+                playsinline
+                {% if block.settings.video_5_poster %}poster="{{ block.settings.video_5_poster | image_url: width: 600 }}"{% endif %}
+              >
+                {% if block.settings.video_5_shopify != blank %}
+                  {% for source in block.settings.video_5_shopify.sources %}
+                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                  {% endfor %}
+                {% elsif block.settings.video_5_url != blank %}
+                  <source src="{{ block.settings.video_5_url }}" type="video/mp4">
+                {% endif %}
+              </video>
+
+              {% if block.settings.video_5_show_icon %}
+                <div class="ai-reels-play-icon-{{ ai_gen_id }}">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              {% endif %}
+
+              {% if block.settings.video_5_link != blank %}
+                </a>
+              {% endif %}
+
+              {% if block.settings.video_5_button_enabled and block.settings.video_5_button_text != blank %}
+                <div class="ai-reels-button-wrapper-{{ ai_gen_id }}">
+                  <a 
+                    href="{{ block.settings.video_5_button_link }}" 
+                    class="ai-reels-button-{{ ai_gen_id }} ai-reels-button-{{ block.settings.video_5_button_style }}-{{ ai_gen_id }}"
+                  >
+                    {{ block.settings.video_5_button_text }}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</video-reels-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class VideoReels{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.videos = [];
+        this.observer = null;
+      }
+
+      connectedCallback() {
+        this.videos = this.querySelectorAll('.ai-reels-video-{{ ai_gen_id }}');
+        this.setupIntersectionObserver();
+        this.setupHoverPause();
+      }
+
+      setupIntersectionObserver() {
+        const options = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.5
+        };
+
+        this.observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+              if (video.hasAttribute('autoplay') || video.closest('.ai-reels-carousel-{{ ai_gen_id }}')) {
+                video.play().catch(() => {});
+              }
+            } else {
+              video.pause();
+            }
+          });
+        }, options);
+
+        this.videos.forEach(video => {
+          this.observer.observe(video);
+        });
+      }
+
+      setupHoverPause() {
+        this.videos.forEach(video => {
+          if (video.dataset.pauseHover === 'true') {
+            const wrapper = video.closest('.ai-reels-video-wrapper-{{ ai_gen_id }}');
+            
+            wrapper.addEventListener('mouseenter', () => {
+              video.pause();
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+              video.play().catch(() => {});
+            });
+          }
+        });
+      }
+
+      disconnectedCallback() {
+        if (this.observer) {
+          this.observer.disconnect();
+        }
+      }
+    }
+
+    customElements.define('video-reels-{{ ai_gen_id }}', VideoReels{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Instagram Reels videos",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Watch Our Stories"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover our latest moments"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "videos_count",
+      "label": "Videos per row",
+      "options": [
+        {
+          "value": "3",
+          "label": "3 videos"
+        },
+        {
+          "value": "4",
+          "label": "4 videos"
+        },
+        {
+          "value": "5",
+          "label": "5 videos"
+        }
+      ],
+      "default": "5"
+    },
+    {
+      "type": "range",
+      "id": "video_spacing",
+      "label": "Space between videos",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background style",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Mobile carousel"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_autoplay",
+      "label": "Autoplay on mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Device visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_desktop",
+      "label": "Show on desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_tablet",
+      "label": "Show on tablet",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_mobile",
+      "label": "Show on mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Video 1"
+    },
+    {
+      "type": "video",
+      "id": "video_1_shopify",
+      "label": "Shopify hosted video"
+    },
+    {
+      "type": "text",
+      "id": "video_1_url",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_1_poster",
+      "label": "Poster image"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_muted",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_pause_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_show_icon",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "video_1_link",
+      "label": "Video link"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_button_enabled",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "video_1_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "video_1_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "video_1_button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Video 2"
+    },
+    {
+      "type": "video",
+      "id": "video_2_shopify",
+      "label": "Shopify hosted video"
+    },
+    {
+      "type": "text",
+      "id": "video_2_url",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_2_poster",
+      "label": "Poster image"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_muted",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_pause_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_show_icon",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "video_2_link",
+      "label": "Video link"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_button_enabled",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "video_2_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "video_2_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "video_2_button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Video 3"
+    },
+    {
+      "type": "video",
+      "id": "video_3_shopify",
+      "label": "Shopify hosted video"
+    },
+    {
+      "type": "text",
+      "id": "video_3_url",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_3_poster",
+      "label": "Poster image"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_muted",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_pause_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_show_icon",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "video_3_link",
+      "label": "Video link"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_button_enabled",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "video_3_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "video_3_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "video_3_button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Video 4"
+    },
+    {
+      "type": "video",
+      "id": "video_4_shopify",
+      "label": "Shopify hosted video"
+    },
+    {
+      "type": "text",
+      "id": "video_4_url",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_4_poster",
+      "label": "Poster image"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_muted",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_pause_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_show_icon",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "video_4_link",
+      "label": "Video link"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_button_enabled",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "video_4_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "video_4_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "video_4_button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Video 5"
+    },
+    {
+      "type": "video",
+      "id": "video_5_shopify",
+      "label": "Shopify hosted video"
+    },
+    {
+      "type": "text",
+      "id": "video_5_url",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_5_poster",
+      "label": "Poster image"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_muted",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_pause_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_show_icon",
+      "label": "Show play icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "video_5_link",
+      "label": "Video link"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_button_enabled",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "video_5_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "video_5_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "video_5_button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Reels videos"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,33 @@
+<div class="product-info">
+    <div class="form-group">
+        {%- if settings.wishlist_enable -%}
+        <div class="grid-wrapper">
+            {% render 'wishlist-5', product: product %}
+        </div>
+        {%- endif -%}
+        {% if block.settings.size_modal_enable %}
+        <div class="grid-wrapper">
+            <a href="#size-modal" class="form-btn" data-bs-toggle="modal">
+                <i class="feather-file-text"></i>
+                <span class="icon-text">{{ block.settings.size_title }}</span>
+            </a>
+        </div>
+        {% endif %}
+        {% if block.settings.question_modal_enable %}
+        <div class="grid-wrapper">
+            <a href="#que-modal" class="form-btn" data-bs-toggle="modal">
+                <i class="feather-edit"></i>
+                <span class="icon-text">{{ block.settings.que_title }}</span>
+            </a>
+        </div>
+        {% endif %}
+        {% if block.settings.share_modal_enable %}
+        <div class="grid-wrapper">
+            <a href="#share-modal" class="form-btn" data-bs-toggle="modal">
+                <i class="feather-share-2"></i>
+                <span class="icon-text">{{ block.settings.share_title }}</span>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>

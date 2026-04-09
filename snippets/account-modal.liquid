@@ -1,0 +1,338 @@
+<div class="modal fade" id="accountmodal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-box">
+          <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close"><i class="feather-x"></i></button>
+          <div class="tab tab-grp">
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation">
+                <a class="active" role="tab" data-bs-toggle="tab" href="#tab-login">
+                  <span class="tab-title">{{ settings.acc_login_title }}</span>
+                </a>
+              </li>
+              <li role="presentation">
+                <a role="tab" data-bs-toggle="tab" href="#tab-register">
+                  <span class="tab-title">{{ settings.acc_register_title }}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-content tabs">
+            <div class="tab-pane fade active show" id="tab-login" role="tabpanel">
+              <div class="acc-form">
+                <div class="log-acc-page" id="CustomerLoginForm">
+                  <div class="acc-page">
+                    <div class="login">
+                      {% form 'customer_login' %}
+                      <div class="login-form-container">
+                        {{ form.errors | default_errors }}
+                        <ul class="fill-form">
+                          <li class="log-email">
+                            <label for="Email">{{ 'customer.login.email' | t }}</label>
+                            <input type="email" name="customer[email]" id="CustomerEmail" class="input-full{% if form.errors contains 'email' %} error{% endif %}" placeholder="{{ 'customer.login.email' | t }}" autocorrect="off" autocapitalize="off" autofocus required>
+                          </li>
+                          {% if form.password_needed %}
+                          <li class="log-pwd">
+                            <label>{{ 'customer.login.password' | t }}</label>
+                            <input type="password" value="" name="customer[password]" id="CustomerPassword" class="input-full{% if form.errors contains 'password' %} error{% endif %}" placeholder="{{ 'customer.login.password' | t }}" required>
+                          </li>
+                          {% endif %}
+                        </ul>
+                        <div class="form-action-button">
+                          <button type="submit" class="btn btn-style2">{{ 'customer.login.sign_in' | t }}</button>
+                        </div>
+                      </div>
+                      {% endform %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="tab-register" role="tabpanel">
+              <div class="acc-page">
+                <div class="log-acc-page">
+                  {% form 'create_customer' %}
+                  <div class="login-form-container">
+                    {{ form.errors | default_errors }}
+                    <ul class="fill-form">
+                      <li class="fname">
+                        <label for="FirstName">{{ 'customer.register.first_name' | t }}</label>
+                        <input type="text" name="customer[first_name]" id="FirstName" class="input-full" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocapitalize="words" autofocus required>
+                      </li>
+                      <li class="lname">
+                        <label for="LastName">{{ 'customer.register.last_name' | t }}</label>
+                        <input type="text" name="customer[last_name]" id="LastName" class="input-full" placeholder="{{ 'customer.register.last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocapitalize="words" required>
+                      </li>
+                      <li class="log-email">
+                        <label for="Email">{{ 'customer.register.email' | t }}</label>
+                        <input type="email" name="customer[email]" id="Email" class="input-full{% if form.errors contains 'email' %} error{% endif %}" placeholder="{{ 'customer.register.email' | t }}" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off" required>
+                      </li>
+                      <li class="log-pwd">
+                        <label for="CreatePassword">{{ 'customer.register.password' | t }}</label>
+                        <input type="password" name="customer[password]" id="CreatePassword" class="input-full{% if form.errors contains 'password' %} error{% endif %}" placeholder="{{ 'customer.register.password' | t }}" required>
+                      </li>
+                    </ul>
+                    <div class="form-action-button">
+                     {% if settings.register_agree_enable %}
+                      <div class="read-agree">
+                        <label>
+                          <span class="agree-text">{{ settings.register_agree_text }} <a href="{{ settings.register_terms_text_link }}">{{ settings.register_terms_text }}</a></span>
+                          <input type="checkbox" class="cust-checkbox create-checkbox">
+                          <span class="cust-check"></span>
+                        </label>
+                      </div>
+                      {% endif %}
+                      <button type="submit" class="btn btn-style2 create" {% if settings.register_agree_enable %}disabled="disabled"{% endif %}>{{ 'customer.register.submit' | t }}</button>
+                    </div>
+                  </div>
+                  {% endform %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .modal-open .modal#accountmodal {
+    padding-right: 0!important;
+  }
+  #accountmodal .modal-content {
+    border: none;
+    overflow: hidden;
+    border-radius: 0;
+  }
+  #accountmodal .modal-body {
+    padding: 0px;
+  }
+  #accountmodal .form-box {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+  }
+  #accountmodal .form-box .tab-grp ul.nav-tabs {
+    border-bottom: 1px solid var(--theme-border-color);
+    display: flex;
+    align-items: center;
+  }
+  #accountmodal .form-box .tab-grp ul.nav-tabs li {
+    width: 50%;
+  }
+  #accountmodal .form-box .tab-grp ul.nav-tabs li a {
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+    padding-bottom: 10px;
+    border: 1px solid transparent;
+  }
+  #accountmodal .form-box .tab-grp ul.nav-tabs li a:hover,
+  #accountmodal .form-box .tab-grp ul.nav-tabs li a.active {
+    color: var(--font-color-primary);
+    border-bottom: 1px solid;
+  }
+  #accountmodal .form-box .tab-content  {
+    margin-top: 30px;
+  }
+  #accountmodal .form-box button.pop-close {
+    font-size: 20px;
+    line-height: 0;
+    position: absolute;
+    top: 15px;
+    {% if settings.enable_rtl %}
+    left: 15px;
+    {% else %}
+    right: 15px;
+    {% endif %}
+  }
+  #accountmodal .form-box button.pop-close:hover {
+    color: var(--font-color-primary);
+  }
+  @media(max-width: 479px){
+    #accountmodal .form-box{
+      padding: 30px;
+    }
+    #accountmodal .form-box .tab-grp ul.nav-tabs li a {
+      font-size: 18px;
+    }
+  }
+
+  /* form css */
+  .log-acc-page .login-form-container ul.fill-form li {
+    margin-top: 25px;
+  }
+  .log-acc-page .login-form-container ul.fill-form li:first-child {
+    margin-top: 0px;
+  }
+  .log-acc-page .login-form-container ul.fill-form li label {
+    display: block;
+    margin-bottom: 11px;
+    cursor: auto;
+  }
+  .log-acc-page .login-form-container input {
+    width: 100%;
+    background-color: #FFFFFF;
+  }
+  .log-acc-page .login-form-container .form-action-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  .log-acc-page .login-form-container .form-action-button a {
+    display: block;
+    color: var(--font-color-body);
+    font-size: 16px;
+    text-decoration: underline;
+    line-height: 1;
+    -webkit-transition: all 0s ease-in-out 0s;
+    -o-transition: all 0s ease-in-out 0s;
+    transition: all 0s ease-in-out 0s;
+  }
+  .log-acc-page .login-form-container .form-action-button a:hover {
+    color: var(--font-color-header);
+  }
+  @media (max-width: 479px) {
+    .log-acc-page .login-form-container .form-action-button {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .log-acc-page .login-form-container .form-action-button a {
+      margin-top: 30px;
+    }
+  }
+
+  /* acc-link css */
+  .log-acc-page .acc-wrapper {
+    margin-top: 30px;
+    padding: 30px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--font-color-header);
+    text-align: center;
+  }
+  .log-acc-page .acc-wrapper h6 {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .log-acc-page .acc-wrapper .account-optional-action {
+    {% if settings.enable_rtl %}
+    margin-right: 5px;
+    {% else %}
+    margin-left: 5px;
+    {% endif %}
+  }
+  .log-acc-page .acc-wrapper .account-optional-action a {
+    color: {{ '#FFFFFF' | color_modify: 'alpha', 0.5 }};
+    font-size: 16px;
+    text-decoration: underline;
+    -webkit-transition: all 0s ease-in-out 0s;
+    -o-transition: all 0s ease-in-out 0s;
+    transition: all 0s ease-in-out 0s;
+  }
+  .log-acc-page .acc-wrapper .account-optional-action:hover a {
+    color: {{ '#FFFFFF' | color_modify: 'alpha', 0.8 }};
+  }
+  @media (max-width: 479px) {
+    .log-acc-page .acc-wrapper {
+      flex-direction: column;
+    }
+    .log-acc-page .acc-wrapper .account-optional-action {
+      margin-top: 8px;
+      {% if settings.enable_rtl %}
+      margin-right: 0px;
+      {% else %}
+      margin-left: 0px;
+      {% endif %}
+    }
+  }
+
+  /* error css */
+  .log-acc-page .errors {
+    color: #bd2130;
+    font-size: var(--font-size-body);
+    padding: 10px 15px;
+    margin: 0px 0px 30px;
+    background-color: {{ '#bd2130' | color_modify: 'alpha', 0.2 }};
+    {% if settings.enable_rtl %}
+    text-align: right;
+    {% else %}
+    text-align: left;
+    {% endif %}
+    border-radius: 0;
+  }
+  .log-acc-page .errors ul {
+    {% if settings.enable_rtl %}
+    margin-right: 15px;
+    margin-left: auto;
+    {% else %}
+    margin-left: 15px;
+    {% endif %}
+    list-style: square;
+    border-radius: 0;
+  }
+  .log-acc-page .errors ul li {
+    margin-top: 5px;
+  }
+  .log-acc-page .errors ul li:first-child {
+    margin-top: 0px;
+  }
+
+  /* create account checkbox css */
+  .log-acc-page .login-form-container .form-action-button .read-agree {
+    margin: -2px 0 18px;
+  }
+  .log-acc-page .login-form-container .form-action-button .read-agree label {
+    position: relative;
+    padding-inline-start: 35px;
+    margin-bottom: 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+  }
+  .log-acc-page .login-form-container .form-action-button .read-agree label span {
+    font-size: var(--font-size-body);
+  }
+  .log-acc-page .login-form-container .form-action-button .read-agree label span a {
+    display: inline-block;
+    margin: 0;
+  }
+  .log-acc-page .login-form-container .form-action-button .read-agree label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .log-acc-page .login-form-container .form-action-button .read-agree label .cust-check {
+    position: absolute;
+    left: 0;
+    width: 17px;
+    height: 17px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    border: var(--sti-border);
+    overflow: hidden;
+  }
+  .log-acc-page .login-form-container .form-action-button .read-agree label .cust-check:after {
+    display: none;
+    content: "\e92b";
+    font-family: feather !important;
+    color: #666;
+    font-size: 16px;
+  }
+  .log-acc-page .login-form-container .form-action-button .read-agree label input.cust-checkbox:checked ~ span.cust-check::after {
+    display: block;
+  }
+</style>

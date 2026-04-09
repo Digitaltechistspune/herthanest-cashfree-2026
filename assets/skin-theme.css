@@ -1,0 +1,294 @@
+/*=====================================
+  body hidden css
+======================================*/
+body.hidden {
+  overflow-y: hidden;
+  padding-right: 17px;
+}
+@media (max-width: 1199px) {
+  body.hidden {
+    padding-right: 0px;
+  }
+}
+/*=====================================
+  container css
+======================================*/
+.container {
+  max-width: 1380px;
+  padding: 0 15px;
+}
+@media(max-width: 1499px){
+  .container {
+    max-width: 1320px;
+  }
+}
+@media(max-width: 1399px){
+  .container {
+    max-width: 1140px;
+  }
+}
+@media(max-width: 1199px){
+  .container {
+    max-width: 960px;
+    padding: 0 12px;
+  }
+}
+@media(max-width: 991px){
+  .container {
+    max-width: 720px;
+  }
+}
+@media(max-width: 767px){
+  .container {
+    max-width: 100%;
+  }
+}
+
+/*=====================================
+  container-fluid css
+======================================*/
+.container-fluid {
+  padding: 0px 80px;
+}
+html.box-layout .container-fluid {
+  padding: 0px 30px;
+}
+@media (max-width: 1599px) {
+  .container-fluid {
+    padding: 0px 30px;
+  }
+  html.box-layout .container-fluid {
+    padding: 0px 30px;
+  }
+}
+@media (max-width: 1199px) {
+  .container-fluid {
+    padding: 0px 30px;
+  }
+  html.box-layout .container-fluid {
+    padding: 0px 12px;
+  }
+}
+@media (max-width: 767px) {
+  .container-fluid {
+    padding: 0px 12px;
+  }
+}
+
+/*=====================================
+  'a' tag css
+======================================*/
+a {
+  cursor: pointer;
+  display: inline-block;
+  color: var(--font-color-header);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--font-color-primary);
+}
+a,
+a:hover {
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  -o-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+a:focus {
+  outline: none;
+}
+
+/*=====================================
+  'span' tag css
+======================================*/
+span {
+  display: inline-block;
+}
+
+/*=====================================
+  'button' tag css
+======================================*/
+button {
+  color: var(--font-color-header);
+  padding: 0;
+  display: inline-block;  
+  background: 0 0;
+  font-family: var(--font-custom-stack-body);
+  border: none;
+  line-height: normal;
+}
+button,
+button:hover {
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  -o-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+button,
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus {
+  outline: none;
+  box-shadow: none;
+}
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/*=====================================
+  'ul', 'li' tag css
+======================================*/
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*=====================================
+  tooltip css
+=====================================*/
+.tooltip, .invalid-tooltip, .tooltip-inner, .valid-tooltip {
+  font-size:13px;
+  border-radius: 0;
+}
+
+/*=====================================
+  box-layout css
+=====================================*/
+html.box-layout {
+  margin: auto;
+  height: auto;
+  background-color: var(--box-body-bgcolor);
+}
+html.box-layout .bgimg {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+html.box-layout body {
+  max-width: calc(100% - 90px);
+  margin: 0 auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+html.box-layout .header-area.sticky {
+  max-width: calc(100% - 90px);
+  margin: 0 auto;
+}
+@media (max-width: 1199px) {
+  html.box-layout body,
+  html.box-layout .header-area.sticky {
+    max-width: calc(100% - 24px);
+  }
+}
+@media (max-width: 767px) {
+  html.box-layout {
+    background-image: unset;
+    background-color: unset;
+  }
+  html.box-layout body {
+    max-width: 100%;
+    box-shadow: none;
+  }
+  html.box-layout .header-area.sticky {
+    max-width: 100%;
+  }
+}
+
+/*=====================================
+  banner hover css
+======================================*/
+.banner-hover {
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+.banner-hover a {
+  overflow: hidden;
+}
+.banner-hover img {
+  width: 100%;
+  border-radius: 0;
+}
+.banner-hover:hover img {
+  transform: scale(1.1);
+}
+.banner-hover img,
+.banner-hover:hover img {
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  -o-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+
+/*=====================================
+  product quantity css
+======================================*/
+.product-quantity .cart-plus-minus {
+  display: flex;
+  position: relative;
+  border: 1px solid var(--theme-border-color);
+}
+.product-quantity .cart-plus-minus .qtybutton {
+  font-size: 18px;
+  height: 35px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 0;
+  -webkit-transition: all .3s ease-in-out 0s;
+  -o-transition: all .3s ease-in-out 0s;
+  transition: all .3s ease-in-out 0s;
+}
+.product-quantity .cart-plus-minus .qtybutton:hover {
+  color: #fff;
+  background-color: var(--font-color-primary);
+}
+html[dir=ltr] .product-quantity .cart-plus-minus .dec.qtybutton {
+  border-right: 1px solid var(--theme-border-color);
+}
+html[dir=rtl] .product-quantity .cart-plus-minus .dec.qtybutton {
+  border-left: 1px solid var(--theme-border-color);
+}
+html[dir=ltr] .product-quantity .cart-plus-minus .inc.qtybutton {
+  border-left: 1px solid var(--theme-border-color);
+}
+html[dir=rtl] .product-quantity .cart-plus-minus .inc.qtybutton {
+  border-right: 1px solid var(--theme-border-color);
+}
+.product-quantity .cart-plus-minus input {
+  height: 35px;
+  width: 50px;
+  text-align: center;
+  border: none;
+  background-color: transparent;
+}
+.product-quantity .cart-plus-minus.disabled {
+  opacity: .65;
+  pointer-events: none;
+}
+/*=====================================
+  shopify challenge css
+======================================*/
+.shopify-challenge__container p.shopify-challenge__message {
+  font-size: 16px;
+}
+.shopify-challenge__container .g-recaptcha {
+  margin: 30px 0px!important;
+}
+.shopify-challenge__container .shopify-challenge__button {
+  color: var(--font-color-body);
+  padding: 0;
+  background-color: transparent;
+  text-decoration: underline; 
+  border: none;
+}
+.shopify-challenge__container .shopify-challenge__button:focus{
+  border: none;
+}
+.shopify-challenge__container .shopify-challenge__button:hover {
+  color: var(--font-color-header);
+}

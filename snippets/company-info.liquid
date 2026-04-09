@@ -1,0 +1,40 @@
+{% if settings.company_title != "" or settings.add1 != "" or settings.add2 != "" %}
+<li class="ftcon-li">
+	<span class="con-icon"><i class="feather-map-pin"></i></span>
+	{% if settings.company_title != "" %}
+  	<h6 class="company-title">{{ settings.company_title }}</h6>
+  	{% endif %}
+	<span class="contact-block con-add">
+		{% if settings.add1 != "" %}
+		<span>{{ settings.add1 }}</span>
+		{% endif %}
+		{% if settings.add2 != "" %}
+		<span>{{ settings.add2 }}</span>
+		{% endif %}
+	</span>
+</li>
+{% endif %}
+{% if settings.company_call != "" or settings.contact != "" %}
+<li class="ftcon-li">
+	<span class="con-icon"><i class="feather-phone-call"></i></span>
+	{% if settings.company_call != "" %}
+  	<h6 class="company-title">{{ settings.company_call }}</h6>
+  	{% endif %}
+	<div class="contact-block">
+		<a href="tel:{{ settings.contact }}" class="con-add">{{ settings.contact }}</a>
+		<a href="tel:{{ settings.contact2 }}" class="con-add">{{ settings.contact2 }}</a>
+	</div>
+</li>
+{% endif %}
+{% if settings.company_map != "" or settings.email != "" or settings.email2 != "" %}
+<li class="ftcon-li">
+	<span class="con-icon"><i class="feather-mail"></i></span>
+	{% if settings.company_map != "" %}
+  	<h6 class="company-title">{{ settings.company_map }}</h6>
+  	{% endif %}
+	<div class="contact-block">
+		<a href="mailto:{{ settings.email }}" class="con-add">{{ settings.email }}</a>
+		<a href="mailto:{{ settings.email2 }}" class="con-add">{{ settings.email2 }}</a>
+	</div>
+</li>
+{% endif %}

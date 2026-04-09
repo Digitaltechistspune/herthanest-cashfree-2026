@@ -1,0 +1,201 @@
+<ul class="social-icon">
+    {%- if settings.social_facebook_enable -%}
+    <li>
+      <a href="{{ settings.social_facebook_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social facebook">
+          {%- render 'icon-facebook' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_facebook_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_twitch_enable -%}
+    <li>
+      <a href="{{ settings.social_twitch_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social twitch">
+          {%- render 'icon-twitch' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_twitch_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_twitter_enable -%}
+    <li>
+      <a href="{{ settings.social_twitter_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social twitter">
+          {%- render 'icon-twitter' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_twitter_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_pinterest_enable -%}
+    <li>
+      <a href="{{ settings.social_pinterest_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social pinterest">
+          {%- render 'icon-pinterest' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_pinterest_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_instagram_enable -%}
+    <li>
+      <a href="{{ settings.social_instagram_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social instagram">
+          {%- render 'icon-instagram' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_instagram_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_tumblr_enable -%}
+    <li>
+      <a href="{{ settings.social_tumblr_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social tumblr">
+          {%- render 'icon-tumblr' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_tumblr_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_snapchat_enable -%}
+    <li>
+      <a href="{{ settings.social_snapchat_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social snapchat">
+          {%- render 'icon-snapchat' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_snapchat_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_youtube_enable -%}
+    <li>
+      <a href="{{ settings.social_youtube_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social youtube">
+          {%- render 'icon-youtube' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_youtube_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_vimeo_enable -%}
+    <li>
+      <a href="{{ settings.social_vimeo_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social vimeo">
+          {%- render 'icon-vimeo' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_vimeo_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_linkedin_enable -%}
+    <li>
+      <a href="{{ settings.social_linkedin_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social linkedin">
+          {%- render 'icon-linkedin' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_linkedin_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_telegram_enable -%}
+    <li>
+      <a href="{{ settings.social_telegram_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social telegram">
+          {%- render 'icon-telegram' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_telegram_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+    {%- if settings.social_whatsapp_enable -%}
+    <li>
+      <a href="{{ settings.social_whatsapp_link | escape }}" target="_blank">
+        {%- if settings.social_icon_enable -%}
+        <span class="icon-social whatsapp">
+          {%- render 'icon-whatsapp' -%}
+        </span>
+        {%- endif -%}
+        {%- if settings.social_text_enable -%}
+        <span class="icon-title">{{ settings.social_whatsapp_title }}</span>
+        {%- endif -%}
+      </a>
+    </li>
+    {%- endif -%}
+  </ul>
+  <style>
+    /* social icon css */
+    ul.social-icon{
+      display: flex;
+      
+      flex-wrap: wrap;
+      {% if settings.enable_rtl %}
+      margin: -15px -15px 0px 0px;
+      {% else %}
+      margin: -15px 0px 0px -15px;
+      {% endif %}
+    }
+    ul.social-icon li{
+      {% if settings.enable_rtl %}
+      margin: 15px 15px 0px 0px;
+      {% else %}
+      margin: 15px 0px 0px 15px;
+      {% endif %}
+      line-height: 0;
+    }
+    ul.social-icon li a span,
+    ul.social-icon li a:hover span{
+      -webkit-transition: all 0.3s ease-in-out 0s;
+      -o-transition: all 0.3s ease-in-out 0s;
+      transition: all 0.3s ease-in-out 0s;
+    }
+    ul.social-icon li a span svg{
+      width: {{ settings.social_icon_width }}px;
+      height: {{ settings.social_icon_height }}px;
+    }
+  </style>

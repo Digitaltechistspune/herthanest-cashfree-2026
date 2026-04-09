@@ -1,0 +1,507 @@
+{% if template == 'index' %}
+{% assign category_product = collections[section.settings.special_label_product] %}
+<div class="newspopup4 modal fade" id="news-modal4">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close-btn" aria-label="Close btn" data-bs-dismiss="modal"><i class="feather-x"></i></button>
+        <div class="newsletter-info">
+          <div class="news-banner">
+            <a href="{{ category_product.url }}" style="background-image: url({{ section.settings.news_banner | image_url: width: 900, height: 500 }});"></a>
+          </div>
+          <div class="subscribe_area">
+            <div class="subscribe-content">
+              {% if section.settings.news_sub_title != '' %}
+              <span data-fade-in style="color: {{ section.settings.news_sub_title_color }};">{{ section.settings.news_sub_title }}</span>
+              {% endif %}
+              {% if section.settings.news_title != '' %}
+              <h2 data-fade-in style="color: {{ section.settings.news_title_color }};">{{ section.settings.news_title }}</h2>
+              {% endif %}
+            </div>
+            <div class="news-slider swiper" id="pro-{{ section.id }}">
+              <div class="swiper-wrapper">
+                {% assign product_limit = section.settings.product_limit %}
+                {% for product in category_product.products limit: product_limit %}
+                  <div class="swiper-slide">
+                    {%- liquid
+                      render 'product-news-list', product: product
+                    -%}
+                  </div>
+                {% else %}
+                  {% for i in (1..product_limit) %}
+                    <div class="swiper-slide">
+                      <div class="product-news-list">
+                        <div class="product-image">
+                          {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3 %}{%- endcapture -%}
+                          {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                        </div>
+                        <div class="product-content">
+                          <div class="product-title">
+                            <h6>
+                              <a >{{ 'homepage.sections.product_title' | t }}</a>
+                            </h6>
+                          </div>
+                          <div class="price-box">
+                            <span class="new-price">{{ 'homepage.sections.product_price' | t }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% endfor %}
+              </div>
+              {% if section.settings.button_enable %}
+              <div class="collection-button" data-fade-in>
+                <a href="{{ category_product.url }}" class="btn {% if section.settings.button_style == 'btn-style1' %}btn-style{% elsif section.settings.button_style == 'btn-style2' %}btn-style2{% else %}btn-style3{% endif %}">{{- section.settings.button_text }}<i class="feather-arrow-right"></i></a>
+              </div>
+              {% endif %}
+            </div>
+            <div class="dont-show" data-fade-in>
+              <label>
+                <input type="checkbox" id="1" class="box4">
+                <span class="cust-check"></span>
+                <span>{{ section.settings.dont_show_text }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  let boxes4 = document.getElementsByClassName('box4').length;
+  function save4() {
+    for(let i = 1; i <= boxes4; i++){
+      var checkbox4 = document.getElementById(String(i));
+      localStorage.setItem("news_popup4", checkbox4.checked); 
+    }
+  }
+  for(let i = 1; i <= boxes4; i++){
+    if(localStorage.length > 0){
+      var checked = JSON.parse(localStorage.getItem("news_popup4"));
+      document.getElementById(String(i)).checked = checked;
+    }
+  }
+  window.addEventListener('change', save4);
+  addEventListener('DOMContentLoaded', (event) => {
+    $(window).on('load',function(){
+      setTimeout(function () {
+        var popup = localStorage.getItem('news_popup4');
+        if(popup == null | popup == "false"){
+          $('#news-modal4').modal('show');
+        }
+      },{{ section.settings.timeout }});
+    });
+    var swiper = new Swiper('.swiper#pro-{{ section.id }}', {
+      slidesPerView: 1,
+      grid: {
+        rows: 1,
+        fill: 'row' | 'column',
+      },
+      spaceBetween: 20,
+      observer: true,
+      observeParents: true,
+      watchSlidesProgress: true,
+      {%- if settings.enable_rtl -%}
+      rtl: true,
+      {%- endif -%}
+      navigation: {
+        nextEl: '.swiper-next-{{ section.id }}',
+        prevEl: '.swiper-prev-{{ section.id }}',
+      },
+      pagination: {
+        el: ".swiper-pagination-{{ section.id }}",
+        clickable: true
+      },
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      speed: 1000,
+      breakpoints: {
+        0: {
+          slidesPerView: 1,
+          grid: {
+            rows: 2,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        320: {
+          slidesPerView: 1,
+          grid: {
+            rows: 2,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        360: {
+          slidesPerView: 1,
+          grid: {
+            rows: 2,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        540: {
+          slidesPerView: 1,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        640: {
+          slidesPerView: 1,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        768: {
+          slidesPerView: 1,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 20,
+        },
+        1024: {
+          slidesPerView: 1,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          }
+        },
+        1199: {
+          slidesPerView: 1,
+          grid: {
+            rows: 2,
+            fill: 'row' | 'column',
+          }
+        }
+      }
+    });
+  });
+</script>
+<style>
+   .newspopup4 .modal-dialog {
+    max-width: 1060px;
+  }
+  .newspopup4 .modal-content {
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    background-color: {{ section.settings.modal_bg_color }};
+  }
+   .newspopup4 .modal-body {
+    padding: 0px;
+  }
+  @media (max-width: 600px) {
+     .newspopup4 .modal-dialog {
+      max-width: 100%;
+      margin: 0px;
+      padding: 12px;
+    }
+  }
+  /* newsletter close button css */
+  .newspopup4 .modal-body button.close-btn {
+    font-size: 20px;
+    position: absolute;
+    top: 20px;
+    {% if settings.enable_rtl %}
+    left: 20px;
+    {% else %}
+    right: 20px;
+    {% endif %}
+    line-height: 1;
+  }
+  .newspopup4 .modal-body button.close-btn:hover {
+    opacity: 1;
+    color: var(--font-color-primary);
+  }
+  /* Subscribe content css */
+  .newspopup4 .newsletter-info {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .newspopup4 .newsletter-info .subscribe_area {
+    padding: 50px;
+    margin: 0 auto;
+    width: 50%;
+  }
+  .newspopup4 .newsletter-info .news-banner {
+    width: 50%;
+  }
+  .newspopup4 .newsletter-info .news-banner a {
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+  .newspopup4 .subscribe_area .subscribe-content span {
+    font-size: 15px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+   }
+  .newspopup4 .subscribe_area .subscribe-content h2 {
+    font-size: 32px;
+    padding-bottom: 30px;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .collection-button {
+    margin-top: 30px;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .collection-button a i {
+    line-height: 1;
+    padding-left: 5px;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .dont-show {
+    margin-top: 30px;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .dont-show label {
+    position: relative;
+    margin-bottom: 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .dont-show label span {
+    font-size: var(--font-size-body);
+  }
+  .newspopup4 .newsletter-info .subscribe_area .dont-show label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .dont-show label .cust-check {
+    width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    border: var(--sti-border);
+    overflow: hidden;
+    background-color: #fff;
+    margin-inline-end: 10px;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .dont-show label .cust-check:after {
+    display: none;
+    content: "\e92b";
+    font-family: feather!important;
+    color: #666;
+    font-size: 16px;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .dont-show label input:checked~span.cust-check:after {
+    display: block;
+  }
+  @media (max-width: 1199px) {
+    .newspopup4 .modal-dialog {
+      margin: 0 30px;
+    }
+    .newspopup4 .newsletter-info .subscribe_area {
+      padding: 30px;
+    }
+    .newspopup4 .newsletter-info .subscribe_area .dont-show {
+      margin-top: 20px;
+    }
+  }
+  @media (max-width: 600px) {
+    .newspopup4 .modal-dialog {
+      margin: 0;
+    }
+    .newspopup4 .newsletter-info .subscribe_area,
+    .newspopup4 .newsletter-info .news-banner {
+      width: 100%;
+    }
+    .newspopup4 .newsletter-info .news-banner a {
+      height: 300px;
+    }
+    .newspopup4 .newsletter-info .subscribe_area {
+      padding: 30px 12px;
+    }
+  }
+  @media (max-width: 479px) {
+    .newspopup4 .modal-body button.close-btn {
+      top: 10px;
+      {% if settings.enable_rtl %}
+      left: 10px;
+      {% else %}
+      right: 10px;
+      {% endif %}
+    }
+    .newspopup4 .newsletter-info .subscribe_area .subscribe-content h2 {
+      font-size: 20px;
+    }
+  }
+
+  /* List product*/
+  .newspopup4 .newsletter-info .subscribe_area .product-news-list {
+    display: flex;
+    flex-wrap: wrap;
+    border: none;
+    box-shadow: none;
+    background-color: #fff;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .product-news-list .product-image {
+    width: 160px;
+    padding: 0px;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .product-news-list .product-content {
+    width: calc(100% - 160px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 15px;
+    text-align: start;
+    border-top: none;
+    transform: none;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .product-news-list .product-content .product-ratting {
+    padding-bottom: 10px;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .product-news-list .product-content h6 {
+    font-size: 16px;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .product-news-list .product-content .price-box {
+    margin-top: 10px;
+  }
+  .newspopup4 .newsletter-info .subscribe_area .product-news-list .product-content .price-box span {
+    font-size: 16px;
+  }
+  @media(max-width: 1199px) {
+    .newspopup4 .newsletter-info .subscribe_area .product-news-list .product-image {
+      width: 120px;
+    }
+    .newspopup4 .newsletter-info .subscribe_area .product-news-list .product-content {
+      width: calc(100% - 120px);
+    }
+  }
+  @media(max-width: 479px){
+    .newspopup4 .newsletter-info .subscribe_area .product-news-list .product-content h6 {
+      font-size: var(--font-size-body);
+    }
+    .newspopup4 .newsletter-info .subscribe_area .product-news-list .product-content .price-box span {
+      font-size: var(--font-size-body);
+    }
+  }
+</style>
+{% endif %}
+{% schema %}
+{
+  "name": "Newsletter popup4",
+  "settings": [
+    {
+      "type": "number",
+      "id": "timeout",
+      "label": "How many seconds to show when the website is opened",
+      "default": 3000,
+      "info": "NOTE: 1000 count euqal to (1 second)"
+    },
+    {
+      "type": "color",
+      "id": "modal_bg_color",
+      "label": "Modal background color",
+      "default": "#f4f4f6"
+    },
+    {
+      "type": "text",
+      "id": "news_sub_title",
+      "label": "Newsletter sub title",
+      "default": "Gift bundles for every type of person"
+    },
+    {
+      "type": "color",
+      "id": "news_sub_title_color",
+      "label": "Sub title color",
+      "default": "#676767"
+    },
+    {
+      "type": "text",
+      "id": "news_title",
+      "label": "Newsletter title",
+      "default": "40% OFF"
+    },
+    {
+      "type": "color",
+      "id": "news_title_color",
+      "label": "Title color",
+      "default": "#2c2c32"
+    },
+    {
+      "type": "text",
+      "id": "dont_show_text",
+      "label": "Dont show text",
+      "default": "Don’t show this popup again"
+    },
+    {
+      "type": "image_picker",
+      "id": "news_banner",
+      "label": "Newsletter banner",
+      "info": "Recommended Size: 800x950px"
+    },
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "number",
+      "id": "product_limit",
+      "label": "Product imit",
+      "default": 12
+    },
+    {
+      "type": "collection",
+      "id": "special_label_product",
+      "label": "Select Collection"
+    },
+    {
+      "type": "header",
+      "content": "Button Style"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "All products"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        {
+          "label": "Button Style1",
+          "value": "btn-style1"
+        },
+        {
+          "label": "Button Style2",
+          "value": "btn-style2"
+        },
+        {
+          "label": "Button Style3",
+          "value": "btn-style3"
+        }
+      ],
+      "default": "btn-style2"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_enable",
+      "label": "Show Collection Button",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

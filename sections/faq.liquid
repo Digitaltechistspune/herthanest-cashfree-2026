@@ -1,0 +1,847 @@
+<section class="faq-page">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="content-qa-banner">
+          <div class="faq-sidebar">
+            <div class="main-title">
+              {% if section.settings.list_sub_title != '' %}
+              <span data-fade-in class="sub-title">{{ section.settings.list_sub_title }}</span>
+              {% endif %}
+              {% if section.settings.list_title != '' %}
+              <h2 data-fade-in>{{ section.settings.list_title }}</h2>
+              {% endif %}
+            </div>
+            <div class="contact-text">
+              <div class="contact-wrap">
+                {% if section.settings.contact_title != '' %}
+                <h2 data-fade-in>{{ section.settings.contact_title }}</h2>
+                {% endif %}
+                <div class="contact-block" data-fade-in>
+                  <span class="con-icon"><i class="feather-phone-call"></i></span>
+                  <a href="tel:{{ settings.contact }}" class="con-add">{{ settings.contact }}</a>
+                </div>
+                <div class="contact-block" data-fade-in>
+                  <span class="con-icon"><i class="feather-mail"></i></span>
+                  <a href="mailto:{{ settings.email }}" class="con-add">{{ settings.email }}</a>
+                </div>
+              </div>
+            </div>
+            <div class="faq-link">
+              <ul class="link-page" role="tablist">
+                {% if section.settings.page_title != '' %}
+                <li class="presentation">
+                  <a data-fade-in href="{{ section.settings.page_title_url }}" class="link-other">{{ section.settings.page_title }}</a>
+                </li>
+                {% endif %}
+                {% if section.settings.page_title1 != '' %}
+                <li class="presentation">
+                  <a data-fade-in href="{{ section.settings.page_title_url1 }}" class="link-other">{{ section.settings.page_title1 }}</a>
+                </li>
+                {% endif %}
+                {% if section.settings.page_title2 != '' %}
+                <li class="presentation">
+                  <a data-fade-in href="{{ section.settings.page_title_url2 }}" class="link-other">{{ section.settings.page_title2 }}</a>
+                </li>
+                {% endif %}
+                {% if section.settings.page_title3 != '' %}
+                <li class="presentation">
+                  <a data-fade-in href="{{ section.settings.page_title_url3 }}" class="link-other">{{ section.settings.page_title3 }}</a>
+                </li>
+                {% endif %}
+                {% if section.settings.page_title4 != '' %}
+                <li class="presentation">
+                  <a data-fade-in href="{{ section.settings.page_title_url4 }}" class="link-other">{{ section.settings.page_title4 }}</a>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+          <div class="que-ans">
+            <div class="accordian-block">
+              <div class="main-title">
+                {% if section.settings.accordian_title1 != '' %}
+                <h2 data-fade-in>{{ section.settings.accordian_title1 }}</h2>
+                {% endif %}
+              </div>
+              <ul id="collapse-faq1">
+                {% liquid assign i = 0 %}
+                {% for block in section.blocks %}
+                {%- case block.type -%}
+                {%- when 'accordian1' -%}
+                {% assign i = i | plus: 1 %}
+                {% if block.settings.accordion_title != '' %}
+                  <li data-fade-in>
+                    <a href="#collapse-{{ section.id }}-{{ block.id }}-{{ i }}" class="question" data-bs-toggle="collapse" {% if forloop.first %}aria-expanded="true"{% else %}aria-expanded="false"{% endif %}>
+                      <h6 class="que">{{ block.settings.accordion_title }}</h6>
+                      <span class="que-accordian"><i class="feather-plus"></i></span>
+                    </a>
+                    <div class="ans-accordian collapse{% if forloop.first %} show{% endif %}" id="collapse-{{ section.id }}-{{ block.id }}-{{ i }}" data-bs-parent="#collapse-faq1">
+                      {% if block.settings.accordion_ans1 != '' %}
+                      <p>{{ block.settings.accordion_ans1 }}</p>
+                      {% endif %}
+                      {% if block.settings.accordion_ans2 != '' %}
+                      <p>{{ block.settings.accordion_ans2 }}</p>
+                      {% endif %}
+                    </div>
+                  </li>
+                  {% endif %}
+                {% endcase %}
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="accordian-block">
+              <div class="main-title">
+                {% if section.settings.accordian_title2 != '' %}
+                <h2 data-fade-in>{{ section.settings.accordian_title2 }}</h2>
+                {% endif %}
+              </div>
+              <ul id="collapse-faq2">
+                {% liquid assign i = 0 %}
+                {% for block in section.blocks %}
+                {%- case block.type -%}
+                {%- when 'accordian2' -%}
+                {% assign i = i | plus: 1 %}
+                {% if block.settings.accordion_title != '' %}
+                  <li>
+                    <a data-fade-in href="#collapse-{{ section.id }}-{{ block.id }}-{{ i }}" class="question" data-bs-toggle="collapse" {% if forloop.first %}aria-expanded="true"{% else %}aria-expanded="false"{% endif %}>
+                      <h6 class="que">{{ block.settings.accordion_title }}</h6>
+                      <span class="que-accordian"><i class="feather-plus"></i></span>
+                    </a>
+                    <div class="ans-accordian collapse{% if forloop.first %} show{% endif %}" id="collapse-{{ section.id }}-{{ block.id }}-{{ i }}" data-bs-parent="#collapse-faq2">
+                      {% if block.settings.accordion_ans1 != '' %}
+                      <p>{{ block.settings.accordion_ans1 }}</p>
+                      {% endif %}
+                      {% if block.settings.accordion_ans2 != '' %}
+                      <p>{{ block.settings.accordion_ans2 }}</p>
+                      {% endif %}
+                    </div>
+                  </li>
+                  {% endif %}
+                {% endcase %}
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="accordian-block">
+              <div class="main-title">
+                {% if section.settings.accordian_title3 != '' %}
+                <h2 data-fade-in>{{ section.settings.accordian_title3 }}</h2>
+                {% endif %}
+              </div>
+              <ul id="collapse-faq3">
+                {% liquid assign i = 0 %}
+                {% for block in section.blocks %}
+                {%- case block.type -%}
+                {%- when 'accordian3' -%}
+                {% assign i = i | plus: 1 %}
+                {% if block.settings.accordion_title != '' %}
+                  <li>
+                    <a data-fade-in href="#collapse-{{ section.id }}-{{ block.id }}-{{ i }}" class="question" data-bs-toggle="collapse" {% if forloop.first %}aria-expanded="true"{% else %}aria-expanded="false"{% endif %}>
+                      <h6 class="que">{{ block.settings.accordion_title }}</h6>
+                      <span class="que-accordian"><i class="feather-plus"></i></span>
+                    </a>
+                    <div class="ans-accordian collapse{% if forloop.first %} show{% endif %}" id="collapse-{{ section.id }}-{{ block.id }}-{{ i }}" data-bs-parent="#collapse-faq3">
+                      {% if block.settings.accordion_ans1 != '' %}
+                      <p>{{ block.settings.accordion_ans1 }}</p>
+                      {% endif %}
+                      {% if block.settings.accordion_ans2 != '' %}
+                      <p>{{ block.settings.accordion_ans2 }}</p>
+                      {% endif %}
+                    </div>
+                  </li>
+                  {% endif %}
+                {% endcase %}
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="accordian-block">
+              {% if section.settings.accordian_title4 != '' %}
+              <div class="main-title">
+                <h2 data-fade-in>{{ section.settings.accordian_title4 }}</h2>
+              </div>
+              {% endif %}
+              <ul id="collapse-faq4">
+                {% liquid assign i = 0 %}
+                {% for block in section.blocks %}
+                {%- case block.type -%}
+                {%- when 'accordian4' -%}
+                {% assign i = i | plus: 1 %}
+                {% if block.settings.accordion_title != '' %}
+                <li>
+                  <a data-fade-in href="#collapse-{{ section.id }}-{{ block.id }}-{{ i }}" class="question" data-bs-toggle="collapse" {% if forloop.first %}aria-expanded="true"{% else %}aria-expanded="false"{% endif %}>
+                    <h6 class="que">{{ block.settings.accordion_title }}</h6>
+                    <span class="que-accordian"><i class="feather-plus"></i></span>
+                  </a>
+                  <div class="ans-accordian collapse{% if forloop.first %} show{% endif %}" id="collapse-{{ section.id }}-{{ block.id }}-{{ i }}" data-bs-parent="#collapse-faq4">
+                    {% if block.settings.accordion_ans1 != '' %}
+                    <p>{{ block.settings.accordion_ans1 }}</p>
+                    {% endif %}
+                    {% if block.settings.accordion_ans2 != '' %}
+                    <p>{{ block.settings.accordion_ans2 }}</p>
+                    {% endif %}
+                  </div>
+                </li>
+                {% endif %}
+                {% endcase %}
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="accordian-block">
+              {% if section.settings.accordian_title5 != '' %}
+              <div class="main-title">
+                <h2 data-fade-in>{{ section.settings.accordian_title5 }}</h2>
+              </div>
+              {% endif %}
+              <ul id="collapse-faq5">
+                {% assign i = 0 %}
+                {% for block in section.blocks %}
+                {%- case block.type -%}
+                {%- when 'accordian5' -%}
+                {% liquid assign i = i | plus: 1 %}
+                {% if block.settings.accordion_title != '' %}
+                <li>
+                  <a data-fade-in href="#collapse-{{ section.id }}-{{ block.id }}-{{ i }}" class="question" data-bs-toggle="collapse" {% if forloop.first %}aria-expanded="true"{% else %}aria-expanded="false"{% endif %}>
+                    <h6 class="que">{{ block.settings.accordion_title }}</h6>
+                    <span class="que-accordian"><i class="feather-plus"></i></span>
+                  </a>
+                  <div class="ans-accordian collapse{% if forloop.first %} show{% endif %}" id="collapse-{{ section.id }}-{{ block.id }}-{{ i }}" data-bs-parent="#collapse-faq5">
+                    {% if block.settings.accordion_ans1 != '' %}
+                    <p>{{ block.settings.accordion_ans1 }}</p>
+                    {% endif %}
+                    {% if block.settings.accordion_ans2 != '' %}
+                    <p>{{ block.settings.accordion_ans2 }}</p>
+                    {% endif %}
+                  </div>
+                </li>
+                {% endif %}
+                {% endcase %}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Faq Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Backgorund Color"
+    },
+    {
+      "type": "color",
+      "id": "faq_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "faq_bgcolor_check",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "list_sub_title",
+      "label": "List sub title",
+      "default": "Most common questions"
+    },
+    {
+      "type": "text",
+      "id": "list_title",
+      "label": "List title",
+      "default": "Most popular questions"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Contact title",
+      "default": "ASK US ANYTHING"
+    },
+    {
+      "type": "text",
+      "id": "page_title",
+      "label": "Page title",
+      "default": "MY ACCOUNT"
+    },
+    {
+      "type": "url",
+      "id": "page_title_url",
+      "label": "Page url"
+    },
+    {
+      "type": "text",
+      "id": "page_title1",
+      "label": "Page title1",
+      "default": "COMPANY POLICIES"
+    },
+    {
+      "type": "url",
+      "id": "page_title_url1",
+      "label": "Page url"
+    },
+    {
+      "type": "text",
+      "id": "page_title2",
+      "label": "Page title",
+      "default": "PAYMENT OPTIONS"
+    },
+    {
+      "type": "url",
+      "id": "page_title_url2",
+      "label": "Page url"
+    },
+    {
+      "type": "text",
+      "id": "page_title3",
+      "label": "Page title",
+      "default": "GIFT CARDS"
+    },
+    {
+      "type": "url",
+      "id": "page_title_url3",
+      "label": "Page url"
+    },
+    {
+      "type": "text",
+      "id": "page_title4",
+      "label": "Page title",
+      "default": "TERM AND CONDITIONS"
+    },
+    {
+      "type": "url",
+      "id": "page_title_url4",
+      "label": "Page url"
+    },
+    {
+      "type": "text",
+      "id": "accordian_title1",
+      "label": "Accordian title",
+      "default": "Shopping Information"
+    },
+    {
+      "type": "text",
+      "id": "accordian_title2",
+      "label": "Accordian title",
+      "default": "Shopping Information"
+    },
+    {
+      "type": "text",
+      "id": "accordian_title3",
+      "label": "Accordian title",
+      "default": "Shopping Information"
+    },
+    {
+      "type": "text",
+      "id": "accordian_title4",
+      "label": "Accordian title",
+      "default": "Shopping Information"
+    },
+    {
+      "type": "text",
+      "id": "accordian_title5",
+      "label": "Accordian title",
+      "default": "Shopping Information"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordian1",
+      "name": "Accordion 1",
+      "settings": [
+        {
+          "type": "text",
+          "id": "accordion_title",
+          "label": "Accordion title",
+          "info": "Type Here For Question?",
+          "default": "Type In SideBox For Question?"
+        },
+        {
+          "type": "text",
+          "id": "accordion_ans1",
+          "label": "Answer1",
+          "info": "Type Here For Answer",
+          "default": "Type In SideBox For Answer."
+        },
+        {
+          "type": "text",
+          "id": "accordion_ans2",
+          "label": "Answer2",
+          "info": "Type Here For Extra Answer For One Question"
+        }
+      ]
+    },
+    {
+      "type": "accordian2",
+      "name": "Accordion 2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "accordion_title",
+          "label": "Accordion title",
+          "info": "Type Here For Question?",
+          "default": "Type In SideBox For Question?"
+        },
+        {
+          "type": "text",
+          "id": "accordion_ans1",
+          "label": "Answer1",
+          "info": "Type Here For Answer",
+          "default": "Type In SideBox For Answer."
+        },
+        {
+          "type": "text",
+          "id": "accordion_ans2",
+          "label": "Answer2",
+          "info": "Type Here For Extra Answer For One Question"
+        }
+      ]
+    },
+    {
+      "type": "accordian3",
+      "name": "Accordion 3",
+      "settings": [
+        {
+          "type": "text",
+          "id": "accordion_title",
+          "label": "Accordion title",
+          "info": "Type Here For Question?",
+          "default": "Type In SideBox For Question?"
+        },
+        {
+          "type": "text",
+          "id": "accordion_ans1",
+          "label": "Answer1",
+          "info": "Type Here For Answer",
+          "default": "Type In SideBox For Answer."
+        },
+        {
+          "type": "text",
+          "id": "accordion_ans2",
+          "label": "Answer2",
+          "info": "Type Here For Extra Answer For One Question"
+        }
+      ]
+    },
+    {
+      "type": "accordian4",
+      "name": "Accordion 4",
+      "settings": [
+        {
+          "type": "text",
+          "id": "accordion_title",
+          "label": "Accordion title",
+          "info": "Type Here For Question?",
+          "default": "Type In SideBox For Question?"
+        },
+        {
+          "type": "text",
+          "id": "accordion_ans1",
+          "label": "Answer1",
+          "info": "Type Here For Answer",
+          "default": "Type In SideBox For Answer."
+        },
+        {
+          "type": "text",
+          "id": "accordion_ans2",
+          "label": "Answer2",
+          "info": "Type Here For Extra Answer For One Question"
+        }
+      ]
+    },
+    {
+      "type": "accordian5",
+      "name": "Accordion 5",
+      "settings": [
+        {
+          "type": "text",
+          "id": "accordion_title",
+          "label": "Accordion title",
+          "info": "Type Here For Question?",
+          "default": "Type In SideBox For Question?"
+        },
+        {
+          "type": "text",
+          "id": "accordion_ans1",
+          "label": "Answer1",
+          "info": "Type Here For Answer",
+          "default": "Type In SideBox For Answer."
+        },
+        {
+          "type": "text",
+          "id": "accordion_ans2",
+          "label": "Answer2",
+          "info": "Type Here For Extra Answer For One Question"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Faq Page"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.faq-page {
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  {%- if section.settings.faq_bgcolor_check -%}
+  background-color: {{ section.settings.faq_bgcolor }};
+  {%- endif -%}
+}
+@media (max-width: 1199px) {
+  .faq-page {
+    padding-top: {{ section.settings.section_padding_top_ip }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_ip }}px;
+  }
+}
+@media (max-width: 767px) {
+  .faq-page {
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+  }
+}
+/* faq grid css */
+.faq-page .main-title span.sub-title {
+  color: var(--font-color-primary);
+  font-size: 16px;
+  text-transform: uppercase;
+  padding-bottom: 15px;
+  font-weight: 600;
+}
+.faq-page .main-title h2 {
+  font-size: 30px;
+}
+.faq-page .content-qa-banner {
+  display: flex;
+  flex-wrap: wrap;
+  {% if settings.enable_rtl %}
+  margin: -30px -60px 0px 0px;
+  {% else %}
+  margin: -30px 0px 0px -60px;
+  {% endif %}
+}
+.faq-page .content-qa-banner .faq-sidebar{
+  width: calc(25% - 60px);
+  {% if settings.enable_rtl %}
+  border-left: var(--sti-border);
+  margin: 30px 60px 0px 0px;
+  padding: 0 0 0 30px;
+  {% else %}
+  border-right: var(--sti-border);
+  margin: 30px 0px 0px 60px;
+  padding: 0 30px 0 0;
+  {% endif %}
+}
+.faq-page .content-qa-banner .que-ans{
+  width: calc(75% - 60px);
+  {% if settings.enable_rtl %}
+  margin: 30px 60px 0px 0px;
+  {% else %}
+  margin: 30px 0px 0px 60px;
+  {% endif %}
+}
+@media (max-width: 1199px) {
+  .faq-page .content-qa-banner {
+    {% if settings.enable_rtl %}
+    margin: -30px -30px 0px 0px;
+    {% else %}
+    margin: -30px 0px 0px -30px;
+    {% endif %}
+  }
+  .faq-page .content-qa-banner .que-ans {
+    width: calc(66.67% - 30px);
+    {% if settings.enable_rtl %}
+    margin: 30px 30px 0px 0px;
+    {% else %}
+    margin: 30px 0px 0px 30px;
+    {% endif %}
+  }
+  .faq-page .content-qa-banner .faq-sidebar {
+    width: calc(33.33% - 30px);
+    {% if settings.enable_rtl %}
+    margin: 30px 30px 0px 0px;
+    {% else %}
+    margin: 30px 0px 0px 30px;
+    {% endif %}
+  }
+}
+@media (max-width: 767px) {
+  .faq-page .content-qa-banner {
+    {% if settings.enable_rtl %}
+    margin: -30px -12px 0px 0px;
+    {% else %}
+    margin: -30px 0px 0px -12px;
+    {% endif %}
+  }
+  .faq-page .content-qa-banner .que-ans {
+    width: calc(66.67% - 12px);
+    {% if settings.enable_rtl %}
+    margin: 30px 12px 0px 0px;
+    {% else %}
+    margin: 30px 0px 0px 12px;
+    {% endif %}
+  }
+  .faq-page .content-qa-banner .faq-sidebar {
+    width: calc(33.33% - 12px);
+    {% if settings.enable_rtl %}
+    margin: 30px 12px 0px 0px;
+    {% else %}
+    margin: 30px 0px 0px 12px;
+    {% endif %}
+  }
+}
+@media (max-width: 600px) {
+  .faq-page .content-qa-banner .que-ans,
+  .faq-page .content-qa-banner .faq-sidebar {
+    width: calc(100% - 12px);
+    border: none;
+  }
+  .faq-page .content-qa-banner .faq-sidebar {
+    padding: 0;
+  }
+}
+.faq-page .content-qa-banner .que-ans h6.list-main-title {
+  padding-top: 100px;
+  color: var(--font-color-secondary);
+  font-size: 34px;
+  font-weight: 400;
+}
+
+.faq-page .content-qa-banner .que-ans h6.list-main-title:first-child {
+    padding-top: 0px;
+}
+.faq-page .que-ans ul {
+  margin-top: 60px;
+}
+.faq-page .que-ans .accordian-block {
+  margin-top: 60px;
+}
+.faq-page .que-ans .accordian-block:empty {
+  margin-top: 0;
+}
+.faq-page .que-ans .accordian-block:first-child {
+  margin-top: 0;
+}
+.faq-page .que-ans ul li {
+  margin-top: 23px;
+  padding-top: 25px;
+  border-top: 1px solid var(--theme-border-color);
+}
+
+.faq-page .que-ans ul li:first-child {
+  margin-top: 0px;
+  padding-top: 0px;
+  border-top: none;
+}
+
+.faq-page .que-ans ul li a.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.faq-page .que-ans ul li a.question h6.que {
+  font-size: var(--font-size-subtitle);
+  display: block;
+  width: calc(100% - 45px);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-subtitle);
+}
+.faq-page .que-ans ul li a.question span.que-accordian {
+  font-size: 20px;
+}
+
+.faq-page .que-ans ul li a.question span.que-accordian i {
+  display: block;
+  line-height: 0;
+}
+
+.faq-page .que-ans ul li a.question span.que-accordian i::before {
+  font-weight: 600!important;
+}
+
+.faq-page .que-ans ul li a.question[aria-expanded="true"] span.que-accordian i::before {
+  content: "\e996";
+}
+.faq-page .que-ans ul li .ans-accordian p{
+  font-size: 16px;
+  margin-top: 17px;
+}
+.faq-page .content-qa-banner .faq-sidebar .contact-text {
+  margin-top: 60px;
+}
+
+.faq-page .content-qa-banner .faq-sidebar .contact-text .contact-wrap h2 {
+  color: var(--font-color-header);
+  font-size: 16px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+.faq-page .content-qa-banner .faq-sidebar .contact-text .contact-wrap .contact-block {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.faq-page .content-qa-banner .faq-sidebar .contact-text .contact-wrap .contact-block:first-of-type {
+  margin-top: 0px;
+}
+.faq-page .content-qa-banner .faq-sidebar .contact-text .contact-wrap .contact-block span {
+  color: var(--font-color-header);
+  display: block;
+  line-height: 0;
+  font-size: 16px;
+  {%- if settings.enable_rtl -%}
+  margin-left: 10px;
+  {%- else -%}
+  margin-right: 10px;
+  {%- endif -%}
+}
+.faq-page .content-qa-banner .faq-sidebar .contact-text .contact-wrap .contact-block a {
+  font-size: 16px;
+}
+.faq-page .content-qa-banner .faq-sidebar .faq-link {
+  margin-top: 60px;
+}
+
+.faq-page .content-qa-banner .faq-sidebar .faq-link ul.link-page {
+  flex-direction: column;
+  margin: 0px 0px -15px -30px;
+  border-bottom: none;
+}
+.faq-page .content-qa-banner .faq-sidebar .faq-link ul.link-page li {
+  margin: 0px 0px 15px 30px;
+}
+.faq-page .content-qa-banner .faq-sidebar .faq-link ul.link-page li a {
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+.faq-page .content-qa-banner .faq-sidebar .faq-link ul.link-page li a:hover {
+  border-color: var(--font-color-primary);
+}
+@media (max-width: 991px) {
+  .faq-page .main-title h2 {
+    font-size: 24px;
+  }
+}
+@media (max-width: 600px) {
+  .faq-page .content-qa-banner .faq-sidebar .contact-text,
+  .faq-page .content-qa-banner .faq-sidebar .faq-link {
+    margin-top: 30px;
+  }
+  .faq-page .que-ans ul {
+    margin-top: 30px;
+  }
+  .faq-page .que-ans ul li a.question h6.que {
+    font-size: var(--font-size-body);
+  }
+}
+</style>

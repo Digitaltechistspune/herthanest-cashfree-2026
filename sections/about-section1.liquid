@@ -1,0 +1,303 @@
+<section class="about-section1">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="about-content">
+          <div class="section-capture">
+            <div class="section-title">
+              {% if section.settings.section_sub_title != '' %}
+              <span class="sub-title" data-fade-in>{{ section.settings.section_sub_title }}</span>
+              {% endif %}
+              {% if section.settings.about_template_title != '' %}
+              <h2 data-fade-in>{{ section.settings.about_template_title }}</h2>
+              {% endif %}
+            </div>
+          </div>
+          <div class="about-banner">
+            <div class="about-banner-area">
+              <a href="{{ section.settings.banner_url }}" class="banner-hover">
+                {%- if section.settings.about_company_img -%}
+                <img srcset="
+                  {%- if section.settings.about_company_img.width >= 375 -%}{{ section.settings.about_company_img | image_url: width: 375 }} 375w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 550 -%}{{ section.settings.about_company_img | image_url: width: 550 }} 550w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 750 -%}{{ section.settings.about_company_img | image_url: width: 750 }} 750w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 1100 -%}{{ section.settings.about_company_img | image_url: width: 1100 }} 1100w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 1500 -%}{{ section.settings.about_company_img | image_url: width: 1500 }} 1500w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 1780 -%}{{ section.settings.about_company_img | image_url: width: 1780 }} 1780w,{%- endif -%}
+                  {%- if section.settings.about_company_img.width >= 2000 -%}{{ section.settings.about_company_img | image_url: width: 2000 }} 2000w,{%- endif -%}
+                  {{ section.settings.about_company_img | image_url }} {{ section.settings.about_company_img.width }}w
+                "
+                src="{{ section.settings.about_company_img | image_url: width: 2000 }}"
+                data-src="{{ section.settings.about_company_img | image_url: width: 2000 }}"
+                alt="{{ section.settings.about_company_img.alt | escape }}"
+                class="img-fluid lazyload"
+                width="{{ section.settings.about_company_img.width }}"
+                height="{{ section.settings.about_company_img.width | divided_by: section.settings.about_company_img.aspect_ratio }}"
+                decoding="async"
+                loading="lazy"
+                sizes="50vw">
+                {%- else -%}
+                {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                {%- endif -%}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "About section1",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "about_template_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "about_template_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "about_template_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_sub_title",
+      "label": "Section Sub Title",
+      "default": "About us"
+    },
+    {
+      "type": "text",
+      "id": "about_template_title",
+      "label": "Title",
+      "default": "About us"
+    },
+    {
+      "type": "image_picker",
+      "id": "about_company_img",
+      "label": "About Image",
+      "info": "Recommended Size: 1400px x 641px"
+    },
+    {
+      "type": "url",
+      "id": "banner_url",
+      "label": "Banner url"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About section1"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.about-section1 {
+  padding-top: {{ section.settings.about_template_padding_top }}px;
+  padding-bottom: {{ section.settings.about_template_padding_bottom }}px;
+  {% if section.settings.about_template_bgcolor_enable %}
+    background-color: {{ section.settings.about_template_bgcolor }};
+  {% endif %}
+}
+@media(max-width: 1199px) {
+  .about-section1 {
+    padding-top: {{ section.settings.about_template_padding_top_ip }}px;
+    padding-bottom: {{ section.settings.about_template_padding_bottom_ip }}px;
+  }
+}
+@media(max-width: 767px) {
+  .about-section1 {
+    padding-top: {{ section.settings.about_template_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.about_template_padding_bottom_xs }}px;
+  }
+}
+
+/* about content row css */
+.about-section1 .about-content .about-banner .about-banner-area {
+  margin-top: {{ section.settings.about_template_padding_top }}px;
+}
+.about-section1 .about-content .about-banner .about-banner-area a {
+  display: block;
+}
+.about-section1 .about-content .about-banner .about-banner-area:first-child {
+  margin-top: 0;
+}
+.about-section1 .about-content .about-banner .about-banner-area img {
+  width: 100%;
+}
+@media(max-width: 1199px) {
+  .about-section1 .about-content .about-banner .about-banner-area {
+    margin-top: {{ section.settings.about_template_padding_top_ip }}px;
+  }
+}
+@media(max-width: 767px) {
+  .about-section1 .about-content .about-banner .about-banner-area {
+    margin-top: {{ section.settings.about_template_padding_top_xs }}px;
+  }
+}
+
+/* about content grid css */
+.about-section1 .about-content .about-banner .about-banner-area ul {
+  display: flex;
+  
+  flex-wrap: wrap;
+  {% if settings.enable_rtl %}
+    margin: -30px -30px 0 0;
+  {% else %}
+    margin: -30px 0 0 -30px;
+  {% endif %}
+}
+.about-section1 .about-content .about-banner .about-banner-area:nth-child(even) ul {
+  flex-direction: row-reverse;
+}
+.about-section1 .about-content .about-banner .about-banner-area ul li {
+  width: calc(50% - 30px);
+  {% if settings.enable_rtl %}
+    margin: 30px 30px 0 0;
+  {% else %}
+    margin: 30px 0 0 30px;
+  {% endif %}
+}
+.about-section1 .about-content .about-banner .about-banner-area ul li.about-company {
+  text-align: center;
+}
+@media(max-width: 767px) {
+  .about-section1 .about-content .about-banner .about-banner-area ul {
+    {% if settings.enable_rtl %}
+      margin: -24px -12px 0 0;
+    {% else %}
+      margin: -24px 0 0 -12px;
+    {% endif %}
+  }
+  .about-section1 .about-content .about-banner .about-banner-area:nth-child(even) ul {
+    flex-direction: row-reverse;
+  }
+  .about-section1 .about-content .about-banner .about-banner-area ul li {
+    width: calc(100% - 12px);
+    {% if settings.enable_rtl %}
+      margin: 24px 12px 0 0;
+    {% else %}
+      margin: 24px 0 0 12px;
+    {% endif %}
+  }
+}
+/* about content css */
+.about-section1 .about-content .about-banner .about-banner-area ul li.abt-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.about-section1 .about-content .about-banner .about-banner-area ul li.abt-desc h6 {
+  font-size: 24px;
+}
+.about-section1 .about-content .about-banner .about-banner-area ul li.abt-desc p {
+  margin-top: 17px;
+}
+</style>

@@ -1,0 +1,90 @@
+{% liquid
+  if template contains 'article' or template contains 'blog'
+    capture permalinkURL
+      echo shop.url 
+      echo article.url
+    endcapture
+    capture shareTitle 
+      echo article.title | url_param_escape
+    endcapture
+  elsif template contains 'product'
+    capture permalinkURL 
+      echo shop.url 
+      echo product.url
+    endcapture
+    capture shareTitle
+      echo product.title | url_param_escape
+    endcapture
+  elsif template == 'password'
+    capture permalinkURL
+      echo shop.url
+    endcapture
+    capture shareTitle 
+    unless shop.description == blank
+    echo shop.description | url_param_escape
+  else 
+    echo shop.name | url_param_escape 
+    endunless
+    endcapture
+  endif
+-%}
+<ul class="pro_social_link">
+  <li>
+    <a target="_blank" href="//www.facebook.com/sharer.php?u={{ permalinkURL }}" class="facebook" title="Share on Facebook" tabindex="0"><i class="fa fa-facebook-f"></i></a>
+  </li>
+  <li>
+    <a target="_blank" href="//twitter.com/share?text={{ shareTitle }}&amp;url={{ permalinkURL }};source=webclient" class="twitter" title="Share on Twitter" tabindex="0"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li>
+    <a target="_blank" href="//telegram.me/share/url?url={{ permalinkURL }}" class="telegram" title="Share on Twitter" tabindex="0"><i class="fa fa-telegram"></i></a>
+  </li>
+  {% if product.featured_image or article.image %}
+  <li>
+    <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media=http:{% if template contains 'product' %}{{ product | image_url: width: 1024 }}{% else %}{{ article | image_url: width: 1024 }}{% endif %}&amp;description={{ shareTitle }}" class="pinterest" title="Share on Pinterest" tabindex="0"><i class="fa fa-pinterest-p"></i></a>
+  </li>
+  {% endif %}    
+</ul>
+<style>
+  ul.pro_social_link{
+    display: -ms-flexbox;
+    display: flex;
+    
+    flex-wrap: wrap;
+  }
+  ul.pro_social_link li{
+    display: block;
+    {% if settings.enable_rtl %}
+    margin-left: 15px;
+    {% else %}
+    margin-right: 15px;
+    {% endif %}
+    line-height: 0;
+  }
+  ul.pro_social_link li:last-child{
+    {% if settings.enable_rtl %}
+    margin-left: 0px;
+    {% else %}
+    margin-right: 0px;
+    {% endif %}
+  }
+  ul.pro_social_link li a{
+    font-size: 16px;
+    line-height: 0;
+  }
+  ul.pro_social_link li a.facebook{
+    color: #3b5999;
+  }
+  ul.pro_social_link li a.twitter{
+    color: #55acee;
+  }
+  ul.pro_social_link li a.telegram{
+    color: #0088cc;
+  }
+  ul.pro_social_link li a.pinterest{
+    color: #bd081c;
+  }
+  ul.pro_social_link li a i{
+    display: block;
+    line-height: 1;
+  }
+</style>

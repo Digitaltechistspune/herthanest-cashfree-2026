@@ -1,0 +1,17 @@
+{%- liquid
+  assign product_form_id = 'quick-add-' | append: section_id | append: product.id
+-%}
+<qv-modal data-modal="#QuickAdd-{{ product.id }}" class="quick-view">
+  <a id="{{ product_form_id }}-submit" type="submit" name="add" class="quick-add-btn" aria-haspopup="dialog" aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ product.id }}" data-product-url="{{ shop.url }}{{ product.url | split: "?" | first }}?view=main-product">
+    <span class="cart-title"><i class="feather-eye"></i></span>
+    <div class="ajax-loader hidden">
+      <span class="spinner-border"></span>
+    </div>
+  </a>
+</qv-modal>
+<popup-view id="QuickAdd-{{ product.id }}" class="quickview-modal">
+  <div role="dialog" aria-label="{{ 'products.product.choose_product_options' | t: product_name: product.title | escape }}" aria-modal="true" class="quickview-block global-settings-popup" tabindex="-1">
+    <a id="stclose-{{ product.id }}" type="button" class="modal-close"><i class="feather-x"></i></a>
+    <div id="QuickAddInfo-{{ product.id }}" class="quick-view"></div>
+  </div>
+</popup-view>

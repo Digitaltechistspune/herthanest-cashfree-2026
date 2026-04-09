@@ -1,0 +1,299 @@
+<section class="search-page main-content-wrap shop-page section-ptb">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="pro-grli-wrapper full-side-wrap">
+          <div class="pro-grli-wrap product-grid">
+            {% if section.settings.tab_bar_enable %}
+            <div class="shop-top-bar">
+              <div class="product-filter">
+                <button class="filter-button" type="button">
+                  <i class="feather-filter"></i>
+                  <span>{{ 'collections.facets.filter_button' | t }}</span>
+                </button>
+              </div>
+            </div>
+            {% endif %}
+            <div class="get-data-products">
+              <div id="ProductGridContainer">
+                {%- assign products_limit = section.settings.products_limit_handle -%}
+                {%- paginate search.results by products_limit -%}
+                {%- if search.results.size > 0 -%}
+                <div class="product-grid-view">
+                  <div class="shop-product-wrap grid-3 collection">
+                    <ul class="product-view" id="product-grid" data-id="{{ section.id }}">
+                      {% for item in search.results %}
+                      <li class="st-col-item {{ section.settings.product_view }} {{ section.settings.product_view_lg }} {{ section.settings.product_view_sm }}">
+                        {%- case item.object_type -%}
+                        {%- when 'product' -%}
+                        {% render 'product-grid-item', product: item %}
+                        {%- when 'article' -%}
+                        {% render 'blog-grid-item', article: item %}
+                        {%- when 'page' -%}
+                        <div class="page-wrapper">
+                          <a href="{{ item.url }}">
+                            {{ item.title | truncate: 50 | escape }}
+                          </a>
+                          <span class="label">
+                            {{- 'templates.search.page' | t -}}
+                          </span>
+                        </div>
+                        {%- endcase -%}
+                      </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                  {% if paginate.pages > 1 %}
+                  <div class="paginatoin-area">
+                    {%- render 'pagination', paginate: paginate -%}
+                  </div>
+                  {% endif %}
+                </div>
+                {%- else -%}
+                <div class="empty-product collection" id="product-grid" data-id="{{ section.id }}">
+                  <div class="product-icon-title">
+                    <span class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i></span>
+                    <h2>{{ 'collections.general.empty_product_title' | t }}</h2>
+                  </div>
+                  <div class="product-desc">
+                    <flt-clear>
+                      <p class="text-danger">{{ 'collections.general.empty_product_desc' | t | append: "," }} {{ 'collections.general.empty_product_use_fewer_filters' | t }} {{ 'collections.general.empty_product_text_or' | t }} <a href="{{ collection.url }}" class="product-link">{{ 'collections.general.empty_product_html_link' | t | append: "." }}</a></p>
+                    </flt-clear>
+                  </div>
+                </div>
+                {%- endif -%}
+                {%- endpaginate -%}
+              </div>
+            </div>
+          </div>
+          <div class="pro-grli-wrap product-sidebar">
+            <div id="main-collection-filters" data-id="{{ section.id }}">
+              {% render 'search-filter', results: search %}
+              <script src="{{ 'collection-sidebar.js' | asset_url }}" defer="defer"></script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+  addEventListener('DOMContentLoaded', (event) => {
+    var swiper = new Swiper('#pro-{{ section.id }}', {
+      slidesPerView: 1,
+      grid: {
+        rows: 2,
+        fill: 'row' | 'column',
+      },
+      spaceBetween: 30,
+      observer: true,
+      observeParents: true,
+      watchSlidesProgress: true,
+      {%- if settings.enable_rtl -%}
+      rtl: true,
+      {%- endif -%}
+      navigation: {
+        nextEl: '.swiper-next-{{ section.id }}',
+        prevEl: '.swiper-prev-{{ section.id }}',
+      },
+      pagination: {
+        el: ".swiper-pagination-{{ section.id }}",
+        clickable: true
+      },
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      speed: 1000,
+      breakpoints: {
+        1199: {
+          slidesPerView: 1,
+          grid: {
+            rows: 2,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 30,
+        },
+        1499: {
+          slidesPerView: 1,
+          grid: {
+            rows: 2,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 30,
+        }
+      }
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Search page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Backgorund Color"
+    },
+    {
+      "type": "color",
+      "id": "collection_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product Options"
+    },
+    {
+      "type": "number",
+      "id": "products_limit_handle",
+      "label": "Product Limit",
+      "default": 24,
+      "info": "How many posts will appear on each page"
+    },
+    {
+      "type": "select",
+      "id": "product_view",
+      "label": "Slides per view",
+      "options": [
+        {
+          "label": "2 Products",
+          "value": "grid-2"
+        },
+        {
+          "label": "3 Products",
+          "value": "grid-3"
+        },
+        {
+          "label": "4 Products",
+          "value": "grid-4"
+        },
+        {
+          "label": "5 Products",
+          "value": "grid-5"
+        },
+        {
+          "label": "6 Products",
+          "value": "grid-6"
+        }
+      ],
+      "default": "grid-5"
+    },
+    {
+      "type": "select",
+      "id": "product_view_lg",
+      "label": "Slides per view ipad",
+      "options": [
+        {
+          "label": "2 Products",
+          "value": "grid-lg-2"
+        },
+        {
+          "label": "3 Products",
+          "value": "grid-lg-3"
+        },
+        {
+          "label": "4 Products",
+          "value": "grid-lg-4"
+        }
+      ],
+      "default": "grid-lg-4"
+    },
+    {
+      "type": "select",
+      "id": "product_view_sm",
+      "label": "Slides per view mobile",
+      "options": [
+        {
+          "label": "1 Products",
+          "value": "grid-sm-1"
+        },
+        {
+          "label": "2 Products",
+          "value": "grid-sm-2"
+        }
+      ],
+      "default": "grid-sm-2"
+    },
+    {
+      "type": "header",
+      "content": "Search filter"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_bar_enable",
+      "label": "Show filter button",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+<style>
+/*=====================================
+  collection-template css
+======================================*/
+{% if section.settings.collection_bgcolor_enable %}
+.shop-page {
+  background: {{ section.settings.collection_bgcolor }};
+}
+{% endif %}
+.shop-page .filter-button {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 13px 20px;
+  line-height: 1;
+  border: var(--sti-border);
+  text-transform: uppercase;
+  transition: none;
+}
+.shop-top-bar .product-filter button span {
+  {% if settings.enable_rtl %}
+  margin-right: 5px;
+  {% else %}
+  margin-left: 5px;
+  {% endif %}
+}
+.shop-top-bar .product-filter button:hover {
+  color: #fff;
+  border-color: var(--font-color-primary);
+  background: var(--font-color-primary);
+}
+.shop-page .page-wrapper {
+  padding: 30px;
+  background: var(--extra-color-body);
+  height: 100%;
+}
+.shop-page .page-wrapper span.label {
+  display: block;
+  padding-top: 5px;
+}
+</style>

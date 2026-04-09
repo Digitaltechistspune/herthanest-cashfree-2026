@@ -1,0 +1,230 @@
+{% form 'contact' %}
+  {{ form.errors | default_errors }}
+  <ul class="form-fill">
+    <div class="form-wrapper">
+      <li>
+      <input type="text" placeholder="{{ section.settings.name_placeholder }}" class="{% if form.errors contains 'name' %}error{% endif %}" name="contact[name]" id="ContactFormName" value="{% if form.name %}{{ form.name }}{% elsif customer.name %}{{ customer.name }}{% endif %}" required>
+      </li>
+      <li>
+      <input type="email" placeholder="{{ section.settings.email_placeholder }}" class="{% if form.errors contains 'email' %}error{% endif %}" name="contact[email]" id="ContactFormEmail" value="{% if form.email %}{{ form.email }}{% elsif customer.email %}{{ customer.email }}{% endif %}" required>
+      </li>
+      <li>
+      <input type="text" placeholder="{{ section.settings.phone_placeholder }}" class="{% if form.errors contains 'phone' %}error{% endif %}" name="contact[phone]" id="ContactFormPhone" value="{% if form.phone %}{{ form.phone }}{% elsif customer.phone %}{{ customer.phone }}{% endif %}" required>
+      </li>
+    </div>
+    <div class="form-wrapper">
+      <li class="h-100 textarea">
+        <textarea placeholder="{{ section.settings.message_placeholder }}" class="custom-textarea h-100" name="contact[body]" id="ContactFormMessage" required>{% if form.body %}{{ form.body }}{% endif %}</textarea>
+      </li>
+    </div>
+  </ul>
+  <div class="contact-submit">
+    <label class="read-agree">
+      <input type="checkbox" class="cust-checkbox">
+      <span class="cust-check"></span>
+      <p class="agree-text">
+       {{ section.settings.read_agree_text }}
+      </p>
+    </label>
+    <button type="submit" class="msg-btn btn btn-style3">
+      <span>{{ section.settings.form_button_name }}</span>
+    </button>
+  </div>
+  {% if form.posted_successfully? %}
+  <div class="post-success">
+    <ul>
+      <li class="text-success">{{ 'contact.form.post_success' | t }}</li>
+    </ul>
+  </div>
+  {% endif %}
+  {% endform %}
+  <style>
+   /* error css */
+    .errors{
+      margin: 30px 0 15px;
+      border-radius: 0;
+    }
+    .errors ul{
+      list-style: disc;
+      {% if settings.enable_rtl %}
+      margin-right: 15px;
+      text-align: right;
+      {% else %}
+      margin-left: 15px;
+      text-align: left;
+      {% endif %}
+    }
+    @media (max-width: 767px){
+      .errors{
+        margin: 20px 0 15px;
+      }
+    }
+  
+    /* form css */
+    ul.form-fill {
+      display: flex;
+      flex-wrap: wrap;
+      margin: -30px 0 0 -30px;
+    }
+    ul.form-fill .form-wrapper {
+      width: calc(50% - 30px);
+      margin: 30px 0 0 30px;
+    }
+    ul.form-fill li {
+      margin-top: 30px;
+    }
+    ul.form-fill li:first-child {
+      margin-top: 0px;
+    }
+    ul.form-fill li textarea,
+    ul.form-fill li input {
+      padding: 15px 20px;
+      font-size: 16px;
+      border: none;
+      border: var(--sti-border);
+    }
+    ul.form-fill li label{
+      display: block;
+      cursor: auto;
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+    ul.form-fill li input,
+    ul.form-fill li textarea{
+      display: block;
+      width: 100%;
+    }
+    .contact-submit{
+      display: flex;
+      align-items: flex-start;
+      margin: 30px 0px 0px -30px;
+    }
+    .contact-submit label.read-agree{
+      cursor: pointer;
+      width: calc(50% - 30px);
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin: 0px 0 0 30px;
+    }
+    .contact-submit button.msg-btn {
+      margin: 0px 0px 0px 30px;
+    }
+    .contact-submit label.read-agree input{
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    .contact-submit label.read-agree .agree-text{
+      font-size: 16px;
+      {% if settings.enable_rtl %}
+      margin: 0px 20px 0px 0px;
+      {% else %}
+      margin: 0px 0px 0px 20px;
+      {% endif %}
+    }
+    .contact-submit label.read-agree span.cust-check {
+      min-width: 14px;
+      height: 14px;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--theme-border-color);
+      border-radius: var(--sti-border-radius);
+      overflow: hidden;
+    }
+    .contact-submit label.read-agree span.cust-check::after {
+      display: none;
+      content: "\f25c";
+      font-family: bootstrap-icons !important;
+      font-size: 16px;
+    }
+    .contact-submit label.read-agree input.cust-checkbox:checked ~ span.cust-check::after {
+      display: block;
+    }
+
+    /* success css */
+    .post-success{
+      font-size: 0.9em;
+      padding: 6px 12px;
+      margin-top: 15px;
+      background-color: #f5fff7;
+      border: 1px solid #28a745;
+    }
+    .post-success ul{
+      list-style: disc;
+      {% if settings.enable_rtl %}
+      margin-right: 15px;
+      {% else %}
+      margin-left: 15px;
+      {% endif %}
+    }
+    @media (max-width: 1199px) {
+      ul.form-fill li {
+        margin-top: 15px;
+      }
+      .contact-submit label.read-agree .agree-text {
+        font-size: var(--font-size-body);
+      }
+    }
+    @media (max-width: 767px){
+      ul.form-fill {
+        margin: -30px 0 0 -12px;
+      }
+      ul.form-fill .form-wrapper {
+        width: calc(50% - 12px);
+        margin: 30px 0 0 12px;
+      }
+      .contact-submit label.read-agree .agree-text{
+        font-size: var(--font-size-body);
+      }
+      .contact-submit {
+        {% if settings.enable_rtl %}
+        margin: 30px -12px 0px 0px;
+        {% else %}
+        margin: 30px 0px 0px -12px;
+        {% endif %}
+      }
+      .contact-submit button.msg-btn {
+        {% if settings.enable_rtl %}
+        margin: 0px 12px 0px 0px;
+        {% else %}
+        margin: 0px 0px 0px 12px;
+        {% endif %}
+      }
+      .contact-submit label.read-agree {
+        width: calc(50% - 12px);
+        {% if settings.enable_rtl %}
+        margin: 0px 12px 0px 0px;
+        {% else %}
+        margin: 0px 0px 0px 12px;
+        {% endif %}
+      }
+    }
+    @media (max-width: 600px){
+      ul.form-fill {
+        margin: -15px 0 0 -12px;
+      }
+      ul.form-fill .form-wrapper {
+        width: calc(100% - 12px);
+        margin: 15px 0 0 12px;
+      }
+      .contact-submit{
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .contact-submit label.read-agree {
+        width: calc(100% - 12px);
+      }
+      .contact-submit button.msg-btn {
+        {% if settings.enable_rtl %}
+        margin: 30px 12px 0px 0px;
+        {% else %}
+        margin: 30px 0px 0px 12px;
+        {% endif %}
+      }
+    }
+  </style>

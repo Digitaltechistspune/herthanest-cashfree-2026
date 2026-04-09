@@ -1,0 +1,41 @@
+{%- liquid
+  assign product_form_id = 'quick-add-' | append: section_id | append: product.id
+  assign qty_rules = false
+  if product.selected_or_first_available_variant.quantity_rule.min > 1 or product.selected_or_first_available_variant.quantity_rule.max != null or product.selected_or_first_available_variant.quantity_rule.increment > 1
+    assign qty_rules = true
+  endif
+-%}
+{%- if product.variants.size > 1 or qty_rules -%}
+<qv-modal data-modal="#QuickAdd-{{ product.id }}" class="quick-action">
+  <a id="{{ product_form_id }}-submit" type="submit" name="add" class="quick-add-btn" aria-haspopup="dialog" aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ product.id }}" data-product-url="{{ shop.url }}{{ product.url | split: "?" | first }}?view=main-product">
+    <span class="cart-title"><i class="feather-shopping-cart"></i></span>
+    <div class="ajax-loader hidden">
+      <span class="spinner-border"></span>
+    </div>
+  </a>
+</qv-modal>
+<popup-view id="QuickAdd-{{ product.id }}" class="quickview-modal">
+  <div role="dialog" aria-label="{{ 'products.product.choose_product_options' | t: product_name: product.title | escape }}" aria-modal="true" class="quickview-block global-settings-popup" tabindex="-1">
+    <a id="stclose-{{ product.id }}" type="button" class="modal-close"><i class="feather-x"></i></a>
+    <div id="QuickAddInfo-{{ product.id }}" class="quick-view"></div>
+  </div>
+</popup-view>
+{%- else -%}
+<cart-action class="quick-action">
+  {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled>
+    <button id="{{ product_form_id }}-submit" type="submit" name="add" class="quick-add-btn" aria-haspopup="dialog" aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ product.id }}" aria-live="polite" data-sold-out-message="true" {% if product.selected_or_first_available_variant.available == false %} disabled{% endif %}>
+      <span class="cart-title">
+        {%- if product.selected_or_first_available_variant.available -%}
+          <i class="feather-shopping-cart"></i>
+        {%- else -%}
+          <i class="feather-shopping-cart"></i>
+        {%- endif -%}
+      </span>
+      <div class="ajax-loader hidden">
+        <span class="spinner-border"></span>
+      </div>
+    </button>
+  {%- endform -%}
+</cart-action>
+{%- endif -%}

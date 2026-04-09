@@ -1,0 +1,324 @@
+<section class="about-section5-bg">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="about-section5">
+          <ul class="ser-wrap">
+            {% for block in section.blocks %}
+            <li class="ser-wrapper ser-{{ block.id }}">
+              <div class="ser-block">
+                <a href="{{ block.settings.icon_url }}" class="ser-icon">
+                  {% if block.settings.text_icon1 != '' %}
+                    <span class="icon">
+                      {{ block.settings.text_icon1 }}
+                    </span>
+                  {% endif %}
+                </a>
+                <div class="ser-content">
+                  {% if block.settings.service_title != '' %}
+                  <h6 data-fade-in>{{ block.settings.service_title }}</h6>
+                  {% endif %}
+                  {% if block.settings.service_desc != '' %}
+                  <p data-fade-in>{{ block.settings.service_desc }}</p>
+                  {% endif %} 
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "About section5",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop / tablet"
+    },
+    {
+      "type": "range",
+      "id": "our_ser_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "our_ser_padding_bottom",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "our_ser_padding_top_ipad",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "our_ser_padding_bottom_ipad",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "our_ser_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "our_ser_padding_bottom_xs",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "about_vision_bgcolor",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "about_vision_bgcolor_enable",
+      "label": "Show Backgorund Color",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "our_services",
+      "name": "services",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "For service No Title"
+        },
+        {
+          "type": "paragraph",
+          "content": "For icon "
+        },
+        {
+          "type": "textarea",
+          "id": "text_icon1",
+          "label": "Icon",
+          "info": "https://feathericons.com"
+        },
+        {
+          "type": "url",
+          "id": "icon_url",
+          "label": "Icon url"
+        },
+        {
+          "type": "text",
+          "id": "service_title",
+          "label": "Service Title",
+          "default": "Choose products"
+        },
+        {
+          "type": "textarea",
+          "id": "service_desc",
+          "label": "Service Description",
+          "default": "Lorem Ipsum is simply dummy text printing and typesetting"
+        },
+        {
+          "type": "color",
+          "id": "service_bg_color",
+          "label": "Service background color",
+          "default": "#fff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About section5"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  {% for block in section.blocks %}
+  .about-section5 ul.ser-wrap li.ser-{{ block.id }} .ser-block .ser-icon {
+    background-color: {{ block.settings.service_bg_color }};
+  }
+  {% endfor %}
+  .about-section5-bg {
+    {% if section.settings.about_vision_bgcolor_enable %}
+    background-color: {{ section.settings.about_vision_bgcolor }};
+    {% endif %}
+  }
+  .about-section5 {
+    padding-top: {{ section.settings.our_ser_padding_top }}px;
+    padding-bottom: {{ section.settings.our_ser_padding_bottom }}px;
+  }
+  @media (max-width: 1199px) {
+    .about-section5 {
+      padding-top: {{ section.settings.our_ser_padding_top_ipad }}px;
+      padding-bottom: {{ section.settings.our_ser_padding_bottom_ipad }}px;
+    }
+  }
+  @media (max-width: 767px) {
+    .about-section5 {
+      padding-top: {{ section.settings.our_ser_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.our_ser_padding_bottom_xs }}px;
+    }
+  }
+
+  .about-section5 ul.ser-wrap {
+    display: flex;
+    
+    flex-wrap: wrap;
+    {%- if settings.enable_rtl -%}
+    margin-right: -30px;
+    {%- else -%}
+    margin-left: -30px;
+    {%- endif -%}
+    margin-top: -30px;
+  }
+  .about-section5 ul.ser-wrap li.ser-wrapper {
+    width: calc(33.33% - 30px);
+    {%- if settings.enable_rtl -%}
+    margin-right: 30px;
+    {%- else -%}
+    margin-left: 30px;
+    {%- endif -%}
+    margin-top: 30px;
+  }
+  .about-section5 ul.ser-wrap li.ser-wrapper .ser-block .ser-icon{
+    width: 120px;
+    height: 120px;
+    color: var(--font-color-primary);
+    font-size: 30px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+  .about-section5 ul.ser-wrap li.ser-wrapper .ser-block .ser-content {
+    text-align: center;
+  }
+  .about-section5 ul.ser-wrap li.ser-wrapper .ser-block .ser-content h6{
+    color: var(--font-color-header);
+    font-size: var(--font-size-subtitle);
+    line-height: 1;
+    font-weight: var(--font-weight-subtitle);
+    text-transform: uppercase;
+    margin-top: 30px;
+  }
+  .about-section5 ul.ser-wrap li.ser-wrapper .ser-block .ser-content p{
+    font-size: 18px;
+    max-width: 75%;
+    margin: 15px auto 0 auto;
+  }
+  @media (max-width: 1199px) {
+    .about-section5 ul.ser-wrap li.ser-wrapper .ser-block .ser-content p {
+      font-size: 16px;
+      max-width: 100%;
+    }
+  }
+  @media(max-width: 991px){
+    .about-section5 ul.ser-wrap {
+      justify-content: center;
+    }
+    .about-section5 ul.ser-wrap li.ser-wrapper {
+      width: calc(50% - 30px);
+    }
+  }
+  @media (max-width: 991px) {
+    .about-section5 ul.ser-wrap li .ser-block .ser-icon {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  @media(max-width: 767px){
+    .about-section5 ul.ser-wrap {
+      {%- if settings.enable_rtl -%}
+      margin-right: -12px;
+      {%- else -%}
+      margin-left: -12px;
+      {%- endif -%}
+    }
+    .about-section5 ul.ser-wrap li.ser-wrapper {
+      width: calc(50% - 12px);
+      {%- if settings.enable_rtl -%}
+      margin-right: 12px;
+      {%- else -%}
+      margin-left: 12px;
+      {%- endif -%}
+    }
+    .about-section5 ul.ser-wrap li.ser-wrapper .ser-block{
+      justify-content: flex-start;
+    }
+  }
+  @media (max-width: 479px) {
+    .about-section5 ul.ser-wrap li.ser-wrapper {
+      width: calc(100% - 12px);
+    }
+  }
+</style>

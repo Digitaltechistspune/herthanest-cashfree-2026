@@ -1,0 +1,447 @@
+<!doctype html>
+<html class="no-js supports-no-cookies{% if settings.enable_box %} box-layout {% if settings.box_body_bgimg_enable %} .bgimg {% endif %}{% endif %} mini2" lang="{{ shop.locale }}" dir="{%- if settings.enable_rtl -%}rtl{%- else -%}ltr{%- endif -%}">
+  <head>
+
+
+    
+{% comment %}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5R4NSPD39X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-5R4NSPD39X');
+</script>
+{% endcomment %}
+
+
+ {%- if content_for_header contains 'tapita-seo-script-tags' -%}{%- include 'tapita-seo-schema' -%}{%- endif -%} 
+
+    <meta name="google-site-verification" content="3B5q59IJ-nP-IQ7ZavFdzCiQa4Q4IPohk_E0g3Rttzo" />
+
+
+    {% comment %}
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "pmfoth9vjc");
+</script>
+
+
+
+  <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1020397813606147');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1020397813606147&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+{% endcomment %}
+    
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="var(--font-color-primary)">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    {%- unless settings.body_custom_font_handle_enable and settings.header_custom_font_handle_enable and settings.section_header_custom_font_handle_enable and settings.paragraph_custom_font_handle_enable and settings.other_custom_font_handle_enable -%}
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+
+{%- assign use_google_fonts = false -%}
+{%- if settings.header_custom_font_handle_enable
+  or settings.section_header_custom_font_handle_enable
+  or settings.paragraph_custom_font_handle_enable
+  or settings.other_custom_font_handle_enable
+  or settings.body_custom_font_handle_enable -%}
+  {%- assign use_google_fonts = true -%}
+{%- endif -%}
+
+{%- if use_google_fonts -%}
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{%- endif -%}
+
+{%- if settings.header_custom_font_handle_enable -%}
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family={{ settings.header_custom_font_handle | url_encode }}:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ settings.header_custom_font_handle | url_encode }}:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"></noscript>
+{%- endif -%}
+
+{%- if settings.section_header_custom_font_handle_enable -%}
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family={{ settings.section_header_custom_font_handle | url_encode }}:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ settings.section_header_custom_font_handle | url_encode }}:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"></noscript>
+{%- endif -%}
+
+{%- if settings.paragraph_custom_font_handle_enable -%}
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family={{ settings.paragraph_custom_font_handle | url_encode }}:ital,wght@0,400;0,500;1,400&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ settings.paragraph_custom_font_handle | url_encode }}:ital,wght@0,400;0,500;1,400&display=swap"></noscript>
+{%- endif -%}
+
+{%- if settings.other_custom_font_handle_enable -%}
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family={{ settings.other_custom_font_handle | url_encode }}:ital,wght@0,400;0,600;1,400&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ settings.other_custom_font_handle | url_encode }}:ital,wght@0,400;0,600;1,400&display=swap"></noscript>
+{%- endif -%}
+
+{%- if settings.body_custom_font_handle_enable -%}
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family={{ settings.body_custom_font_handle | url_encode }}:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ settings.body_custom_font_handle | url_encode }}:ital,wght@0,400;0,500;0,600;1,400&display=swap"></noscript>
+{%- endif -%}
+
+
+
+
+    {%- liquid
+    unless settings.body_custom_font_handle_enable
+        assign body_font = settings.body_font_handle
+        assign body_font_bolder = body_font | font_modify: 'weight', 'bolder'
+        assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+        assign body_font_italic = body_font | font_modify: 'style', 'italic'
+        assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    endunless
+    unless settings.header_custom_font_handle_enable
+        assign header_font = settings.header_font_handle
+    endunless
+    unless settings.section_header_custom_font_handle_enable
+        assign section_header_font = settings.section_header_font_handle
+    endunless
+    unless settings.paragraph_custom_font_handle_enable
+        assign paragraph_font = settings.paragraph_font_handle
+    endunless
+    unless settings.other_custom_font_handle_enable
+        assign other_font = settings.other_font_handle
+    endunless
+    -%}
+    {%- if canonical_url != blank -%}
+    <link rel="canonical" href="{{ canonical_url }}">
+    {%- endif -%}
+    {%- if settings.favicon != blank -%}
+    <link rel="shortcut icon" href="{{ settings.favicon | image_url }}" type="image/png" />
+    {%- endif -%}
+    {% capture seo_title %}
+    {{ page_title }}
+    {% if current_tags %}
+    {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {% endif %}
+    {% if current_page != 1 %}
+    &ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {% endif %}
+    {% unless page_title contains shop.name %}
+    &ndash; {{ shop.name }}
+    {% endunless %}
+    {% endcapture %}
+    <title>{{ seo_title }}</title>
+    <meta name="description" content="{{ page_description }}">
+    {% render 'social-meta-tags' %}
+    <style>
+    {% if settings.header_custom_font_handle_enable %}
+    {% else %}
+    {{ header_font | font_face: font_display: 'swap' }}
+    {% endif %}
+    {% if settings.section_header_custom_font_handle_enable %}
+    {% else %}
+    {{ section_header_font | font_face: font_display: 'swap' }}
+    {% endif %}
+    {% if settings.paragraph_custom_font_handle_enable %}
+    {% else %}
+    {{ paragraph_font | font_face: font_display: 'swap' }}
+    {% endif %}
+    {% if settings.other_custom_font_handle_enable %}
+    {% else %}
+    {{ other_font | font_face: font_display: 'swap' }}
+    {% endif %}
+    {% if settings.body_custom_font_handle_enable %}
+    {% else %}
+    {{ body_font | font_face: font_display: 'swap' }}
+    {{ body_font_bolder | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {% endif %}
+    {%- liquid
+    unless settings.header_custom_font_handle_enable
+      assign header_font = settings.header_font_handle
+     endunless 
+    -%}
+    {%- liquid
+      unless settings.section_header_custom_font_handle_enable
+        assign section_header_font = settings.section_header_font_handle
+      endunless
+    -%}
+    {%- liquid
+      unless settings.paragraph_custom_font_handle_enable
+      assign paragraph_font = settings.paragraph_font_handle
+      endunless
+    -%}
+    {%- liquid
+      unless settings.other_custom_font_handle_enable
+        assign other_font = settings.other_font_handle
+      endunless
+    -%}
+    {%- liquid
+      unless settings.body_custom_font_handle_enable
+        assign body_font = settings.body_font_handle
+        assign body_font_bolder = body_font | font_modify: 'weight', 'bolder'
+        assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+        assign body_font_italic = body_font | font_modify: 'style', 'italic'
+        assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+      endunless
+    -%}
+    </style>
+    {%- render 'header-css' -%}
+    {%- render 'css-variables' -%}
+    <style>
+    :root {
+      --font-weight-body--bold: {{ body_font_bold.weight | default: 700 }};
+      --font-weight-body--bolder: {{ body_font_bolder.weight | default: 700 }};
+    
+      --font-color-body: {{ settings.body_text_color }};
+      --font-size-body: {{ settings.body_font_size }}px;
+      --font-size-subtitle: {{ settings.body_subtitle_font_size }}px;
+      --font-weight-subtitle: {{ settings.font_weight_subtitle }};
+      --background-color-body: {{ settings.body_bgcolor }};
+      --extra-color-body: {{ settings.extra_bgcolor }};
+      --button-radius: {{ settings.btn1_border_radius }}px;
+      {% if settings.body_custom_font_handle_enable %}
+      --font-custom-stack-body: '{{ settings.body_custom_font_handle }}', sans-serif;
+      --font-custom-weight-body: {{ settings.body_custom_font_weight }};
+      --font-custom-style-body: {{ settings.body_custom_font_style }};
+      {% else %}
+      --font-stack-body: {{ body_font.family }}, {{ body_font.fallback_families }};
+      --font-weight-body: {{ body_font.weight }};
+      --font-style-body: {{ body_font.style }};
+      {% endif %}
+      --font-letter-spacing-body: {{ settings.body_letter_spacing }}px;
+    
+      --font-color-header: {{ settings.heading_text_color }};
+      {% if settings.header_custom_font_handle_enable %}
+      --font-custom-stack-header: '{{ settings.header_custom_font_handle }}', sans-serif;
+      --font-custom-weight-header: {{ settings.header_custom_font_weight }};
+      --font-custom-style-header: {{ settings.header_custom_font_style }};
+      {% else %}
+      --font-stack-header: {{ header_font.family }}, {{ header_font.fallback_families }};
+      --font-weight-header: {{ header_font.weight }};
+      --font-style-header: {{ header_font.style }};
+      {% endif %}
+    
+      --font-color-section-header: {{ settings.section_heading_text_color }};
+      {% if settings.section_header_custom_font_handle_enable %}
+      --font-custom-stack-section-header: '{{ settings.section_header_custom_font_handle }}', sans-serif;
+      --font-custom-weight-section-header:{{ settings.section_header_custom_font_weight }};
+      --font-custom-style-section-header: {{ settings.section_header_custom_font_style }};
+      {% else %}
+      --font-stack-section-header: {{ section_header_font.family }}, {{ section_header_font.fallback_families }};
+      --font-weight-section-header: {{ section_header_font.weight }};
+      --font-style-section-header: {{ section_header_font.style }};
+      {% endif %}
+      --font-text-section-header: {{ settings.section_header_text_transform }};
+    
+      --font-color-paragraph: {{ settings.para_text_color }};
+      {% if settings.paragraph_custom_font_handle_enable %}
+      --font-custom-stack-paragraph: '{{ settings.paragraph_custom_font_handle }}', sans-serif;
+      --font-custom-weight-paragraph: {{ settings.paragraph_custom_font_weight }};
+      --font-custom-style-paragraph: {{ settings.paragraph_custom_font_style }};
+      {% else %}
+      --font-stack-paragraph: {{ paragraph_font.family }}, {{ paragraph_font.fallback_families }};
+      {% endif %}
+      --font-line-height-paragraph: {{ settings.paragraph_font_line_height }}px;
+    
+      {% if settings.other_custom_font_handle_enable %}
+      --font-custom-stack-other: '{{ settings.other_custom_font_handle }}', sans-serif;
+      {% else %}
+      --font-stack-other: {{ other_font.family }}, {{ other_font.fallback_families }};
+      {% endif %}
+    
+      --font-color-primary: {{ settings.color_primary }};
+      --font-color-secondary: {{ settings.color_secondary }};
+      --theme-border-color: {{ settings.theme_border_color | color_modify: 'alpha', settings.theme_border_color_opacity }};
+    
+      --sti-color: {{ settings.tag_color }};
+      --sti-font-size: {{ settings.tag_font_size }}px;
+      --sti-bgcolor: {{ settings.tag_bgcolor }};
+      --sti-text: {{ settings.tag_text_transform }};
+      --sti-font-weight: {{ settings.tag_font_weight }};
+      --sti-border: 1px solid {{ settings.tag_border_color | color_modify: 'alpha', settings.tag_border_color_opacity }};
+      --sti-border-radius: {{ settings.tag_border_radius }}px;
+    
+      --box-body-bgcolor: {{ settings.box_body_bgcolor }};
+    }
+    </style>
+    {{ content_for_header }}
+    <script type="text/javascript" src="{{ 'plugins.js' | asset_url }}" defer></script>
+    {%- render 'header-js' -%}
+    {% if template contains 'customers' or 'cart' %}
+    <script type="text/javascript" src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+    {% endif %}
+    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    if (Shopify.designMode) {
+      document.documentElement.classList.add('shopify-design-mode');
+    }
+    </script>
+    {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+    <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hertha Nest | Handcrafted Wooden Home Décor & Sustainable Designs in Mumabai">
+<meta property="og:url" content="https://herthanest.in/">
+<meta property="og:image" content="https://herthanest.in/cdn/shop/files/7.png?v=1735275768&width=352">
+<meta property="og:description" content="Discover Hertha Nest, established in April 2023, crafting elegant handcrafted wooden home décor and functional products. Blending sustainability, tradition, and modern design, we create high-quality pieces to enhance your living spaces. Explore timeless artistry for your home."> 
+
+
+{% if template contains 'product' %}
+
+
+
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "{{ product.title | escape }}",
+    "image": [
+      "{{ product.featured_image | img_url: 'master' | prepend: 'https:' }}"
+    ],
+    "description": "{{ product.description | strip_html | escape }}",
+    "sku": "{{ product.selected_or_first_available_variant.sku }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "Hertha Nest"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": "{{ shop.url }}{{ product.url }}",
+      "priceCurrency": "{{ cart.currency.iso_code }}",
+      "price": "{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+    }
+  }
+  </script>
+{% endif %}
+
+{% render 'cashfree' %}
+  </head>
+
+  <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template.name | handle }}">
+
+
+
+
+    {% liquid
+      if settings.cart_type == 'drawer'
+      render 'ajax-cart'
+      endif
+      sections 'header-group'
+      if settings.breadcrumb_banner_enable and template != 'index'
+      unless template.name == 'product'
+      render 'breadcrumb-banner'
+      endunless
+      endif
+    -%}
+    <main role="main">
+      {{ content_for_layout }}
+    </main>
+    {%- liquid
+      render 'fullscreen-bg'
+      render 'back-to-top'
+      sections 'footer-group'
+      section 'mobile-sticky-menu'
+    -%}
+    <script type="text/javascript">
+      
+      window.money_format = '{{ shop.money_format }}';
+      window.routes = {
+        increase_cart_url: '{{ routes.cart_add_url }}',
+        edite_cart_url: '{{ routes.cart_change_url }}',
+        change_cart_url: '{{ routes.cart_update_url }}',
+        cart_url: '{{ routes.cart_url }}',
+        ajax_search_url: '{{ routes.predictive_search_url }}'
+      };
+    window.stCartString = {
+  error: {{ 'sections.cart.cart_error' | t | json }},
+  qtyError: {{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' | json }}
+};
+
+
+      window.stThemeString = {
+  Straddcart: {{ 'products.product.add_to_cart' | t | json }},
+  Strsoldout: {{ 'products.product.sold_out' | t | json }},
+  Strunavailable: {{ 'products.product.unavailable' | t | json }},
+  StrunavailableOp: {{ 'products.product.value_unavailable' | t: option_value: '[value]' | json }}
+};
+
+      let data = {
+        "messages": [    
+        "{{ settings.comback_title1 }}",
+        "{{ settings.comback_title2 }}"
+        ],
+        "delay": 1000,
+        "titleTag": document.getElementsByTagName("title")[0]
+      };
+      if (data.titleTag) {
+        data.originalTitle = data.titleTag.innerText;
+        data.isSingleMessage = data.messages.length < 2;
+        data.isActive = false;
+        function handleTabVisibilityChange() {
+          if (document.visibilityState === 'visible') {
+            if (!data.isActive) return;
+            clearInterval(data.timerId);
+            data.titleTag.innerText = data.originalTitle;
+          } else {
+            let messageIndex = 0;
+            let currentMessage = data.messages[messageIndex];
+            if (data.isActive = true, data.titleTag.innerText = currentMessage, data.isSingleMessage) return;
+            data.timerId = setInterval(function () {
+              let nextMessage = data.messages[++messageIndex];
+              if (!nextMessage) {
+                messageIndex = 0;
+                nextMessage = currentMessage;
+              }
+              data.titleTag.innerText = nextMessage;
+            }, data.delay);
+          }
+        }
+        document.addEventListener('visibilitychange', handleTabVisibilityChange);
+      }
+    </script>
+    {%- if settings.ajax_search_enabled -%}
+    <script src="{{ 'search-ajax.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if template.name == 'index' -%}
+  <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% if request.page_type == 'product' %}
+  <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+{% endif %}
+
+{% if request.page_type == 'product' and product %}
+  {% render 'mobile-sticky-atc' %}
+{% endif %}
+
+
+  </body>
+</html>

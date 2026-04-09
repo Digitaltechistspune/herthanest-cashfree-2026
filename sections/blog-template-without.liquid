@@ -1,0 +1,583 @@
+<section class="blog-section">
+  <div class="{% if section.settings.container == 'fluid' %}container-fluid {% else %}container{% endif %}">
+    <div class="row">
+      <div class="col">
+        <div class="blog-wrap">
+          {%- unless section.settings.sidebar_handle == 'without_sidebar' -%}
+          <div class="sidebar-wrapper blog-sidebar">
+            {% render 'blog-sidebar' %}
+          </div>
+          {%- endunless -%}
+          <div class="sidebar-wrapper blog-article">
+            {%- assign blogs_limit = section.settings.blog_news_limit_handle -%}
+            {%- paginate blog.articles by blogs_limit -%}
+              <ul class="single-blog-area">
+                {% for article in blog.articles %}
+                <li class="blog-slider">
+                  {% render 'blog-grid-item', article: article %}
+                </li>
+                {% endfor %}
+              </ul>
+              {% if paginate.pages > 1 %}
+              <div class="paginatoin-area">
+                <ul class="paginate">
+                  <li class="page-numerous">
+                    {%- render 'pagination', paginate: paginate -%}
+                  </li>
+                </ul>
+              </div>
+              {% endif %}
+            {%- endpaginate -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Blog Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "options": [
+        {
+          "label": "Fluid",
+          "value": "fluid"
+        },
+        {
+          "label": "Normal",
+          "value": "normal"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop / Laptop"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "paragraph",
+      "content": "Ipad pro / Ipad"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_ip",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_ip",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section background"
+    },
+    {
+      "type": "color",
+      "id": "section_bgcolor",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_bgcolor_enable",
+      "label": "Section Background Color",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "blog_news_column",
+      "label": "Blog grid",
+      "options": [
+        {
+          "label": "2 Grid",
+          "value": "2"
+        },
+        {
+          "label": "3 Grid",
+          "value": "3"
+        },
+        {
+          "label": "4 Grid",
+          "value": "4"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "number",
+      "id": "blog_news_limit_handle",
+      "label": "Post limit",
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "blog_news_through",
+      "label": "Through",
+      "default": "By"
+    },
+    {
+      "type": "text",
+      "id": "blog_news_read_btn",
+      "label": "Button Text",
+      "default": "Read More"
+    },
+    {
+      "type": "text",
+      "id": "blog_news_cmt",
+      "label": "Comment",
+      "default": "Comment"
+    },
+    {
+      "type": "header",
+      "content": "Blog Sidebar"
+    },
+    {
+      "type": "radio",
+      "id": "sidebar_handle",
+      "label": "Sidebar Position",
+      "options": [
+        {
+          "label": "Left Sidebar",
+          "value": "left_sidebar_handle"
+        },
+        {
+          "label": "Right Sidebar",
+          "value": "right_sidebar_handle"
+        },
+        {
+          "label": "Without Sidebar",
+          "value": "without_sidebar"
+        }
+      ],
+      "default": "left_sidebar_handle"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar sticky position"
+    },
+    {
+      "type": "radio",
+      "id": "blog_sidebar_position_handle",
+      "label": "Sidebar position",
+      "options": [
+        {
+          "label": "Sticky",
+          "value": "sticky_sidebar"
+        },
+        {
+          "label": "Simple",
+          "value": "simple_sidebar"
+        }
+      ],
+      "default": "sticky_sidebar"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar search"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_search_bar_enable",
+      "label": "Show searchbar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "blog_search_placeholder",
+      "label": "Searchbar placeholder",
+      "default": "Search"
+    },
+    {
+      "type": "header",
+      "content": "Recent posts"
+    },
+    {
+      "type": "checkbox",
+      "id": "recent_post_enable",
+      "label": "Show recent posts",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "recent_title",
+      "label": "Title",
+      "default": "Recent posts"
+    },
+    {
+      "type": "number",
+      "id": "recent_post_limit_handle",
+      "label": "How many post show",
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Select category"
+    },
+    {
+      "type": "text",
+      "id": "blog_cat_title",
+      "label": "Category title",
+      "default": "Categories"
+    },
+    {
+      "type": "link_list",
+      "id": "blog_cat_handle",
+      "label": "Select category"
+    },
+    {
+      "type": "header",
+      "content": "Tag"
+    },
+    {
+      "type": "checkbox",
+      "id": "tags_enable",
+      "label": "Show tags",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "blog_tags_title",
+      "label": "Title",
+      "default": "Tags"
+    },
+    {
+      "type": "number",
+      "id": "blog_tags_list_limit_handle",
+      "label": "How many tags show",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_new_enable",
+      "label": "Newsletter enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "blog_new_title",
+      "label": "Newsletter",
+      "default": "Newsletter"
+    },
+    {
+      "type": "header",
+      "content": "Instagram"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_insta_enable",
+      "label": "Instagram enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "blog_insta_title",
+      "label": "Instagram title",
+      "default": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "insta_url1",
+      "label": "Instagram image url"
+    },
+    {
+      "type": "image_picker",
+      "id": "insta_img1",
+      "label": "Instagram image",
+      "info": "Recommended Size: 500x500px"
+    },
+    {
+      "type": "url",
+      "id": "insta_url2",
+      "label": "Instagram image url"
+    },
+    {
+      "type": "image_picker",
+      "id": "insta_img2",
+      "label": "Instagram image",
+      "info": "Recommended Size: 500x500px"
+    },
+    {
+      "type": "url",
+      "id": "insta_url3",
+      "label": "Instagram image url"
+    },
+    {
+      "type": "image_picker",
+      "id": "insta_img3",
+      "label": "Instagram image",
+      "info": "Recommended Size: 500x500px"
+    },
+    {
+      "type": "url",
+      "id": "insta_url4",
+      "label": "Instagram image url"
+    },
+    {
+      "type": "image_picker",
+      "id": "insta_img4",
+      "label": "Instagram image",
+      "info": "Recommended Size: 500x500px"
+    },
+    {
+      "type": "url",
+      "id": "insta_url5",
+      "label": "Instagram image url"
+    },
+    {
+      "type": "image_picker",
+      "id": "insta_img5",
+      "label": "Instagram image",
+      "info": "Recommended Size: 500x500px"
+    },
+    {
+      "type": "url",
+      "id": "insta_url6",
+      "label": "Instagram image url"
+    },
+    {
+      "type": "image_picker",
+      "id": "insta_img6",
+      "label": "Instagram image",
+      "info": "Recommended Size: 500x500px"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.blog-section {
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  {% if section.settings.section_bgcolor_enable %}
+  background-color: {{ section.settings.section_bgcolor }};
+  {% endif %}
+}
+@media (max-width: 1199px) {
+  .blog-section {
+    padding-top: {{ section.settings.section_padding_top_ip }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_ip }}px;
+  }
+}
+@media (max-width: 767px) {
+  .blog-section {
+    padding-top: {{ section.settings.section_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+  }
+}
+{% if section.settings.sidebar_handle == 'left_sidebar_handle' or section.settings.sidebar_handle == 'right_sidebar_handle' %}
+.blog-section .blog-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  {% if section.settings.sidebar_handle == 'right_sidebar_handle' %}
+  flex-direction: row-reverse;
+  {% endif %}
+  margin: -30px 0px 0px -60px;
+}
+.blog-section .blog-wrap .sidebar-wrapper {
+  margin: 30px 0px 0px 60px;
+  width: 100%;
+}
+{% if section.settings.sidebar_handle == 'left_sidebar_handle' or section.settings.sidebar_handle == 'right_sidebar_handle' %}
+.blog-section .blog-wrap .sidebar-wrapper.blog-article {
+  width: calc(75% - 60px);
+}
+.blog-section .blog-wrap .sidebar-wrapper.blog-sidebar {
+  width: calc(25% - 60px);
+}
+@media (max-width: 1199px) {
+  .blog-section .blog-wrap {
+    margin: -30px 0px 0px -30px;
+  }
+  .blog-section .blog-wrap .sidebar-wrapper {
+    margin: 30px 0px 0px 30px;
+  }
+  .blog-section .blog-wrap .sidebar-wrapper.blog-article {
+    width: calc(66.67% - 30px);
+  }
+  .blog-section .blog-wrap .sidebar-wrapper.blog-sidebar {
+    width: calc(33.33% - 30px);
+  }
+}
+@media (max-width: 991px) {
+  .blog-section .blog-wrap {
+    flex-direction: column-reverse;
+  }
+  {% if section.settings.sidebar_handle == 'right_sidebar_handle' %}
+  .blog-content-wrap .blog-grid-wrapper {
+    flex-direction: column;
+  }
+  {% endif %}
+  .blog-section .blog-wrap .sidebar-wrapper.blog-article,
+  .blog-section .blog-wrap .sidebar-wrapper.blog-sidebar {
+    width: calc(100% - 30px);
+  }
+  .blog-section .blog-wrap .sidebar-wrapper.blog-sidebar {
+    margin-top: 60px;
+  }
+}
+{% endif %}
+@media (max-width: 767px) {
+  .blog-section .blog-wrap {
+    {% if settings.enable_rtl %}
+    margin: -30px -12px 0px 0px;
+    {% else %}
+    margin: -30px 0px 0px -12px;
+    {% endif %}
+  }
+  .blog-section .blog-wrap .sidebar-wrapper {
+    {% if settings.enable_rtl %}
+    margin: 30px 12px 0px 0px;
+    {% else %}
+    margin: 30px 0px 0px 12px;
+    {% endif %}
+  }
+  {% if section.settings.sidebar_handle == 'left_sidebar_handle' or section.settings.sidebar_handle == 'right_sidebar_handle' %}
+  .blog-section .blog-wrap .sidebar-wrapper.blog-article,
+  .blog-section .blog-wrap .sidebar-wrapper.blog-sidebar {
+    width: calc(100% - 12px);
+  }
+  {% endif %}
+}
+{% endif %}
+
+.blog-section ul.single-blog-area {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -30px 0px 0px -30px;
+}
+.blog-section ul.single-blog-area li.blog-slider {
+  position: relative;
+  margin: 30px 0px 0px 30px;
+}
+
+{% if section.settings.blog_news_column == '4' %}
+.blog-section ul.single-blog-area li.blog-slider{
+  width: calc(25% - 30px);
+}
+@media (max-width: 1199px){
+  .blog-section ul.single-blog-area li.blog-slider{
+    width: calc(33.33% - 30px);
+  }
+}
+@media (max-width: 991px){
+  .blog-section ul.single-blog-area li.blog-slider{
+    width: calc(50% - 30px);
+  }
+}
+{% endif %}
+
+{% if section.settings.blog_news_column == '3' %}
+.blog-section ul.single-blog-area li.blog-slider{
+  width: calc(33.33% - 30px);
+}
+@media (max-width: 1199px){
+  .blog-section ul.single-blog-area li.blog-slider{
+    width: calc(50% - 30px);
+  }
+}
+@media (max-width: 991px){
+  .blog-section ul.single-blog-area li.blog-slider{
+    width: calc(50% - 30px);
+  }
+}
+{% endif %}
+{% if section.settings.blog_news_column == '2' %}
+.blog-section ul.single-blog-area li.blog-slider{
+  width: calc(50% - 30px);
+}
+@media (max-width: 1199px){
+  .blog-section ul.single-blog-area li.blog-slider{
+    width: calc(50% - 30px);
+  }
+}
+@media (max-width: 991px){
+  .blog-section ul.single-blog-area li.blog-slider{
+    width: calc(50% - 30px);
+  }
+}
+{% endif %}
+@media (max-width : 767px){
+  .blog-section ul.single-blog-area{
+    margin: -30px 0px 0px -12px;
+  }
+  .blog-section ul.single-blog-area li.blog-slider{
+    width: calc(50% - 12px);
+    margin: 30px 0px 0px 12px;
+  }
+}
+@media (max-width: 600px) {
+  .blog-section ul.single-blog-area li.blog-slider{
+    width: calc(100% - 12px);
+  }
+}
+</style>

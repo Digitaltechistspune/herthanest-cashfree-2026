@@ -1,0 +1,453 @@
+{% if template == 'index' %}
+<div class="newspopup2 modal fade" id="news-modal2">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close-btn" aria-label="Close btn" data-bs-dismiss="modal"><i class="feather-x"></i></button>
+          <div class="subscribe_area">
+            <div class="subscribe-content">
+              {% if section.settings.news_sub_title != '' %}
+              <span data-fade-in style="color: {{ section.settings.news_sub_title_color }};">{{ section.settings.news_sub_title }}</span>
+              {% endif %}
+              {% if section.settings.news_title != '' %}
+              <h2 data-fade-in style="color: {{ section.settings.news_title_color }};">{{ section.settings.news_title }}</h2>
+              {% endif %}
+            </div>
+            {% assign category_product = collections[section.settings.special_label_product] %}
+            <div class="news-slider swiper" id="pro-{{ section.id }}">
+              <div class="swiper-wrapper">
+                {% assign product_limit = section.settings.product_limit %}
+                {% for product in category_product.products limit: product_limit %}
+                  <div class="swiper-slide">
+                    {%- liquid
+                      render 'product-grid-item', product: product
+                    -%}
+                  </div>
+                {% else %}
+                  {% for i in (1..product_limit) %}
+                    <div class="swiper-slide">
+                      <div class="single-product-wrap">
+                        <div class="product-image">
+                          {%- capture placeholder -%}product-apparel-{% cycle 1, 2, 3 %}{%- endcapture -%}
+                          {{ placeholder | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                        </div>
+                        <div class="product-content">
+                          <div class="product-title">
+                            <h6>
+                              <a >{{ 'homepage.sections.product_title' | t }}</a>
+                            </h6>
+                          </div>
+                          <div class="price-box">
+                            <span class="new-price">{{ 'homepage.sections.product_price' | t }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% endfor %}
+              </div>
+              {% if section.settings.button_enable %}
+              <div class="collection-button" data-fade-in>
+                <a href="{{ category_product.url }}" class="btn {% if section.settings.button_style == 'btn-style1' %}btn-style{% elsif section.settings.button_style == 'btn-style2' %}btn-style2{% else %}btn-style3{% endif %}">{{- section.settings.button_text }}<i class="feather-arrow-right"></i></a>
+              </div>
+              {% endif %}
+            </div>
+            <div class="dont-show">
+              <label>
+                <input type="checkbox" id="1" class="box2">
+                <span class="cust-check"></span>
+                <span>{{ section.settings.dont_show_text }}</span>
+              </label>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  let boxes2 = document.getElementsByClassName('box2').length;
+  function save2() {
+    for(let i = 1; i <= boxes2; i++){
+      var checkbox2 = document.getElementById(String(i));
+      localStorage.setItem("news_popup2", checkbox2.checked);
+    }
+  }
+  for(let i = 1; i <= boxes2; i++){
+    if(localStorage.length > 0){
+      var checked = JSON.parse(localStorage.getItem("news_popup2"));
+      document.getElementById(String(i)).checked = checked;
+    }
+  }
+  window.addEventListener('change', save2);
+  addEventListener('DOMContentLoaded', (event) => {
+    $(window).on('load',function(){
+      setTimeout(function () {
+        var popup = localStorage.getItem('news_popup2');
+        if(popup == null | popup == "false"){
+          $('#news-modal2').modal('show');
+        }
+      },{{ section.settings.timeout }});
+    });
+    var swiper = new Swiper('.swiper#pro-{{ section.id }}', {
+      slidesPerView: {{ section.settings.product_view }},
+      grid: {
+        rows: 1,
+        fill: 'row' | 'column',
+      },
+      spaceBetween: 30,
+      observer: true,
+      observeParents: true,
+      watchSlidesProgress: true,
+      {%- if settings.enable_rtl -%}
+      rtl: true,
+      {%- endif -%}
+      navigation: {
+        nextEl: '.swiper-next-{{ section.id }}',
+        prevEl: '.swiper-prev-{{ section.id }}',
+      },
+      pagination: {
+        el: ".swiper-pagination-{{ section.id }}",
+        clickable: true
+      },
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      speed: 1000,
+      breakpoints: {
+        0: {
+          slidesPerView: 1,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        320: {
+          slidesPerView: 1,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        360: {
+          slidesPerView: 2,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        540: {
+          slidesPerView: 2,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        640: {
+          slidesPerView: 3,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 12
+        },
+        768: {
+          slidesPerView: 3,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          },
+          spaceBetween: 30,
+        },
+        1024: {
+          slidesPerView: 3,
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          }
+        },
+        1199: {
+          slidesPerView: {{ section.settings.product_view }},
+          grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+          }
+        }
+      }
+    });
+  });
+</script>
+
+<style>
+  .newspopup2 .modal-dialog {
+    max-width: 1080px;
+  }
+  .newspopup2 .modal-content {
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    background-color: {{ section.settings.modal_bg_color }};
+  }
+  .newspopup2 .modal-body {
+    padding: 0px;
+  }
+  @media (max-width: 600px) {
+     .newspopup2 .modal-dialog {
+      max-width: 100%;
+      margin: 0px;
+      padding: 12px;
+    }
+  }
+
+  /* newsletter close button css */
+   .newspopup2 .modal-body button.close-btn {
+    font-size: 20px;
+    position: absolute;
+    top: 20px;
+    {% if settings.enable_rtl %}
+    left: 20px;
+    {% else %}
+    right: 20px;
+    {% endif %}
+    line-height: 1;
+  }
+   .newspopup2 .modal-body button.close-btn:hover {
+    opacity: 1;
+    color: var(--font-color-primary);
+  }
+  
+  /* subscribe content css */
+   .newspopup2 .subscribe_area {
+    padding: 45px 60px;
+    margin: 0 auto;
+  }
+  .newspopup2 .subscribe_area .subscribe-content {
+    text-align: center;
+  }
+  .newspopup2 .subscribe_area .subscribe-content span {
+    font-size: 20px;
+    margin-bottom: 15px;
+   }
+  .newspopup2 .subscribe_area .subscribe-content h2 {
+    font-size: 28px;
+    padding-bottom: 40px;
+  }
+  .newspopup2 .subscribe_area .news-slider {
+    padding: 15px;
+    margin: -15px;
+  }
+  .newspopup2 .subscribe_area .collection-button {
+    margin-top: 40px;
+    text-align: center;
+  }
+  .newspopup2 .subscribe_area .collection-button a i {
+      padding-inline-start: 5px;
+  }
+  .newspopup2 .subscribe_area .dont-show {
+    margin-top: 30px;
+  }
+  .newspopup2 .subscribe_area .dont-show label {
+    position: relative;
+    margin-bottom: 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .newspopup2 .subscribe_area .dont-show label span {
+    font-size: var(--font-size-body);
+  }
+  .newspopup2 .subscribe_area .dont-show label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .newspopup2 .subscribe_area .dont-show label .cust-check {
+    width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    border: var(--sti-border);
+    overflow: hidden;
+    background-color: #fff;
+    margin-inline-end: 10px;
+  }
+  .newspopup2 .subscribe_area .dont-show label .cust-check:after {
+    display: none;
+    content: "\e92b";
+    font-family: feather!important;
+    color: #666;
+    font-size: 16px;
+  }
+  .newspopup2 .subscribe_area .dont-show label input:checked~span.cust-check:after {
+    display: block;
+  }
+  @media (max-width: 1199px) {
+    .newspopup2 .modal-dialog {
+      max-width: 700px;
+    }
+    .newspopup2 .subscribe_area .news-slider {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  @media (max-width: 767px) {
+    .newspopup2 .subscribe_area {
+      padding: 30px 12px;
+    }
+  }
+  @media (max-width: 479px) {
+    .newspopup2 .modal-body button.close-btn {
+      top: 10px;
+      {% if settings.enable_rtl %}
+      left: 10px;
+      {% else %}
+      right: 10px;
+      {% endif %}
+    }
+    .newspopup2 .subscribe_area .subscribe-content span {
+      font-size: 16px;
+    }
+    .newspopup2 .subscribe_area .subscribe-content h2 {
+      font-size: 20px;
+      padding-bottom: 30px;
+    }
+    .newspopup2 .subscribe_area .collection-button {
+      margin-top: 30px;
+    }
+    .newspopup2 .subscribe_area .dont-show {
+      margin-top: 15px;
+    }
+  }
+</style>
+{% endif %}
+{% schema %}
+{
+  "name": "Newsletter popup2",
+  "settings": [
+    {
+      "type": "number",
+      "id": "timeout",
+      "label": "How many seconds to show when the website is opened",
+      "default": 3000,
+      "info": "NOTE: 1000 count euqal to (1 second)"
+    },
+    {
+      "type": "color",
+      "id": "modal_bg_color",
+      "label": "Modal background color",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "news_sub_title",
+      "label": "Sub title",
+      "default": "Don't miss a thing"
+    },
+    {
+      "type": "color",
+      "id": "news_sub_title_color",
+      "label": "Sub title color",
+      "default": "#676767"
+    },
+    {
+      "type": "text",
+      "id": "news_title",
+      "label": "Title",
+      "default": "Join our newsletter and get 10% off your first order"
+    },
+    {
+      "type": "color",
+      "id": "news_title_color",
+      "label": "Title color",
+      "default": "#2c2c32"
+    },
+    {
+      "type": "text",
+      "id": "dont_show_text",
+      "label": "Dont show text",
+      "default": "Don’t show this popup again"
+    },
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "number",
+      "id": "product_limit",
+      "label": "Product imit",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "product_view",
+      "label": "Slides per view",
+      "options": [
+        {
+          "label": "3 Products",
+          "value": "3"
+        },
+        {
+          "label": "4 Products",
+          "value": "4"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "collection",
+      "id": "special_label_product",
+      "label": "Select Collection"
+    },
+    {
+      "type": "header",
+      "content": "Button Style"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "All products"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        {
+          "label": "Button Style1",
+          "value": "btn-style1"
+        },
+        {
+          "label": "Button Style2",
+          "value": "btn-style2"
+        },
+        {
+          "label": "Button Style3",
+          "value": "btn-style3"
+        }
+      ],
+      "default": "btn-style2"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_enable",
+      "label": "Show Collection Button",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
