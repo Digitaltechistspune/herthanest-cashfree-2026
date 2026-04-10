@@ -1,1 +1,108 @@
-{"sections":{"collection-category":{"type":"collection-category","blocks":{"be8b49ac-bf41-4d22-ba72-83690dc61d49":{"type":"collection_category","settings":{"slider_category_handle":"home-decore","category_img":"shopify:\/\/shop_images\/1_b52f24f4-b9a1-4c29-a09a-a291734bc0f1.png"}},"545040e9-c33e-4358-8264-65918e4193f7":{"type":"collection_category","settings":{"slider_category_handle":"modern-kitchen-accessories","category_img":"shopify:\/\/shop_images\/2_75bd47e0-8960-4d9c-8ac3-47761a21ba7e.png"}},"376f69a4-291d-4d70-a69a-72204276a70d":{"type":"collection_category","settings":{"slider_category_handle":"wooden-kids-acitivity-puzzle","category_img":"shopify:\/\/shop_images\/5_aa31760d-c97b-4462-a519-ca8c9b2945cb.png"}},"aa1f8eff-4900-42c8-bde3-c47724513903":{"type":"collection_category","settings":{"slider_category_handle":"wooden-kids-toys","category_img":"shopify:\/\/shop_images\/3_19cebccd-1c7b-47d5-8b9b-fd9ba858d446.png"}},"32fb59e1-4aeb-446f-8861-85262f701a65":{"type":"collection_category","settings":{"slider_category_handle":"indoor-games","category_img":"shopify:\/\/shop_images\/4_7d9381f6-abdc-45f8-99a3-a94d7fc563aa.png"}}},"block_order":["be8b49ac-bf41-4d22-ba72-83690dc61d49","545040e9-c33e-4358-8264-65918e4193f7","376f69a4-291d-4d70-a69a-72204276a70d","aa1f8eff-4900-42c8-bde3-c47724513903","32fb59e1-4aeb-446f-8861-85262f701a65"],"disabled":true,"settings":{"container":"normal","section_padding_top":100,"section_padding_bottom":100,"section_padding_top_ipad":80,"section_padding_bottom_ipad":80,"section_padding_top_xs":60,"section_padding_bottom_xs":60,"section_bg_color":"rgba(0,0,0,0)","section_bg_color_enable":false,"section_sub_title":"","section_title":"","product_views":"5","product_views_lg":"4","product_views_sm":"2"}},"collection-template":{"type":"collection-template","settings":{"container":"normal","collection_bgcolor":"#f9f7f5","collection_bgcolor_enable":true,"products_limit_handle":12,"product_view":"grid-4","product_view_lg":"grid-lg-4","product_view_sm":"grid-sm-2","collection_info_enable":false,"collection_image_enable":false,"collection_desc":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book","collection_desc_enable":false,"tab_bar_enable":false,"short_by_enable":false,"sidebar_handle":"left_sidebar_handle","collection_categories_title":"Categories","collection_categories_enable":true,"sidebar_banner_img":"shopify:\/\/shop_images\/5_493a19fd-23ca-4ff1-b8d6-c0ea4d031c62.png","sidebar_banner_url":"shopify:\/\/collections\/child-furniture","sidebar_banner_enable":false,"special_pro_title":"Special product","special_pro":"","special_pro_limit":12}}},"order":["collection-category","collection-template"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection-category": {
+      "type": "collection-category",
+      "blocks": {
+        "be8b49ac-bf41-4d22-ba72-83690dc61d49": {
+          "type": "collection_category",
+          "settings": {
+            "slider_category_handle": "home-decore",
+            "category_img": "shopify://shop_images/1_b52f24f4-b9a1-4c29-a09a-a291734bc0f1.png"
+          }
+        },
+        "545040e9-c33e-4358-8264-65918e4193f7": {
+          "type": "collection_category",
+          "settings": {
+            "slider_category_handle": "modern-kitchen-accessories",
+            "category_img": "shopify://shop_images/2_75bd47e0-8960-4d9c-8ac3-47761a21ba7e.png"
+          }
+        },
+        "376f69a4-291d-4d70-a69a-72204276a70d": {
+          "type": "collection_category",
+          "settings": {
+            "slider_category_handle": "wooden-kids-acitivity-puzzle",
+            "category_img": "shopify://shop_images/5_aa31760d-c97b-4462-a519-ca8c9b2945cb.png"
+          }
+        },
+        "aa1f8eff-4900-42c8-bde3-c47724513903": {
+          "type": "collection_category",
+          "settings": {
+            "slider_category_handle": "wooden-kids-toys",
+            "category_img": "shopify://shop_images/3_19cebccd-1c7b-47d5-8b9b-fd9ba858d446.png"
+          }
+        },
+        "32fb59e1-4aeb-446f-8861-85262f701a65": {
+          "type": "collection_category",
+          "settings": {
+            "slider_category_handle": "indoor-games",
+            "category_img": "shopify://shop_images/4_7d9381f6-abdc-45f8-99a3-a94d7fc563aa.png"
+          }
+        }
+      },
+      "block_order": [
+        "be8b49ac-bf41-4d22-ba72-83690dc61d49",
+        "545040e9-c33e-4358-8264-65918e4193f7",
+        "376f69a4-291d-4d70-a69a-72204276a70d",
+        "aa1f8eff-4900-42c8-bde3-c47724513903",
+        "32fb59e1-4aeb-446f-8861-85262f701a65"
+      ],
+      "disabled": true,
+      "settings": {
+        "container": "normal",
+        "section_padding_top": 100,
+        "section_padding_bottom": 100,
+        "section_padding_top_ipad": 80,
+        "section_padding_bottom_ipad": 80,
+        "section_padding_top_xs": 60,
+        "section_padding_bottom_xs": 60,
+        "section_bg_color": "rgba(0,0,0,0)",
+        "section_bg_color_enable": false,
+        "section_sub_title": "",
+        "section_title": "",
+        "product_views": "5",
+        "product_views_lg": "4",
+        "product_views_sm": "2"
+      }
+    },
+    "collection-template": {
+      "type": "collection-template",
+      "settings": {
+        "container": "normal",
+        "collection_bgcolor": "#f9f7f5",
+        "collection_bgcolor_enable": true,
+        "products_limit_handle": 12,
+        "product_view": "grid-3",
+        "product_view_lg": "grid-lg-3",
+        "product_view_sm": "grid-sm-2",
+        "collection_info_enable": false,
+        "collection_image_enable": false,
+        "collection_desc": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+        "collection_desc_enable": false,
+        "tab_bar_enable": false,
+        "short_by_enable": false,
+        "sidebar_handle": "left_sidebar_handle",
+        "collection_categories_title": "Categories",
+        "collection_categories_enable": true,
+        "sidebar_banner_img": "shopify://shop_images/5_493a19fd-23ca-4ff1-b8d6-c0ea4d031c62.png",
+        "sidebar_banner_url": "shopify://collections/child-furniture",
+        "sidebar_banner_enable": false,
+        "special_pro_title": "Special product",
+        "special_pro": "",
+        "special_pro_limit": 12
+      }
+    }
+  },
+  "order": [
+    "collection-category",
+    "collection-template"
+  ]
+}
