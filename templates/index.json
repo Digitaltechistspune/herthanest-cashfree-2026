@@ -148,6 +148,42 @@
         "custom_label_color": "#ffffff"
       }
     },
+    "special_category_nPb69a": {
+      "type": "special-category",
+      "name": "Special category",
+      "settings": {
+        "container": "normal",
+        "category_special_padding_top": 35,
+        "category_special_padding_bottom": 30,
+        "category_special_padding_top_ip": 80,
+        "category_special_padding_bottom_ip": 80,
+        "category_special_padding_top_xs": 60,
+        "category_special_padding_bottom_xs": 60,
+        "section_bgcolor": "#F9F7F5",
+        "section_bgcolor_enable": true,
+        "border_enable": false,
+        "border": 1,
+        "border_color": "#808080",
+        "border_color_opacity": 0.1,
+        "section_sub_title": "Trending Collection",
+        "section_title": "Fresh Arrivals",
+        "countdown_enable": false,
+        "product_mont": "January",
+        "product_year": 2025,
+        "product_date": 30,
+        "category_special_product_view": "grid",
+        "category_special_product_limit_handle": "12",
+        "category_special_product_col": "1",
+        "product_view": "4",
+        "product_view_lg": "3",
+        "product_view_sm": "1",
+        "special_label_product": "april-special-collection",
+        "category_special_button_enable": false,
+        "collection_btn_alignment": "center",
+        "category_special_button_text": "All products",
+        "category_special_button_style": "btn-style2"
+      }
+    },
     "1758799982511bfa5b": {
       "type": "_blocks",
       "blocks": {
@@ -316,96 +352,11 @@
             "tab_6_collection": ""
           },
           "blocks": {}
-        },
-        "ai_gen_block_c11af9b_AnT4rq": {
-          "type": "ai_gen_block_c11af9b",
-          "name": "Product tabs",
-          "disabled": true,
-          "settings": {
-            "section_heading": "Most popular collection",
-            "heading_font_size": 32,
-            "heading_color": "#333333",
-            "heading_text_alignment": "center",
-            "section_text_alignment": "left",
-            "section_padding_top": 60,
-            "section_padding_bottom": 60,
-            "section_padding_horizontal": 20,
-            "section_margin_top": 0,
-            "section_margin_bottom": 0,
-            "section_background_color": "#ffffff",
-            "tab_font_size": 16,
-            "tab_alignment": "center",
-            "tab_text_alignment": "center",
-            "tab_text_color": "#666666",
-            "tab_hover_color": "#333333",
-            "tab_hover_background": "rgba(0,0,0,0)",
-            "tab_active_color": "#de7f65",
-            "tab_active_background": "rgba(0,0,0,0)",
-            "tab_active_border_color": "#de7f65",
-            "tab_border_color": "#e0e0e0",
-            "tab_animation_duration": 0.3,
-            "products_per_tab": 8,
-            "columns_desktop": 4,
-            "columns_tablet": 3,
-            "product_spacing": 20,
-            "mobile_card_width": 250,
-            "slider_button_background": "#ffffff",
-            "slider_button_color": "#333333",
-            "slider_button_border_color": "#e0e0e0",
-            "slider_button_hover_background": "#de7f65",
-            "slider_button_hover_color": "#ffffff",
-            "slider_dot_color": "#cccccc",
-            "slider_dot_active_color": "#de7f65",
-            "product_card_background": "#ffffff",
-            "product_card_border_color": "#e0e0e0",
-            "product_card_border_radius": 8,
-            "product_hover_effect": "shadow",
-            "product_hover_animation_duration": 0.3,
-            "product_title_font_size": 16,
-            "product_title_color": "#333333",
-            "product_title_hover_color": "#de7f65",
-            "product_price_font_size": 16,
-            "product_price_color": "#de7f65",
-            "product_compare_price_color": "#999999",
-            "show_add_to_cart": true,
-            "add_to_cart_text": "Add to Cart",
-            "add_to_cart_style": "hover_animation",
-            "add_to_cart_font_size": 14,
-            "add_to_cart_padding_vertical": 12,
-            "add_to_cart_padding_horizontal": 20,
-            "add_to_cart_background": "#de7f65",
-            "add_to_cart_text_color": "#ffffff",
-            "add_to_cart_hover_background": "#333333",
-            "add_to_cart_hover_text_color": "#ffffff",
-            "add_to_cart_border_color": "#de7f65",
-            "add_to_cart_border_width": 0,
-            "add_to_cart_border_radius": 4,
-            "tab_1_enabled": true,
-            "tab_1_title": "Most popular collection Indoor Game",
-            "tab_1_collection": "indoor-games",
-            "tab_2_enabled": false,
-            "tab_2_title": "Best Sellers",
-            "tab_2_collection": "indoor-games",
-            "tab_3_enabled": false,
-            "tab_3_title": "Featured",
-            "tab_3_collection": "home-decore",
-            "tab_4_enabled": false,
-            "tab_4_title": "Sale",
-            "tab_4_collection": "",
-            "tab_5_enabled": false,
-            "tab_5_title": "Trending",
-            "tab_5_collection": "",
-            "tab_6_enabled": false,
-            "tab_6_title": "Limited Edition",
-            "tab_6_collection": ""
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "ai_gen_block_c11af9b_9Ueq4b",
-        "ai_gen_block_c11af9b_QQHK9L",
-        "ai_gen_block_c11af9b_AnT4rq"
+        "ai_gen_block_c11af9b_QQHK9L"
       ],
       "settings": {}
     },
@@ -447,26 +398,12 @@
             "banner_title_color": "#333333",
             "banner_text_position": "center"
           }
-        },
-        "offer_banner_aTFjm9": {
-          "type": "offer_banner",
-          "disabled": true,
-          "settings": {
-            "banner_img": "shopify://shop_images/3_eab7d688-dc5a-4c8a-97d8-54619bfec760.png",
-            "banner_url": "shopify://products/xmas-santa-combo-of-3",
-            "item_subtitle": "Most popular item",
-            "item_subtitle_color": "#de7f65",
-            "banner_title": "Xmas Santa",
-            "banner_title_color": "#333333",
-            "banner_text_position": "center"
-          }
         }
       },
       "block_order": [
         "offer_banner_Vnx6gF",
         "offer_banner_EYxzfQ",
-        "offer_banner_6gdLMF",
-        "offer_banner_aTFjm9"
+        "offer_banner_6gdLMF"
       ],
       "disabled": true,
       "custom_css": [],
@@ -484,42 +421,6 @@
         "border_color": "#808080",
         "border_color_opacity": 0.1,
         "grid_option": "3"
-      }
-    },
-    "special_category_BGtw4W": {
-      "type": "special-category",
-      "disabled": true,
-      "settings": {
-        "container": "normal",
-        "category_special_padding_top": 50,
-        "category_special_padding_bottom": 50,
-        "category_special_padding_top_ip": 80,
-        "category_special_padding_bottom_ip": 80,
-        "category_special_padding_top_xs": 60,
-        "category_special_padding_bottom_xs": 60,
-        "section_bgcolor": "#f9f7f5",
-        "section_bgcolor_enable": true,
-        "border_enable": true,
-        "border": 1,
-        "border_color": "#808080",
-        "border_color_opacity": 0.1,
-        "section_sub_title": "Most popular collection",
-        "section_title": "Indoor Game",
-        "countdown_enable": false,
-        "product_mont": "January",
-        "product_year": 2025,
-        "product_date": 30,
-        "category_special_product_view": "grid",
-        "category_special_product_limit_handle": "7",
-        "category_special_product_col": "2",
-        "product_view": "4",
-        "product_view_lg": "3",
-        "product_view_sm": "2",
-        "special_label_product": "indoor-games",
-        "category_special_button_enable": true,
-        "collection_btn_alignment": "center",
-        "category_special_button_text": "View all more",
-        "category_special_button_style": "btn-style1"
       }
     },
     "special_category_trxhEk": {
@@ -639,9 +540,9 @@
   "order": [
     "17587934803614d594",
     "top_bar3_tUL9ei",
+    "special_category_nPb69a",
     "1758799982511bfa5b",
     "7dc8c0c0-0ffe-4fdc-9384-b3568e1b9109",
-    "special_category_BGtw4W",
     "special_category_trxhEk",
     "instagram_LfdL4H"
   ]
