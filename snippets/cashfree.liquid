@@ -2,77 +2,72 @@
   window.storeShopifyDomain = {{ shop.permanent_domain | json }};
   window.Shopify = {
     ...window.Shopify,
-    shop: storeShopifyDomain,
-  };
-  window.onload = () => {
-    let shopifyObjectDomain = window?.Shopify?.shop;
-    if (!window.Shopify.shop || !Shopify.shop.includes("myshopify.com")) {
-      window.Shopify = {
-        ...window.Shopify,
-        shop: shopifyObjectDomain,
-      };
-    }
+    shop: window.storeShopifyDomain,
   };
 </script>
 
 <script>
-  try {
-    const ctaButtonAllowedTypes = ["BUTTON", "A", "INPUT"];
+  (() => {
+    try {
+      "use strict";
 
-    const checkoutButtonAllowedText = ["checkout", "placeorder"];
-    const buyNowButtonAllowedText = ["buynow", "buyitnow"];
+      const cfButtonUniqueClass = "cf-occ-btn";
+      const cfHiddenClass = "cf-buy-now-hidden";
+      const revertLoaderTime = 6500;
 
-    const cfButtonUniqueClass = "cf-occ-btn";
+      const ctaButtonAllowedTypes = ["BUTTON", "A", "INPUT"];
+      const checkoutButtonAllowedText = ["checkout", "placeorder"];
+      const buyNowButtonAllowedText = ["buynow", "buyitnow"];
 
-    const revertLoaderTime = 6500;
-
-    const cfSdkUrl = "https://sdk.cashfree.com/js/v3/cashfree.js";
-
-    /*
-      STOCK SAFETY CHECK FOR PRODUCT PAGE
-      This creates a Shopify variant availability map.
-      Cashfree Buy It Now will be blocked if selected variant is sold out.
-    */
-    const cfProductContext = {
-      isProductPage: {% if request.page_type == 'product' and product %}true{% else %}false{% endif %},
-      fallbackAvailable: {% if request.page_type == 'product' and product %}{{ product.selected_or_first_available_variant.available | json }}{% else %}true{% endif %},
-      variants: {
-        {% if request.page_type == 'product' and product %}
-          {% for variant in product.variants %}
-            "{{ variant.id }}": {{ variant.available | json }}{% unless forloop.last %},{% endunless %}
-          {% endfor %}
-        {% endif %}
-      }
-    };
-
-    const getCurrentVariantId = () => {
-      try {
-        const urlVariant = new URLSearchParams(window.location.search).get("variant");
-        if (urlVariant) return String(urlVariant);
-
-        const selectors = [
-          'form[action*="/cart/add"] [name="id"]',
-          'product-form [name="id"]',
-          '[name="id"]'
-        ];
-
-        for (const selector of selectors) {
-          const input = document.querySelector(selector);
-          if (input && input.value) {
-            return String(input.value);
-          }
+      const cfProductContext = {
+        isProductPage: {% if request.page_type == 'product' and product %}true{% else %}false{% endif %},
+        fallbackAvailable: {% if request.page_type == 'product' and product %}{{ product.available | json }}{% else %}true{% endif %},
+        selectedVariantId: {% if request.page_type == 'product' and product %}{{ product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %},
+        variants: {
+          {% if request.page_type == 'product' and product %}
+            {% for variant in product.variants %}
+              "{{ variant.id }}": {{ variant.available | json }}{% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          {% endif %}
         }
+      };
 
-        return null;
-      } catch (err) {
-        console.error(`Error in getCurrentVariantId :: ${err?.message}`);
-        return null;
-      }
-    };
+      let cfOneClickThemeSetupDone = false;
+      let cfThemeScriptPromise = null;
+      let refreshQueued = false;
 
-    const isCurrentProductVariantAvailable = () => {
-      try {
-        if (!cfProductContext.isProductPage) return true;
+      const normalizeText = (text) => {
+        return text ? text.replace(/\s/g, "").toLowerCase() : "";
+      };
+
+      const getCurrentVariantId = () => {
+        try {
+          const productFormInput = document.querySelector('form[action*="/cart/add"] [name="id"]');
+
+          if (productFormInput && productFormInput.value) {
+            return String(productFormInput.value);
+          }
+
+          const urlVariant = new URLSearchParams(window.location.search).get("variant");
+
+          if (urlVariant) {
+            return String(urlVariant);
+          }
+
+          if (cfProductContext.selectedVariantId) {
+            return String(cfProductContext.selectedVariantId);
+          }
+
+          return null;
+        } catch (err) {
+          return null;
+        }
+      };
+
+      const isCurrentProductAvailable = () => {
+        if (!cfProductContext.isProductPage) {
+          return true;
+        }
 
         const variantId = getCurrentVariantId();
 
@@ -84,388 +79,338 @@
         }
 
         return cfProductContext.fallbackAvailable === true;
-      } catch (err) {
-        console.error(`Error in isCurrentProductVariantAvailable :: ${err?.message}`);
-        return true;
-      }
-    };
+      };
 
-    const isCashfreeBuyNowButton = (button) => {
-      return button?.dataset?.function === "initBuyNow";
-    };
+      const isBuyNowButton = (button) => {
+        return button && button.dataset && button.dataset.function === "initBuyNow";
+      };
 
-    const setSoldOutButtonState = (button) => {
-      if (!button) return;
+      const hideBuyNowButton = (button) => {
+        if (!button) return;
 
-      if (!button.dataset.cfOriginalHtml && button.nodeName !== "INPUT") {
-        button.dataset.cfOriginalHtml = button.innerHTML;
-      }
+        button.classList.add(cfHiddenClass);
+        button.setAttribute("aria-hidden", "true");
+        button.setAttribute("tabindex", "-1");
 
-      if (!button.dataset.cfOriginalValue && button.nodeName === "INPUT") {
-        button.dataset.cfOriginalValue = button.value;
-      }
-
-      button.disabled = true;
-      button.setAttribute("aria-disabled", "true");
-      button.classList.add("cf-sold-out-disabled");
-
-      if (button.nodeName === "INPUT") {
-        button.value = "SOLD OUT";
-      } else {
-        button.innerHTML = "SOLD OUT";
-      }
-    };
-
-    const restoreButtonState = (button) => {
-      if (!button) return;
-
-      button.disabled = false;
-      button.removeAttribute("aria-disabled");
-      button.classList.remove("cf-sold-out-disabled");
-
-      if (button.nodeName === "INPUT") {
-        if (button.dataset.cfOriginalValue) {
-          button.value = button.dataset.cfOriginalValue;
+        if ("disabled" in button) {
+          button.disabled = true;
         }
-      } else {
-        if (button.dataset.cfOriginalHtml) {
-          button.innerHTML = button.dataset.cfOriginalHtml;
+      };
+
+      const showBuyNowButton = (button) => {
+        if (!button) return;
+
+        button.classList.remove(cfHiddenClass);
+        button.removeAttribute("aria-hidden");
+        button.removeAttribute("tabindex");
+
+        if ("disabled" in button) {
+          button.disabled = false;
         }
-      }
-    };
+      };
 
-    const refreshCashfreeBuyNowButtons = () => {
-      try {
-        if (!cfProductContext.isProductPage) return;
+      const refreshBuyNowButtons = () => {
+        if (!cfProductContext.isProductPage) {
+          return;
+        }
 
-        const isAvailable = isCurrentProductVariantAvailable();
-
-        const buttons = Array.from(
-          document.querySelectorAll("." + cfButtonUniqueClass)
+        const isAvailable = isCurrentProductAvailable();
+        const buyNowButtons = document.querySelectorAll(
+          "." + cfButtonUniqueClass + '[data-function="initBuyNow"]'
         );
 
-        for (let button of buttons) {
-          if (!isCashfreeBuyNowButton(button)) continue;
-
+        buyNowButtons.forEach((button) => {
           if (isAvailable) {
-            restoreButtonState(button);
+            showBuyNowButton(button);
           } else {
-            setSoldOutButtonState(button);
+            hideBuyNowButton(button);
+          }
+        });
+      };
+
+      const queueRefreshBuyNowButtons = () => {
+        if (refreshQueued) return;
+
+        refreshQueued = true;
+
+        window.requestAnimationFrame(() => {
+          refreshQueued = false;
+          refreshBuyNowButtons();
+        });
+      };
+
+      const displayLoader = (button) => {
+        if (!button) return;
+
+        if (button.nodeName === "INPUT") {
+          button.dataset.originalText = button.value;
+          button.value = "";
+        } else {
+          button.dataset.originalText = button.innerHTML;
+          button.innerHTML = `<div id="cf-loader-ring"><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div></div>`;
+        }
+
+        button.classList.add("cf-loader");
+
+        if ("disabled" in button) {
+          button.disabled = true;
+        }
+      };
+
+      const revertLoader = (button) => {
+        if (!button) return;
+
+        if (button.nodeName === "INPUT") {
+          button.value = button.dataset.originalText || button.value;
+        } else {
+          button.innerHTML = button.dataset.originalText || button.innerHTML;
+        }
+
+        button.classList.remove("cf-loader");
+
+        if ("disabled" in button) {
+          button.disabled = false;
+        }
+
+        queueRefreshBuyNowButtons();
+      };
+
+      const loadCfThemeScript = () => {
+        if (window.CashfreeOcc) {
+          return Promise.resolve();
+        }
+
+        if (cfThemeScriptPromise) {
+          return cfThemeScriptPromise;
+        }
+
+        cfThemeScriptPromise = new Promise((resolve, reject) => {
+          const existingScript = document.getElementById("zecpe-theme-script");
+
+          if (existingScript) {
+            existingScript.addEventListener("load", resolve);
+            existingScript.addEventListener("error", reject);
+            return;
+          }
+
+          const script = document.createElement("script");
+          script.type = "text/javascript";
+          script.src = "https://shopify-checkout.cashfree.com/bundle.js";
+          script.id = "zecpe-theme-script";
+          script.async = true;
+
+          script.onload = resolve;
+          script.onerror = reject;
+
+          document.head.appendChild(script);
+        });
+
+        return cfThemeScriptPromise;
+      };
+
+      const checkButtonMatch = (node, allowedText) => {
+        if (!node || !ctaButtonAllowedTypes.includes(node.nodeName)) {
+          return false;
+        }
+
+        const nodeText = normalizeText(node.textContent);
+        const nodeValue = normalizeText(node.value);
+
+        return allowedText.some((text) => {
+          return nodeText.includes(text) || nodeValue.includes(text);
+        });
+      };
+
+      const setupButton = (button) => {
+        if (!button || button.classList.contains(cfButtonUniqueClass)) {
+          return;
+        }
+
+        if (checkButtonMatch(button, checkoutButtonAllowedText)) {
+          button.classList.add(cfButtonUniqueClass);
+          button.setAttribute("data-function", "initCheckout");
+          return;
+        }
+
+        if (checkButtonMatch(button, buyNowButtonAllowedText)) {
+          button.classList.add(cfButtonUniqueClass);
+          button.setAttribute("data-function", "initBuyNow");
+
+          if (cfProductContext.isProductPage && !isCurrentProductAvailable()) {
+            hideBuyNowButton(button);
           }
         }
-      } catch (err) {
-        console.error(`Error in refreshCashfreeBuyNowButtons :: ${err?.message}`);
-      }
-    };
+      };
 
-    const blockSoldOutCashfreeBuyNow = (button, event) => {
-      try {
+      const scanButtons = (root = document) => {
+        const buttons = [];
+
         if (
-          cfProductContext.isProductPage &&
-          isCashfreeBuyNowButton(button) &&
-          !isCurrentProductVariantAvailable()
+          root instanceof Element &&
+          ctaButtonAllowedTypes.includes(root.nodeName)
         ) {
-          if (event) {
+          buttons.push(root);
+        }
+
+        if (root.querySelectorAll) {
+          buttons.push(...root.querySelectorAll("button, a, input"));
+        }
+
+        buttons.forEach(setupButton);
+        queueRefreshBuyNowButtons();
+      };
+
+      const initEventListeners = () => {
+        document.addEventListener(
+          "click",
+          async (event) => {
+            const button = event.target.closest(
+              "." + cfButtonUniqueClass + "[data-function]"
+            );
+
+            if (!button) return;
+
+            if (
+              cfProductContext.isProductPage &&
+              isBuyNowButton(button) &&
+              !isCurrentProductAvailable()
+            ) {
+              event.preventDefault();
+              event.stopPropagation();
+              event.stopImmediatePropagation();
+              hideBuyNowButton(button);
+              return;
+            }
+
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
-          }
 
-          setSoldOutButtonState(button);
-          return true;
-        }
+            displayLoader(button);
 
-        return false;
-      } catch (err) {
-        console.error(`Error in blockSoldOutCashfreeBuyNow :: ${err?.message}`);
-        return false;
-      }
-    };
+            setTimeout(() => {
+              revertLoader(button);
+            }, revertLoaderTime);
 
-    let cfOneClickThemeSetupDone = false;
-
-    const buttonConfigs = {
-      checkout: {
-        allowedTypes: ctaButtonAllowedTypes,
-        allowedText: checkoutButtonAllowedText,
-        action: (node) => {
-          node.setAttribute("data-function", "initCheckout");
-        },
-      },
-      buyNow: {
-        allowedTypes: ctaButtonAllowedTypes,
-        allowedText: buyNowButtonAllowedText,
-        action: (node) => {
-          node.setAttribute("data-function", "initBuyNow");
-        },
-      },
-    };
-
-    const normalizeText = (text) => text?.replace(/\s/g, "").toLowerCase() ?? "";
-
-    const displayLoader = (button) => {
-      try {
-        if (!button) return;
-
-        button.dataset.originalText = button.innerHTML;
-        button.classList.add("cf-loader");
-        button.innerHTML = `<div id="cf-loader-ring"><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div></div>`;
-        button.disabled = true;
-      } catch (err) {
-        console.error(`Error in displayLoader :: ${err?.message}`);
-      }
-    };
-
-    const revertLoader = (button) => {
-      try {
-        if (!button) return;
-
-        button.innerHTML = button.dataset.originalText;
-        button.classList.remove("cf-loader");
-        button.disabled = false;
-
-        refreshCashfreeBuyNowButtons();
-      } catch (err) {
-        console.error(`Error in revertLoader :: ${err?.message}`);
-      }
-    };
-
-    const initEventListeners = async () => {
-      try {
-        document.addEventListener(
-          "click",
-          async (e) => {
             try {
-              let clickTarget = e.target;
+              await loadCfThemeScript();
 
-              if (typeof clickTarget?.closest === "function") {
-                clickTarget = clickTarget.closest("." + cfButtonUniqueClass);
+              if (!window.CashfreeOcc) {
+                revertLoader(button);
+                return;
               }
 
-              if (
-                clickTarget?.classList?.contains(cfButtonUniqueClass) &&
-                clickTarget.dataset?.function
-              ) {
-                let checkoutBtn = clickTarget;
+              if (button.dataset.function === "initCheckout") {
+                window.CashfreeOcc.initCheckout(button);
+              }
 
-                /*
-                  Important:
-                  Block Cashfree Buy It Now before loader/checkout starts
-                  if current product variant is sold out.
-                */
-                if (blockSoldOutCashfreeBuyNow(checkoutBtn, e)) {
-                  return;
-                }
-
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-
-                displayLoader(checkoutBtn);
-
-                setTimeout(() => {
-                  revertLoader(checkoutBtn);
-                }, revertLoaderTime);
-
-                await loadCfThemeScript();
-
-                switch (checkoutBtn.dataset.function) {
-                  case "initCheckout":
-                    CashfreeOcc.initCheckout(checkoutBtn);
-                    break;
-
-                  case "initBuyNow":
-                    CashfreeOcc.initBuyItNow(checkoutBtn);
-                    break;
-                }
+              if (button.dataset.function === "initBuyNow") {
+                window.CashfreeOcc.initBuyItNow(button);
               }
             } catch (err) {
-              console.error(`Error in click event listener :: ${err?.message}`);
+              revertLoader(button);
+              console.error("Cashfree script loading failed:", err);
             }
           },
           true
         );
-      } catch (err) {
-        console.error(`Error in initEventListeners :: ${err?.message}`);
-      }
-    };
 
-    const checkButtonMatch = (node, config) => {
-      if (!config.allowedTypes.includes(node.nodeName)) return false;
+        if (cfProductContext.isProductPage) {
+          document.addEventListener(
+            "change",
+            (event) => {
+              if (
+                event.target.matches("select, input") ||
+                event.target.closest('form[action*="/cart/add"]')
+              ) {
+                setTimeout(queueRefreshBuyNowButtons, 120);
+              }
+            },
+            true
+          );
 
-      const nodeText = normalizeText(node.textContent);
-      const nodeValue = normalizeText(node.value);
-
-      return config.allowedText.some(
-        (text) => nodeText.includes(text) || nodeValue.includes(text)
-      );
-    };
-
-    const addEventListener = (node) => {
-      try {
-        if (node.classList.contains(cfButtonUniqueClass)) return;
-
-        for (let config of Object.values(buttonConfigs)) {
-          if (checkButtonMatch(node, config)) {
-            node.classList.add(cfButtonUniqueClass);
-            config.action(node);
-          }
+          document.addEventListener(
+            "click",
+            (event) => {
+              if (
+                event.target.closest("variant-selects") ||
+                event.target.closest(".product-form") ||
+                event.target.closest('form[action*="/cart/add"]') ||
+                event.target.closest("[data-option-position]")
+              ) {
+                setTimeout(queueRefreshBuyNowButtons, 120);
+              }
+            },
+            true
+          );
         }
+      };
 
-        refreshCashfreeBuyNowButtons();
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    const automateThemeSetup = () => {
-      try {
+      const automateThemeSetup = () => {
         if (cfOneClickThemeSetupDone) return;
 
         cfOneClickThemeSetupDone = true;
 
-        const targetNode = document.querySelector("body");
+        scanButtons(document);
+
+        const targetNode = document.body;
+
+        if (!targetNode) return;
 
         const observer = new MutationObserver((mutationsList) => {
-          for (let mutation of mutationsList) {
-            if (mutation.type === "childList" || mutation.type === "attributes") {
-              if (
-                mutation.type === "attributes" &&
-                mutation.attributeName === "class"
-              ) {
-                let node = mutation.target;
-                addEventListener(node);
+          mutationsList.forEach((mutation) => {
+            if (mutation.type !== "childList") return;
+
+            mutation.addedNodes.forEach((node) => {
+              if (node instanceof Element) {
+                scanButtons(node);
               }
-
-              for (let node of mutation.addedNodes) {
-                if (node instanceof Element) {
-                  let nodes = Array.from(
-                    node.querySelectorAll("button, a, input")
-                  );
-
-                  nodes = [node, ...nodes];
-
-                  for (let subNode of nodes) {
-                    addEventListener(subNode);
-                  }
-                }
-              }
-            }
-          }
-
-          refreshCashfreeBuyNowButtons();
+            });
+          });
         });
 
-        const observerConfig = {
+        observer.observe(targetNode, {
           childList: true,
-          subtree: true,
-          attributes: true,
-        };
+          subtree: true
+        });
+      };
 
-        if (targetNode) {
-          observer.observe(targetNode, observerConfig);
-        }
-
-        const buttons = Array.from(document.querySelectorAll("button, a, input"));
-
-        for (let button of buttons) {
-          addEventListener(button);
-        }
-
-        refreshCashfreeBuyNowButtons();
-      } catch (error) {
-        console.error("Error in automateThemeSetup:", error);
-      }
-    };
-
-    const loadCfThemeScript = () => {
-      return new Promise((resolve, reject) => {
-        try {
-          let themeScriptLoaded = false;
-
-          function loadScriptWithRetries(url, retries) {
-            if (retries <= 0 || themeScriptLoaded) {
-              if (themeScriptLoaded) {
-                resolve();
-              } else {
-                reject(
-                  new Error("Failed to load script after multiple attempts")
-                );
-              }
-
-              return;
-            }
-
-            let script = document.createElement("script");
-            script.type = "text/javascript";
-            script.src = url;
-            script.id = "zecpe-theme-script";
-            script.async = true;
-
-            script.onload = function () {
-              themeScriptLoaded = true;
-              resolve();
-            };
-
-            script.onerror = function () {
-              setTimeout(function () {
-                loadScriptWithRetries(url, retries - 1);
-              }, 2000);
-            };
-
-            document.head.appendChild(script);
-          }
-
-          if (!window.CashfreeOcc) {
-            loadScriptWithRetries(
-              "https://shopify-checkout.cashfree.com/bundle.js",
-              3
-            );
-          } else {
-            resolve();
-          }
-        } catch (err) {
-          console.error("Error in loadCfThemeScript:", err);
-          reject(err);
-        }
-      });
-    };
-
-    window.addEventListener("DOMContentLoaded", () => {
-      automateThemeSetup();
-      refreshCashfreeBuyNowButtons();
-
-      document.addEventListener(
-        "change",
-        () => {
-          setTimeout(refreshCashfreeBuyNowButtons, 150);
-        },
-        true
-      );
-
-      document.addEventListener(
-        "click",
-        () => {
-          setTimeout(refreshCashfreeBuyNowButtons, 200);
-        },
-        true
-      );
-    });
-
-    document.addEventListener("shopify:section:load", () => {
-      setTimeout(() => {
+      window.addEventListener("DOMContentLoaded", () => {
         automateThemeSetup();
-        refreshCashfreeBuyNowButtons();
-      }, 150);
-    });
+        initEventListeners();
+        queueRefreshBuyNowButtons();
+      });
 
-    initEventListeners();
-  } catch (err) {
-    console.error(`Error in doing automated theme setup :: ${err?.message}`);
-  }
+      document.addEventListener("shopify:section:load", () => {
+        setTimeout(() => {
+          scanButtons(document);
+          queueRefreshBuyNowButtons();
+        }, 150);
+      });
+    } catch (err) {
+      console.error("Cashfree theme setup error:", err);
+    }
+  })();
 </script>
 
 <style>
+  .cf-buy-now-hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    outline: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
+
   #cf-loader-ring {
     position: relative;
     width: 24px;
@@ -501,16 +446,11 @@
     animation-delay: -0.15s;
   }
 
-  .cf-sold-out-disabled {
-    opacity: 0.5 !important;
-    cursor: not-allowed !important;
-    pointer-events: none !important;
-  }
-
   @keyframes cf-loader-ring {
     0% {
       transform: rotate(0deg);
     }
+
     100% {
       transform: rotate(360deg);
     }
