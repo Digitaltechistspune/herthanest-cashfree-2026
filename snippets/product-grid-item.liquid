@@ -55,8 +55,8 @@ data-src="{{ product.featured_image.src | image_url: width: 360 }}"
         {%- if product.images[1].width >= 720 -%}{{ product.images[1] | image_url: width: 720 }} 720w,{%- endif -%}
         {{ product.images[1] | image_url }} {{ product.images[1].width }}w
         "
-        src="{{ product.images[1] | image_url: width: 720 }}"
-        data-src="{{ product.images[1] | image_url: width: 720 }}"
+       src="{{ product.images[1] | image_url: width: 360 }}"
+data-src="{{ product.images[1] | image_url: width: 360 }}"
         alt="{{ product.images[1].alt | escape }}"
         class="img-fluid lazyload"
         width="{{ product.images[1].width }}"
