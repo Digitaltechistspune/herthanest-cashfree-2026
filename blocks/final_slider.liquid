@@ -62,19 +62,20 @@
 
 {%- if lcp_image != blank -%}
   <link
-    rel="preload"
-    as="image"
-    href="{{ lcp_image | image_url: width: 720 }}"
-    imagesrcset="
-      {{ lcp_image | image_url: width: 360 }} 360w,
-      {{ lcp_image | image_url: width: 540 }} 540w,
-      {{ lcp_image | image_url: width: 720 }} 720w,
-      {{ lcp_image | image_url: width: 960 }} 960w,
-      {{ lcp_image | image_url: width: 1200 }} 1200w,
-      {{ lcp_image | image_url: width: 1600 }} 1600w
-    "
-    imagesizes="100vw"
-  >
+  rel="preload"
+  as="image"
+  href="{{ lcp_image | image_url: width: 720 }}"
+  imagesrcset="
+    {{ lcp_image | image_url: width: 360 }} 360w,
+    {{ lcp_image | image_url: width: 540 }} 540w,
+    {{ lcp_image | image_url: width: 720 }} 720w,
+    {{ lcp_image | image_url: width: 960 }} 960w,
+    {{ lcp_image | image_url: width: 1200 }} 1200w,
+    {{ lcp_image | image_url: width: 1600 }} 1600w
+  "
+  imagesizes="100vw"
+  fetchpriority="high"
+>
 {%- endif -%}
 
 
