@@ -36,8 +36,8 @@
         {%- if product.featured_image.src.width >= 720 -%}{{ product.featured_image.src | image_url: width: 720 }} 720w,{%- endif -%}
         {{ product.featured_image.src | image_url }} {{ product.featured_image.src.width }}w
         "
-        src="{{ product.featured_image.src | image_url: width: 720 }}"
-        data-src="{{ product.featured_image.src | image_url: width: 720 }}"
+       src="{{ product.featured_image.src | image_url: width: 360 }}"
+data-src="{{ product.featured_image.src | image_url: width: 360 }}"
         alt="{{ product.featured_image.src.alt | escape }}"
         class="img-fluid lazyload"
         width="{{ product.featured_image.src.width }}"
