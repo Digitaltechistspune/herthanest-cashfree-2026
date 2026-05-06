@@ -430,8 +430,26 @@ src="https://www.facebook.com/tr?id=1020397813606147&ev=PageView&noscript=1"
     <script src="{{ 'search-ajax.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {%- if template.name == 'index' -%}
-  <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+ {%- if template.name == 'index' -%}
+<script>
+  window.addEventListener('load', function () {
+    var loadSwiper = function () {
+      if (window.__swiperLoaded) return;
+      window.__swiperLoaded = true;
+
+      var s = document.createElement('script');
+      s.src = "{{ 'swiper-bundle.min.js' | asset_url }}";
+      s.defer = true;
+      document.body.appendChild(s);
+    };
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadSwiper, { timeout: 3000 });
+    } else {
+      setTimeout(loadSwiper, 3000);
+    }
+  });
+</script>
 {%- endif -%}
 
 {% if request.page_type == 'product' %}
