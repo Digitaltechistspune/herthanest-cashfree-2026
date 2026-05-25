@@ -44,7 +44,7 @@
             "button_text_color": "#ffffff",
             "button_hover_bg_color": "#333333",
             "button_hover_text_color": "#ffffff",
-            "slide_1_enabled": true,
+            "slide_1_enabled": false,
             "slide_1_image": "shopify://shop_images/hn.webp",
             "slide_1_overlay_type": "solid",
             "slide_1_overlay_color": "#000000",
