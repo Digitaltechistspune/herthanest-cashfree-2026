@@ -104,7 +104,8 @@
                     <div class="swiper-slide">
                         <div class="spe-product-list">
                           <div class="product-image{% unless product.available %} stock-out{% endunless %}">
-                            <a class="pro-img" href="{{ product.url | within: collection }}">
+                            {% comment %} <a class="pro-img" href="{{ product.url | within: collection }}"> {% endcomment %}
+                              <a class="pro-img" href="{{ product.url }}">
                               <img class="img-fluid lazyload" src="{{ product.featured_image.src | image_url: width: 300, height: 300, crop: 'center' }}" width="300" height="300" alt="{{ product.featured_image.src.alt }}" loading="lazy">
                             </a>
                             {% if product.selected_or_first_available_variant.compare_at_price %}
@@ -129,7 +130,7 @@
                             </div>
                             {%- endif -%}
                             <h6>
-                              <a href="{{ product.url | within: collection }}" title="{{ product.title }}">{{ product.title }}</a>
+                             <a href="{{ product.url }}" title="{{ product.title }}">{{ product.title }}</a>
                             </h6>
                             <div class="price-box">
                               <span class="new-price">{{ product.price | money }}</span>
