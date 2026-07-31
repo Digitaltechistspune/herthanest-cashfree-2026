@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "about-section1": {
@@ -24,7 +33,7 @@
         "about_description_Kr93hz": {
           "type": "about-description",
           "settings": {
-            "about_banner_img": "shopify://shop_images/DTC_794_x_930_px.png",
+            "about_banner_img": "shopify://shop_images/hertha.jpg",
             "abt_banner_button_url": "",
             "title": "Swati Hatangadi",
             "text": "Swati Hatangadi, the visionary behind Hertha Nest, is a seasoned Sales and Marketing professional with over 30 years of experience working with globally renowned MNCs such as Amway, Hindustan Unilever, Modicare, Wonderchef, and more. Her journey has been shaped by her expertise in communication, public speaking, and her ability to inspire and connect with diverse audiences.\n\nSwati's entrepreneurial journey began in 2023 with the launch of Hertha Nest, a brand that reflects her passion for creating meaningful, handcrafted products. Her unwavering dedication, rooted in decades of professional excellence, has laid the foundation for Hertha Nest to thrive as a unique and customer-focused brand. Swati strongly believes in turning challenges into opportunities, and her vision drives the brand to craft products that blend tradition, sustainability, and modern utility.",
