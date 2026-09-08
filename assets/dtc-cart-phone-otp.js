@@ -351,8 +351,7 @@ const BUTTON_SELECTOR = [
               exposeMethods:
                 true,
 
-              captchaRenderId:
-                'dtc-otp-captcha',
+            captchaRenderId:
 
               success: function () {
                 /*
