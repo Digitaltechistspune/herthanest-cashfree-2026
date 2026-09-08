@@ -593,99 +593,183 @@ const BUTTON_SELECTOR = [
 
   async function handleSendOtp() {
 
-    clearErrors();
+  clearErrors();
 
-    const phone =
-      digitsOnly(phoneInput.value);
+  const phone = digitsOnly(phoneInput.value);
 
-    if (!/^[6-9]\d{9}$/.test(phone)) {
+  if (!/^[6-9]\d{9}$/.test(phone)) {
 
-      phoneError.textContent =
-        'Please enter a valid 10-digit Indian mobile number.';
+    phoneError.textContent =
+      'Please enter a valid 10-digit Indian mobile number.';
 
-      phoneInput.focus();
+    phoneInput.focus();
+    return;
+  }
 
-      return;
-    }
+  if (!consentInput.checked) {
 
-    if (!consentInput.checked) {
+    phoneError.textContent =
+      'Please agree to receive cart reminders and updates on WhatsApp.';
 
-      phoneError.textContent =
-        'Please agree to receive cart reminders and updates on WhatsApp.';
+    consentInput.focus();
+    return;
+  }
 
-      consentInput.focus();
+  setButtonLoading(
+    sendOtpButton,
+    true,
+    'Sending OTP...'
+  );
 
-      return;
-    }
+  try {
 
-    setButtonLoading(
-      sendOtpButton,
-      true,
-      'Sending OTP...'
+    await ensureMsg91Ready();
+
+    /*
+     * MSG91 Custom UI requires:
+     * country code + mobile number,
+     * WITHOUT the + symbol.
+     *
+     * Example:
+     * 919999999999
+     */
+    state.currentIdentifier =
+      `${CONFIG.countryCode || '91'}${phone}`;
+
+    console.log(
+      '[DTC Cart OTP] Sending OTP to:',
+      state.currentIdentifier
     );
 
-    try {
+    /*
+     * Check CAPTCHA when MSG91 exposes the method.
+     */
+    if (
+      typeof window.isCaptchaVerified === 'function'
+    ) {
 
-      await ensureMsg91Ready();
+      const captchaStatus =
+        window.isCaptchaVerified();
 
-      state.currentIdentifier =
-        `${CONFIG.countryCode || '91'}${phone}`;
-
-      window.sendOtp(
-        state.currentIdentifier,
-
-        function () {
-
-          phonePreview.textContent =
-            `+${CONFIG.countryCode || '91'} ${phone}`;
-
-          setStep('verify');
-
-          otpInput.focus();
-
-          startResendTimer();
-
-          setButtonLoading(
-            sendOtpButton,
-            false
-          );
-        },
-
-        function (error) {
-
-          console.warn(
-            '[DTC Cart OTP] Send OTP error:',
-            error
-          );
-
-          phoneError.textContent =
-            'We could not send the OTP. Please check the number and try again.';
-
-          setButtonLoading(
-            sendOtpButton,
-            false
-          );
-        }
+      console.log(
+        '[DTC Cart OTP] CAPTCHA status:',
+        captchaStatus
       );
+    }
 
-    } catch (error) {
+    let completed = false;
 
-      console.error(
-        '[DTC Cart OTP]',
-        error
-      );
+    /*
+     * Never allow the button to stay stuck forever.
+     */
+    const timeout = setTimeout(() => {
 
-      phoneError.textContent =
-        'OTP service is temporarily unavailable. Please try again.';
+      if (completed) return;
+
+      completed = true;
 
       setButtonLoading(
         sendOtpButton,
         false
       );
-    }
+
+      phoneError.textContent =
+        'OTP request timed out. Please try again.';
+
+      console.error(
+        '[DTC Cart OTP] MSG91 sendOtp timed out.'
+      );
+
+    }, 12000);
+
+
+    window.sendOtp(
+
+      state.currentIdentifier,
+
+      function (data) {
+
+        if (completed) return;
+
+        completed = true;
+        clearTimeout(timeout);
+
+        console.log(
+          '[DTC Cart OTP] OTP sent successfully:',
+          data
+        );
+
+        phonePreview.textContent =
+          `+${CONFIG.countryCode || '91'} ${phone}`;
+
+        setStep('verify');
+
+        otpInput.focus();
+
+        startResendTimer();
+
+        setButtonLoading(
+          sendOtpButton,
+          false
+        );
+      },
+
+      function (error) {
+
+        if (completed) return;
+
+        completed = true;
+        clearTimeout(timeout);
+
+        console.error(
+          '[DTC Cart OTP] Send OTP failed:',
+          error
+        );
+
+        let message =
+          'We could not send the OTP. Please try again.';
+
+        /*
+         * Show useful MSG91 error information when available.
+         */
+        if (error) {
+
+          if (typeof error === 'string') {
+            message = error;
+
+          } else if (error.message) {
+            message = error.message;
+
+          } else if (error.data && error.data.message) {
+            message = error.data.message;
+          }
+        }
+
+        phoneError.textContent = message;
+
+        setButtonLoading(
+          sendOtpButton,
+          false
+        );
+      }
+    );
+
+  } catch (error) {
+
+    console.error(
+      '[DTC Cart OTP] Initialization error:',
+      error
+    );
+
+    phoneError.textContent =
+      'OTP service could not load. Please refresh and try again.';
+
+    setButtonLoading(
+      sendOtpButton,
+      false
+    );
   }
-
-
+}
   /* =========================================================
      VERIFY OTP
   ========================================================= */
