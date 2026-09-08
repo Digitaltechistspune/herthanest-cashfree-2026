@@ -1,0 +1,245 @@
+{{ 'dtc-cart-phone-otp.css' | asset_url | stylesheet_tag }}
+
+<div
+  id="dtc-cart-otp"
+  class="dtc-otp"
+  aria-hidden="true"
+>
+  <div
+    class="dtc-otp__overlay"
+    data-dtc-close
+  ></div>
+
+  <div
+    class="dtc-otp__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dtc-otp-title"
+  >
+    <button
+      type="button"
+      class="dtc-otp__close"
+      data-dtc-close
+      aria-label="Close phone verification"
+    >
+      &times;
+    </button>
+
+    <!-- =========================
+         STEP 1: PHONE NUMBER
+    ========================== -->
+    <div
+      class="dtc-otp__step"
+      data-dtc-step="phone"
+    >
+      <div class="dtc-otp__icon">
+        📱
+      </div>
+
+      <h2
+        id="dtc-otp-title"
+        class="dtc-otp__title"
+      >
+        Save your cart
+      </h2>
+
+      <p class="dtc-otp__description">
+        Verify your mobile number to receive cart reminders
+        and order updates conveniently on WhatsApp.
+      </p>
+
+      <label
+        class="dtc-otp__label"
+        for="dtc-otp-phone"
+      >
+        Mobile number
+      </label>
+
+      <div class="dtc-otp__phone">
+        <span class="dtc-otp__country">
+          +91
+        </span>
+
+        <input
+          id="dtc-otp-phone"
+          class="dtc-otp__input"
+          type="tel"
+          inputmode="numeric"
+          autocomplete="tel-national"
+          maxlength="10"
+          placeholder="98765 43210"
+          aria-describedby="dtc-phone-error"
+        >
+      </div>
+
+      <label class="dtc-otp__consent">
+        <input
+          id="dtc-otp-consent"
+          type="checkbox"
+        >
+
+        <span>
+          I agree to receive cart reminders and order updates
+          from Hertha Nest on WhatsApp.
+        </span>
+      </label>
+
+      <div
+        id="dtc-otp-captcha"
+        class="dtc-otp__captcha"
+      ></div>
+
+      <p
+        id="dtc-phone-error"
+        class="dtc-otp__error"
+        aria-live="polite"
+      ></p>
+
+      <button
+        id="dtc-send-otp"
+        type="button"
+        class="dtc-otp__primary"
+      >
+        Send OTP
+      </button>
+
+      <button
+        id="dtc-skip-otp"
+        type="button"
+        class="dtc-otp__skip"
+      >
+        Continue without WhatsApp
+      </button>
+
+      <p class="dtc-otp__privacy">
+        Your number is used only for verification and
+        communications you have agreed to receive.
+      </p>
+    </div>
+
+
+    <!-- =========================
+         STEP 2: OTP
+    ========================== -->
+    <div
+      class="dtc-otp__step"
+      data-dtc-step="verify"
+      hidden
+    >
+      <div class="dtc-otp__icon">
+        🔐
+      </div>
+
+      <h2 class="dtc-otp__title">
+        Verify your number
+      </h2>
+
+      <p class="dtc-otp__description">
+        We've sent a 6-digit verification code to
+        <strong id="dtc-otp-phone-preview"></strong>.
+      </p>
+
+      <label
+        class="dtc-otp__label"
+        for="dtc-otp-code"
+      >
+        Verification code
+      </label>
+
+      <input
+        id="dtc-otp-code"
+        class="dtc-otp__otp-input"
+        type="text"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        maxlength="6"
+        placeholder="000000"
+        aria-describedby="dtc-verify-error"
+      >
+
+      <p
+        id="dtc-verify-error"
+        class="dtc-otp__error"
+        aria-live="polite"
+      ></p>
+
+      <button
+        id="dtc-verify-otp"
+        type="button"
+        class="dtc-otp__primary"
+      >
+        Verify & Add to Cart
+      </button>
+
+      <div class="dtc-otp__actions">
+        <button
+          id="dtc-resend-otp"
+          type="button"
+          class="dtc-otp__link"
+          disabled
+        >
+          Resend OTP in 30s
+        </button>
+
+        <button
+          id="dtc-change-phone"
+          type="button"
+          class="dtc-otp__link"
+        >
+          Change number
+        </button>
+      </div>
+    </div>
+
+
+    <!-- =========================
+         STEP 3: SUCCESS
+    ========================== -->
+    <div
+      class="dtc-otp__step"
+      data-dtc-step="success"
+      hidden
+    >
+      <div class="dtc-otp__success-icon">
+        ✓
+      </div>
+
+      <h2 class="dtc-otp__title">
+        Number verified
+      </h2>
+
+      <p class="dtc-otp__description">
+        Adding your product to the cart...
+      </p>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+  window.DTC_CART_OTP_CONFIG = {
+    widgetId: '3669686c5961303631333534',
+
+    tokenAuth: '569040TrDUgEHfpHtH6aa004f0P1',
+
+    countryCode: '91',
+
+    /*
+      true  = customer can choose "Continue without WhatsApp"
+      false = OTP becomes mandatory before Add to Cart
+    */
+    allowSkip: true,
+
+    /*
+      Number of days this browser remembers
+      successful verification.
+    */
+    verifiedDays: 30
+  };
+</script>
+
+<script
+  src="{{ 'dtc-cart-phone-otp.js' | asset_url }}"
+  defer
+></script>
