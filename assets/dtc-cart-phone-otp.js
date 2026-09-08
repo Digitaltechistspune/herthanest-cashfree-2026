@@ -24,14 +24,17 @@
     Additional Add to Cart selectors.
     Includes common Shopify + Shella-style selectors.
   */
-  const BUTTON_SELECTOR = [
-    'button[name="add"]',
-    '[data-add-to-cart]',
-    '[data-js-product-button-add-to-cart]',
-    '.js-product-button-add-to-cart',
-    '.product-form__submit',
-    '.btn--add-to-cart'
-  ].join(',');
+const BUTTON_SELECTOR = [
+  'button[name="add"]',
+  '[data-add-to-cart]',
+  '[data-js-product-button-add-to-cart]',
+  '.js-product-button-add-to-cart',
+  '.product-form__submit',
+  '.btn--add-to-cart',
+
+  /* Hertha Nest custom Latest Products carousel */
+  '.hn-new30__add'
+].join(',');
 
 
   /* =========================================================
