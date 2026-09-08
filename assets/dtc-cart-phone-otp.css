@@ -1,0 +1,445 @@
+/* =========================================================
+   DTC — HERTHA NEST CART PHONE OTP
+========================================================= */
+
+.dtc-otp {
+  --dtc-black: #171717;
+  --dtc-white: #ffffff;
+  --dtc-text: #656565;
+  --dtc-border: #e7e7e7;
+  --dtc-bg: #f8f8f6;
+  --dtc-brand: #e85c2a;
+  --dtc-brand-hover: #ce4d20;
+  --dtc-success: #247a52;
+  --dtc-error: #c62828;
+
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+
+  box-sizing: border-box;
+}
+
+.dtc-otp.is-open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dtc-otp *,
+.dtc-otp *::before,
+.dtc-otp *::after {
+  box-sizing: border-box;
+}
+
+.dtc-otp__overlay {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.dtc-otp__dialog {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 440px;
+
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+
+  background: var(--dtc-white);
+
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
+
+  padding: 34px;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.22);
+
+  transform: translateY(14px) scale(0.98);
+
+  transition: transform 0.25s ease;
+}
+
+.dtc-otp.is-open .dtc-otp__dialog {
+  transform: translateY(0) scale(1);
+}
+
+.dtc-otp__close {
+  position: absolute;
+  top: 15px;
+  right: 16px;
+
+  width: 38px;
+  height: 38px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: #f2f2f2;
+  color: #222;
+
+  font-size: 25px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.dtc-otp__close:hover {
+  background: #e9e9e9;
+  transform: rotate(4deg);
+}
+
+.dtc-otp__step {
+  text-align: left;
+}
+
+.dtc-otp__icon {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+
+  background: #fff3ee;
+  border-radius: 16px;
+
+  font-size: 24px;
+}
+
+.dtc-otp__title {
+  margin: 0 0 8px;
+
+  color: var(--dtc-black);
+
+  font-size: clamp(25px, 4vw, 31px);
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.dtc-otp__description {
+  margin: 0 0 25px;
+
+  color: var(--dtc-text);
+
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.dtc-otp__label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--dtc-black);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dtc-otp__phone {
+  display: flex;
+
+  width: 100%;
+
+  border: 1px solid var(--dtc-border);
+  border-radius: 13px;
+
+  overflow: hidden;
+
+  background: var(--dtc-white);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dtc-otp__phone:focus-within {
+  border-color: var(--dtc-brand);
+
+  box-shadow:
+    0 0 0 3px rgba(232, 92, 42, 0.12);
+}
+
+.dtc-otp__country {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 16px;
+
+  color: #333;
+  background: #f6f6f6;
+
+  border-right: 1px solid var(--dtc-border);
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.dtc-otp__input,
+.dtc-otp__otp-input {
+  width: 100%;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+  color: var(--dtc-black);
+
+  font-size: 16px;
+
+  padding: 15px 16px;
+}
+
+.dtc-otp__otp-input {
+  border: 1px solid var(--dtc-border);
+  border-radius: 13px;
+
+  text-align: center;
+
+  font-size: 25px;
+  letter-spacing: 10px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dtc-otp__otp-input:focus {
+  border-color: var(--dtc-brand);
+
+  box-shadow:
+    0 0 0 3px rgba(232, 92, 42, 0.12);
+}
+
+.dtc-otp__consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin: 17px 0;
+
+  cursor: pointer;
+
+  color: #555;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.dtc-otp__consent input {
+  flex: 0 0 auto;
+
+  width: 17px;
+  height: 17px;
+
+  margin-top: 2px;
+
+  accent-color: var(--dtc-brand);
+}
+
+.dtc-otp__captcha {
+  margin: 12px 0;
+}
+
+.dtc-otp__error {
+  min-height: 19px;
+
+  margin: 8px 0;
+
+  color: var(--dtc-error);
+
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.dtc-otp__primary {
+  width: 100%;
+
+  border: 0;
+  border-radius: 13px;
+
+  padding: 15px 18px;
+
+  background: var(--dtc-brand);
+  color: var(--dtc-white);
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.dtc-otp__primary:hover {
+  background: var(--dtc-brand-hover);
+  transform: translateY(-1px);
+}
+
+.dtc-otp__primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.dtc-otp__skip {
+  width: 100%;
+
+  margin-top: 10px;
+  padding: 11px;
+
+  border: 0;
+  background: transparent;
+
+  color: #666;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.dtc-otp__skip:hover {
+  color: #111;
+  text-decoration: underline;
+}
+
+.dtc-otp__privacy {
+  margin: 13px 0 0;
+
+  color: #999;
+
+  text-align: center;
+
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.dtc-otp__actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-top: 17px;
+}
+
+.dtc-otp__link {
+  border: 0;
+  padding: 0;
+
+  background: transparent;
+
+  color: var(--dtc-brand);
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.dtc-otp__link:disabled {
+  color: #aaa;
+  cursor: default;
+}
+
+.dtc-otp__success-icon {
+  width: 68px;
+  height: 68px;
+
+  margin: 8px auto 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eaf6ef;
+  color: var(--dtc-success);
+
+  font-size: 34px;
+  font-weight: 700;
+}
+
+[data-dtc-step="success"] {
+  padding: 30px 0 15px;
+  text-align: center;
+}
+
+body.dtc-otp-open {
+  overflow: hidden !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .dtc-otp {
+    align-items: flex-end;
+
+    padding:
+      14px
+      14px
+      max(14px, env(safe-area-inset-bottom));
+  }
+
+  .dtc-otp__dialog {
+    max-width: none;
+
+    border-radius: 24px 24px 18px 18px;
+
+    padding: 28px 20px 24px;
+  }
+
+  .dtc-otp__title {
+    font-size: 25px;
+  }
+
+  .dtc-otp__description {
+    font-size: 13px;
+  }
+
+  .dtc-otp__otp-input {
+    font-size: 22px;
+    letter-spacing: 8px;
+  }
+
+}
