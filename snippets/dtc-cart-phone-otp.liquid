@@ -25,9 +25,9 @@
       &times;
     </button>
 
-    <!-- =========================
-         STEP 1: PHONE NUMBER
-    ========================== -->
+    <!-- =========================================
+         STEP 1 — PHONE NUMBER
+    ========================================== -->
     <div
       class="dtc-otp__step"
       data-dtc-step="phone"
@@ -56,6 +56,7 @@
       </label>
 
       <div class="dtc-otp__phone">
+
         <span class="dtc-otp__country">
           +91
         </span>
@@ -70,9 +71,11 @@
           placeholder="98765 43210"
           aria-describedby="dtc-phone-error"
         >
+
       </div>
 
       <label class="dtc-otp__consent">
+
         <input
           id="dtc-otp-consent"
           type="checkbox"
@@ -82,18 +85,26 @@
           I agree to receive cart reminders and order updates
           from Hertha Nest on WhatsApp.
         </span>
+
       </label>
 
+
+      <!--
+        Keep this element even while CAPTCHA is OFF.
+        If we enable MSG91 CAPTCHA later, it can render here.
+      -->
       <div
         id="dtc-otp-captcha"
         class="dtc-otp__captcha"
       ></div>
+
 
       <p
         id="dtc-phone-error"
         class="dtc-otp__error"
         aria-live="polite"
       ></p>
+
 
       <button
         id="dtc-send-otp"
@@ -103,6 +114,7 @@
         Send OTP
       </button>
 
+
       <button
         id="dtc-skip-otp"
         type="button"
@@ -111,21 +123,24 @@
         Continue without WhatsApp
       </button>
 
+
       <p class="dtc-otp__privacy">
         Your number is used only for verification and
         communications you have agreed to receive.
       </p>
+
     </div>
 
 
-    <!-- =========================
-         STEP 2: OTP
-    ========================== -->
+    <!-- =========================================
+         STEP 2 — VERIFY OTP
+    ========================================== -->
     <div
       class="dtc-otp__step"
       data-dtc-step="verify"
       hidden
     >
+
       <div class="dtc-otp__icon">
         🔐
       </div>
@@ -172,6 +187,7 @@
       </button>
 
       <div class="dtc-otp__actions">
+
         <button
           id="dtc-resend-otp"
           type="button"
@@ -188,18 +204,21 @@
         >
           Change number
         </button>
+
       </div>
+
     </div>
 
 
-    <!-- =========================
-         STEP 3: SUCCESS
-    ========================== -->
+    <!-- =========================================
+         STEP 3 — SUCCESS
+    ========================================== -->
     <div
       class="dtc-otp__step"
       data-dtc-step="success"
       hidden
     >
+
       <div class="dtc-otp__success-icon">
         ✓
       </div>
@@ -211,28 +230,137 @@
       <p class="dtc-otp__description">
         Adding your product to the cart...
       </p>
+
     </div>
 
   </div>
 </div>
 
 
+<!-- =========================================================
+     DTC / MSG91 CONFIGURATION
+========================================================= -->
+
 <script>
   window.DTC_CART_OTP_CONFIG = {
+
+    /*
+      Your existing MSG91 Widget ID.
+    */
     widgetId: '3669686c5961303631333534',
 
+    /*
+      IMPORTANT:
+      Paste the tokenAuth shown under:
+      MSG91 → Client Side Integration
+      → Web SDK for custom UI.
+
+      Use the OTP Widget client token only.
+      NEVER put your main MSG91 AuthKey here.
+    */
     tokenAuth: '569040TrDUgEHfpHtH6aa004f0P1',
 
-     countryCode: '91',
+    countryCode: '91',
 
-  allowSkip: true,
+    /*
+      true:
+      Customer can select
+      "Continue without WhatsApp"
 
-  verifiedDays: 30,
+      false:
+      OTP becomes mandatory.
+    */
+    allowSkip: true,
 
-  captchaEnabled: false
-};
+    /*
+      Remember successful verification
+      in this browser for 30 days.
+    */
+    verifiedDays: 30,
 
+    /*
+      CAPTCHA is currently disabled
+      in your MSG91 widget.
+    */
+    captchaEnabled: false
+  };
+
+
+  /*
+    This object follows MSG91's
+    official Web SDK Custom UI configuration.
+  */
+  window.DTC_MSG91_CONFIGURATION = {
+
+    widgetId:
+      window.DTC_CART_OTP_CONFIG.widgetId,
+
+    tokenAuth:
+      window.DTC_CART_OTP_CONFIG.tokenAuth,
+
+    /*
+      We provide the customer's number later
+      using window.sendOtp().
+    */
+    identifier: '',
+
+    /*
+      REQUIRED.
+      Exposes:
+      sendOtp()
+      verifyOtp()
+      retryOtp()
+      getWidgetData()
+    */
+    exposeMethods: true,
+
+    captchaRenderId:
+      window.DTC_CART_OTP_CONFIG.captchaEnabled
+        ? 'dtc-otp-captcha'
+        : '',
+
+    success: function(data) {
+
+      console.log(
+        '[DTC MSG91] Main success:',
+        data
+      );
+
+    },
+
+    failure: function(error) {
+
+      console.error(
+        '[DTC MSG91] Main failure:',
+        error
+      );
+
+    }
+
+  };
 </script>
+
+
+<!-- =========================================================
+     MSG91 OFFICIAL CUSTOM UI SDK
+
+     IMPORTANT:
+     initSendOTP() runs AFTER the provider script loads.
+========================================================= -->
+
+<script
+  src="https://verify.msg91.com/otp-provider.js"
+  onload="
+    console.log('[DTC MSG91] Provider loaded.');
+    window.initSendOTP(window.DTC_MSG91_CONFIGURATION);
+    console.log('[DTC MSG91] initSendOTP called.');
+  "
+></script>
+
+
+<!-- =========================================================
+     OUR CART / OTP FUNCTIONALITY
+========================================================= -->
 
 <script
   src="{{ 'dtc-cart-phone-otp.js' | asset_url }}"
