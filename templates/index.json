@@ -101,6 +101,7 @@
     },
     "custom_html_rY9Y3i": {
       "type": "custom-html",
+      "disabled": true,
       "name": "Blue",
       "settings": {
         "section_padding_top": 0,
