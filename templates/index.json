@@ -26,6 +26,7 @@
     },
     "custom_html_qXDxfa": {
       "type": "custom-html",
+      "disabled": true,
       "name": "Crousal",
       "settings": {
         "section_padding_top": 0,
@@ -41,6 +42,7 @@
     },
     "custom_html_JXTEUQ": {
       "type": "custom-html",
+      "disabled": true,
       "name": "Custom html",
       "settings": {
         "section_padding_top": 0,
@@ -56,6 +58,7 @@
     },
     "custom_html_9d9Xrb": {
       "type": "custom-html",
+      "disabled": true,
       "name": "Red",
       "settings": {
         "section_padding_top": 0,
@@ -71,6 +74,7 @@
     },
     "custom_html_eQmXCg": {
       "type": "custom-html",
+      "disabled": true,
       "name": "Product grid",
       "settings": {
         "section_padding_top": 0,
@@ -86,6 +90,7 @@
     },
     "custom_html_wpzhAN": {
       "type": "custom-html",
+      "disabled": true,
       "name": "10%",
       "settings": {
         "section_padding_top": 0,
@@ -117,6 +122,7 @@
     },
     "custom_html_kxjGNV": {
       "type": "custom-html",
+      "disabled": true,
       "name": "Custom html",
       "settings": {
         "section_padding_top": 0,
