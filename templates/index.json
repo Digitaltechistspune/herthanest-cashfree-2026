@@ -27,6 +27,18 @@
     "shivam_spotlight_rjDa3g": {
       "type": "shivam-spotlight",
       "blocks": {
+        "product_spotlight_iV3Gaa": {
+          "type": "product_spotlight",
+          "settings": {
+            "product": "wooden-elephant-globe-8-10-inches",
+            "stage_image": "shopify://shop_images/11_e39bc3db-e5fe-4a35-93d3-b1cc4e28fff6.png",
+            "image_alt": "",
+            "subtitle": "",
+            "image_scale": 100,
+            "offset_x": 0,
+            "offset_y": 0
+          }
+        },
         "product_spotlight_EfPYAA": {
           "type": "product_spotlight",
           "settings": {
@@ -101,6 +113,7 @@
         }
       },
       "block_order": [
+        "product_spotlight_iV3Gaa",
         "product_spotlight_EfPYAA",
         "product_spotlight_P9KEJw",
         "product_spotlight_wAfkCP",
