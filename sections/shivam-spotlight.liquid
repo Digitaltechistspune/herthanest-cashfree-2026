@@ -1,0 +1,214 @@
+{% comment %}
+  HERTHA NEST — THE ARTISAN SPOTLIGHT
+  Online Store 2.0 section, designed for 5–10 curated products.
+  Each product block has a Shopify product picker and a separate transparent stage image.
+  Does not change product galleries, variants or existing theme sections.
+{% endcomment %}
+
+{{ 'shivam-hertha-spotlight.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'shivam-hertha-spotlight.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign shs_count = 0
+  assign shs_first_product = blank
+  assign shs_first_note = blank
+  for block in section.blocks
+    if block.settings.product != blank
+      assign shs_count = shs_count | plus: 1
+      if shs_first_product == blank
+        assign shs_first_product = block.settings.product
+        assign shs_first_note = block.settings.subtitle
+      endif
+    endif
+  endfor
+-%}
+
+{% if shs_count > 0 or request.design_mode %}
+  <section
+    id="ShivamSpotlight-{{ section.id }}"
+    class="shs"
+    data-shs-section
+    data-autoplay="{{ section.settings.autoplay }}"
+    data-interval="{{ section.settings.autoplay_seconds | times: 1000 }}"
+    data-editor="{{ request.design_mode }}"
+    style="
+      --shs-bg: {{ section.settings.background }};
+      --shs-ink: {{ section.settings.text_color }};
+      --shs-muted: {{ section.settings.muted_color }};
+      --shs-accent: {{ section.settings.accent }};
+      --shs-floor-color: {{ section.settings.floor_color }};
+      --shs-glow: color-mix(in srgb, {{ section.settings.spotlight_color }} {{ section.settings.spotlight_intensity }}%, transparent);
+      --shs-stage-height: {{ section.settings.stage_height }}px;
+      --shs-duration: {{ section.settings.animation_duration }}ms;
+      --shs-near-opacity: {{ section.settings.near_opacity | divided_by: 100.0 }};
+      --shs-far-opacity: {{ section.settings.far_opacity | divided_by: 100.0 }};
+    "
+    aria-labelledby="ShivamSpotlightTitle-{{ section.id }}"
+  >
+    <div class="shs__container">
+      <header class="shs__header">
+        {% if section.settings.eyebrow != blank %}
+          <p class="shs__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {% endif %}
+        <h2 id="ShivamSpotlightTitle-{{ section.id }}" class="shs__heading">
+          {{ section.settings.heading | escape }}
+        </h2>
+        {% if section.settings.description != blank %}
+          <p class="shs__description">{{ section.settings.description | escape }}</p>
+        {% endif %}
+      </header>
+
+      {% if shs_count > 0 %}
+        <div class="shs__experience">
+          <div
+            class="shs__stage"
+            data-shs-stage
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Hertha Nest featured products"
+            aria-describedby="ShivamSpotlightHint-{{ section.id }}"
+            tabindex="0"
+          >
+            <div class="shs__architecture" aria-hidden="true"></div>
+            <div class="shs__spotlight" aria-hidden="true"></div>
+            <div class="shs__light-beam" aria-hidden="true"></div>
+            <div class="shs__floor" aria-hidden="true"></div>
+            <ul class="shs__products" data-shs-products>
+              {% for block in section.blocks %}
+                {% assign shs_product = block.settings.product %}
+                {% if shs_product != blank %}
+                  {%- liquid
+                    assign shs_image = block.settings.stage_image | default: shs_product.featured_image
+                    assign shs_alt = block.settings.image_alt | default: shs_product.title
+                    assign shs_scale = block.settings.image_scale | divided_by: 100.0
+                  -%}
+                  <li
+                    class="shs__slide"
+                    data-shs-slide
+                    data-block-id="{{ block.id }}"
+                    data-title="{{ shs_product.title | escape }}"
+                    data-note="{{ block.settings.subtitle | escape }}"
+                    data-price="{{ shs_product.price | money | escape }}"
+                    data-url="{{ shs_product.url | escape }}"
+                    style="
+                      --shs-item-scale: {{ shs_scale }};
+                      --shs-item-x: {{ block.settings.offset_x }}px;
+                      --shs-item-y: {{ block.settings.offset_y }}px;
+                    "
+                    {{ block.shopify_attributes }}
+                  >
+                    <span class="shs__ground-shadow" aria-hidden="true"></span>
+                    <a class="shs__product-link" draggable="false" href="{{ shs_product.url }}" aria-label="View {{ shs_product.title | escape }}">
+                      {% if shs_image != blank %}
+                        {{
+                          shs_image
+                          | image_url: width: 900
+                          | image_tag:
+                            class: 'shs__product-image',
+                            widths: '240,360,480,640,800,900',
+                            sizes: '(max-width: 749px) 70vw, (max-width: 1100px) 30vw, 350px',
+                            loading: 'lazy',
+                            alt: shs_alt
+                        }}
+                      {% else %}
+                        <span class="shs__missing-image">{{ shs_product.title | escape }}</span>
+                      {% endif %}
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+
+            {% if shs_count > 1 %}
+              <div class="shs__arrows" aria-label="Carousel navigation">
+                <button type="button" class="shs__arrow shs__arrow--prev" data-shs-prev aria-label="Previous product">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg>
+                </button>
+                <button type="button" class="shs__arrow shs__arrow--next" data-shs-next aria-label="Next product">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7"/></svg>
+                </button>
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="shs__details" data-shs-details>
+            <span class="shs__count" data-shs-counter aria-label="Product position">
+              01 / {{ shs_count | prepend: '0' | slice: -2, 2 }}
+            </span>
+            <h3 class="shs__product-title" data-shs-title>{{ shs_first_product.title | escape }}</h3>
+            <p class="shs__note" data-shs-note {% if shs_first_note == blank %}hidden{% endif %}>
+              {{ shs_first_note | escape }}
+            </p>
+            {% if section.settings.show_price %}
+              <p class="shs__price" data-shs-price>{{ shs_first_product.price | money }}</p>
+            {% endif %}
+            {% if section.settings.show_cta %}
+              <a class="shs__cta" data-shs-cta href="{{ shs_first_product.url }}">
+                {{ section.settings.cta_label | escape }}
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+        <p class="shs__sr-only" id="ShivamSpotlightHint-{{ section.id }}">
+          Use the left and right arrow keys while the stage is focused, or use the carousel buttons, to browse products. Select a product image to open its product page.
+        </p>
+      {% elsif request.design_mode %}
+        <div class="shs__editor-empty">
+          Add up to 10 product blocks. Select a product and upload its transparent stage image in each block.
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Hertha Artisan Spotlight",
+  "tag": "div",
+  "class": "section-shivam-hertha-spotlight",
+  "enabled_on": {"templates": ["index"]},
+  "max_blocks": 10,
+  "settings": [
+    {"type": "header", "content": "Section content"},
+    {"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE HERTHA NEST COLLECTION"},
+    {"type": "text", "id": "heading", "label": "Heading", "default": "Every Piece Has a Story."},
+    {"type": "textarea", "id": "description", "label": "Description", "default": "Discover handcrafted treasures, one spotlight at a time."},
+    {"type": "checkbox", "id": "show_price", "label": "Show product price", "default": true},
+    {"type": "checkbox", "id": "show_cta", "label": "Show View Product button", "default": true},
+    {"type": "text", "id": "cta_label", "label": "Button label", "default": "DISCOVER THIS PIECE"},
+    {"type": "header", "content": "Gallery colours"},
+    {"type": "color", "id": "background", "label": "Background", "default": "#F7F3EB"},
+    {"type": "color", "id": "floor_color", "label": "Stage floor", "default": "#E8E0D3"},
+    {"type": "color", "id": "spotlight_color", "label": "Spotlight", "default": "#FFE7B4"},
+    {"type": "color", "id": "text_color", "label": "Text", "default": "#29211C"},
+    {"type": "color", "id": "muted_color", "label": "Secondary text", "default": "#73695F"},
+    {"type": "color", "id": "accent", "label": "Button and accents", "default": "#315548"},
+    {"type": "range", "id": "spotlight_intensity", "label": "Spotlight strength", "min": 10, "max": 90, "step": 5, "unit": "%", "default": 55},
+    {"type": "header", "content": "Stage and animation"},
+    {"type": "range", "id": "stage_height", "label": "Desktop stage height", "min": 390, "max": 650, "step": 10, "unit": "px", "default": 510},
+    {"type": "range", "id": "animation_duration", "label": "Motion duration", "min": 450, "max": 1050, "step": 50, "unit": "ms", "default": 700},
+    {"type": "range", "id": "near_opacity", "label": "Neighbour brightness / opacity", "min": 40, "max": 95, "step": 5, "unit": "%", "default": 80},
+    {"type": "range", "id": "far_opacity", "label": "Background product opacity", "min": 20, "max": 75, "step": 5, "unit": "%", "default": 45},
+    {"type": "checkbox", "id": "autoplay", "label": "Enable autoplay", "default": false},
+    {"type": "range", "id": "autoplay_seconds", "label": "Autoplay interval", "min": 3, "max": 9, "step": 1, "unit": "s", "default": 5}
+  ],
+  "blocks": [
+    {
+      "type": "product_spotlight",
+      "name": "Spotlight product",
+      "settings": [
+        {"type": "product", "id": "product", "label": "Product", "info": "The product page link, title and price come from Shopify automatically."},
+        {"type": "image_picker", "id": "stage_image", "label": "Transparent product image", "info": "Use a transparent PNG or WebP. Fallback: main product image."},
+        {"type": "text", "id": "image_alt", "label": "Optional image alt text"},
+        {"type": "text", "id": "subtitle", "label": "Short subtitle (optional)"},
+        {"type": "header", "content": "Visual alignment"},
+        {"type": "range", "id": "image_scale", "label": "Product scale", "min": 65, "max": 135, "step": 5, "unit": "%", "default": 100},
+        {"type": "range", "id": "offset_x", "label": "Horizontal offset", "min": -60, "max": 60, "step": 5, "unit": "px", "default": 0},
+        {"type": "range", "id": "offset_y", "label": "Vertical offset", "min": -80, "max": 80, "step": 5, "unit": "px", "default": 0}
+      ]
+    }
+  ],
+  "presets": [{"name": "Hertha Artisan Spotlight", "category": "Products"}]
+}
+{% endschema %}
