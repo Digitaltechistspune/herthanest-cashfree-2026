@@ -116,6 +116,7 @@
         "show_price": true,
         "show_cta": true,
         "cta_label": "DISCOVER THIS PIECE",
+        "scene_max_width": 1700,
         "background": "#f7f3eb",
         "text_color": "#29211c",
         "muted_color": "#73695f",
@@ -124,8 +125,10 @@
         "animation_duration": 700,
         "near_opacity": 80,
         "far_opacity": 45,
-        "autoplay": false,
-        "autoplay_seconds": 5
+        "show_mini_labels": true,
+        "show_mini_prices": false,
+        "autoplay": true,
+        "autoplay_seconds": 3
       }
     },
     "shivam_hertha_latest_30_FRtthb": {
