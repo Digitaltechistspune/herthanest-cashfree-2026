@@ -26,6 +26,7 @@
     },
     "custom_html_qXDxfa": {
       "type": "custom-html",
+      "disabled": true,
       "name": "Crousal",
       "settings": {
         "section_padding_top": 0,
