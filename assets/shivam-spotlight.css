@@ -1109,3 +1109,340 @@
     line-height: 1.6 !important;
   }
 }
+
+/* ===================================================
+   HERTHA NEST SPOTLIGHT — V6 REFINEMENTS
+
+   FIX 1: Show only Discover button below stage
+   FIX 2: Premium product name and price mini cards
+
+   CSS ONLY — No Liquid or JS changes required.
+=================================================== */
+
+
+/* ==========================================
+   FIX 1 — HIDE DUPLICATE PRODUCT DETAILS
+========================================== */
+
+.shs .shs__details .shs__count,
+.shs .shs__details .shs__product-title,
+.shs .shs__details .shs__note,
+.shs .shs__details .shs__price {
+  display: none !important;
+}
+
+/* Keep only the CTA aligned in the centre */
+
+.shs .shs__details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 100%;
+
+  min-height: 0;
+
+  margin: 0 auto;
+  padding: 20px 16px 24px;
+
+  text-align: center;
+}
+
+/* Refined Discover button */
+
+.shs .shs__details .shs__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  min-height: 45px;
+
+  margin: 0 auto;
+  padding: 13px 25px;
+
+  border: 1px solid #315548;
+  border-radius: 100px;
+
+  background: #315548;
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.3;
+  letter-spacing: .10em;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 5px 13px rgba(49,85,72,.12);
+
+  transition:
+    background .25s ease,
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.shs .shs__details .shs__cta:hover {
+  background: #254236;
+  color: #ffffff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 20px rgba(49,85,72,.19);
+}
+
+
+/* ==========================================
+   FIX 2 — PREMIUM PRODUCT MINI PRICE CARD
+========================================== */
+
+.shs .shs__mini-label {
+  position: absolute;
+
+  width: clamp(124px, 12%, 190px);
+
+  min-height: 68px;
+
+  padding: 13px 12px 11px;
+
+  border: 1px solid rgba(185,150,91,.43);
+  border-radius: 14px;
+
+  background: rgba(255,253,248,.96);
+
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+
+  box-shadow:
+    0 7px 22px rgba(64,44,27,.10),
+    0 2px 5px rgba(64,44,27,.04),
+    inset 0 1px 0 rgba(255,255,255,.95);
+
+  color: #29211c;
+  text-align: center;
+  text-decoration: none;
+
+  overflow: hidden;
+}
+
+/* Thin antique-gold decorative detail */
+
+.shs .shs__mini-label::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 24%;
+
+  width: 52%;
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #b9965b,
+    transparent
+  );
+
+  pointer-events: none;
+}
+
+/* Slightly stronger centre card */
+
+.shs .shs__mini-label[data-slot="0"] {
+  width: clamp(158px, 15%, 220px);
+
+  border-color: rgba(185,150,91,.58);
+
+  background: rgba(255,254,251,.98);
+
+  box-shadow:
+    0 9px 26px rgba(64,44,27,.13),
+    0 2px 6px rgba(64,44,27,.05),
+    inset 0 1px 0 #ffffff;
+}
+
+/* Product name typography */
+
+.shs .shs__mini-title {
+  display: -webkit-box;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  color: #30271e;
+
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.38;
+  letter-spacing: .005em;
+
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* Price becomes an elegant green badge */
+
+.shs .shs__mini-price {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  max-width: 100%;
+
+  margin-top: 5px;
+  padding: 5px 11px;
+
+  border: 1px solid rgba(49,85,72,.09);
+  border-radius: 50px;
+
+  background: #eaf1ec;
+  color: #315548;
+
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.3;
+
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hover effect for desktop */
+
+@media (hover: hover) {
+  .shs .shs__mini-label:hover {
+    background: #ffffff;
+
+    border-color: rgba(185,150,91,.7);
+
+    box-shadow:
+      0 12px 28px rgba(64,44,27,.15),
+      0 3px 8px rgba(64,44,27,.06);
+
+    transform: translate(-50%, -3px);
+  }
+}
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (min-width: 750px) and (max-width: 1099px) {
+
+  .shs .shs__mini-label {
+    width: 12.5%;
+    min-height: 58px;
+    padding: 9px 6px;
+  }
+
+  .shs .shs__mini-label[data-slot="0"] {
+    width: 16%;
+  }
+
+  .shs .shs__mini-title {
+    font-size: 9px;
+  }
+
+  .shs .shs__mini-price {
+    font-size: 9px;
+    padding: 4px 7px;
+  }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 749px) {
+
+  /* Less empty space below the stage */
+
+  .shs .shs__details {
+    padding: 16px 14px 19px;
+  }
+
+  .shs .shs__details .shs__cta {
+    min-height: 44px;
+    padding: 12px 22px;
+    font-size: 10px;
+  }
+
+  /* Only active product card remains visible */
+
+  .shs .shs__mini-label:not(
+    [data-slot="0"]
+  ) {
+    display: none;
+  }
+
+  .shs .shs__mini-label[data-slot="0"] {
+    display: flex;
+
+    top: 83%;
+    left: 50%;
+
+    width: min(74%, 265px);
+    min-height: 65px;
+
+    padding: 11px 15px;
+
+    border-radius: 13px;
+  }
+
+  .shs .shs__mini-title {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .shs .shs__mini-price {
+    margin-top: 5px;
+    font-size: 11px;
+    padding: 5px 11px;
+  }
+
+}
+
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 365px) {
+
+  .shs .shs__mini-label[data-slot="0"] {
+    top: 82%;
+    width: 76%;
+  }
+
+  .shs .shs__mini-title {
+    font-size: 10px;
+  }
+
+}
+
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .shs .shs__details .shs__cta,
+  .shs .shs__mini-label {
+    transition-duration: .01ms !important;
+  }
+
+}
