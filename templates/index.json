@@ -38,12 +38,76 @@
             "offset_x": 0,
             "offset_y": 0
           }
+        },
+        "product_spotlight_P9KEJw": {
+          "type": "product_spotlight",
+          "settings": {
+            "product": "hand-painted-jewellery-box-red-2",
+            "stage_image": "shopify://shop_images/box.png",
+            "image_alt": "",
+            "subtitle": "",
+            "image_scale": 100,
+            "offset_x": 0,
+            "offset_y": 0
+          }
+        },
+        "product_spotlight_wAfkCP": {
+          "type": "product_spotlight",
+          "settings": {
+            "product": "wooden-elephant-globe-8-10-inches",
+            "stage_image": "shopify://shop_images/globe.png",
+            "image_alt": "",
+            "subtitle": "",
+            "image_scale": 100,
+            "offset_x": 0,
+            "offset_y": 0
+          }
+        },
+        "product_spotlight_VBhB8y": {
+          "type": "product_spotlight",
+          "settings": {
+            "product": "4-piece-tribal-lady-diya-set-red",
+            "stage_image": "shopify://shop_images/doll.png",
+            "image_alt": "",
+            "subtitle": "",
+            "image_scale": 100,
+            "offset_x": 0,
+            "offset_y": 0
+          }
+        },
+        "product_spotlight_W4De89": {
+          "type": "product_spotlight",
+          "settings": {
+            "product": "vintage-royak-bullet-bike-clock",
+            "stage_image": "shopify://shop_images/bike_2.png",
+            "image_alt": "",
+            "subtitle": "",
+            "image_scale": 100,
+            "offset_x": 0,
+            "offset_y": 0
+          }
+        },
+        "product_spotlight_D4Q9fx": {
+          "type": "product_spotlight",
+          "settings": {
+            "product": "wooden-ganesh-tealight-holder-10-6-inches",
+            "stage_image": "shopify://shop_images/tea.png",
+            "image_alt": "",
+            "subtitle": "",
+            "image_scale": 100,
+            "offset_x": 0,
+            "offset_y": 0
+          }
         }
       },
       "block_order": [
-        "product_spotlight_EfPYAA"
+        "product_spotlight_EfPYAA",
+        "product_spotlight_P9KEJw",
+        "product_spotlight_wAfkCP",
+        "product_spotlight_VBhB8y",
+        "product_spotlight_W4De89",
+        "product_spotlight_D4Q9fx"
       ],
-      "disabled": true,
       "name": "Hertha Artisan Spotlight",
       "settings": {
         "eyebrow": "THE HERTHA NEST COLLECTION",
@@ -52,11 +116,11 @@
         "show_price": true,
         "show_cta": true,
         "cta_label": "DISCOVER THIS PIECE",
-        "background": "#F7F3EB",
-        "floor_color": "#E8E0D3",
-        "spotlight_color": "#FFE7B4",
-        "text_color": "#29211C",
-        "muted_color": "#73695F",
+        "background": "#f7f3eb",
+        "floor_color": "#e8e0d3",
+        "spotlight_color": "#ffe7b4",
+        "text_color": "#29211c",
+        "muted_color": "#73695f",
         "accent": "#315548",
         "spotlight_intensity": 55,
         "stage_height": 510,
