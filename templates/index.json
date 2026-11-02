@@ -126,7 +126,7 @@
         "near_opacity": 80,
         "far_opacity": 45,
         "show_mini_labels": true,
-        "show_mini_prices": false,
+        "show_mini_prices": true,
         "autoplay": true,
         "autoplay_seconds": 3
       }
