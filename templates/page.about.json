@@ -11,6 +11,7 @@
   "sections": {
     "about-section1": {
       "type": "about-section1",
+      "disabled": true,
       "settings": {
         "container": "normal",
         "about_template_padding_top": 100,
